@@ -109,8 +109,6 @@ public abstract class UI_Base : MonoBehaviour
         switch (type)
         {
             case Define.UIEvent.Click:
-                if (Managers.Scene.CurrentScene.SceneType == Define.Scene.Aquarium)
-                    evt.OnClickHandler += (e) => { Managers.Sound.Play("Music/²ÞÆ²", Define.Sound.Effect, 0.1f);  };
                 evt.OnClickHandler -= action;
                 evt.OnClickHandler += action;
                 break;

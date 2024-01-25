@@ -26,13 +26,9 @@ public class Define : MonoBehaviour
 
     public enum Scene
     {
-        First_Scene,
-        Unknown,
         Game,
-        Game_2,
-        SJ_Workshop,
-        Aquarium,
-        Collection,
+        Lobby,
+        Unknown,
     }
 
     public enum Sound

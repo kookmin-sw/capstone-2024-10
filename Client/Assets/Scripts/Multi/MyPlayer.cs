@@ -8,6 +8,8 @@ using UnityEngine;
 public class MyPlayer : Player
 {
     NetworkManager _network;
+    public string _nickname;
+
     void Start()
     {
         StartCoroutine("CoSendPacket");
