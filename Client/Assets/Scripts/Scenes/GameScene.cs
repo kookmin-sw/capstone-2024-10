@@ -5,15 +5,6 @@ using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
 
-[Serializable]
-public class TempGameSceneData
-{
-    public Vector3 playerPos;
-    public Vector3 backgroundPos;
-    public Vector3 postBackPos;
-    public Vector3 preBackPos;
-}
-
 public class GameScene : BaseScene
 {
     // 씬이 초기에 생성될 때 수행될 목록
