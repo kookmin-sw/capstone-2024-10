@@ -15,14 +15,9 @@ public class InteractiveManager : MonoBehaviour
             {
                 if(hit.transform.gameObject.CompareTag("Interactive"))
                 {
-                    hit.collider.GetComponent<IInteractable>().Interact();
+                    StartCoroutine(hit.collider.GetComponent<IInteractable>().Interact());
                 }
             }
         }
     }
-}
-
-public interface IInteractable
-{
-    public void Interact();
 }
