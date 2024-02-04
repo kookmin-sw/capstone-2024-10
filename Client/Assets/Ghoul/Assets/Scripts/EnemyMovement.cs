@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
+public class EnemyMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
     public float rotationSpeed = 180f;

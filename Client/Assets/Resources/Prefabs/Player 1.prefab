@@ -217,6 +217,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907c517ee20424649829d0d68196ab03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentHealth: 100
+  Camera: {fileID: 0}
 --- !u!114 &3769128289540044954
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,6 +237,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 4962249367032688213}
+  - {fileID: 1199942491672917794}
 --- !u!95 &-2430155801426528987
 Animator:
   serializedVersion: 5
