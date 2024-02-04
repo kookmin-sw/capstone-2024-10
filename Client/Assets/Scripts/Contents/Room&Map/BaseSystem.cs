@@ -4,22 +4,28 @@ using UnityEngine;
 
 public class BaseSystem : MonoBehaviour
 {
-    //이건 인스펙터창에서 직접 설정해줘야 함
-    public GameObject[] floors;  
+    public bool isInteracting = false;
+    
+    [HideInInspector]
+    public List<GameObject> floors = new List<GameObject>();  
 
     [HideInInspector]
-    public Dictionary<string, BaseRoom> rooms;
+    public Dictionary<string, BaseRoom> rooms = new Dictionary<string, BaseRoom>();
 
     [HideInInspector]
-    public Dictionary<string, BaseWall> walls;
+    public Dictionary<string, BaseWall> walls = new Dictionary<string, BaseWall>();
 
     [HideInInspector]
-    public Dictionary<string, BaseDoor> doors;
+    public Dictionary<string, BaseDoor> doors = new Dictionary<string, BaseDoor>();
 
     // Start is called before the first frame update
     private void Start()
     {
+        floors.Add(GameObject.Find("First_Floor"));
+        floors.Add(GameObject.Find("Second_Floor"));
+        
         FindElements();
+        SettingSystem();
     }
 
     private void FindElements()
@@ -33,26 +39,39 @@ public class BaseSystem : MonoBehaviour
             for (int i = 0; i < motherRoom.childCount; i++)
             {
                 GameObject nowRoom = motherRoom.GetChild(i).gameObject;
-                rooms.Add(nowRoom.name, nowRoom.GetComponent<BaseRoom>());
+                rooms.Add(g.name + nowRoom.name, nowRoom.GetComponent<BaseRoom>());
             }
 
             for (int i = 0; i < motherWall.childCount; i++)
             {
                 GameObject nowWall = motherWall.GetChild(i).gameObject;
-                walls.Add(nowWall.name, nowWall.GetComponent<BaseWall>());
+                walls.Add(g.name + nowWall.name, nowWall.GetComponent<BaseWall>());
             }
 
             for (int i = 0; i < motherDoor.childCount; i++)
             {
                 GameObject nowDoor = motherDoor.GetChild(i).gameObject;
-                doors.Add(nowDoor.name, nowDoor.GetComponent<BaseDoor>());
+                doors.Add(g.name + nowDoor.name, nowDoor.GetComponent<BaseDoor>());
             }
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SettingSystem()
     {
-        
+        foreach (BaseRoom baseRoom in rooms.Values)
+        {
+            if(Random.Range(1,10) < 5)
+            {
+                baseRoom.isLightPower = true;
+            }
+        }
+
+        foreach (BaseDoor baseDoor in doors.Values)
+        {
+            if (Random.Range(1, 10) < 5)
+            {
+                baseDoor.isLightPower = true;
+            }
+        }
     }
 }

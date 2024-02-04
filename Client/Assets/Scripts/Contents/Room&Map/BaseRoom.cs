@@ -16,7 +16,7 @@ public class BaseRoom : MonoBehaviour
 
     private void Start()
     {
-        roomLight = itsLight.GetComponent<RoomLight>();
+        //roomLight = itsLight.GetComponent<RoomLight>();
 
         SetRoom();
     }
