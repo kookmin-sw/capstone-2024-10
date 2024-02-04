@@ -3,22 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 배전판에 붙이는 클래스임
+/// </summary>
 public class ElectricSystem : BaseWorking, IInteractable
-{
-    public GameObject electricUI;
-    private List<ElectricsystemButton> electricsystemButtons;
-
+{    
     public BaseSystem baseSystem;
 
     private void Start()
     {
-        for (int i = 0; i < electricUI.transform.childCount; i++)
-        {
-            if(electricUI.transform.GetChild(i).TryGetComponent(out ElectricsystemButton button))
-            {
-                button.GetComponent<Button>().onClick.AddListener(() => SelectSegment("a", button.buttonType));
-            }
-        }
+        
     }
 
     public IEnumerator Interact()
@@ -26,12 +20,7 @@ public class ElectricSystem : BaseWorking, IInteractable
         yield return null;
 
         //전력시스템 설정 코드
-        electricUI.SetActive(true);
-
-    }
-
-    public void SelectSegment(string segmentName, ElectricsystemButton.ButtonType type)
-    {
-
+        Managers.UI.ShowPopupUI<UI_ElectricPanel>("Electric_Control");
+        Debug.Log("dddd");
     }
 }
