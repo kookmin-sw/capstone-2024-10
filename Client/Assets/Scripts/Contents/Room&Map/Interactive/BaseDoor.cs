@@ -32,6 +32,8 @@ public class BaseDoor : BaseWorking, IInteractable
                 switches.Add(doorSwitch);
             }
         }
+
+        isContinuable = true;
     }
 
     public IEnumerator Interact()

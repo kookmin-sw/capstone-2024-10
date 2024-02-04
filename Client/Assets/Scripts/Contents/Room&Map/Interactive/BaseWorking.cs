@@ -13,11 +13,11 @@ public interface IInteractable
 public class BaseWorking : MonoBehaviour
 {
     public float requiredTime = 5.0f;
-    protected float workingTime;
+    public float workingTime;
 
     protected float workingSpeed = 1.0f;
 
-    protected bool isComplete = false;
+    public bool isComplete = false;
     protected bool isContinuable = false;
 
     private Coroutine coroutine;
@@ -44,9 +44,15 @@ public class BaseWorking : MonoBehaviour
     /// 데바데식 작업 시스템 함수 (필요할 때만 호출됨)
     /// </summary>
     /// <returns></returns>
-    protected IEnumerator Working()
+    public IEnumerator Working()
     {
+        Managers.UI.ShowPopupUI<UI_WorkingBar>("ShowLongWork");
+        UI_WorkingBar ui = Managers.UI.PeekPopupUI<UI_WorkingBar>();
+        yield return new WaitUntil(() => ui.Init());
+        
         isComplete = false;
+
+        MapManager.baseSystem.isInteracting = true;
         
         if(!isContinuable) { workingTime = 0; }
 
@@ -54,14 +60,19 @@ public class BaseWorking : MonoBehaviour
         {
             if(Input.GetKeyDown(KeyCode.Space))
             {
+                MapManager.baseSystem.isInteracting = false;
+                Managers.UI.ClosePopupUI();
                 StopAllCoroutines();
             }
             
             workingTime += Time.deltaTime * workingSpeed;
+            ui.CalculateBar(this);
             yield return null;
         }
 
         isComplete = true;
-           
+
+        MapManager.baseSystem.isInteracting = false;
+        Managers.UI.ClosePopupUI();           
     }
 }
