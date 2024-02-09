@@ -4,13 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// À¯´ÏÆ¼¿¡ Á¸ÀçÇÏ´Â ¾À¸Å´ÏÀú¸¦ ·¡ÇÎÇÑ ¸Å´ÏÀú
+/// ìœ ë‹ˆí‹°ì— ì¡´ìž¬í•˜ëŠ” ì”¬ë§¤ë‹ˆì €ë¥¼ ëž˜í•‘í•œ ë§¤ë‹ˆì €
 /// </summary>
 public class SceneManagerEx
 {
     /// <summary>
-    /// ÇöÀç À§Ä¡ÇÑ ¾ÀÀÌ ¾îµðÀÎÁö ¾Ë¾Æ³½´Ù.
-    /// ¾À¸¶´Ù º£ÀÌ½º ¾ÀÀ» »ó¼ÓÇÑ ½ºÅ©¸³Æ®¸¦ ºÎÂøÇÑ @Scene °´Ã¼¸¦ °¡Áö°í ÀÖ´Ù.
+    /// í˜„ìž¬ ìœ„ì¹˜í•œ ì”¬ì´ ì–´ë””ì¸ì§€ ì•Œì•„ë‚¸ë‹¤.
+    /// ì”¬ë§ˆë‹¤ ë² ì´ìŠ¤ ì”¬ì„ ìƒì†í•œ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ë¶€ì°©í•œ @Scene ê°ì²´ë¥¼ ê°€ì§€ê³  ìžˆë‹¤.
     /// </summary>
     public BaseScene CurrentScene
     {
@@ -20,9 +20,9 @@ public class SceneManagerEx
     public Define.Scene PreviousScene { get; set; }
 
     /// <summary>
-    /// ¾ÀÀ» ºÒ·¯¿Â´Ù. ´Ù¸¸ ±âÁ¸ÀÇ ½ºÆ®¸µÀÌ ¾Æ´Ñ enum Å¸ÀÔÀ¸·Î °¡Á®¿Ã ¼ö ÀÖ´Ù.
-    /// ³»ºÎÀûÀ¸·Î ¸ÞÀÎ ¸Å´ÏÀúÀÇ ¾ÀÀ» ÃÊ±âÈ­½ÃÅ°´Â ÄÚµå¸¦ ½ÇÇàÇØ ¾ÀÀÌ ¹Ù²ð ¶§,
-    /// ÀÚµ¿À¸·Î ÃÊ±«È­ ÀÛ¾÷ÀÌ ÀÌ·ç¾îÁöµµ·Ï ÇÑ´Ù.
+    /// ì”¬ì„ ë¶ˆëŸ¬ì˜¨ë‹¤. ë‹¤ë§Œ ê¸°ì¡´ì˜ ìŠ¤íŠ¸ë§ì´ ì•„ë‹Œ enum íƒ€ìž…ìœ¼ë¡œ ê°€ì ¸ì˜¬ ìˆ˜ ìžˆë‹¤.
+    /// ë‚´ë¶€ì ìœ¼ë¡œ ë©”ì¸ ë§¤ë‹ˆì €ì˜ ì”¬ì„ ì´ˆê¸°í™”ì‹œí‚¤ëŠ” ì½”ë“œë¥¼ ì‹¤í–‰í•´ ì”¬ì´ ë°”ë€” ë•Œ,
+    /// ìžë™ìœ¼ë¡œ ì´ˆê´´í™” ìž‘ì—…ì´ ì´ë£¨ì–´ì§€ë„ë¡ í•œë‹¤.
     /// </summary>
     public void LoadScene(Define.Scene type)
     {
@@ -38,7 +38,7 @@ public class SceneManagerEx
     }
 
     /// <summary>
-    /// ¾ÀÀÇ ÀÌ¸§À» °¡Á®¿Â´Ù. ¾ÀÀÇ ÀÌ¸§¿¡ Æ¯Á¤ ±ÔÄ¢ÀÌ ÀÖÀ» °æ¿ì ¿©±â¿¡ ¹Ý¿µÇÑ´Ù.
+    /// ì”¬ì˜ ì´ë¦„ì„ ê°€ì ¸ì˜¨ë‹¤. ì”¬ì˜ ì´ë¦„ì— íŠ¹ì • ê·œì¹™ì´ ìžˆì„ ê²½ìš° ì—¬ê¸°ì— ë°˜ì˜í•œë‹¤.
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
@@ -49,7 +49,7 @@ public class SceneManagerEx
     }
 
     /// <summary>
-    /// º£ÀÌ½º ¾ÀÀ» »ó¼ÓÇÑ °¢°¢ÀÇ ¾À¿¡ Á¤ÀÇµÇ¾î ÀÖ´Â Å¬¸®¾î ÇÔ¼ö¸¦ ºÒ·¯¿Â´Ù.
+    /// ë² ì´ìŠ¤ ì”¬ì„ ìƒì†í•œ ê°ê°ì˜ ì”¬ì— ì •ì˜ë˜ì–´ ìžˆëŠ” í´ë¦¬ì–´ í•¨ìˆ˜ë¥¼ ë¶ˆëŸ¬ì˜¨ë‹¤.
     /// </summary>
     public void Clear()
     {

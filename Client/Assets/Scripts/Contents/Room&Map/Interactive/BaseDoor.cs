@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BaseDoor : BaseWorking, IInteractable
 {
-    //¹® Á¶ÀÛ ½ºÀ§Ä¡´Â °¢ ¹æÀÌ ¾Æ´Ñ °¢ ¹®¿¡ Á¾¼ÓµÇ¾î ÀÖ´Ù.
+    //ë¬¸ ì¡°ì‘ ìŠ¤ìœ„ì¹˜ëŠ” ê° ë°©ì´ ì•„ë‹Œ ê° ë¬¸ì— ì¢…ì†ë˜ì–´ ìˆë‹¤.
     [HideInInspector]
     public List<DoorSwitch> switches;
 
@@ -41,7 +41,7 @@ public class BaseDoor : BaseWorking, IInteractable
         if (isLightPower) { isPassable = !isPassable; }
         else
         {
-            //Àü±â°¡ ²÷°åÀ» ¶§ ¹®À» ¼öµ¿À¸·Î ¿©´Â ÇÔ¼ö
+            //ì „ê¸°ê°€ ëŠê²¼ì„ ë•Œ ë¬¸ì„ ìˆ˜ë™ìœ¼ë¡œ ì—¬ëŠ” í•¨ìˆ˜
             yield return StartCoroutine(Working());
 
             if(isComplete) { isPassable = !isPassable; }

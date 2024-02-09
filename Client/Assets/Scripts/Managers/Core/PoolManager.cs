@@ -4,7 +4,7 @@ using UnityEngine;
 using static UnityEngine.UI.Image;
 
 /// <summary>
-/// Ç®¸µ ¸Å´ÏÀú´Â ¸®¼Ò½º ¸Å´ÏÀú¿¡ ±Í¼ÓµÇ¾î ÀÖ´Â ¸Å´ÏÀú·Î »ç¿ëÀÚ ½ºÅ©¸³Æ®¿¡¼­ Á÷Á¢ È£ÃâÇÒ ÇÊ¿ä°¡ ¾ø´Ù.
+/// í’€ë§ ë§¤ë‹ˆì €ëŠ” ë¦¬ì†ŒìŠ¤ ë§¤ë‹ˆì €ì— ê·€ì†ë˜ì–´ ìˆëŠ” ë§¤ë‹ˆì €ë¡œ ì‚¬ìš©ì ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ì§ì ‘ í˜¸ì¶œí•  í•„ìš”ê°€ ì—†ë‹¤.
 /// </summary>
 public class PoolManager
 {
@@ -12,20 +12,20 @@ public class PoolManager
     class Pool
     {
         /// <summary>
-        /// Ç®¸µ ¿ÀºêÁ§Æ®ÀÇ ÇÁ¸®ÆÕ
+        /// í’€ë§ ì˜¤ë¸Œì íŠ¸ì˜ í”„ë¦¬íŒ¹
         /// </summary>
         public GameObject Original { get; private set; }
         /// <summary>
-        /// Ç®¸µ ¿ÀºêÁ§Æ®ÀÇ ·çÆ®
+        /// í’€ë§ ì˜¤ë¸Œì íŠ¸ì˜ ë£¨íŠ¸
         /// </summary>
         public Transform Root { get; set; }
         /// <summary>
-        /// Ç®¸µ ¿ÀºêÁ§Æ®¸¦ °ü¸®ÇÒ ½ºÅÃ
+        /// í’€ë§ ì˜¤ë¸Œì íŠ¸ë¥¼ ê´€ë¦¬í•  ìŠ¤íƒ
         /// </summary>
         Stack<Poolable> _poolStack = new Stack<Poolable>();
 
         /// <summary>
-        /// °¢°¢ÀÇ ÁöÁ¤ÇÑ ¿ÀºêÁ§Æ®¸¶´Ù ·çÆ®¸¦ ¸¸µé¾î °°Àº ºÎ¸ğ ¾Æ·¡¿¡ ¸ğ¾Æ µĞ´Ù.
+        /// ê°ê°ì˜ ì§€ì •í•œ ì˜¤ë¸Œì íŠ¸ë§ˆë‹¤ ë£¨íŠ¸ë¥¼ ë§Œë“¤ì–´ ê°™ì€ ë¶€ëª¨ ì•„ë˜ì— ëª¨ì•„ ë‘”ë‹¤.
         /// </summary>
         /// <param name="original"></param>
         /// <param name="count"></param>
@@ -40,9 +40,9 @@ public class PoolManager
         }
 
         /// <summary>
-        /// Ç®¸µ ¿ÀºêÁ§Æ®¸¦ »ı¼ºÇÑ´Ù.
+        /// í’€ë§ ì˜¤ë¸Œì íŠ¸ë¥¼ ìƒì„±í•œë‹¤.
         /// </summary>
-        /// <returns>Poolable ½ºÅ©¸³Æ®¸¦ ÅëÇØ °ü¸®ÇÑ´Ù</returns>
+        /// <returns>Poolable ìŠ¤í¬ë¦½íŠ¸ë¥¼ í†µí•´ ê´€ë¦¬í•œë‹¤</returns>
         Poolable Create()
         {
             GameObject go = Object.Instantiate<GameObject>(Original);
@@ -51,7 +51,7 @@ public class PoolManager
         }
 
         /// <summary>
-        /// Ç®¸µ ¿ÀºêÁ§Æ®¸¦ ½ºÅÃ¿¡ ³Ö´Â´Ù.
+        /// í’€ë§ ì˜¤ë¸Œì íŠ¸ë¥¼ ìŠ¤íƒì— ë„£ëŠ”ë‹¤.
         /// </summary>
         public void Push(Poolable poolable)
         {
@@ -66,7 +66,7 @@ public class PoolManager
         }
 
         /// <summary>
-        /// ÁöÁ¤ÇÑ ºÎ¸ğ ¹Ø¿¡¼­ Ç®¸µ ¿ÀºêÁ§Æ®¸¦ Ã£¾Æ »Ì¾Æ¿Â´Ù.
+        /// ì§€ì •í•œ ë¶€ëª¨ ë°‘ì—ì„œ í’€ë§ ì˜¤ë¸Œì íŠ¸ë¥¼ ì°¾ì•„ ë½‘ì•„ì˜¨ë‹¤.
         /// </summary>
         public Poolable Pop(Transform parent)
         {
@@ -79,7 +79,7 @@ public class PoolManager
 
             poolable.gameObject.SetActive(true);
 
-            // DontDestroyOnLoad ÇØÁ¦ ¿ëµµ
+            // DontDestroyOnLoad í•´ì œ ìš©ë„
             if (parent == null)
                 poolable.transform.parent = Managers.Scene.CurrentScene.transform;
 
@@ -95,7 +95,7 @@ public class PoolManager
     Transform _root;
 
     /// <summary>
-    /// ¸ğµç Ç®ÀÇ ·çÆ®¸¦ ¸¸µé¾î ÁÖ°í ¾ÀÀÌ ¹Ù²î¾îµµ »èÁ¦µÇÁö ¾Ê°Ô ¼³Á¤À» ÇÑ´Ù.
+    /// ëª¨ë“  í’€ì˜ ë£¨íŠ¸ë¥¼ ë§Œë“¤ì–´ ì£¼ê³  ì”¬ì´ ë°”ë€Œì–´ë„ ì‚­ì œë˜ì§€ ì•Šê²Œ ì„¤ì •ì„ í•œë‹¤.
     /// </summary>
     public void init()
     {
@@ -107,10 +107,10 @@ public class PoolManager
     }
 
     /// <summary>
-    /// ÇÁ¸®ÆÕÀ» ÁÖ¸é ÇØ´çÇÏ´Â °³¼ö¸¸Å­ Ç®¸µ ¿ÀºêÁ§Æ®¸¦ ¸¸µé¾î Ç®¿¡ ³Ö¾î ³õ´Â´Ù.
+    /// í”„ë¦¬íŒ¹ì„ ì£¼ë©´ í•´ë‹¹í•˜ëŠ” ê°œìˆ˜ë§Œí¼ í’€ë§ ì˜¤ë¸Œì íŠ¸ë¥¼ ë§Œë“¤ì–´ í’€ì— ë„£ì–´ ë†“ëŠ”ë‹¤.
     /// </summary>
-    /// <param name="original">Ç®À» »ı¼ºÇÒ ÇÁ¸®ÆÕ</param>
-    /// <param name="count">¸î °³ÀÇ ¿ÀºêÁ§Æ®¸¦ ¹Ì¸® »ı¼ºÇØ ³õÀ»Áö Á¤ÇÑ´Ù.</param>
+    /// <param name="original">í’€ì„ ìƒì„±í•  í”„ë¦¬íŒ¹</param>
+    /// <param name="count">ëª‡ ê°œì˜ ì˜¤ë¸Œì íŠ¸ë¥¼ ë¯¸ë¦¬ ìƒì„±í•´ ë†“ì„ì§€ ì •í•œë‹¤.</param>
     public void CreatePool(GameObject original, int count = 5)
     {
         Pool pool = new Pool();
@@ -121,7 +121,7 @@ public class PoolManager
     }
 
     /// <summary>
-    /// Ç®ÀÇ Push ÇÔ¼ö¸¦ ¸ÅÇÎÇØ ³õÀº ÇÔ¼ö
+    /// í’€ì˜ Push í•¨ìˆ˜ë¥¼ ë§¤í•‘í•´ ë†“ì€ í•¨ìˆ˜
     /// </summary>
     public void Push(Poolable poolable)
     {
@@ -135,7 +135,7 @@ public class PoolManager
     }
 
     /// <summary>
-    /// Ç®ÀÇ Pop ÇÔ¼ö¸¦ ¸ÅÇÎÇØ ³õÀº ÇÔ¼ö
+    /// í’€ì˜ Pop í•¨ìˆ˜ë¥¼ ë§¤í•‘í•´ ë†“ì€ í•¨ìˆ˜
     /// </summary>
     public Poolable Pop(GameObject original, Transform parent = null)
     {
@@ -146,7 +146,7 @@ public class PoolManager
     }
 
     /// <summary>
-    /// Ç®¿¡ ÀúÀåµÇ¾î ÀÖ´Â ÇÁ¸®ÆÕÀ» ºÒ·¯¿Â´Ù.
+    /// í’€ì— ì €ì¥ë˜ì–´ ìˆëŠ” í”„ë¦¬íŒ¹ì„ ë¶ˆëŸ¬ì˜¨ë‹¤.
     /// </summary>
     public GameObject GetOriginal(string name)
     {
@@ -156,7 +156,7 @@ public class PoolManager
     }
 
     /// <summary>
-    /// ¾ÀÀÌ ¹Ù²î¾úÀ» ¶§, »ı¼ºÇØ³õÀº Ç®À» ÃÊ±âÈ­ÇØÁÖ´Â ÄÚµå
+    /// ì”¬ì´ ë°”ë€Œì—ˆì„ ë•Œ, ìƒì„±í•´ë†“ì€ í’€ì„ ì´ˆê¸°í™”í•´ì£¼ëŠ” ì½”ë“œ
     /// </summary>
     public void Clear()
     {

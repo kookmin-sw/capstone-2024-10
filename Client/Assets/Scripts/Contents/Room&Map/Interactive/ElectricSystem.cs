@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 /// <summary>
-/// ¹èÀüÆÇ¿¡ ºÙÀÌ´Â Å¬·¡½ºÀÓ
+/// ë°°ì „íŒì— ë¶™ì´ëŠ” í´ë˜ìŠ¤ì„
 /// </summary>
 public class ElectricSystem : BaseWorking, IInteractable
 {    
@@ -19,7 +19,7 @@ public class ElectricSystem : BaseWorking, IInteractable
     {
         yield return null;
 
-        //Àü·Â½Ã½ºÅÛ ¼³Á¤ ÄÚµå
+        //ì „ë ¥ì‹œìŠ¤í…œ ì„¤ì • ì½”ë“œ
         Managers.UI.ShowPopupUI<UI_ElectricPanel>("Electric_Control");
         Debug.Log("dddd");
     }

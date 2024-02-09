@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// »ç¿ëÀÚ Á¤ÀÇ SceneUI »ı¼ºÇÏ·Á¸é ÇØ´ç Å¬·¡½º¸¦ »ó¼ÓÇÏ¸é µÈ´Ù.
+/// ì‚¬ìš©ì ì •ì˜ SceneUI ìƒì„±í•˜ë ¤ë©´ í•´ë‹¹ í´ë˜ìŠ¤ë¥¼ ìƒì†í•˜ë©´ ëœë‹¤.
 /// </summary>
 public class UI_Scene : UI_Base
 {
     /// <summary>
-    /// ÀÚ½Ä¿¡¼­ InitÀ» ±¸ÇöÇÏ·Á°í ÇÒ ¶§, ÇØ´ç InitÀ» È£ÃâÇØÁà¾ß ÇÑ´Ù.
+    /// ìì‹ì—ì„œ Initì„ êµ¬í˜„í•˜ë ¤ê³  í•  ë•Œ, í•´ë‹¹ Initì„ í˜¸ì¶œí•´ì¤˜ì•¼ í•œë‹¤.
     /// </summary>
     public override bool Init()
     {

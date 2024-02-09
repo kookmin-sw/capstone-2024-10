@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// »ç¿ëÀÚ Á¤ÀÇ PopupUI »ı¼ºÇÏ·Á¸é ÇØ´ç Å¬·¡½º¸¦ »ó¼ÓÇÏ¸é µÈ´Ù.
+/// ì‚¬ìš©ì ì •ì˜ PopupUI ìƒì„±í•˜ë ¤ë©´ í•´ë‹¹ í´ë˜ìŠ¤ë¥¼ ìƒì†í•˜ë©´ ëœë‹¤.
 /// </summary>
 public class UI_Popup : UI_Base
 {
     /// <summary>
-    /// ÀÚ½Ä¿¡¼­ InitÀ» ±¸ÇöÇÏ·Á°í ÇÒ ¶§, ÇØ´ç InitÀ» È£ÃâÇØÁà¾ß ÇÑ´Ù.
+    /// ìì‹ì—ì„œ Initì„ êµ¬í˜„í•˜ë ¤ê³  í•  ë•Œ, í•´ë‹¹ Initì„ í˜¸ì¶œí•´ì¤˜ì•¼ í•œë‹¤.
     /// </summary>
     public override bool Init()
     {
@@ -19,7 +19,7 @@ public class UI_Popup : UI_Base
     }
 
     /// <summary>
-    /// ÇØ´ç PopupUi¸¦ ´İ´Â´Ù.
+    /// í•´ë‹¹ PopupUië¥¼ ë‹«ëŠ”ë‹¤.
     /// </summary>
     public virtual void ClosePopupUI()
     {

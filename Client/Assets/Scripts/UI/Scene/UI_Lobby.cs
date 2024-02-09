@@ -4,14 +4,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using Fusion;
 
 public class UI_Lobby : UI_Scene
 {
-    #region UI ∏Ò∑œµÈ
+    #region UI Î™©Î°ùÎì§
     public enum Buttons
     {
         Create,
-        Enter,
+        Refresh,
         Setting,
     }
 
@@ -21,40 +22,20 @@ public class UI_Lobby : UI_Scene
 
     public enum Texts
     {
-        Message,
+        ReceivedMessage,
         FirstBtnText,
         SecondBtnText,
     }
 
     public enum GameObjects
     {
+        RoomContent,
+        SendingMessage,
     }
     #endregion
 
-    TMP_Text _message;
-    bool IsRoomCreated 
-    {
-        get
-        {
-            return GetText((int)Texts.FirstBtnText).text == "Destroy";
-        }
-        set
-        {
-            if (value == true)
-            {
-                GetText((int)Texts.FirstBtnText).text = "Destroy";
-                // GetButton((int)Buttons.Enter).GetComponent<Image>().color = new Color(200, 200, 200, 255);
-                GetButton((int)Buttons.Enter).interactable = false;
-            }
-            else
-            {
-                GetText((int)Texts.FirstBtnText).text = "Create";
-                // GetButton((int)Buttons.Enter).GetComponent<Image>().color = new Color(255, 255, 255, 255);
-                GetButton((int)Buttons.Enter).interactable = true;
-            }
-        }
-    }
-
+    TMP_InputField _input;
+    
     public override bool Init()
     {
         if (base.Init() == false)
@@ -65,23 +46,54 @@ public class UI_Lobby : UI_Scene
         Bind<TMP_Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
 
-        GetButton((int)Buttons.Create).onClick.AddListener(() => { if (IsRoomCreated) DestroyGame(); else CreateGame(); });
-        GetButton((int)Buttons.Enter).onClick.AddListener(EnterGame);
+        GetButton((int)Buttons.Create).onClick.AddListener(CreateGame);
+        GetButton((int)Buttons.Refresh).onClick.AddListener(RefreshSessionLIst);
         GetButton((int)Buttons.Setting).onClick.AddListener(GameSetting);
 
-        _message = GetText((int)Texts.Message);
+        _input = GetObject((int)GameObjects.SendingMessage).GetComponent<TMP_InputField>();
+        RefreshSessionLIst();
 
         return true;
     }
 
-    void CreateGame()
+    public void RefreshSessionLIst()
     {
-        IsRoomCreated = true;
+        foreach (Transform child in GetObject((int)GameObjects.RoomContent).transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        foreach (SessionInfo session in FusionConnection.instance.Sessions)
+        {
+            if (session.IsVisible)
+            {
+                var entry = Managers.UI.MakeSubItem<UI_SessionEntry>(GetObject((int)GameObjects.RoomContent).transform);
+                var args = new SessionEntryArgs() 
+                { 
+                    session = session
+                };
+                StartCoroutine(entry.SetInfo(this, args));
+            }
+        }
     }
 
-    void DestroyGame()
+    void Refresh()
     {
-        IsRoomCreated = false;
+        StartCoroutine(RefreshWait());
+    }
+
+    IEnumerator RefreshWait()
+    {
+        GetButton((int)Buttons.Refresh).interactable = false;
+        RefreshSessionLIst();
+        yield return new WaitForSeconds(3f);
+        GetButton((int)Buttons.Refresh).interactable = true;
+    }
+
+    void CreateGame()
+    {
+        FusionConnection.instance.CreateSession();
+        Destroy(gameObject);
     }
 
     void EnterGame()

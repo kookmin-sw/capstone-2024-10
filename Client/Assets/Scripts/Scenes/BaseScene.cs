@@ -4,14 +4,14 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// ¸ğµç ¾À¿¡ ÇÏ³ª¾¿Àº ÀÖ¾î¾ß ÇÏ´Â ¾À ½ºÅ©¸³Æ®¸¦ ¸¸µé±â À§ÇÑ »ó¼Ó ¿øÇü.
-/// ÇØ´ç Å¬·¡½º¸¦ »ó¼ÓÇØ¼­ ¸¸µç ¾À ½ºÅ©¸³Æ®´Â ¹İµå½Ã ¾À¸¶´Ù ÇÏ³ª¾¿
-/// @Scene ¿ÀºêÁ§Æ® ÆÄÀÏ¿¡ ºÙ¾î ÀÖ¾î¾ß ÇÑ´Ù.
+/// ëª¨ë“  ì”¬ì— í•˜ë‚˜ì”©ì€ ìˆì–´ì•¼ í•˜ëŠ” ì”¬ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ë§Œë“¤ê¸° ìœ„í•œ ìƒì† ì›í˜•.
+/// í•´ë‹¹ í´ë˜ìŠ¤ë¥¼ ìƒì†í•´ì„œ ë§Œë“  ì”¬ ìŠ¤í¬ë¦½íŠ¸ëŠ” ë°˜ë“œì‹œ ì”¬ë§ˆë‹¤ í•˜ë‚˜ì”©
+/// @Scene ì˜¤ë¸Œì íŠ¸ íŒŒì¼ì— ë¶™ì–´ ìˆì–´ì•¼ í•œë‹¤.
 /// </summary>
 public abstract class BaseScene : MonoBehaviour
 {
     /// <summary>
-    /// enumÀ¸·Î Á¤ÀÇµÈ ¾À Å¸ÀÔÀ» °¡Á®¿Ã ¼ö ÀÖ´Ù.
+    /// enumìœ¼ë¡œ ì •ì˜ëœ ì”¬ íƒ€ì…ì„ ê°€ì ¸ì˜¬ ìˆ˜ ìˆë‹¤.
     /// </summary>
     public Define.Scene SceneType { get; protected set; } = Define.Scene.Unknown;
 
@@ -21,9 +21,9 @@ public abstract class BaseScene : MonoBehaviour
     }
 
     /// <summary>
-    /// EventSystemÀÌ ¾øÀ¸¸é @EventSystemÀ¸·Î »ı¼ºÇÑ´Ù.
-    /// ¾ÀÀ» ±ò²ûÇÏ°Ô °ü¸®ÇÏ±â À§ÇØ¼­ ±âÁ¸ÀÇ EventSystemÀ» ÇÁ¸®ÆÕÈ­ ½ÃÄ×´Ù.
-    /// ¾À ½ºÅ©¸³Æ®¸¦ ±¸ÇöÇÒ ¶§ »õ·Î¿î InitÀ» Á¤ÀÇÇÑ´Ù¸é ÇÔ¼ö ³»ºÎ¿¡¼­ È£ÃâÇØÁà¾ß ÇÑ´Ù.
+    /// EventSystemì´ ì—†ìœ¼ë©´ @EventSystemìœ¼ë¡œ ìƒì„±í•œë‹¤.
+    /// ì”¬ì„ ê¹”ë”í•˜ê²Œ ê´€ë¦¬í•˜ê¸° ìœ„í•´ì„œ ê¸°ì¡´ì˜ EventSystemì„ í”„ë¦¬íŒ¹í™” ì‹œì¼°ë‹¤.
+    /// ì”¬ ìŠ¤í¬ë¦½íŠ¸ë¥¼ êµ¬í˜„í•  ë•Œ ìƒˆë¡œìš´ Initì„ ì •ì˜í•œë‹¤ë©´ í•¨ìˆ˜ ë‚´ë¶€ì—ì„œ í˜¸ì¶œí•´ì¤˜ì•¼ í•œë‹¤.
     /// </summary>
     protected virtual void init()
     {
@@ -33,7 +33,7 @@ public abstract class BaseScene : MonoBehaviour
     }
 
     /// <summary>
-    /// °¢ ¾À ½ºÅ©¸³Æ®°¡ ±¸ÇöÇØ¾ß ÇÒ ÇÔ¼ö
+    /// ê° ì”¬ ìŠ¤í¬ë¦½íŠ¸ê°€ êµ¬í˜„í•´ì•¼ í•  í•¨ìˆ˜
     /// </summary>
     public abstract void Clear();
 }

@@ -6,52 +6,52 @@ using UnityEngine;
 public class CameraFollow : MonoBehaviour
 {
 
-    public Transform player; // ÇÃ·¹ÀÌ¾îÀÇ TransformÀ» ÀúÀåÇÒ º¯¼ö
-    public float rotationSpeed = 1.0f; // Ä«¸Ş¶ó È¸Àü ¼Óµµ
-    private float currentAngle = 180f; // ÇöÀç °¢µµ
+    public Transform player; // í”Œë ˆì´ì–´ì˜ Transformì„ ì €ì¥í•  ë³€ìˆ˜
+    public float rotationSpeed = 1.0f; // ì¹´ë©”ë¼ íšŒì „ ì†ë„
+    private float currentAngle = 180f; // í˜„ì¬ ê°ë„
 
-    public float initialXRotation = 10.0f; // ÃÊ±â xÃà È¸Àü°ª
+    public float initialXRotation = 10.0f; // ì´ˆê¸° xì¶• íšŒì „ê°’
 
 
     void Start()
     {
-        // ÃÊ±â Ä«¸Ş¶ó À§Ä¡ ¼³Á¤
+        // ì´ˆê¸° ì¹´ë©”ë¼ ìœ„ì¹˜ ì„¤ì •
         UpdateCameraPosition();
     }
     void Update()
     {
-        // ¸¶¿ì½º ÀÔ·ÂÀ» ¹Ş¾Æ¿Í È¸Àü °¢µµ °è»ê
+        // ë§ˆìš°ìŠ¤ ì…ë ¥ì„ ë°›ì•„ì™€ íšŒì „ ê°ë„ ê³„ì‚°
         float mouseX = Input.GetAxis("Mouse X");
         currentAngle += mouseX * rotationSpeed;
 
-        // °¢µµ¸¦ 0ºÎÅÍ 360µµ »çÀÌ·Î À¯Áö
+        // ê°ë„ë¥¼ 0ë¶€í„° 360ë„ ì‚¬ì´ë¡œ ìœ ì§€
         currentAngle = Mathf.Repeat(currentAngle, 360f);
 
-        // Ä«¸Ş¶ó À§Ä¡ °»½Å
+        // ì¹´ë©”ë¼ ìœ„ì¹˜ ê°±ì‹ 
         UpdateCameraPosition();
 
     }
 
     void UpdateCameraPosition()
     {
-        // ¿øÇü ±Ëµµ »óÀÇ À§Ä¡ °è»ê
+        // ì›í˜• ê¶¤ë„ ìƒì˜ ìœ„ì¹˜ ê³„ì‚°
         float radianAngle = Mathf.Deg2Rad * currentAngle;
-        float distance = 2.5f; // ¿øÀÇ ¹İÁö¸§ ¼³Á¤ (Á¶Àı °¡´É)
+        float distance = 2.5f; // ì›ì˜ ë°˜ì§€ë¦„ ì„¤ì • (ì¡°ì ˆ ê°€ëŠ¥)
         Vector3 cameraPosition = new Vector3(Mathf.Sin(radianAngle) * distance, 1.7f, Mathf.Cos(radianAngle) * distance);
 
-        // ÇÃ·¹ÀÌ¾î¸¦ Áß½ÉÀ¸·Î ÇÏ´Â ¿øÇü ±Ëµµ¿¡ µû¶ó Ä«¸Ş¶ó ÀÌµ¿
+        // í”Œë ˆì´ì–´ë¥¼ ì¤‘ì‹¬ìœ¼ë¡œ í•˜ëŠ” ì›í˜• ê¶¤ë„ì— ë”°ë¼ ì¹´ë©”ë¼ ì´ë™
         transform.position = player.position + cameraPosition;
 
-        // ÇÃ·¹ÀÌ¾î¸¦ ¹Ù¶óº¸´Â ¹æÇâ º¤ÅÍ ¼³Á¤
+        // í”Œë ˆì´ì–´ë¥¼ ë°”ë¼ë³´ëŠ” ë°©í–¥ ë²¡í„° ì„¤ì •
         Vector3 lookDirection = (player.position + Vector3.up * 1.7f) - transform.position;
 
-        // ¹æÇâ º¤ÅÍ¸¦ È¸Àü °¢µµ·Î º¯È¯
+        // ë°©í–¥ ë²¡í„°ë¥¼ íšŒì „ ê°ë„ë¡œ ë³€í™˜
         Quaternion rotation = Quaternion.LookRotation(lookDirection);
 
-        // ÃÊ±â xÃà È¸Àü°ª Àû¿ë
+        // ì´ˆê¸° xì¶• íšŒì „ê°’ ì ìš©
         rotation *= Quaternion.Euler(initialXRotation, 0, 0);
 
-        // Ä«¸Ş¶ó È¸Àü Àû¿ë
+        // ì¹´ë©”ë¼ íšŒì „ ì ìš©
         transform.rotation = rotation;
     }
 

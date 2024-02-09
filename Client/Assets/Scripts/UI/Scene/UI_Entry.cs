@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UI_Entry : UI_Base
 {
-    #region UI ¸ñ·Ïµé
+    #region UI ëª©ë¡ë“¤
     public enum Buttons
     {
         Submit,

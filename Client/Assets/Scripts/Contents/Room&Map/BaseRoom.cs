@@ -5,12 +5,12 @@ using UnityEngine;
 [SelectionBase]
 public class BaseRoom : MonoBehaviour
 {
-    //ÀÌÇÏ ³»¿ë ¿ÀºêÁ§Æ®µéÀº ÇÁ¸®Æé ³»ºÎÀÇ ÀÎ½ºÆåÅÍ¿¡¼­ Á÷Á¢ ¹èÁ¤
+    //ì´í•˜ ë‚´ìš© ì˜¤ë¸Œì íŠ¸ë“¤ì€ í”„ë¦¬í© ë‚´ë¶€ì˜ ì¸ìŠ¤í™í„°ì—ì„œ ì§ì ‘ ë°°ì •
     public GameObject itsLight;
 
     private RoomLight roomLight;
 
-    //Àü·Â »óÅÂ 
+    //ì „ë ¥ ìƒíƒœ 
     [HideInInspector]
     public bool isLightPower;
 

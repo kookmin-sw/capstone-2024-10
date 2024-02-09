@@ -5,31 +5,31 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// ÀÚÁÖ »ç¿ëµÇ´Â º¹ÀâÇÑ ÀÎÇ²À» ÀÌº¥Æ® ÇÚµé·¯ ¹æ½ÄÀ¸·Î È£ÃâÇÏ°Ô ¸¸µç ¸Å´ÏÀú
+/// ìžì£¼ ì‚¬ìš©ë˜ëŠ” ë³µìž¡í•œ ì¸í’‹ì„ ì´ë²¤íŠ¸ í•¸ë“¤ëŸ¬ ë°©ì‹ìœ¼ë¡œ í˜¸ì¶œí•˜ê²Œ ë§Œë“  ë§¤ë‹ˆì €
 /// </summary>
 public class InputManager
 {
     /// <summary>
-    /// Å°º¸µå¿¡ ÀÌº¥Æ®°¡ µé¾î¿ÔÀ» ¶§, ¾î¶² µ¿ÀÛÀ» ÃëÇÒÁö ÇÔ¼ö¸¦ µî·ÏÇÑ´Ù.
+    /// í‚¤ë³´ë“œì— ì´ë²¤íŠ¸ê°€ ë“¤ì–´ì™”ì„ ë•Œ, ì–´ë–¤ ë™ìž‘ì„ ì·¨í• ì§€ í•¨ìˆ˜ë¥¼ ë“±ë¡í•œë‹¤.
     /// </summary>
     public Action KeyAction = null;
     /// <summary>
-    /// ¸¶¿ì½º¿¡ ÀÌº¥Æ®°¡ µé¾î¿ÔÀ» ¶§, ¾î¶² µ¿ÀÛÀ» ÃëÇÒÁö ÇÔ¼ö¸¦ µî·ÏÇÑ´Ù.
+    /// ë§ˆìš°ìŠ¤ì— ì´ë²¤íŠ¸ê°€ ë“¤ì–´ì™”ì„ ë•Œ, ì–´ë–¤ ë™ìž‘ì„ ì·¨í• ì§€ í•¨ìˆ˜ë¥¼ ë“±ë¡í•œë‹¤.
     /// </summary>
     public Action<Define.MouseEvent> MouseAction = null;
 
     /// <summary>
-    /// ³»ºÎ¿¡¼­ »óÅÂ¸¦ ÀúÀåÇÏ±â À§ÇØ¼­ ¸¸µç º¯¼ö ¿ÜºÎ¿¡¼­ ¼öÁ¤ÇÏ¸é ¾È µÈ´Ù.
+    /// ë‚´ë¶€ì—ì„œ ìƒíƒœë¥¼ ì €ìž¥í•˜ê¸° ìœ„í•´ì„œ ë§Œë“  ë³€ìˆ˜ ì™¸ë¶€ì—ì„œ ìˆ˜ì •í•˜ë©´ ì•ˆ ëœë‹¤.
     /// </summary>
     bool _pressed = false;
     /// <summary>
-    /// ³»ºÎ¿¡¼­ »óÅÂ¸¦ ÀúÀåÇÏ±â À§ÇØ¼­ ¸¸µç º¯¼ö ¿ÜºÎ¿¡¼­ ¼öÁ¤ÇÏ¸é ¾È µÈ´Ù.
+    /// ë‚´ë¶€ì—ì„œ ìƒíƒœë¥¼ ì €ìž¥í•˜ê¸° ìœ„í•´ì„œ ë§Œë“  ë³€ìˆ˜ ì™¸ë¶€ì—ì„œ ìˆ˜ì •í•˜ë©´ ì•ˆ ëœë‹¤.
     /// </summary>
     float _pressedTime = 0;
     
     /// <summary>
-    /// ÁöÁ¤µÈ ·ÎÁ÷À» ¼øÈ¸ÇÏ¸é¼­ °¢°¢ÀÇ ÀÌº¥Æ®¿¡ ¾Ë¸ÂÀº ÇÔ¼öµéÀ» ºÎ¸¥´Ù.
-    /// ¸Å´ÏÀú°¡ »ç¿ëÇÏ´Â ÇÔ¼ö·Î ÀÏ¹Ý »ç¿ëÀÚ ½ºÅ©¸³Æ®¿¡¼­ »ç¿ëÇÏ¸é ¾È µÈ´Ù.
+    /// ì§€ì •ëœ ë¡œì§ì„ ìˆœíšŒí•˜ë©´ì„œ ê°ê°ì˜ ì´ë²¤íŠ¸ì— ì•Œë§žì€ í•¨ìˆ˜ë“¤ì„ ë¶€ë¥¸ë‹¤.
+    /// ë§¤ë‹ˆì €ê°€ ì‚¬ìš©í•˜ëŠ” í•¨ìˆ˜ë¡œ ì¼ë°˜ ì‚¬ìš©ìž ìŠ¤í¬ë¦½íŠ¸ì—ì„œ ì‚¬ìš©í•˜ë©´ ì•ˆ ëœë‹¤.
     /// </summary>
     public void OnUpdate()
     {
@@ -66,7 +66,7 @@ public class InputManager
     }
 
     /// <summary>
-    /// È­¸éÀÇ ÃÊ±âÈ­°¡ ÀÏ¾î³¯ ¶§ µ¥ÀÌÅÍ¸¦ ÃÊ±âÈ­ÇÏ´Â ÇÔ¼ö
+    /// í™”ë©´ì˜ ì´ˆê¸°í™”ê°€ ì¼ì–´ë‚  ë•Œ ë°ì´í„°ë¥¼ ì´ˆê¸°í™”í•˜ëŠ” í•¨ìˆ˜
     /// </summary>
     public void Clear()
     {

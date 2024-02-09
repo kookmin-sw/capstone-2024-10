@@ -7,10 +7,10 @@ namespace Data
 {
     #region Stat
     /// <summary>
-    /// ¿¹½Ã·Î ¸¸µç Stat µ¥ÀÌÅÍ
-    /// ÇØ´ç Çü½ÄÀ» Âü°íÇØ µ¥ÀÌÅÍ ³×ÀÓ½ºÆäÀÌ½º ¾È¿¡¼­ regionÀ» ³ª´² ±¸ÇöÇÏ¸é µÈ´Ù.
-    /// json µ¥ÀÌÅÍ Çü½Ä°ú Å¬·¡½ºÀÇ º¯¼ö ÀÌ¸§ÀÌ ÀÏÄ¡ÇØ¾ß ÇÑ´Ù´Â °ÍÀ» ÁÖÀÇÇØ¾ß ÇÑ´Ù.
-    /// µ¥ÀÌÅÍ´Â Resource/Data/ Æú´õ¿¡ ÀúÀåµÇ¾î ÀÖ´Ù.
+    /// ì˜ˆì‹œë¡œ ë§Œë“  Stat ë°ì´í„°
+    /// í•´ë‹¹ í˜•ì‹ì„ ì°¸ê³ í•´ ë°ì´í„° ë„¤ì„ìŠ¤í˜ì´ìŠ¤ ì•ˆì—ì„œ regionì„ ë‚˜ëˆ  êµ¬í˜„í•˜ë©´ ëœë‹¤.
+    /// json ë°ì´í„° í˜•ì‹ê³¼ í´ë˜ìŠ¤ì˜ ë³€ìˆ˜ ì´ë¦„ì´ ì¼ì¹˜í•´ì•¼ í•œë‹¤ëŠ” ê²ƒì„ ì£¼ì˜í•´ì•¼ í•œë‹¤.
+    /// ë°ì´í„°ëŠ” Resource/Data/ í´ë”ì— ì €ì¥ë˜ì–´ ìˆë‹¤.
     /// </summary>
     [Serializable]
     public class Stat
@@ -35,10 +35,10 @@ namespace Data
     #endregion
     #region Fish
     /// <summary>
-    /// ¿¹½Ã µ¥ÀÌÅÍ
-    /// ÇØ´ç Çü½ÄÀ» Âü°íÇØ µ¥ÀÌÅÍ ³×ÀÓ½ºÆäÀÌ½º ¾È¿¡¼­ regionÀ» ³ª´² ±¸ÇöÇÏ¸é µÈ´Ù.
-    /// json µ¥ÀÌÅÍ Çü½Ä°ú Å¬·¡½ºÀÇ º¯¼ö ÀÌ¸§ÀÌ ÀÏÄ¡ÇØ¾ß ÇÑ´Ù´Â °ÍÀ» ÁÖÀÇÇØ¾ß ÇÑ´Ù.
-    /// µ¥ÀÌÅÍ´Â Resource/Data/ Æú´õ¿¡ ÀúÀåµÇ¾î ÀÖ´Ù.
+    /// ì˜ˆì‹œ ë°ì´í„°
+    /// í•´ë‹¹ í˜•ì‹ì„ ì°¸ê³ í•´ ë°ì´í„° ë„¤ì„ìŠ¤í˜ì´ìŠ¤ ì•ˆì—ì„œ regionì„ ë‚˜ëˆ  êµ¬í˜„í•˜ë©´ ëœë‹¤.
+    /// json ë°ì´í„° í˜•ì‹ê³¼ í´ë˜ìŠ¤ì˜ ë³€ìˆ˜ ì´ë¦„ì´ ì¼ì¹˜í•´ì•¼ í•œë‹¤ëŠ” ê²ƒì„ ì£¼ì˜í•´ì•¼ í•œë‹¤.
+    /// ë°ì´í„°ëŠ” Resource/Data/ í´ë”ì— ì €ì¥ë˜ì–´ ìˆë‹¤.
     /// </summary>
     [Serializable]
     public class Fish
@@ -68,6 +68,28 @@ namespace Data
             return dict;
         }
     }
+    #endregion
+    #region Setting
+    public class Setting
+    {
+        public string name;
+        public int value;
+    }
+
+    [Serializable]
+    public class SettingData : ILoader<string, Setting>
+    {
+        public List<Setting> settings = new List<Setting>();
+
+        public Dictionary<string, Setting> MakeDict()
+        {
+            Dictionary<string, Setting> dict = new Dictionary<string, Setting>();
+            foreach (Setting setting in settings)
+                dict.Add(setting.name, setting);
+            return dict;
+        }
+    }
+
     #endregion
 }
 

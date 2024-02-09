@@ -5,26 +5,26 @@ using UnityEditor;
 using UnityEngine;
 
 /// <summary>
-/// UI ¸Å´ÏÀú´Â UI¸¦ ¾î¶»°Ô °ü¸®ÇÒÁö¿¡ ´ëÇÑ Á¤Ã¥À» °¡Áö°í ÀÖ´Â ¸Å´ÏÀú
+/// UI ë§¤ë‹ˆì €ëŠ” UIë¥¼ ì–´ë–»ê²Œ ê´€ë¦¬í• ì§€ì— ëŒ€í•œ ì •ì±…ì„ ê°€ì§€ê³  ìžˆëŠ” ë§¤ë‹ˆì €
 /// </summary>
 public class UIManager
 {
     /// <summary>
-    /// UI Canvas°¡ ¹èÄ¡µÇ´Â ¼ø¼­
+    /// UI Canvasê°€ ë°°ì¹˜ë˜ëŠ” ìˆœì„œ
     /// </summary>
     int _order = 10;
 
     /// <summary>
-    /// UI_PopupÀ» °ü¸®ÇÏ´Â ½ºÅÃ
+    /// UI_Popupì„ ê´€ë¦¬í•˜ëŠ” ìŠ¤íƒ
     /// </summary>
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     /// <summary>
-    /// ¾À UI¸¦ ´ã°í ÀÖ´Â ÇÁ·ÎÆÛÆ¼, Á÷Á¢ ¼öÁ¤ ºÒ°¡´ÉÇÏ´Ù.
+    /// ì”¬ UIë¥¼ ë‹´ê³  ìžˆëŠ” í”„ë¡œí¼í‹°, ì§ì ‘ ìˆ˜ì • ë¶ˆê°€ëŠ¥í•˜ë‹¤.
     /// </summary>
     public UI_Scene SceneUI { get; private set; }
 
     /// <summary>
-    /// ¸ðµç UIÀÇ ºÎ¸ð°¡ µÇ´Â °ÔÀÓ ¿ÀºêÁ§Æ®
+    /// ëª¨ë“  UIì˜ ë¶€ëª¨ê°€ ë˜ëŠ” ê²Œìž„ ì˜¤ë¸Œì íŠ¸
     /// </summary>
     public GameObject Root
     {
@@ -38,10 +38,10 @@ public class UIManager
     }
 
     /// <summary>
-    /// UI ÇÁ¸®ÆÕ¿¡ Äµ¹ö½º¸¦ ´Þ¾ÆÁÖ°í ÃÊ±â ¼³Á¤À» ÇØÁØ´Ù. 
+    /// UI í”„ë¦¬íŒ¹ì— ìº”ë²„ìŠ¤ë¥¼ ë‹¬ì•„ì£¼ê³  ì´ˆê¸° ì„¤ì •ì„ í•´ì¤€ë‹¤. 
     /// </summary>
-    /// <param name="go">UI ÇÁ¸®ÆÕ</param>
-    /// <param name="sort">³»ºÎ ¼ø¼­¿¡ ¿µÇâÀ» ¹Þ´ÂÁö ¿©ºÎ</param>
+    /// <param name="go">UI í”„ë¦¬íŒ¹</param>
+    /// <param name="sort">ë‚´ë¶€ ìˆœì„œì— ì˜í–¥ì„ ë°›ëŠ”ì§€ ì—¬ë¶€</param>
     public void SetCanvas(GameObject go, bool sort = true)
     {
         Canvas canvas = Util.GetOrAddComponent<Canvas>(go);
@@ -60,12 +60,12 @@ public class UIManager
     }
 
     /// <summary>
-    /// WorldSpace Æú´õ¿¡ µé¾î°£ UI¸¦ È£ÃâÇÏ´Âµ¥ »ç¿ëÇÏ´Â ÇÔ¼ö
-    /// WorldSpace´Â ¿ùµå¿¡ ºÎ¼ÓµÈ UI¸¦ ÀÇ¹ÌÇÑ´Ù.
+    /// WorldSpace í´ë”ì— ë“¤ì–´ê°„ UIë¥¼ í˜¸ì¶œí•˜ëŠ”ë° ì‚¬ìš©í•˜ëŠ” í•¨ìˆ˜
+    /// WorldSpaceëŠ” ì›”ë“œì— ë¶€ì†ëœ UIë¥¼ ì˜ë¯¸í•œë‹¤.
     /// </summary>
-    /// <typeparam name="T">UI_Base¸¦ »ó¼ÓÇÑ »ç¿ëÀÚ Á¤ÀÇ UI</typeparam>
-    /// <param name="parent">¾î´À UI¿¡ ºÙÀÏÁö</param>
-    /// <param name="name">ÀÌ¸§À» ÁöÁ¤¾ÈÇÏ¸é Å¬·¡½º ÀÌ¸§À¸·Î ÆÄÀÏÀ» ºÒ·¯¿Â´Ù.</param>
+    /// <typeparam name="T">UI_Baseë¥¼ ìƒì†í•œ ì‚¬ìš©ìž ì •ì˜ UI</typeparam>
+    /// <param name="parent">ì–´ëŠ UIì— ë¶™ì¼ì§€</param>
+    /// <param name="name">ì´ë¦„ì„ ì§€ì •ì•ˆí•˜ë©´ í´ëž˜ìŠ¤ ì´ë¦„ìœ¼ë¡œ íŒŒì¼ì„ ë¶ˆëŸ¬ì˜¨ë‹¤.</param>
     public T MakeWorldSpaceUI<T>(Transform parent = null, string name = null) where T : UI_Base
     {
         if (string.IsNullOrEmpty(name))
@@ -84,12 +84,12 @@ public class UIManager
     }
 
     /// <summary>
-    /// SubItem Æú´õ¿¡ µé¾î°£ UI¸¦ È£ÃâÇÏ´Âµ¥ »ç¿ëÇÏ´Â ÇÔ¼ö
-    /// SubItemÀº ÀÎº¥Åä¸®¿¡ µé¾î°¡´Â ¾ÆÀÌÅÛÀ» ÀÇ¹ÌÇÑ´Ù.
+    /// SubItem í´ë”ì— ë“¤ì–´ê°„ UIë¥¼ í˜¸ì¶œí•˜ëŠ”ë° ì‚¬ìš©í•˜ëŠ” í•¨ìˆ˜
+    /// SubItemì€ ì¸ë²¤í† ë¦¬ì— ë“¤ì–´ê°€ëŠ” ì•„ì´í…œì„ ì˜ë¯¸í•œë‹¤.
     /// </summary>
-    /// <typeparam name="T">UI_Base¸¦ »ó¼ÓÇÑ »ç¿ëÀÚ Á¤ÀÇ UI</typeparam>
-    /// <param name="parent">¾î´À UI¿¡ ºÙÀÏÁö</param>
-    /// <param name="name">ÀÌ¸§À» ÁöÁ¤¾ÈÇÏ¸é Å¬·¡½º ÀÌ¸§À¸·Î ÆÄÀÏÀ» ºÒ·¯¿Â´Ù.</param>
+    /// <typeparam name="T">UI_Baseë¥¼ ìƒì†í•œ ì‚¬ìš©ìž ì •ì˜ UI</typeparam>
+    /// <param name="parent">ì–´ëŠ UIì— ë¶™ì¼ì§€</param>
+    /// <param name="name">ì´ë¦„ì„ ì§€ì •ì•ˆí•˜ë©´ í´ëž˜ìŠ¤ ì´ë¦„ìœ¼ë¡œ íŒŒì¼ì„ ë¶ˆëŸ¬ì˜¨ë‹¤.</param>
     public T MakeSubItem<T>(Transform parent = null, string name = null) where T : UI_Base
     {
         if (string.IsNullOrEmpty(name))
@@ -104,11 +104,11 @@ public class UIManager
     }
 
     /// <summary>
-    /// SceneUI¸¦ È£ÃâÇÏ´Âµ¥ »ç¿ëÇÏ´Â ÇÔ¼ö
-    /// SceneUI´Â °ÔÀÓÀÌ ÄÑÁöÀÚ¸¶ÀÚ º¸ÀÌ´Â ¸ÞÀÎÈ­¸éÀÌ´Ù.
+    /// SceneUIë¥¼ í˜¸ì¶œí•˜ëŠ”ë° ì‚¬ìš©í•˜ëŠ” í•¨ìˆ˜
+    /// SceneUIëŠ” ê²Œìž„ì´ ì¼œì§€ìžë§ˆìž ë³´ì´ëŠ” ë©”ì¸í™”ë©´ì´ë‹¤.
     /// </summary>
-    /// <typeparam name="T">UI_SceneÀ» »ó¼ÓÇÑ »ç¿ëÀÚ Á¤ÀÇ UI</typeparam>
-    /// <param name="name">ÀÌ¸§À» ÁöÁ¤¾ÈÇÏ¸é Å¬·¡½º ÀÌ¸§À¸·Î ÆÄÀÏÀ» ºÒ·¯¿Â´Ù.</param>
+    /// <typeparam name="T">UI_Sceneì„ ìƒì†í•œ ì‚¬ìš©ìž ì •ì˜ UI</typeparam>
+    /// <param name="name">ì´ë¦„ì„ ì§€ì •ì•ˆí•˜ë©´ í´ëž˜ìŠ¤ ì´ë¦„ìœ¼ë¡œ íŒŒì¼ì„ ë¶ˆëŸ¬ì˜¨ë‹¤.</param>
     public T ShowSceneUI<T>(string name = null) where T : UI_Scene
     {
         if (string.IsNullOrEmpty(name))
@@ -124,13 +124,13 @@ public class UIManager
     }
 
     /// <summary>
-    /// PopupUI¸¦ È£ÃâÇÏ´Âµ¥ »ç¿ëÇÏ´Â ÇÔ¼ö
-    /// PopupUI´Â UI À§¿¡ ¿¬¼ÓÀûÀ¸·Î ½×ÀÌ´Â ÇüÅÂÀÇ UI¸¦ ÀÇ¹ÌÇÑ´Ù.
-    /// parent¿Í »ó°ü¾øÀÌ PopupUI´Â ÇÏ³ªÀÇ ¿¬¼ÓÀûÀÎ ½ºÅÃ À§¿¡ Á¸ÀçÇÑ´Ù.
+    /// PopupUIë¥¼ í˜¸ì¶œí•˜ëŠ”ë° ì‚¬ìš©í•˜ëŠ” í•¨ìˆ˜
+    /// PopupUIëŠ” UI ìœ„ì— ì—°ì†ì ìœ¼ë¡œ ìŒ“ì´ëŠ” í˜•íƒœì˜ UIë¥¼ ì˜ë¯¸í•œë‹¤.
+    /// parentì™€ ìƒê´€ì—†ì´ PopupUIëŠ” í•˜ë‚˜ì˜ ì—°ì†ì ì¸ ìŠ¤íƒ ìœ„ì— ì¡´ìž¬í•œë‹¤.
     /// </summary>
-    /// <typeparam name="T">UI_PopupÀ» »ó¼ÓÇÑ »ç¿ëÀÚ Á¤ÀÇ UI</typeparam>
-    /// <param name="parent">¾î´À UI¿¡ ºÙÀÏÁö</param>
-    /// <param name="name">ÀÌ¸§À» ÁöÁ¤¾ÈÇÏ¸é Å¬·¡½º ÀÌ¸§À¸·Î ÆÄÀÏÀ» ºÒ·¯¿Â´Ù.</param>
+    /// <typeparam name="T">UI_Popupì„ ìƒì†í•œ ì‚¬ìš©ìž ì •ì˜ UI</typeparam>
+    /// <param name="parent">ì–´ëŠ UIì— ë¶™ì¼ì§€</param>
+    /// <param name="name">ì´ë¦„ì„ ì§€ì •ì•ˆí•˜ë©´ í´ëž˜ìŠ¤ ì´ë¦„ìœ¼ë¡œ íŒŒì¼ì„ ë¶ˆëŸ¬ì˜¨ë‹¤.</param>
     public T ShowPopupUI<T>(string name = null, Transform parent = null) where T : UI_Popup
     {
         if (string.IsNullOrEmpty(name))
@@ -155,19 +155,19 @@ public class UIManager
     }
 
     /// <summary>
-    /// UI_PopupÀ» »ó¼ÓÇÑ PopupUI¸¦ Á¦ÀÏ À§¿¡ ÀÖ´Â °ÍºÎÅÍ Â÷·Ê´ë·Î °Ë»öÇØ¼­ ÀÏÄ¡ÇÏ´Â °ÍÀ» Ã£´Â´Ù.
+    /// UI_Popupì„ ìƒì†í•œ PopupUIë¥¼ ì œì¼ ìœ„ì— ìžˆëŠ” ê²ƒë¶€í„° ì°¨ë¡€ëŒ€ë¡œ ê²€ìƒ‰í•´ì„œ ì¼ì¹˜í•˜ëŠ” ê²ƒì„ ì°¾ëŠ”ë‹¤.
     /// </summary>
-    /// <typeparam name="T">Ã£À» »ç¿ëÀÚ Á¤ÀÇ PopupUI Å¸ÀÔ</typeparam>
+    /// <typeparam name="T">ì°¾ì„ ì‚¬ìš©ìž ì •ì˜ PopupUI íƒ€ìž…</typeparam>
     public T FindPopup<T>() where T : UI_Popup
     {
         return _popupStack.Where(x => x.GetType() == typeof(T)).FirstOrDefault() as T;
     }
 
     /// <summary>
-    /// PopupUI ½ºÅÃÀÇ °¡Àå À§¿¡ ¿øÇÏ´Â PopupUI°¡ ÀÖ´ÂÁö¸¦ È®ÀÎÇØº»´Ù.
-    /// ¿øÇÏ´Â PopupUI°¡ ¾Æ´Ï¸é nullÀ» ¹ÝÈ¯ÇÑ´Ù.
+    /// PopupUI ìŠ¤íƒì˜ ê°€ìž¥ ìœ„ì— ì›í•˜ëŠ” PopupUIê°€ ìžˆëŠ”ì§€ë¥¼ í™•ì¸í•´ë³¸ë‹¤.
+    /// ì›í•˜ëŠ” PopupUIê°€ ì•„ë‹ˆë©´ nullì„ ë°˜í™˜í•œë‹¤.
     /// </summary>
-    /// <typeparam name="T">¿øÇÏ´Â PopupUI</typeparam>
+    /// <typeparam name="T">ì›í•˜ëŠ” PopupUI</typeparam>
     public T PeekPopupUI<T>() where T : UI_Popup
     {
         if (_popupStack.Count == 0)
@@ -177,9 +177,9 @@ public class UIManager
     }
 
     /// <summary>
-    /// PopupUI ½ºÅÃÀÇ °¡Àå À§¿¡ ÁöÁ¤ÇÑ PopupUI°¡ ÀÖÀ¸¸é ±× ÆË¾÷À» ´Ý´Â´Ù.
+    /// PopupUI ìŠ¤íƒì˜ ê°€ìž¥ ìœ„ì— ì§€ì •í•œ PopupUIê°€ ìžˆìœ¼ë©´ ê·¸ íŒì—…ì„ ë‹«ëŠ”ë‹¤.
     /// </summary>
-    /// <param name="popup">¿øÇÏ´Â PopupUI</param>
+    /// <param name="popup">ì›í•˜ëŠ” PopupUI</param>
     public void ClosePopupUI(UI_Popup popup)
     {
         if (_popupStack.Count == 0)
@@ -195,7 +195,7 @@ public class UIManager
     }
 
     /// <summary>
-    /// °¡Àå À§¿¡ ÀÖ´Â ÆË¾÷ UI¸¦ ´Ý´Â´Ù.
+    /// ê°€ìž¥ ìœ„ì— ìžˆëŠ” íŒì—… UIë¥¼ ë‹«ëŠ”ë‹¤.
     /// </summary>
     public void ClosePopupUI()
     {
@@ -209,7 +209,7 @@ public class UIManager
     }
 
     /// <summary>
-    /// ¸ðµç ÆË¾÷ UI¸¦ ´Ý´Â´Ù.
+    /// ëª¨ë“  íŒì—… UIë¥¼ ë‹«ëŠ”ë‹¤.
     /// </summary>
     public void CloseAllPopupUI()
     {
@@ -218,7 +218,7 @@ public class UIManager
     }
 
     /// <summary>
-    /// ¸ðµç ÆË¾÷ UI¿Í ¾À Ui¸¦ ´Ý´Â ÃÊ±âÈ­¸¦ ¼öÇàÇÑ´Ù.
+    /// ëª¨ë“  íŒì—… UIì™€ ì”¬ Uië¥¼ ë‹«ëŠ” ì´ˆê¸°í™”ë¥¼ ìˆ˜í–‰í•œë‹¤.
     /// </summary>
     public void Clear()
     {

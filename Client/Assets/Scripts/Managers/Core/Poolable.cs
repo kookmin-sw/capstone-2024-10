@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ¿ÀºêÁ§Æ® Ç®¸µÀ» Àû¿ëÇÏ°í ½ÍÀº ¹°Ã¼¿¡ ÇØ´ç ½ºÅ©¸³Æ®¸¦ ºÙÀÌ°í ResourceManager¸¦ ÅëÇØ »ç¿ëÇÏ¸é µÈ´Ù.
+/// ì˜¤ë¸Œì íŠ¸ í’€ë§ì„ ì ìš©í•˜ê³  ì‹¶ì€ ë¬¼ì²´ì— í•´ë‹¹ ìŠ¤í¬ë¦½íŠ¸ë¥¼ ë¶™ì´ê³  ResourceManagerë¥¼ í†µí•´ ì‚¬ìš©í•˜ë©´ ëœë‹¤.
 /// </summary>
 public class Poolable : MonoBehaviour
 {

@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
-/// ÇØ´ç UI ³»¿ëÀº ¸ÊÀÌ ¹Ù²ð¶§¸¶´Ù ÀÎ½ºÆåÅÍ¿¡¼­ ¼öµ¿À¸·Î ¹Ù²ãÁÖ¾î¾ß ÇÑ´Ù.
+/// í•´ë‹¹ UI ë‚´ìš©ì€ ë§µì´ ë°”ë€”ë•Œë§ˆë‹¤ ì¸ìŠ¤íŽ™í„°ì—ì„œ ìˆ˜ë™ìœ¼ë¡œ ë°”ê¿”ì£¼ì–´ì•¼ í•œë‹¤.
 /// </summary>
 public class UI_ElectricPanel : UI_Popup
 {

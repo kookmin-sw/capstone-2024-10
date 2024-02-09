@@ -9,7 +9,7 @@ public class ElectricsystemButton : MonoBehaviour
         room,
         door,
     }
-    public ButtonType buttonType;  //ÀÎ½ºÆåÅÍÃ¢¿¡¼­ Á÷Á¢ ÁöÁ¤ÇØÁà¾ß ÇÔ
+    public ButtonType buttonType;  //ì¸ìŠ¤í™í„°ì°½ì—ì„œ ì§ì ‘ ì§€ì •í•´ì¤˜ì•¼ í•¨
     
     [HideInInspector]
     public BaseRoom inChargeRoom;
@@ -17,7 +17,7 @@ public class ElectricsystemButton : MonoBehaviour
     public BaseDoor inChargeDoor;
 
     /// <summary>
-    /// ¹İµå½Ã ¿¬°áµÇ¾îÀÖ´Â ·ë ¿ÀºêÁ§Æ®ÀÇ ÀÎ½ºÆåÅÍ »ó ÀÌ¸§°ú Á¤È®È÷ ÀÏÄ¡ÇØ¾ß ÇÔ
+    /// ë°˜ë“œì‹œ ì—°ê²°ë˜ì–´ìˆëŠ” ë£¸ ì˜¤ë¸Œì íŠ¸ì˜ ì¸ìŠ¤í™í„° ìƒ ì´ë¦„ê³¼ ì •í™•íˆ ì¼ì¹˜í•´ì•¼ í•¨
     /// </summary>
     public string segmentName;
 

@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//¿¡µğÅÍ¿¡¼­ º®ÀÌ ¼Ò¼ÓµÇ¾îÀÖ´Â ºÎ¸ğ¿ÀºêÁ§Æ®´Â ¿ÀÁ÷ °¡½Ã¼º¸¸À» À§ÇÑ °ÍÀÌ´Ù.
+//ì—ë””í„°ì—ì„œ ë²½ì´ ì†Œì†ë˜ì–´ìˆëŠ” ë¶€ëª¨ì˜¤ë¸Œì íŠ¸ëŠ” ì˜¤ì§ ê°€ì‹œì„±ë§Œì„ ìœ„í•œ ê²ƒì´ë‹¤.
 [SelectionBase]
 public class BaseWall : MonoBehaviour
 {
-    //ºÎ¼­Áú ¼ö ÀÖ´Â º®Àº ¹Ù¸®ÄÉÀÌÆ®·Î ´Ù½Ã ¸·À» ¼öµµ ÀÖÀ½
+    //ë¶€ì„œì§ˆ ìˆ˜ ìˆëŠ” ë²½ì€ ë°”ë¦¬ì¼€ì´íŠ¸ë¡œ ë‹¤ì‹œ ë§‰ì„ ìˆ˜ë„ ìˆìŒ
     public bool isBreakable;
     public bool isOpenable;
     

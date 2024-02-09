@@ -8,7 +8,7 @@ public interface IInteractable
 }
 
 /// <summary>
-/// µ¥¹Ùµ¥½ÄÃ³·³ ÀÏÁ¤ ½Ã°£ ÀÌ»ó ½Ã°£À» ¼Ò¿äÇØ¾ß ÇÏ´Â ÀÛ¾÷Àº MonoBehaviour´ë½Å ÀÌ Å¬·¡½º¸¦ »ó¼Ó¹Ş¾Æ »ç¿ë
+/// ë°ë°”ë°ì‹ì²˜ëŸ¼ ì¼ì • ì‹œê°„ ì´ìƒ ì‹œê°„ì„ ì†Œìš”í•´ì•¼ í•˜ëŠ” ì‘ì—…ì€ MonoBehaviourëŒ€ì‹  ì´ í´ë˜ìŠ¤ë¥¼ ìƒì†ë°›ì•„ ì‚¬ìš©
 /// </summary>
 public class BaseWorking : MonoBehaviour
 {
@@ -41,7 +41,7 @@ public class BaseWorking : MonoBehaviour
     }
 
     /// <summary>
-    /// µ¥¹Ùµ¥½Ä ÀÛ¾÷ ½Ã½ºÅÛ ÇÔ¼ö (ÇÊ¿äÇÒ ¶§¸¸ È£ÃâµÊ)
+    /// ë°ë°”ë°ì‹ ì‘ì—… ì‹œìŠ¤í…œ í•¨ìˆ˜ (í•„ìš”í•  ë•Œë§Œ í˜¸ì¶œë¨)
     /// </summary>
     /// <returns></returns>
     public IEnumerator Working()

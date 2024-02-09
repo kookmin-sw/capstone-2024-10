@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// ±âÁ¸ÀÇ Load ÇÔ¼ö¿Í Instantiate ÇÔ¼ö¸¦ ¸ÅÇÎÇÑ ¸Å´ÏÀú
-/// poolable ½ºÅ©¸³Æ® ºÎÂø ¿©ºÎ¿¡ µû¶ó ¿ÀºêÁ§Æ® Ç®¸µÀ» ½Ç½ÃÇÔ
+/// ê¸°ì¡´ì˜ Load í•¨ìˆ˜ì™€ Instantiate í•¨ìˆ˜ë¥¼ ë§¤í•‘í•œ ë§¤ë‹ˆì €
+/// poolable ìŠ¤í¬ë¦½íŠ¸ ë¶€ì°© ì—¬ë¶€ì— ë”°ë¼ ì˜¤ë¸Œì íŠ¸ í’€ë§ì„ ì‹¤ì‹œí•¨
 /// </summary>
 public class ResourceManager
 {
     /// <summary>
-    /// poolable °´Ã¼¸é ¹Ì¸® ÀúÀåµÈ ¿øº» ¿ÀºêÁ§Æ®¸¦ °¡Á®¿Â´Ù.
+    /// poolable ê°ì²´ë©´ ë¯¸ë¦¬ ì €ì¥ëœ ì›ë³¸ ì˜¤ë¸Œì íŠ¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
     /// </summary>
     public T Load<T>(string path) where T : Object
     {
@@ -28,7 +28,7 @@ public class ResourceManager
     }
 
     /// <summary>
-    /// poolable °´Ã¼¸é Ç®¸µµÈ ¿ÀºêÁ§Æ®¸¦ °¡Á®¿Â´Ù.
+    /// poolable ê°ì²´ë©´ í’€ë§ëœ ì˜¤ë¸Œì íŠ¸ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
     /// </summary>
     public GameObject Instantiate(string path, Transform parent = null)
     {
@@ -48,7 +48,7 @@ public class ResourceManager
     }
 
     /// <summary>
-    /// poolable °´Ã¼¸é Ç®¸µµÈ ¿ÀºêÁ§Æ®¸¦ ´Ù½Ã Ç®·Î µÇµ¹¸°´Ù.
+    /// poolable ê°ì²´ë©´ í’€ë§ëœ ì˜¤ë¸Œì íŠ¸ë¥¼ ë‹¤ì‹œ í’€ë¡œ ë˜ëŒë¦°ë‹¤.
     /// </summary>
     public void Destroy(GameObject go)
     {

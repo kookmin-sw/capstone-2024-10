@@ -5,30 +5,30 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 /// <summary>
-/// UI_Base¿¡¼­ ÀÌº¥Æ®¸¦ µî·ÏÇÒ ¶§ »ç¿ëµÇ´Â Å¬·¡½º
-/// ÀÌº¥Æ®¸¦ ¼ö½ÅÇÏ¿© ÀÌº¥Æ®°¡ ¹ß»ıÇÒ ¶§¸¶´Ù µî·ÏµÈ ÇÔ¼ö¸¦ È£ÃâÇÑ´Ù.
+/// UI_Baseì—ì„œ ì´ë²¤íŠ¸ë¥¼ ë“±ë¡í•  ë•Œ ì‚¬ìš©ë˜ëŠ” í´ë˜ìŠ¤
+/// ì´ë²¤íŠ¸ë¥¼ ìˆ˜ì‹ í•˜ì—¬ ì´ë²¤íŠ¸ê°€ ë°œìƒí•  ë•Œë§ˆë‹¤ ë“±ë¡ëœ í•¨ìˆ˜ë¥¼ í˜¸ì¶œí•œë‹¤.
 /// </summary>
 public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler, IPointerDownHandler, IPointerUpHandler
 {
     /// <summary>
-    /// µå·¡±× ÀÌº¥Æ® ±¸µ¶
+    /// ë“œë˜ê·¸ ì´ë²¤íŠ¸ êµ¬ë…
     /// </summary>
     public Action<PointerEventData> OnDragHandler = null;
     /// <summary>
-    /// Å¬¸¯ ÀÌº¥Æ® ±¸µ¶
+    /// í´ë¦­ ì´ë²¤íŠ¸ êµ¬ë…
     /// </summary>
     public Action<PointerEventData> OnClickHandler = null;
     /// <summary>
-    /// ´­¸² ÀÌº¥Æ® ±¸µ¶
+    /// ëˆŒë¦¼ ì´ë²¤íŠ¸ êµ¬ë…
     /// </summary>
     public Action<PointerEventData> OnDownHandler = null;
     /// <summary>
-    /// ¶¼Áü ÀÌº¥Æ® ±¸µ¶
+    /// ë–¼ì§ ì´ë²¤íŠ¸ êµ¬ë…
     /// </summary>
     public Action<PointerEventData> OnUpHandler = null;
 
     /// <summary>
-    /// UI ¿ä¼Ò°¡ µå·¡±×µÉ ¶§¸¶´Ù ÀÌ ÇÔ¼ö°¡ È£ÃâµÈ´Ù.
+    /// UI ìš”ì†Œê°€ ë“œë˜ê·¸ë  ë•Œë§ˆë‹¤ ì´ í•¨ìˆ˜ê°€ í˜¸ì¶œëœë‹¤.
     /// </summary>
     public void OnDrag(PointerEventData eventData)
     {
@@ -39,7 +39,7 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
     }
 
     /// <summary>
-    /// UI ¿ä¼Ò°¡ Å¬¸¯µÉ ¶§¸¶´Ù ÀÌ ÇÔ¼ö°¡ È£ÃâµÈ´Ù.
+    /// UI ìš”ì†Œê°€ í´ë¦­ë  ë•Œë§ˆë‹¤ ì´ í•¨ìˆ˜ê°€ í˜¸ì¶œëœë‹¤.
     /// </summary>
     public void OnPointerClick(PointerEventData eventData)
     {
@@ -51,7 +51,7 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
     }
 
     /// <summary>
-    /// UI ¿ä¼Ò¸¦ ´­·¶À» ¶§ ÀÌ ÇÔ¼ö°¡ È£ÃâµÈ´Ù.
+    /// UI ìš”ì†Œë¥¼ ëˆŒë €ì„ ë•Œ ì´ í•¨ìˆ˜ê°€ í˜¸ì¶œëœë‹¤.
     /// </summary>
     public void OnPointerDown(PointerEventData eventData)
     {
@@ -61,7 +61,7 @@ public class UI_EventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler
     }
 
     /// <summary>
-    /// UI ¿ä¼Ò¿¡¼­ ¶ÃÀ» ¶§ ÀÌ ÇÔ¼ö°¡ È£ÃâµÈ´Ù.
+    /// UI ìš”ì†Œì—ì„œ ë—ì„ ë•Œ ì´ í•¨ìˆ˜ê°€ í˜¸ì¶œëœë‹¤.
     /// </summary>
     public void OnPointerUp(PointerEventData eventData)
     {

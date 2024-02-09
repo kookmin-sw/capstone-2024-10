@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -22,18 +22,14 @@ public interface ILoader<Key, Value>
 /// </summary>
 public class DataManager
 {
-    /// <summary>
-    /// 예시로 만들어 놓은 탬플릿 용 스탯 Dictionary
-    /// </summary>
-    public Dictionary<int, Data.Stat> StatDict { get; private set; } = new Dictionary<int, Data.Stat>();
-    public Dictionary<int, Data.Fish> FishDict { get; private set; } = new Dictionary<int, Data.Fish>();
+    public Dictionary<string, Data.Setting> SettingDict { get; private set; } = new Dictionary<string, Data.Setting>();
 
     /// <summary>
     /// 각 데이터 형식은 딕셔너리 형태로 초기화해주는 작업이 반드시 필요하다.
     /// </summary>
     public void init()
     {
-        FishDict = LoadJson<Data.FishData, int, Data.Fish>("FishData").MakeDict();
+        SettingDict = LoadJson<Data.SettingData, string, Data.Setting>("SettingData").MakeDict();
     }
 
     /// <summary>

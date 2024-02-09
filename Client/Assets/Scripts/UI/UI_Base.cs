@@ -7,10 +7,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
-/// ¸ğµç UIÀÇ º£ÀÌ½º°¡ µÇ´Â Å¬·¡½º
-/// ¾À UI, ÆË¾÷ UIµµ ÇØ´ç UI¸¦ »ó¼ÓÇØ¼­ ±¸ÇöµÇ¾î ÀÖ´Ù.
-/// UI ¿ä¼Ò¸¦ º¯¼ö¿¡ ¿¬°áÇÏ´Â ¿ÀºêÁ§Æ® ¹ÙÀÎµù ±â´É°ú 
-/// UI ¿ä¼Ò¸¦ ÀÔ·Â ÀÌº¥Æ®¿Í ¿¬°áÇÏ´Â ÇÔ¼ö ¹ÙÀÎµù ±â´ÉÀ» Æ÷ÇÔÇÏ°í ÀÖ´Ù.
+/// ëª¨ë“  UIì˜ ë² ì´ìŠ¤ê°€ ë˜ëŠ” í´ë˜ìŠ¤
+/// ì”¬ UI, íŒì—… UIë„ í•´ë‹¹ UIë¥¼ ìƒì†í•´ì„œ êµ¬í˜„ë˜ì–´ ìˆë‹¤.
+/// UI ìš”ì†Œë¥¼ ë³€ìˆ˜ì— ì—°ê²°í•˜ëŠ” ì˜¤ë¸Œì íŠ¸ ë°”ì¸ë”© ê¸°ëŠ¥ê³¼ 
+/// UI ìš”ì†Œë¥¼ ì…ë ¥ ì´ë²¤íŠ¸ì™€ ì—°ê²°í•˜ëŠ” í•¨ìˆ˜ ë°”ì¸ë”© ê¸°ëŠ¥ì„ í¬í•¨í•˜ê³  ìˆë‹¤.
 /// </summary>
 public abstract class UI_Base : MonoBehaviour
 {
@@ -32,10 +32,10 @@ public abstract class UI_Base : MonoBehaviour
     }
 
     /// <summary>
-    /// enum Å¸ÀÔÀÇ ÀÌ¸§µéÀ» ½ºÆ®¸µÀ¸·Î º¯È¯ÇØ UI ¿ä¼Ò¿¡ ¿¬°áÇÑ´Ù.
+    /// enum íƒ€ì…ì˜ ì´ë¦„ë“¤ì„ ìŠ¤íŠ¸ë§ìœ¼ë¡œ ë³€í™˜í•´ UI ìš”ì†Œì— ì—°ê²°í•œë‹¤.
     /// </summary>
-    /// <typeparam name="T">UI ¿ä¼Ò</typeparam>
-    /// <param name="type">enum Å¸ÀÔ</param>
+    /// <typeparam name="T">UI ìš”ì†Œ</typeparam>
+    /// <param name="type">enum íƒ€ì…</param>
     protected void Bind<T>(Type type) where T : UnityEngine.Object
     {
         string[] names = Enum.GetNames(type);
@@ -55,12 +55,12 @@ public abstract class UI_Base : MonoBehaviour
     }
 
     /// <summary>
-    /// µî·ÏµÈ enum Å¸ÀÔ Áß¿¡¼­ ÇØ´çÇÏ´Â ÀÎµ¦½º¸¦ °¡Áø UI ¿ä¼Ò¸¦ °¡Á®¿Â´Ù.
-    /// ÀÎµ¦½º´Â enum Å¸ÀÔ ¾Õ¿¡ (int)¸¦ ºÙÀÌ¸é ¾ò¾î¿Ã ¼ö ÀÖ´Ù.
-    /// GetObject, GetButton, GetText, GetImage ½Ã¸®Áî ÇÔ¼ö¸¦ »ç¿ëÇÏ´Â °É ÃßÃµÇÑ´Ù.
+    /// ë“±ë¡ëœ enum íƒ€ì… ì¤‘ì—ì„œ í•´ë‹¹í•˜ëŠ” ì¸ë±ìŠ¤ë¥¼ ê°€ì§„ UI ìš”ì†Œë¥¼ ê°€ì ¸ì˜¨ë‹¤.
+    /// ì¸ë±ìŠ¤ëŠ” enum íƒ€ì… ì•ì— (int)ë¥¼ ë¶™ì´ë©´ ì–»ì–´ì˜¬ ìˆ˜ ìˆë‹¤.
+    /// GetObject, GetButton, GetText, GetImage ì‹œë¦¬ì¦ˆ í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•˜ëŠ” ê±¸ ì¶”ì²œí•œë‹¤.
     /// </summary>
-    /// <typeparam name="T">UI ¿ä¼Ò</typeparam>
-    /// <param name="idx">enum Å¸ÀÔ ÀÎµ¦½º</param>
+    /// <typeparam name="T">UI ìš”ì†Œ</typeparam>
+    /// <param name="idx">enum íƒ€ì… ì¸ë±ìŠ¤</param>
     /// <returns></returns>
     protected T Get<T>(int idx) where T : UnityEngine.Object
     {
@@ -72,36 +72,36 @@ public abstract class UI_Base : MonoBehaviour
     }
 
     /// <summary>
-    /// Get<GameObject> ÇÔ¼ö¸¦ ·¡ÇÎÇÑ ÇÔ¼ö
+    /// Get<GameObject> í•¨ìˆ˜ë¥¼ ë˜í•‘í•œ í•¨ìˆ˜
     /// </summary>
-    /// <param name="idx">enum Å¸ÀÔ ÀÎµ¦½º</param>
+    /// <param name="idx">enum íƒ€ì… ì¸ë±ìŠ¤</param>
     /// <returns></returns>
     protected GameObject GetObject(int idx) { return Get<GameObject>(idx); }
     /// <summary>
-    /// Get<TMP_Text> ÇÔ¼ö¸¦ ·¡ÇÎÇÑ ÇÔ¼ö
+    /// Get<TMP_Text> í•¨ìˆ˜ë¥¼ ë˜í•‘í•œ í•¨ìˆ˜
     /// </summary>
-    /// <param name="idx">enum Å¸ÀÔ ÀÎµ¦½º</param>
+    /// <param name="idx">enum íƒ€ì… ì¸ë±ìŠ¤</param>
     /// <returns></returns>
     protected TMP_Text GetText(int idx) { return Get<TMP_Text>(idx); }
     /// <summary>
-    /// Get<Button> ÇÔ¼ö¸¦ ·¡ÇÎÇÑ ÇÔ¼ö
+    /// Get<Button> í•¨ìˆ˜ë¥¼ ë˜í•‘í•œ í•¨ìˆ˜
     /// </summary>
-    /// <param name="idx">enum Å¸ÀÔ ÀÎµ¦½º</param>
+    /// <param name="idx">enum íƒ€ì… ì¸ë±ìŠ¤</param>
     /// <returns></returns>
     protected Button GetButton(int idx) { return Get<Button>(idx); }
     /// <summary>
-    /// Get<Image> ÇÔ¼ö¸¦ ·¡ÇÎÇÑ ÇÔ¼ö
+    /// Get<Image> í•¨ìˆ˜ë¥¼ ë˜í•‘í•œ í•¨ìˆ˜
     /// </summary>
-    /// <param name="idx">enum Å¸ÀÔ ÀÎµ¦½º</param>
+    /// <param name="idx">enum íƒ€ì… ì¸ë±ìŠ¤</param>
     /// <returns></returns>
     protected Image GetImage(int idx) { return Get<Image>(idx); }
 
     /// <summary>
-    /// UI ¿ä¼Ò¿¡ UI_EventHanlder¸¦ ºÎÂøÇØ Event¸¦ ¼ö½ÅÇÏ°Ô ¸¸µé°í ÆÄ¶ó¹ÌÅÍ·Î ÁÖ¾îÁø ÀÌº¥Æ®¸¦ µî·ÏÇÑ´Ù.
+    /// UI ìš”ì†Œì— UI_EventHanlderë¥¼ ë¶€ì°©í•´ Eventë¥¼ ìˆ˜ì‹ í•˜ê²Œ ë§Œë“¤ê³  íŒŒë¼ë¯¸í„°ë¡œ ì£¼ì–´ì§„ ì´ë²¤íŠ¸ë¥¼ ë“±ë¡í•œë‹¤.
     /// </summary>
-    /// <param name="go">UI ¿ä¼Ò</param>
-    /// <param name="action">ÀÌº¥Æ® ÇÔ¼ö</param>
-    /// <param name="type">±¸µ¶ÇÒ ÀÌº¥Æ® Á¾·ù</param>
+    /// <param name="go">UI ìš”ì†Œ</param>
+    /// <param name="action">ì´ë²¤íŠ¸ í•¨ìˆ˜</param>
+    /// <param name="type">êµ¬ë…í•  ì´ë²¤íŠ¸ ì¢…ë¥˜</param>
     public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
     {
         UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);

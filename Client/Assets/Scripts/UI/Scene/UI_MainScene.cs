@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UI_MainScene : UI_Scene
 {
-    #region UI ¸ñ·Ïµé
+    #region UI ëª©ë¡ë“¤
     public enum Buttons
     {
     }

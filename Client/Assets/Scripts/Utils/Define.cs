@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Define : MonoBehaviour
 {
+    public const int PlayerCount = 3;
+
     public enum WorldObject
     {
         Unknown,

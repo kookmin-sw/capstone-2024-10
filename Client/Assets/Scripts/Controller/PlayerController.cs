@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class PlayerController : NetworkBehaviour
 {
-    float currentSpeed = 0;    //ÇöÀç ¼Óµµ
+    float currentSpeed = 0;    //í˜„ì¬ ì†ë„
 
-    float sitSpeed = 0;    //¾É´Â ¼Óµµ
-    float sit_walkSpeed = 0;    //¾É¾Æ¼­ °È´Â ¼Óµµ
+    float sitSpeed = 0;    //ì•‰ëŠ” ì†ë„
+    float sit_walkSpeed = 0;    //ì•‰ì•„ì„œ ê±·ëŠ” ì†ë„
 
-    float rotationSpeed = 5.0f;  //¸ö È¸Àü ¼Óµµ
-    public float currentHealth = 100;  //ÇöÀç Ã¼·Â
+    float rotationSpeed = 5.0f;  //ëª¸ íšŒì „ ì†ë„
+    public float currentHealth = 100;  //í˜„ì¬ ì²´ë ¥
 
     float hAxis;
     float vAxis;
@@ -24,7 +24,7 @@ public class PlayerController : NetworkBehaviour
     //private bool isPicking = false;
 
 
-    private Animator animator;
+    private Animator _animator;
     private CharacterController _controller;
     public Camera Camera;
 
@@ -34,7 +34,7 @@ public class PlayerController : NetworkBehaviour
         {
             Camera = Camera.main;
             Camera.GetComponent<CameraFollow>().player = transform;
-            animator = GetComponent<Animator>();
+            _animator = GetComponent<Animator>();
             _controller = GetComponent<CharacterController>();
         }
     }
@@ -48,7 +48,7 @@ public class PlayerController : NetworkBehaviour
         Network_Move();
     }
 
-    void GetInput() // Å°º¸µå °ª ¹Ş±â
+    void GetInput() // í‚¤ë³´ë“œ ê°’ ë°›ê¸°
     {
         hAxis = Input.GetAxisRaw("Horizontal");
         vAxis = Input.GetAxisRaw("Vertical");
@@ -68,17 +68,17 @@ public class PlayerController : NetworkBehaviour
 
         if (currentHealth == 100)
         {
-            animator.SetFloat("Health", currentHealth);
+            _animator.SetFloat("Health", currentHealth);
             if (isSitting)
             {
-                float sit_smoothness = 5f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                float sit_smoothness = 5f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                 sitSpeed = Mathf.Lerp(sitSpeed, 1, Runner.DeltaTime * sit_smoothness);
-                animator.SetFloat("Sit", sitSpeed);
+                _animator.SetFloat("Sit", sitSpeed);
                 if (hAxis == 0 && vAxis == 0)
                 {
-                    float smoothness = 5f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                    float smoothness = 5f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                     sit_walkSpeed = Mathf.Lerp(sit_walkSpeed, 0, Runner.DeltaTime * smoothness);
-                    animator.SetFloat("sitSpeed", sit_walkSpeed);
+                    _animator.SetFloat("sitSpeed", sit_walkSpeed);
                 }
                 else
                 {
@@ -91,21 +91,21 @@ public class PlayerController : NetworkBehaviour
                     {
                         gameObject.transform.forward = move;
                     }
-                    float smoothness = 5f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                    float smoothness = 5f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                     sit_walkSpeed = Mathf.Lerp(sit_walkSpeed, 1, Runner.DeltaTime * smoothness);
-                    animator.SetFloat("sitSpeed", sit_walkSpeed);
+                    _animator.SetFloat("sitSpeed", sit_walkSpeed);
                 }
             }
             else
             {
-                float sit_smoothness = 5f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                float sit_smoothness = 5f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                 sitSpeed = Mathf.Lerp(sitSpeed, 0, Runner.DeltaTime * sit_smoothness);
-                animator.SetFloat("Sit", sitSpeed);
+                _animator.SetFloat("Sit", sitSpeed);
                 if (hAxis == 0 && vAxis == 0 && isRunning == false)
                 {
-                    float smoothness = 5f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                    float smoothness = 5f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                     currentSpeed = Mathf.Lerp(currentSpeed, 0, Runner.DeltaTime * smoothness);
-                    animator.SetFloat("moveSpeed", currentSpeed);
+                    _animator.SetFloat("moveSpeed", currentSpeed);
                 }
                 else if (isRunning == false)
                 {
@@ -118,9 +118,9 @@ public class PlayerController : NetworkBehaviour
                     {
                         gameObject.transform.forward = move;
                     }
-                    float smoothness = 2f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                    float smoothness = 2f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                     currentSpeed = Mathf.Lerp(currentSpeed, 2, Runner.DeltaTime * smoothness);
-                    animator.SetFloat("moveSpeed", currentSpeed);
+                    _animator.SetFloat("moveSpeed", currentSpeed);
                 }
                 else
                 {
@@ -133,25 +133,25 @@ public class PlayerController : NetworkBehaviour
                     {
                         gameObject.transform.forward = move;
                     }
-                    float smoothness = 4f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                    float smoothness = 4f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                     currentSpeed = Mathf.Lerp(currentSpeed, 3.5f, Runner.DeltaTime * smoothness);
-                    animator.SetFloat("moveSpeed", currentSpeed);
+                    _animator.SetFloat("moveSpeed", currentSpeed);
                 }
             }
         }
         else if (currentHealth == 50)
         {
-            animator.SetFloat("Health", currentHealth);
+            _animator.SetFloat("Health", currentHealth);
             if (isSitting)
             {
-                float sit_smoothness = 5f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                float sit_smoothness = 5f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                 sitSpeed = Mathf.Lerp(sitSpeed, 1, Runner.DeltaTime * sit_smoothness);
-                animator.SetFloat("Sit", sitSpeed);
+                _animator.SetFloat("Sit", sitSpeed);
                 if (hAxis == 0 && vAxis == 0)
                 {
-                    float smoothness = 5f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                    float smoothness = 5f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                     sit_walkSpeed = Mathf.Lerp(sit_walkSpeed, 0, Runner.DeltaTime * smoothness);
-                    animator.SetFloat("sitSpeed", sit_walkSpeed);
+                    _animator.SetFloat("sitSpeed", sit_walkSpeed);
                 }
                 else
                 {
@@ -164,21 +164,21 @@ public class PlayerController : NetworkBehaviour
                     {
                         gameObject.transform.forward = move;
                     }
-                    float smoothness = 5f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                    float smoothness = 5f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                     sit_walkSpeed = Mathf.Lerp(sit_walkSpeed, 1, Runner.DeltaTime * smoothness);
-                    animator.SetFloat("sitSpeed", sit_walkSpeed);
+                    _animator.SetFloat("sitSpeed", sit_walkSpeed);
                 }
             }
             else
             {
-                float sit_smoothness = 5f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                float sit_smoothness = 5f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                 sitSpeed = Mathf.Lerp(sitSpeed, 0, Runner.DeltaTime * sit_smoothness);
-                animator.SetFloat("Sit", sitSpeed);
+                _animator.SetFloat("Sit", sitSpeed);
                 if (hAxis == 0 && vAxis == 0 && isRunning == false)
                 {
-                    float smoothness = 5f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                    float smoothness = 5f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                     currentSpeed = Mathf.Lerp(currentSpeed, 0, Runner.DeltaTime * smoothness);
-                    animator.SetFloat("moveSpeed", currentSpeed);
+                    _animator.SetFloat("moveSpeed", currentSpeed);
                 }
                 else if (isRunning == false)
                 {
@@ -191,9 +191,9 @@ public class PlayerController : NetworkBehaviour
                     {
                         gameObject.transform.forward = move;
                     }
-                    float smoothness = 2f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                    float smoothness = 2f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                     currentSpeed = Mathf.Lerp(currentSpeed, 1.5f, Runner.DeltaTime * smoothness);
-                    animator.SetFloat("moveSpeed", currentSpeed);
+                    _animator.SetFloat("moveSpeed", currentSpeed);
                 }
                 else
                 {
@@ -206,16 +206,16 @@ public class PlayerController : NetworkBehaviour
                     {
                         gameObject.transform.forward = move;
                     }
-                    float smoothness = 4f; // Á¶Àı °¡´ÉÇÑ ºÎµå·¯¿ò °è¼ö
+                    float smoothness = 4f; // ì¡°ì ˆ ê°€ëŠ¥í•œ ë¶€ë“œëŸ¬ì›€ ê³„ìˆ˜
                     currentSpeed = Mathf.Lerp(currentSpeed, 2.5f, Runner.DeltaTime * smoothness);
-                    animator.SetFloat("moveSpeed", currentSpeed);
+                    _animator.SetFloat("moveSpeed", currentSpeed);
                 }
             }
         }
         else
         {
             isDeath = true;
-            animator.SetBool("IsDeath", true);
+            _animator.SetBool("IsDeath", true);
         }
     }
 

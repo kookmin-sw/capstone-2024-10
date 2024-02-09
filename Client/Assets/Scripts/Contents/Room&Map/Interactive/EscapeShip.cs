@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class EscapeShip : MonoBehaviour, IInteractable
 {
-    //ÀÌÇÏÀÇ ¸ğµç Á¶°ÇÀ» ¸¸Á·½ÃÄÑ¾ß ÇÑ´Ù
+    //ì´í•˜ì˜ ëª¨ë“  ì¡°ê±´ì„ ë§Œì¡±ì‹œì¼œì•¼ í•œë‹¤
     public bool isFuel;
     
     public IEnumerator Interact()
     {
         yield return null;
 
-        //ÀÌÇÏÀÇ ¸ğµç Á¶°ÇÀ» ¸¸Á·½ÃÄÑ¾ßÇÑ´Ù.
+        //ì´í•˜ì˜ ëª¨ë“  ì¡°ê±´ì„ ë§Œì¡±ì‹œì¼œì•¼í•œë‹¤.
         if(isFuel)
         {
             SuccessEscape();

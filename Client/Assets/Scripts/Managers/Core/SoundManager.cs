@@ -5,16 +5,16 @@ using UnityEngine;
 public class SoundManager
 {
     /// <summary>
-    /// ¿Àµğ¿À ¼Ò½º¸¦ ´ã´Â ¹è¿­ÀÌ´Ù. Define¿¡ Á¤ÀÇµÇ¾î ÀÖ´Â MaxCountÀÇ ¼ö¸¸Å­ »ç¿îµåÀÇ Á¾·ù¸¦ Á¤ÀÇÇÑ´Ù.
+    /// ì˜¤ë””ì˜¤ ì†ŒìŠ¤ë¥¼ ë‹´ëŠ” ë°°ì—´ì´ë‹¤. Defineì— ì •ì˜ë˜ì–´ ìˆëŠ” MaxCountì˜ ìˆ˜ë§Œí¼ ì‚¬ìš´ë“œì˜ ì¢…ë¥˜ë¥¼ ì •ì˜í•œë‹¤.
     /// </summary>
     AudioSource[] _audioSources = new AudioSource[(int)Define.Sound.MaxCount];
     /// <summary>
-    /// ¿Àµğ¿À Å¬¸³À» ´ã´Â µñ¼Å³Ê¸®·Î, ÀÌ¸§À» ÅëÇØ µñ¼Å³Ê¸®¿¡ ÀÖ´Â ¿Àµğ¿À Å¬¸³À» °¡Á®¿Ã ¼ö ÀÖ´Ù.
+    /// ì˜¤ë””ì˜¤ í´ë¦½ì„ ë‹´ëŠ” ë”•ì…”ë„ˆë¦¬ë¡œ, ì´ë¦„ì„ í†µí•´ ë”•ì…”ë„ˆë¦¬ì— ìˆëŠ” ì˜¤ë””ì˜¤ í´ë¦½ì„ ê°€ì ¸ì˜¬ ìˆ˜ ìˆë‹¤.
     /// </summary>
     Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
 
     /// <summary>
-    /// ¾À¿¡ @Sound ¿ÀºêÁ§Æ®¸¦ »ı¼ºÇÏ°í ÆÄ±« ºÒ°¡ ¼³Á¤ ÈÄ, ¿Àµğ¿À ¼Ò½ºµéÀ» µî·ÏÇØ ³õ´Â´Ù.
+    /// ì”¬ì— @Sound ì˜¤ë¸Œì íŠ¸ë¥¼ ìƒì„±í•˜ê³  íŒŒê´´ ë¶ˆê°€ ì„¤ì • í›„, ì˜¤ë””ì˜¤ ì†ŒìŠ¤ë“¤ì„ ë“±ë¡í•´ ë†“ëŠ”ë‹¤.
     /// </summary>
     public void init()
     {
@@ -37,7 +37,7 @@ public class SoundManager
     }
 
     /// <summary>
-    /// ¾ÀÀÌ ¹Ù²ğ ¶§, À½¾ÇÀ» ¸ØÃß°í ¿Àµğ¿À¼Ò½ºµéÀ» »èÁ¦ÇÑ´Ù.
+    /// ì”¬ì´ ë°”ë€” ë•Œ, ìŒì•…ì„ ë©ˆì¶”ê³  ì˜¤ë””ì˜¤ì†ŒìŠ¤ë“¤ì„ ì‚­ì œí•œë‹¤.
     /// </summary>
     public void Clear()
     {
@@ -50,11 +50,11 @@ public class SoundManager
     }
 
     /// <summary>
-    /// Resources/Music/ Æú´õ¿¡ À§Ä¡ÇÑ À½¿ø ÀÌ¸§À» ÀÔ·ÂÇÏ°í Àç»ıÇÏ°íÀÚ ÇÏ´Â typeÀ» ¼±ÅÃÇØ¼­ Àç»ıÇÑ´Ù.
-    /// À½¿øÀº type¸¶´Ù º´·Ä·Î Àç»ıµÇ¸ç, °¢°¢ Ã³¸®µÇ´Â ¹æ½Ä¿¡ Â÷ÀÌ¸¦ ÁÖ°í ÀÖ´Ù.
+    /// Resources/Music/ í´ë”ì— ìœ„ì¹˜í•œ ìŒì› ì´ë¦„ì„ ì…ë ¥í•˜ê³  ì¬ìƒí•˜ê³ ì í•˜ëŠ” typeì„ ì„ íƒí•´ì„œ ì¬ìƒí•œë‹¤.
+    /// ìŒì›ì€ typeë§ˆë‹¤ ë³‘ë ¬ë¡œ ì¬ìƒë˜ë©°, ê°ê° ì²˜ë¦¬ë˜ëŠ” ë°©ì‹ì— ì°¨ì´ë¥¼ ì£¼ê³  ìˆë‹¤.
     /// </summary>
-    /// <param name="path">À½¿øÀÇ ÀÌ¸§</param>
-    /// <param name="type">À½¿øÀÇ Å¸ÀÔ</param>
+    /// <param name="path">ìŒì›ì˜ ì´ë¦„</param>
+    /// <param name="type">ìŒì›ì˜ íƒ€ì…</param>
     /// <param name="pitch"></param>
     public void Play(string path, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
     {
@@ -63,8 +63,8 @@ public class SoundManager
     }
 
     /// <summary>
-    /// È£ÃâÇÏ·Á¸é À½¿øÆÄÀÏÀ» ·ÎµåÇÏ°í »ç¿ëÇØ¾ß ÇÑ´Ù.
-    /// À½¿ø Å¸ÀÔ¿¡ µû¶ó ¾î¶²½ÄÀ¸·Î Àç»ıµÉÁö¿¡ ´ëÇÑ ¹æ½ÄÀÌ ÁöÁ¤µÇ¾î ÀÖ´Ù.
+    /// í˜¸ì¶œí•˜ë ¤ë©´ ìŒì›íŒŒì¼ì„ ë¡œë“œí•˜ê³  ì‚¬ìš©í•´ì•¼ í•œë‹¤.
+    /// ìŒì› íƒ€ì…ì— ë”°ë¼ ì–´ë–¤ì‹ìœ¼ë¡œ ì¬ìƒë ì§€ì— ëŒ€í•œ ë°©ì‹ì´ ì§€ì •ë˜ì–´ ìˆë‹¤.
     /// </summary>
     public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
     {
@@ -93,7 +93,7 @@ public class SoundManager
     }
 
     /// <summary>
-    /// À½¿øÀÇ ÀÌ¸§À» ÁáÀ» ¶§, À½¿øÀ» µñ¼Å³Ê¸®¿¡ ÀúÀåÇÏ°í À½¿ø ÆÄÀÏÀ» °¡Á®¿À´Â ÇÔ¼ö
+    /// ìŒì›ì˜ ì´ë¦„ì„ ì¤¬ì„ ë•Œ, ìŒì›ì„ ë”•ì…”ë„ˆë¦¬ì— ì €ì¥í•˜ê³  ìŒì› íŒŒì¼ì„ ê°€ì ¸ì˜¤ëŠ” í•¨ìˆ˜
     /// </summary>
     AudioClip GetOrAddAudioClip(string path, Define.Sound type = Define.Sound.Effect)
     {

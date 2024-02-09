@@ -14,12 +14,9 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
     [SerializeField] NetworkObject playerPrefab;
 
-    private string _playerName = null;
+    public string PlayerName = null;
 
-    private List<SessionInfo> _sessions = new List<SessionInfo>();
-
-    [Header("Session List")]
-    public Button refreshButton;
+    public List<SessionInfo> Sessions = new List<SessionInfo>();
 
     private void Awake()
     {
@@ -34,14 +31,13 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
         Debug.Log("OnSessionListUpdated");
-        _sessions.Clear();
-        _sessions = sessionList;
+        Sessions.Clear();
+        Sessions = sessionList;
     }
-
 
     public void ConnectToLobby(string playerName)
     {
-        _playerName = playerName;
+        PlayerName = playerName;
 
         if (runner == null)
         {
@@ -49,6 +45,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         }
 
         runner.JoinSessionLobby(SessionLobby.Shared);
+        Managers.UI.ShowSceneUI<UI_Lobby>();
     }
 
     public async void ConnectToSession(string sessionName)
@@ -62,9 +59,16 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         {
             GameMode = GameMode.Shared,
             SessionName = sessionName,
-            PlayerCount = 2,
+            PlayerCount = Define.PlayerCount,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
+    }
+
+    public void CreateSession()
+    {
+        int randomInt = UnityEngine.Random.Range(1000, 9999);
+        string randomSessionName = "Room-" + randomInt.ToString();
+        ConnectToSession(randomSessionName);
     }
 
     public void OnConnectedToServer(NetworkRunner runner)

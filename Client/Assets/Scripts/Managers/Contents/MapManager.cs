@@ -31,7 +31,7 @@ public class MapManager : MonoBehaviour
         Managers.UI.ShowSceneUI<UI_InGame>("UI_MainMap");
     }
 
-    //�ʱ�ȭ �κ�
+    //초기화 부분
     static void Init()
     {
         GameObject g = GameObject.Find("MainManager");

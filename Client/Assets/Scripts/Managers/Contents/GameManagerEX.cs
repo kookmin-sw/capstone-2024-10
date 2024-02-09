@@ -12,7 +12,7 @@ public class GameData
 }
 
 /// <summary>
-/// °ÔÀÓ ¿ÀºêÁ§Æ®ÀÇ »ı¼º°ú ¼Ò¸ê¿¡ ´ëÇÑ ·ÎÁ÷À» ¼öÇàÇÏ°í ´ÙÀÌ·ºÆ®·Î °ÔÀÓ ¿ÀºêÁ§Æ®¿¡ Á¢±ÙÇÒ ¼ö ÀÖ´Â ±ÇÇÑÀ» °¡Áö°í ÀÖ´Â ¸Å´ÏÀú
+/// ê²Œì„ ì˜¤ë¸Œì íŠ¸ì˜ ìƒì„±ê³¼ ì†Œë©¸ì— ëŒ€í•œ ë¡œì§ì„ ìˆ˜í–‰í•˜ê³  ë‹¤ì´ë ‰íŠ¸ë¡œ ê²Œì„ ì˜¤ë¸Œì íŠ¸ì— ì ‘ê·¼í•  ìˆ˜ ìˆëŠ” ê¶Œí•œì„ ê°€ì§€ê³  ìˆëŠ” ë§¤ë‹ˆì €
 /// </summary>
 public class GameManagerEX
 {
@@ -21,7 +21,6 @@ public class GameManagerEX
     GameData _gameData = new GameData();
 
     public GameData SaveData { get { return _gameData; } set { _gameData = value; } }
-    public MyPlayer GetPlayer() { return MonoBehaviour.FindObjectOfType<MyPlayer>(); }
 
     public void init()
     {
