@@ -7,7 +7,7 @@ public class SoundManager
     /// <summary>
     /// 오디오 소스를 담는 배열이다. Define에 정의되어 있는 MaxCount의 수만큼 사운드의 종류를 정의한다.
     /// </summary>
-    AudioSource[] _audioSources = new AudioSource[(int)Define.Sound.MaxCount];
+    AudioSource[] _audioSources = new AudioSource[(int)Define.SoundType.MaxCount];
     /// <summary>
     /// 오디오 클립을 담는 딕셔너리로, 이름을 통해 딕셔너리에 있는 오디오 클립을 가져올 수 있다.
     /// </summary>
@@ -16,7 +16,7 @@ public class SoundManager
     /// <summary>
     /// 씬에 @Sound 오브젝트를 생성하고 파괴 불가 설정 후, 오디오 소스들을 등록해 놓는다.
     /// </summary>
-    public void init()
+    public void Init()
     {
         GameObject root = GameObject.Find("@Sound");
         if (root == null)
@@ -24,7 +24,7 @@ public class SoundManager
             root = new GameObject { name = "@Sound" };
             Object.DontDestroyOnLoad(root);
 
-            string[] soundNames = System.Enum.GetNames(typeof(Define.Sound));
+            string[] soundNames = System.Enum.GetNames(typeof(Define.SoundType));
             for (int i = 0; i < soundNames.Length - 1; i++)
             {
                 GameObject go = new GameObject { name = soundNames[i] };
@@ -32,7 +32,7 @@ public class SoundManager
                 go.transform.parent = root.transform;
             }
 
-            _audioSources[(int)Define.Sound.Bgm].loop = true;
+            _audioSources[(int)Define.SoundType.Bgm].loop = true;
         }
     }
 
@@ -56,7 +56,7 @@ public class SoundManager
     /// <param name="path">음원의 이름</param>
     /// <param name="type">음원의 타입</param>
     /// <param name="pitch"></param>
-    public void Play(string path, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
+    public void Play(string path, Define.SoundType type = Define.SoundType.Effect, float pitch = 1.0f)
     {
         AudioClip audioClip = GetOrAddAudioClip(path, type);
         Play(audioClip, type, pitch);
@@ -66,14 +66,14 @@ public class SoundManager
     /// 호출하려면 음원파일을 로드하고 사용해야 한다.
     /// 음원 타입에 따라 어떤식으로 재생될지에 대한 방식이 지정되어 있다.
     /// </summary>
-    public void Play(AudioClip audioClip, Define.Sound type = Define.Sound.Effect, float pitch = 1.0f)
+    public void Play(AudioClip audioClip, Define.SoundType type = Define.SoundType.Effect, float pitch = 1.0f)
     {
         if (audioClip == null)
             return;
 
-        if (type == Define.Sound.Bgm)
+        if (type == Define.SoundType.Bgm)
         {
-            AudioSource audioSource = _audioSources[(int)Define.Sound.Bgm];
+            AudioSource audioSource = _audioSources[(int)Define.SoundType.Bgm];
 
             if (audioSource.isPlaying)
                 audioSource.Stop();
@@ -84,8 +84,8 @@ public class SoundManager
             audioSource.Play();
         }
         else
-        {            
-            AudioSource audioSource = _audioSources[(int)Define.Sound.Effect];
+        {
+            AudioSource audioSource = _audioSources[(int)Define.SoundType.Effect];
             //audioSource.pitch = pitch;
             audioSource.volume = pitch;
             audioSource.PlayOneShot(audioClip);
@@ -95,22 +95,22 @@ public class SoundManager
     /// <summary>
     /// 음원의 이름을 줬을 때, 음원을 딕셔너리에 저장하고 음원 파일을 가져오는 함수
     /// </summary>
-    AudioClip GetOrAddAudioClip(string path, Define.Sound type = Define.Sound.Effect)
+    AudioClip GetOrAddAudioClip(string path, Define.SoundType type = Define.SoundType.Effect)
     {
         //if (path.Contains("Sounds/") == false)
         //  path = $"Sounds/{path}";
 
         AudioClip audioClip = null;
 
-        if (type == Define.Sound.Bgm)
+        if (type == Define.SoundType.Bgm)
         {
-            audioClip = Managers.Resource.Load<AudioClip>(path);
+            audioClip = Managers.ResourceMng.Load<AudioClip>(path);
         }
         else
         {
             if (_audioClips.TryGetValue(path, out audioClip) == false)
             {
-                audioClip = Managers.Resource.Load<AudioClip>(path);
+                audioClip = Managers.ResourceMng.Load<AudioClip>(path);
                 _audioClips.Add(path, audioClip);
             }
         }

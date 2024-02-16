@@ -1,39 +1,36 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Object = UnityEngine.Object;
 
-/// <summary>
-/// 모든 씬에 하나씩은 있어야 하는 씬 스크립트를 만들기 위한 상속 원형.
-/// 해당 클래스를 상속해서 만든 씬 스크립트는 반드시 씬마다 하나씩
-/// @Scene 오브젝트 파일에 붙어 있어야 한다.
-/// </summary>
+// 모든 Scene의 조상 클래스
 public abstract class BaseScene : MonoBehaviour
 {
-    /// <summary>
-    /// enum으로 정의된 씬 타입을 가져올 수 있다.
-    /// </summary>
-    public Define.Scene SceneType { get; protected set; } = Define.Scene.Unknown;
+    public Define.SceneType SceneType { get; protected set; } = Define.SceneType.UnknownScene;
 
-    void Awake()
+    private void Awake()
     {
-        init();
+        Init();
     }
 
-    /// <summary>
-    /// EventSystem이 없으면 @EventSystem으로 생성한다.
-    /// 씬을 깔끔하게 관리하기 위해서 기존의 EventSystem을 프리팹화 시켰다.
-    /// 씬 스크립트를 구현할 때 새로운 Init을 정의한다면 함수 내부에서 호출해줘야 한다.
-    /// </summary>
-    protected virtual void init()
+    private void Update()
     {
-        Object obj = GameObject.FindObjectOfType(typeof(EventSystem));
+        Managers.InputMng.OnUpdate();
+    }
+
+    protected virtual void Init()
+    {
+        // TODO - TEST CODE: 나중에는 최초 Scene에서만 실행
+        Managers.InputMng.Init();
+        Managers.DataMng.Init();
+        Managers.SoundMng.Init();
+        Managers.PoolMng.Init();
+        Managers.ObjectMng.Init();
+
+        Object obj = FindObjectOfType(typeof(EventSystem));
+
         if (obj == null)
-            Managers.Resource.Instantiate("UI/EventSystem").name = "@EventSystem";
+            Managers.ResourceMng.Instantiate("UI/EventSystem").name = "@EventSystem";
     }
 
-    /// <summary>
-    /// 각 씬 스크립트가 구현해야 할 함수
-    /// </summary>
     public abstract void Clear();
 }

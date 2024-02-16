@@ -45,7 +45,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         }
 
         runner.JoinSessionLobby(SessionLobby.Shared);
-        Managers.UI.ShowSceneUI<UI_Lobby>();
+        Managers.UIMng.ShowSceneUI<UI_Lobby>();
     }
 
     public async void ConnectToSession(string sessionName)
@@ -59,7 +59,7 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         {
             GameMode = GameMode.Shared,
             SessionName = sessionName,
-            PlayerCount = Define.PlayerCount,
+            PlayerCount = Define.PLAYER_COUNT,
             SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
     }

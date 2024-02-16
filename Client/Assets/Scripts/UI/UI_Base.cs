@@ -9,7 +9,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 모든 UI의 베이스가 되는 클래스
 /// 씬 UI, 팝업 UI도 해당 UI를 상속해서 구현되어 있다.
-/// UI 요소를 변수에 연결하는 오브젝트 바인딩 기능과 
+/// UI 요소를 변수에 연결하는 오브젝트 바인딩 기능과
 /// UI 요소를 입력 이벤트와 연결하는 함수 바인딩 기능을 포함하고 있다.
 /// </summary>
 public abstract class UI_Base : MonoBehaviour
@@ -112,15 +112,15 @@ public abstract class UI_Base : MonoBehaviour
                 evt.OnClickHandler -= action;
                 evt.OnClickHandler += action;
                 break;
-            case Define.UIEvent.Drag:
+            case Define.UIEvent.Press:
                 evt.OnDragHandler -= action;
                 evt.OnDragHandler += action;
                 break;
-            case Define.UIEvent.Down:
+            case Define.UIEvent.PointerDown:
                 evt.OnDownHandler -= action;
                 evt.OnDownHandler += action;
                 break;
-            case Define.UIEvent.Up:
+            case Define.UIEvent.PointerUp:
                 evt.OnUpHandler -= action;
                 evt.OnUpHandler += action;
                 break;

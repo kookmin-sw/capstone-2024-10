@@ -2,94 +2,90 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Data
 {
-    #region Stat
-    /// <summary>
-    /// 예시로 만든 Stat 데이터
-    /// 해당 형식을 참고해 데이터 네임스페이스 안에서 region을 나눠 구현하면 된다.
-    /// json 데이터 형식과 클래스의 변수 이름이 일치해야 한다는 것을 주의해야 한다.
-    /// 데이터는 Resource/Data/ 폴더에 저장되어 있다.
-    /// </summary>
+    #region CreatureData
     [Serializable]
-    public class Stat
+    public class CreatureData
     {
-        public int level;
-        public int totalExp;
-    }
-
-    [Serializable]
-    public class StatData : ILoader<int, Stat>
-    {
-        public List<Stat> stats = new List<Stat>();
-
-        public Dictionary<int, Stat> MakeDict()
-        {
-            Dictionary<int, Stat> dict = new Dictionary<int, Stat>();
-            foreach (Stat stat in stats)
-                dict.Add(stat.level, stat);
-            return dict;
-        }
+        public int DataId;
+        public string Name;
     }
     #endregion
-    #region Fish
-    /// <summary>
-    /// 예시 데이터
-    /// 해당 형식을 참고해 데이터 네임스페이스 안에서 region을 나눠 구현하면 된다.
-    /// json 데이터 형식과 클래스의 변수 이름이 일치해야 한다는 것을 주의해야 한다.
-    /// 데이터는 Resource/Data/ 폴더에 저장되어 있다.
-    /// </summary>
+
+    #region CrewData
+
     [Serializable]
-    public class Fish
+    public class CrewData : CreatureData
     {
-        public int id;
-        public string name;
-        public int[] level;
-        public int moveSpeed;
-        public int[] size;
-        public int health;
-        public string[] lure;
-        public string[] color;
-        public string feature;
-        public int Iscatching;
     }
 
     [Serializable]
-    public class FishData : ILoader<int, Fish>
+    public class CrewDataLoader : IData<int, CrewData>
     {
-        public List<Fish> fishes = new List<Fish>();
+        public List<CrewData> crews = new List<CrewData>();
 
-        public Dictionary<int, Fish> MakeDict()
+        // List형태의 Data를 Dictionary형태로 변환 후 반환
+        public Dictionary<int, CrewData> MakeDict()
         {
-            Dictionary<int, Fish> dict = new Dictionary<int, Fish>();
-            foreach (Fish fish in fishes)
-                dict.Add(fish.id, fish);
-            return dict;
+            Dictionary<int, CrewData> dic = new Dictionary<int, CrewData>();
+            foreach (CrewData stat in crews)
+                dic.Add(stat.DataId, stat);
+
+            return dic;
         }
     }
+
     #endregion
-    #region Setting
-    public class Setting
+
+    #region AlienData
+
+    [Serializable]
+    public class AlienData : CreatureData
     {
-        public string name;
-        public int value;
     }
 
     [Serializable]
-    public class SettingData : ILoader<string, Setting>
+    public class AlienDataLoader : IData<int, AlienData>
     {
-        public List<Setting> settings = new List<Setting>();
+        public List<AlienData> aliens = new List<AlienData>();
 
-        public Dictionary<string, Setting> MakeDict()
+        public Dictionary<int, AlienData> MakeDict()
         {
-            Dictionary<string, Setting> dict = new Dictionary<string, Setting>();
-            foreach (Setting setting in settings)
-                dict.Add(setting.name, setting);
-            return dict;
+            Dictionary<int, AlienData> dic = new Dictionary<int, AlienData>();
+            foreach (AlienData stat in aliens)
+                dic.Add(stat.DataId, stat);
+
+            return dic;
         }
     }
 
+    #endregion
+
+    #region ItemData
+
+    [Serializable]
+    public class ItemData
+    {
+        public int DataId;
+        public string Name;
+    }
+
+    [Serializable]
+    public class ItemDataLoader : IData<int, ItemData>
+    {
+        public List<ItemData> items = new List<ItemData>();
+
+        public Dictionary<int, ItemData> MakeDict()
+        {
+            var dic = new Dictionary<int, ItemData>();
+            foreach (ItemData item in items)
+                dic.Add(item.DataId, item);
+
+            return dic;
+        }
+    }
     #endregion
 }
-

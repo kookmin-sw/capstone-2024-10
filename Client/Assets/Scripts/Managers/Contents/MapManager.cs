@@ -28,7 +28,7 @@ public class MapManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Managers.UI.ShowSceneUI<UI_InGame>("UI_MainMap");
+        Managers.UIMng.ShowSceneUI<UI_InGame>("UI_MainMap");
     }
 
     //초기화 부분

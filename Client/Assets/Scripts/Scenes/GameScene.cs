@@ -8,10 +8,10 @@ using UnityEngine.SceneManagement;
 public class GameScene : BaseScene
 {
     // 씬이 초기에 생성될 때 수행될 목록
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
-        SceneType = Define.Scene.Game;
+        base.Init();
+        SceneType = Define.SceneType.GameScene;
 
         //UI 세팅
         // Managers.UI.ShowSceneUI<UI_MainScene>();

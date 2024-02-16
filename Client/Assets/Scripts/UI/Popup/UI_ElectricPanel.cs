@@ -116,7 +116,7 @@ public class UI_ElectricPanel : UI_Popup
         {
             baseWorking.StopAllCoroutines();
             StopAllCoroutines();
-            Managers.UI.CloseAllPopupUI();
+            Managers.UIMng.CloseAllPopupUI();
         }
     }
 }

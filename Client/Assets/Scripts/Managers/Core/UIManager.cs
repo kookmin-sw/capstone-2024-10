@@ -71,7 +71,7 @@ public class UIManager
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
 
-        GameObject go = Managers.Resource.Instantiate($"UI/WorldSpace/{name}");
+        GameObject go = Managers.ResourceMng.Instantiate($"UI/WorldSpace/{name}");
 
         if (parent != null)
             go.transform.SetParent(parent);
@@ -95,7 +95,7 @@ public class UIManager
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
 
-        GameObject go = Managers.Resource.Instantiate($"UI/SubItem/{name}");
+        GameObject go = Managers.ResourceMng.Instantiate($"UI/SubItem/{name}");
 
         if (parent != null)
             go.transform.SetParent(parent);
@@ -114,7 +114,7 @@ public class UIManager
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
 
-        GameObject go = Managers.Resource.Instantiate($"UI/Scene/{name}");
+        GameObject go = Managers.ResourceMng.Instantiate($"UI/Scene/{name}");
         T sceneUI = Util.GetOrAddComponent<T>(go);
         SceneUI = sceneUI;
 
@@ -136,8 +136,8 @@ public class UIManager
         if (string.IsNullOrEmpty(name))
             name = typeof(T).Name;
 
-        GameObject prefab = Managers.Resource.Load<GameObject>($"Prefabs/UI/Popup/{name}");
-        GameObject go = Managers.Resource.Instantiate($"UI/Popup/{name}");
+        GameObject prefab = Managers.ResourceMng.Load<GameObject>($"Prefabs/UI/Popup/{name}");
+        GameObject go = Managers.ResourceMng.Instantiate($"UI/Popup/{name}");
         T popup = Util.GetOrAddComponent<T>(go);
         _popupStack.Push(popup);
 
@@ -203,7 +203,7 @@ public class UIManager
             return;
 
         UI_Popup popup = _popupStack.Pop();
-        Managers.Resource.Destroy(popup.gameObject);
+        Managers.ResourceMng.Destroy(popup.gameObject);
         popup = null;
         _order--;
     }

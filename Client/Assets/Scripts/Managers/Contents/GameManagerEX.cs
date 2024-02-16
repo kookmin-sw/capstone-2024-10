@@ -22,7 +22,7 @@ public class GameManagerEX
 
     public GameData SaveData { get { return _gameData; } set { _gameData = value; } }
 
-    public void init()
+    public void Init()
     {
         _path = Path.Combine(Application.persistentDataPath, "/SaveData.json");
 
@@ -33,48 +33,6 @@ public class GameManagerEX
     }
 
     #region Spawn & Despawn
-
-    public GameObject Spawn(Define.WorldObject type, string path, Transform parent = null)
-    {
-        GameObject go = Managers.Resource.Instantiate(path, parent);
-
-        switch (type)
-        {
-            case Define.WorldObject.Player:
-                _player = go;
-                break;
-        }
-
-        return go;
-    }
-
-    public Define.WorldObject GetWorldObjectType(GameObject go)
-    {
-        BaseController bc = go.GetComponent<BaseController>();
-        if (bc == null)
-            return Define.WorldObject.Unknown;
-
-        return bc.WorldObjectType;
-
-    }
-
-    public void Despawn(GameObject go)
-    {
-        Define.WorldObject type = GetWorldObjectType(go);
-
-        switch (type)
-        {
-            case Define.WorldObject.Player:
-                {
-                    if (_player == go)
-                        _player = null;
-                }
-                break;
-        }
-
-        Managers.Resource.Destroy(go);
-    }
-
     private HashSet<int> _objectRegistry = new HashSet<int>();
 
     public int GenerateID()
@@ -93,12 +51,12 @@ public class GameManagerEX
     #endregion
 
 
-    #region Save & Load	
+    #region Save & Load
     public string _path;
 
     public void SaveGame()
     {
-        string jsonStr = JsonUtility.ToJson(Managers.Game.SaveData);
+        string jsonStr = JsonUtility.ToJson(Managers.GameMng.SaveData);
         File.WriteAllText(_path, jsonStr);
         Debug.Log($"Save Game Completed : {_path}");
     }
@@ -112,7 +70,7 @@ public class GameManagerEX
         GameData data = JsonUtility.FromJson<GameData>(fileStr);
         if (data != null)
         {
-            Managers.Game.SaveData = data;
+            Managers.GameMng.SaveData = data;
         }
 
         Debug.Log($"Save Game Loaded : {_path}");

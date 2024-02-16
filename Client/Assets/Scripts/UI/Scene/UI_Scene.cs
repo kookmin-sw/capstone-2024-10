@@ -15,7 +15,7 @@ public class UI_Scene : UI_Base
         if (base.Init() == false)
             return false;
 
-        Managers.UI.SetCanvas(gameObject, false);
+        Managers.UIMng.SetCanvas(gameObject, false);
         return true;
     }
 }

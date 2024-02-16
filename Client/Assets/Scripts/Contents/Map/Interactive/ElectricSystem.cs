@@ -20,7 +20,7 @@ public class ElectricSystem : BaseWorking, IInteractable
         yield return null;
 
         //전력시스템 설정 코드
-        Managers.UI.ShowPopupUI<UI_ElectricPanel>("Electric_Control");
+        Managers.UIMng.ShowPopupUI<UI_ElectricPanel>("Electric_Control");
         Debug.Log("dddd");
     }
 }

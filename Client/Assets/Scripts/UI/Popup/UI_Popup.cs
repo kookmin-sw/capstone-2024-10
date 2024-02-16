@@ -14,7 +14,7 @@ public class UI_Popup : UI_Base
     {
         if (base.Init() == false)
             return false;
-        Managers.UI.SetCanvas(gameObject, true);
+        Managers.UIMng.SetCanvas(gameObject, true);
         return true;
     }
 
@@ -23,6 +23,6 @@ public class UI_Popup : UI_Base
     /// </summary>
     public virtual void ClosePopupUI()
     {
-        Managers.UI.ClosePopupUI(this);
+        Managers.UIMng.ClosePopupUI(this);
     }
 }

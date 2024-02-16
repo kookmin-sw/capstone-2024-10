@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class LobbyScene : BaseScene
 {
-    protected override void init()
+    protected override void Init()
     {
-        base.init();
-        SceneType = Define.Scene.Lobby;
+        base.Init();
+        SceneType = Define.SceneType.LobbyScene;
 
         // Managers.UI.ShowSceneUI<UI_MainScene>();
     }

@@ -20,7 +20,7 @@ public class ResourceManager
             if (index >= 0)
                 name = name.Substring(index + 1);
 
-            GameObject go = Managers.Pool.GetOriginal(name);
+            GameObject go = Managers.PoolMng.GetOriginal(name);
             if (go != null)
                 return go as T;
         }
@@ -40,7 +40,7 @@ public class ResourceManager
         }
 
         if (original.GetComponent<Poolable>() != null)
-            return Managers.Pool.Pop(original, parent).gameObject;
+            return Managers.PoolMng.Pop(original, parent).gameObject;
 
         GameObject go = Object.Instantiate(original, parent);
         go.name = original.name;
@@ -58,7 +58,7 @@ public class ResourceManager
         Poolable poolable = go.GetComponent<Poolable>();
         if (poolable != null)
         {
-            Managers.Pool.Push(poolable);
+            Managers.PoolMng.Push(poolable);
             return;
         }
         Object.Destroy(go);

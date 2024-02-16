@@ -12,29 +12,17 @@ public class SceneManagerEx
     /// 현재 위치한 씬이 어디인지 알아낸다.
     /// 씬마다 베이스 씬을 상속한 스크립트를 부착한 @Scene 객체를 가지고 있다.
     /// </summary>
-    public BaseScene CurrentScene
-    {
-        get { return GameObject.FindObjectOfType<BaseScene>(); }
-    }
-
-    public Define.Scene PreviousScene { get; set; }
+    public BaseScene CurrentScene => GameObject.FindObjectOfType<BaseScene>();
 
     /// <summary>
     /// 씬을 불러온다. 다만 기존의 스트링이 아닌 enum 타입으로 가져올 수 있다.
     /// 내부적으로 메인 매니저의 씬을 초기화시키는 코드를 실행해 씬이 바뀔 때,
     /// 자동으로 초괴화 작업이 이루어지도록 한다.
     /// </summary>
-    public void LoadScene(Define.Scene type)
+    public void LoadScene(Define.SceneType type)
     {
         Managers.Clear();
-        PreviousScene = CurrentScene.SceneType;
         SceneManager.LoadScene(GetSceneName(type));
-    }
-
-    public void ReturnScene()
-    {
-        SceneManager.LoadScene(GetSceneName(PreviousScene));
-        PreviousScene = CurrentScene.SceneType;
     }
 
     /// <summary>
@@ -42,9 +30,9 @@ public class SceneManagerEx
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    string GetSceneName(Define.Scene type)
+    string GetSceneName(Define.SceneType type)
     {
-        string name = System.Enum.GetName(typeof(Define.Scene), type);
+        string name = System.Enum.GetName(typeof(Define.SceneType), type);
         return name;
     }
 

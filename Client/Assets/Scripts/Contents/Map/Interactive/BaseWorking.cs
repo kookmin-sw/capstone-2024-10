@@ -46,8 +46,8 @@ public class BaseWorking : MonoBehaviour
     /// <returns></returns>
     public IEnumerator Working()
     {
-        Managers.UI.ShowPopupUI<UI_WorkingBar>("ShowLongWork");
-        UI_WorkingBar ui = Managers.UI.PeekPopupUI<UI_WorkingBar>();
+        Managers.UIMng.ShowPopupUI<UI_WorkingBar>("ShowLongWork");
+        UI_WorkingBar ui = Managers.UIMng.PeekPopupUI<UI_WorkingBar>();
         yield return new WaitUntil(() => ui.Init());
         
         isComplete = false;
@@ -61,7 +61,7 @@ public class BaseWorking : MonoBehaviour
             if(Input.GetKeyDown(KeyCode.Space))
             {
                 MapManager.baseSystem.isInteracting = false;
-                Managers.UI.ClosePopupUI();
+                Managers.UIMng.ClosePopupUI();
                 StopAllCoroutines();
             }
             
@@ -73,6 +73,6 @@ public class BaseWorking : MonoBehaviour
         isComplete = true;
 
         MapManager.baseSystem.isInteracting = false;
-        Managers.UI.ClosePopupUI();           
+        Managers.UIMng.ClosePopupUI();           
     }
 }
