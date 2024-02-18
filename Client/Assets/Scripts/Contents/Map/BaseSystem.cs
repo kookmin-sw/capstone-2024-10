@@ -30,30 +30,30 @@ public class BaseSystem : MonoBehaviour
 
     private void FindElements()
     {
-        foreach (GameObject g in floors)
-        {
-            Transform motherRoom = Util.FindChild(g, "Rooms").transform;
-            Transform motherWall = Util.FindChild(g, "Walls").transform;
-            Transform motherDoor = Util.FindChild(g, "Doors").transform;
+        //foreach (GameObject g in floors)
+        //{
+        //    Transform motherRoom = Util.FindChild(g, "Rooms").transform;
+        //    Transform motherWall = Util.FindChild(g, "Walls").transform;
+        //    Transform motherDoor = Util.FindChild(g, "Doors").transform;
 
-            for (int i = 0; i < motherRoom.childCount; i++)
-            {
-                GameObject nowRoom = motherRoom.GetChild(i).gameObject;
-                rooms.Add(g.name + nowRoom.name, nowRoom.GetComponent<BaseRoom>());
-            }
+        //    for (int i = 0; i < motherRoom.childCount; i++)
+        //    {
+        //        GameObject nowRoom = motherRoom.GetChild(i).gameObject;
+        //        rooms.Add(g.name + nowRoom.name, nowRoom.GetComponent<BaseRoom>());
+        //    }
 
-            for (int i = 0; i < motherWall.childCount; i++)
-            {
-                GameObject nowWall = motherWall.GetChild(i).gameObject;
-                walls.Add(g.name + nowWall.name, nowWall.GetComponent<BaseWall>());
-            }
+        //    for (int i = 0; i < motherWall.childCount; i++)
+        //    {
+        //        GameObject nowWall = motherWall.GetChild(i).gameObject;
+        //        walls.Add(g.name + nowWall.name, nowWall.GetComponent<BaseWall>());
+        //    }
 
-            for (int i = 0; i < motherDoor.childCount; i++)
-            {
-                GameObject nowDoor = motherDoor.GetChild(i).gameObject;
-                doors.Add(g.name + nowDoor.name, nowDoor.GetComponent<BaseDoor>());
-            }
-        }
+        //    for (int i = 0; i < motherDoor.childCount; i++)
+        //    {
+        //        GameObject nowDoor = motherDoor.GetChild(i).gameObject;
+        //        doors.Add(g.name + nowDoor.name, nowDoor.GetComponent<BaseDoor>());
+        //    }
+        //}
     }
 
     private void SettingSystem()
