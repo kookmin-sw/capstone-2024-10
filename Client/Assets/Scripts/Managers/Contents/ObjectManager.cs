@@ -35,7 +35,7 @@ public class ObjectManager
 
     public Crew SpawnHero(int crewDataId)
     {
-	    string className = Managers.DataMng.HeroDataDict[crewDataId].Name;
+	    string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
 		GameObject go = Managers.ResourceMng.Instantiate($"{Define.CREW_PATH}/{className}");
 		Crew crew = go.GetComponent<Crew>();
 
@@ -50,7 +50,7 @@ public class ObjectManager
 
     public Alien SpawnMonster(int alienDataId)
     {
-	    string className = Managers.DataMng.MonsterDataDict[alienDataId].Name;
+	    string className = Managers.DataMng.AlienDataDict[alienDataId].Name;
 	    GameObject go = Managers.ResourceMng.Instantiate($"{Define.ALIEN_PATH}/{className}");
 	    Alien alien = go.GetComponent<Alien>();
 
@@ -68,7 +68,7 @@ public class ObjectManager
 	    Creature creature = null;
 		switch (creatureType)
 		{
-			case Define.CreatureType.Hero:
+			case Define.CreatureType.Crew:
 				creature = Crews[id];
 				Crews.Remove(id);
 				break;
@@ -96,9 +96,9 @@ public class ObjectManager
     public CreatureData GetCreatureDataWithDataId(int dataId)
     {
 	    CreatureData creatureData = null;
-	    if (Managers.DataMng.HeroDataDict.TryGetValue(dataId, out CrewData crewData))
+	    if (Managers.DataMng.CrewDataDict.TryGetValue(dataId, out CrewData crewData))
 		    creatureData = crewData;
-	    if (Managers.DataMng.MonsterDataDict.TryGetValue(dataId, out AlienData alienData))
+	    if (Managers.DataMng.AlienDataDict.TryGetValue(dataId, out AlienData alienData))
 		    creatureData = alienData;
 
 	    return creatureData;

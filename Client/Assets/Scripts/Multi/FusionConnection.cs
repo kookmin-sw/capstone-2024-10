@@ -8,24 +8,20 @@ using UnityEngine.UI;
 
 public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 {
-    public static FusionConnection instance;
-    public bool connectOnAwake = false;
-    [HideInInspector] public NetworkRunner runner;
-
-    [SerializeField] NetworkObject playerPrefab;
-
-    public string PlayerName = null;
-
+    public static FusionConnection Instance;
+    public NetworkRunner Runner { get; private set; }
+    public string PlayerName { get; private set; }
     public List<SessionInfo> Sessions = new List<SessionInfo>();
+    public NetworkObject Player { get; private set; }
+    private NetworkObject _playerPrefab;
 
     private void Awake()
     {
-        if (instance == null) { instance = this; }
+        if (Instance == null) { Instance = this; }
 
-        if (connectOnAwake == true)
-        {
-            ConnectToLobby("Anonymous");
-        }
+        _playerPrefab = Managers.ResourceMng.Load<NetworkObject>("Prefabs/Player");
+
+        DontDestroyOnLoad(gameObject);
     }
     
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
@@ -39,23 +35,24 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
     {
         PlayerName = playerName;
 
-        if (runner == null)
+        if (Runner == null)
         {
-            runner = gameObject.AddComponent<NetworkRunner>();
+            Runner = gameObject.AddComponent<NetworkRunner>();
         }
 
-        runner.JoinSessionLobby(SessionLobby.Shared);
-        Managers.UIMng.ShowSceneUI<UI_Lobby>();
+        Runner.JoinSessionLobby(SessionLobby.Shared);
     }
 
     public async void ConnectToSession(string sessionName)
     {
-        if (runner == null)
+        Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
+        
+        if (Runner == null)
         {
-            runner = gameObject.AddComponent<NetworkRunner>();
+            Runner = gameObject.AddComponent<NetworkRunner>();
         }
 
-        await runner.StartGame(new StartGameArgs()
+        await Runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.Shared,
             SessionName = sessionName,
@@ -74,14 +71,14 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
     public void OnConnectedToServer(NetworkRunner runner)
     {
         Debug.Log("OnConnectedToServer");
-        NetworkObject playerObject = runner.Spawn(playerPrefab, Vector3.zero);
+        Player = runner.Spawn(_playerPrefab, Vector3.zero);
 
-        runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+        runner.SetPlayerObject(runner.LocalPlayer, Player);
     }
 
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
     {
-        
+
     }
 
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)

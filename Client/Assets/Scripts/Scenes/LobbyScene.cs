@@ -8,8 +8,20 @@ public class LobbyScene : BaseScene
     {
         base.Init();
         SceneType = Define.SceneType.LobbyScene;
+    }
 
-        // Managers.UI.ShowSceneUI<UI_MainScene>();
+    private void Start()
+    {
+        Managers.UIMng.ShowSceneUI<UI_Lobby>();
+        string nickname = FusionConnection.Instance.PlayerName;
+        if (string.IsNullOrEmpty(nickname))
+        {
+            Managers.UIMng.ShowPopupUI<UI_Entry>();
+        }
+        else
+        {
+            FusionConnection.Instance.ConnectToLobby(nickname);
+        }
     }
 
     public override void Clear()

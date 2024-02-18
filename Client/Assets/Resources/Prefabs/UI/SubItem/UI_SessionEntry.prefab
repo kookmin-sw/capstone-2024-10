@@ -538,6 +538,7 @@ GameObject:
   - component: {fileID: 7359825834244149829}
   - component: {fileID: 8464030169219850363}
   - component: {fileID: 7219150293489992552}
+  - component: {fileID: 4175498999905872858}
   m_Layer: 5
   m_Name: UI_SessionEntry
   m_TagString: Untagged
@@ -618,8 +619,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 30
-    m_Right: 30
+    m_Left: 20
+    m_Right: 20
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
@@ -643,3 +644,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ddee96a785446244a52b537219c9910, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4175498999905872858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8638108422573225406}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: 70
+  m_PreferredWidth: -1
+  m_PreferredHeight: 90
+  m_FlexibleWidth: 1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 5

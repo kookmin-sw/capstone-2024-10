@@ -1,15 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using Fusion;
+using UnityEditor;
 
-public class UI_Entry : UI_Base
+public class UI_NameTag : UI_Base
 {
     #region UI 목록들
     public enum Buttons
     {
-        Submit,
     }
 
     public enum Images
@@ -18,32 +19,34 @@ public class UI_Entry : UI_Base
 
     public enum Texts
     {
+        Nickname,
     }
 
     public enum GameObjects
     {
-        NickName,
     }
     #endregion
+
+    public TMP_Text Nickname { get; private set; }
+    public Player Player { get; private set; }
 
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
 
-        Bind<Button>(typeof(Buttons));
-        Bind<Image>(typeof(Images));
         Bind<TMP_Text>(typeof(Texts));
-        Bind<GameObject>(typeof(GameObjects));
 
-        GetButton((int)Buttons.Submit).onClick.AddListener(SubmitName);
+        Nickname = GetText((int)Texts.Nickname);
+
+        Player = transform.parent.GetComponent<Player>();
+        Player.OnPlayerNameUpdate += () => Nickname.text = Player.PlayerName.Value;
 
         return true;
     }
 
-    public void SubmitName()
+    private void Update()
     {
-        string name = GetObject((int)GameObjects.NickName).GetComponent<TMP_InputField>().text;
-        FusionConnection.instance.ConnectToLobby(name);
+        Nickname.transform.LookAt(Camera.main.transform);
     }
 }
