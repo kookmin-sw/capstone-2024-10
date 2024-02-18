@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 using UnityEngine.Rendering;
-using static Define;
 
 
 public class Creature : NetworkBehaviour
@@ -14,12 +13,12 @@ public class Creature : NetworkBehaviour
 
     public ulong Id { get; set; }
     public int DataId { get; protected set; }
-    public CreatureType CreatureType { get; protected set; }
+    public Define.CreatureType CreatureType { get; protected set; }
     public Data.CreatureData CreatureData { get; protected set; }
     public CreatureStat CreatureStat { get; protected set; }
 
-    private CreatureState _creatureState;
-    public virtual CreatureState CreatureState
+    private Define.CreatureState _creatureState;
+    public virtual Define.CreatureState CreatureState
 
     {
         get => _creatureState;
@@ -48,7 +47,7 @@ public class Creature : NetworkBehaviour
     {
         DataId = templateID;
 
-        if (CreatureType == CreatureType.Crew)
+        if (CreatureType == Define.CreatureType.Crew)
             CreatureData = Managers.DataMng.CrewDataDict[templateID];
         else
             CreatureData = Managers.DataMng.AlienDataDict[templateID];
@@ -60,7 +59,7 @@ public class Creature : NetworkBehaviour
 
         //RigidBody.mass = CreatureData.Mass;
 
-        CreatureState = CreatureState.Idle;
+        CreatureState = Define.CreatureState.Idle;
     }
 
     #region Animation
@@ -68,16 +67,16 @@ public class Creature : NetworkBehaviour
     {
         switch (CreatureState)
         {
-            case CreatureState.Idle:
+            case Define.CreatureState.Idle:
                 PlayAnimation();
                 break;
-            case CreatureState.Move:
+            case Define.CreatureState.Move:
                 PlayAnimation();
                 break;
-            case CreatureState.Skill:
+            case Define.CreatureState.Skill:
                 PlayAnimation();
                 break;
-            case CreatureState.Dead:
+            case Define.CreatureState.Dead:
                 PlayAnimation();
                 break;
         }
@@ -99,16 +98,16 @@ public class Creature : NetworkBehaviour
         {
             switch (CreatureState)
             {
-                case CreatureState.Idle:
+                case Define.CreatureState.Idle:
                     UpdateIdle();
                     break;
-                case CreatureState.Move:
+                case Define.CreatureState.Move:
                     UpdateMove();
                     break;
-                case CreatureState.Skill:
+                case Define.CreatureState.Skill:
                     UpdateSkill();
                     break;
-                case CreatureState.Dead:
+                case Define.CreatureState.Dead:
                     UpdateDead();
                     break;
             }
@@ -153,7 +152,7 @@ public class Creature : NetworkBehaviour
 
     public void OnDead()
     {
-        CreatureState = CreatureState.Dead;
+        CreatureState = Define.CreatureState.Dead;
     }
     #endregion
 }

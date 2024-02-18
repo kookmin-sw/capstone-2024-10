@@ -1,7 +1,7 @@
 public static class Define
 {
     #region Type
-    public enum ECreatureType
+    public enum CreatureType
     {
         None,
         Crew,
@@ -52,7 +52,7 @@ public static class Define
     #endregion
 
     #region State
-    public enum ECreatureState
+    public enum CreatureState
     {
         Idle,
         Move,

@@ -63,16 +63,16 @@ public class ObjectManager
 	    return alien;
     }
 
-    public void Despawn(Define.ECreatureType eCreatureType, ulong id)
+    public void Despawn(Define.CreatureType creatureType, ulong id)
     {
 	    Creature creature = null;
-		switch (eCreatureType)
+		switch (creatureType)
 		{
-			case Define.ECreatureType.Hero:
+			case Define.CreatureType.Crew:
 				creature = Crews[id];
 				Crews.Remove(id);
 				break;
-			case Define.ECreatureType.Monster:
+			case Define.CreatureType.Monster:
 				creature = Crews[id];
 				Aliens.Remove(id);
 				break;
