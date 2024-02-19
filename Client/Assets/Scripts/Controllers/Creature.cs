@@ -46,7 +46,6 @@ public class Creature : NetworkBehaviour
         RigidBody = gameObject.GetOrAddComponent<Rigidbody2D>();
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
     public virtual void SetInfo(int templateID)
     {
         Transform.position = Vector3.zero;
@@ -141,7 +140,7 @@ public class Creature : NetworkBehaviour
     #endregion
 
     #region Event
-    [Rpc(RpcSources.All, RpcTargets.All)]
+
     public void OnDamaged(int damage)
     {
         CreatureStat.OnDamage(damage);
@@ -154,13 +153,11 @@ public class Creature : NetworkBehaviour
 
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
     public void OnDead()
     {
         CreatureState = Define.CreatureState.Dead;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
     public void OnMove(Vector3 vector)
     {
         Direction = vector.normalized;
