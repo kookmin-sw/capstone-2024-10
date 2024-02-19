@@ -6,29 +6,17 @@ using Fusion.Sockets;
 using System;
 using UnityEngine.UI;
 
-public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
+public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
-    public static FusionConnection Instance;
     public NetworkRunner Runner { get; private set; }
     public string PlayerName { get; private set; }
     public List<SessionInfo> Sessions = new List<SessionInfo>();
     public NetworkObject Player { get; private set; }
     private NetworkObject _playerPrefab;
 
-    private void Awake()
+    public void Init()
     {
-        if (Instance == null) { Instance = this; }
 
-        _playerPrefab = Managers.ResourceMng.Load<NetworkObject>("Prefabs/Player");
-
-        DontDestroyOnLoad(gameObject);
-    }
-    
-    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
-    {
-        Debug.Log("OnSessionListUpdated");
-        Sessions.Clear();
-        Sessions = sessionList;
     }
 
     public void ConnectToLobby(string playerName)
@@ -43,10 +31,17 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         Runner.JoinSessionLobby(SessionLobby.Shared);
     }
 
+    public void CreateSession()
+    {
+        int randomInt = UnityEngine.Random.Range(1000, 9999);
+        string randomSessionName = "Room-" + randomInt.ToString();
+        ConnectToSession(randomSessionName);
+    }
+
     public async void ConnectToSession(string sessionName)
     {
         Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
-        
+
         if (Runner == null)
         {
             Runner = gameObject.AddComponent<NetworkRunner>();
@@ -61,17 +56,18 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
         });
     }
 
-    public void CreateSession()
+    #region CallBack
+    public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
-        int randomInt = UnityEngine.Random.Range(1000, 9999);
-        string randomSessionName = "Room-" + randomInt.ToString();
-        ConnectToSession(randomSessionName);
+        Debug.Log("OnSessionListUpdated");
+        Sessions.Clear();
+        Sessions = sessionList;
     }
 
     public void OnConnectedToServer(NetworkRunner runner)
     {
         Debug.Log("OnConnectedToServer");
-        Player = runner.Spawn(_playerPrefab, Vector3.zero);
+        Player = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID);
 
         runner.SetPlayerObject(runner.LocalPlayer, Player);
     }
@@ -83,42 +79,42 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
     {
-        
+
     }
 
     public void OnCustomAuthenticationResponse(NetworkRunner runner, Dictionary<string, object> data)
     {
-        
+
     }
 
     public void OnDisconnectedFromServer(NetworkRunner runner, NetDisconnectReason reason)
     {
-        
+
     }
 
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken)
     {
-        
+
     }
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
     {
-        
+
     }
 
     public void OnInputMissing(NetworkRunner runner, PlayerRef player, NetworkInput input)
     {
-        
+
     }
 
     public void OnObjectEnterAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
     {
-        
+
     }
 
     public void OnObjectExitAOI(NetworkRunner runner, NetworkObject obj, PlayerRef player)
     {
-        
+
     }
 
     public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
@@ -128,37 +124,37 @@ public class FusionConnection : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-        
+
     }
 
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
     {
-        
+
     }
 
     public void OnReliableDataReceived(NetworkRunner runner, PlayerRef player, ReliableKey key, ArraySegment<byte> data)
     {
-        
+
     }
 
     public void OnSceneLoadDone(NetworkRunner runner)
     {
-        
+
     }
 
     public void OnSceneLoadStart(NetworkRunner runner)
     {
-        
+
     }
 
-    
     public void OnShutdown(NetworkRunner runner, ShutdownReason shutdownReason)
     {
-        
+
     }
 
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)
     {
-        
+
     }
+    #endregion
 }

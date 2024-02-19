@@ -13,7 +13,7 @@ public class Player : NetworkBehaviour
     {
         if (HasStateAuthority)
         {
-            PlayerName = FusionConnection.Instance.PlayerName;
+            PlayerName = Managers.NetworkMng.PlayerName;
         }
 
         yield return new WaitUntil(() => isActiveAndEnabled);
@@ -27,6 +27,6 @@ public class Player : NetworkBehaviour
 
     void Update()
     {
-        
+
     }
 }

@@ -1,22 +1,20 @@
 using System;
 using System.Collections.Generic;
 using Data;
+using Fusion;
 using UnityEngine;
 
 public class ObjectManager
 {
-	public Dictionary<ulong, Crew> Crews { get; protected set; }
-    public Dictionary<ulong, Alien> Aliens { get; protected set; }
+	public Dictionary<NetworkId, Crew> Crews { get; protected set; }
+    public Dictionary<NetworkId, Alien> Aliens { get; protected set; }
 
-    public ulong NextCrewId;
-    public ulong NextAlienId;
+    public NetworkObject Player { get; protected set; }
 
     public void Init()
     {
-	    Crews = new Dictionary<ulong, Crew>();
-	    Aliens = new Dictionary<ulong, Alien>();
-	    NextCrewId = 10000;
-	    NextAlienId = 20000;
+	    Crews = new Dictionary<NetworkId, Crew>();
+	    Aliens = new Dictionary<NetworkId, Alien>();
     }
 
     #region Roots
@@ -33,65 +31,37 @@ public class ObjectManager
     public Transform AlienRoot { get { return GetRootTransform("@Monsters"); } }
     #endregion
 
-    public Crew SpawnHero(int crewDataId)
+    public NetworkObject SpawnCrew(int crewDataId)
     {
 	    string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
-		GameObject go = Managers.ResourceMng.Instantiate($"{Define.CREW_PATH}/{className}");
-		Crew crew = go.GetComponent<Crew>();
+        NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREW_PATH}/{className}");
+        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
+        Player = no;
+        if (Camera.main != null)
+            Camera.main.GetComponent<CameraController>().Player = Player.transform;
 
-		//crew.SetInfo(crewDataId);
-		go.transform.position = Vector3.zero;
-		crew.transform.parent = CrewRoot;
-		//crew.Id = NextCrewId;
-		Crews[NextCrewId++] = crew;
+        Crew crew = no.GetComponent<Crew>();
+        crew.SetInfo(crewDataId);
 
-		return crew;
-	}
-
-    public Alien SpawnMonster(int alienDataId)
-    {
-	    string className = Managers.DataMng.AlienDataDict[alienDataId].Name;
-	    GameObject go = Managers.ResourceMng.Instantiate($"{Define.ALIEN_PATH}/{className}");
-	    Alien alien = go.GetComponent<Alien>();
-
-	    //alien.SetInfo(alienDataId);
-	    go.transform.position = Vector3.zero;
-	    alien.transform.parent = AlienRoot;
-	    //alien.Id = NextAlienId;
-	    Aliens[NextAlienId++] = alien;
-
-	    return alien;
+        return no;
     }
 
-    public void Despawn(Define.CreatureType creatureType, ulong id)
+    public NetworkObject SpawnAlien(int alienDataId)
     {
-	    Creature creature = null;
-		switch (creatureType)
-		{
-			case Define.CreatureType.Crew:
-				creature = Crews[id];
-				Crews.Remove(id);
-				break;
-			case Define.CreatureType.Monster:
-				creature = Crews[id];
-				Aliens.Remove(id);
-				break;
-		}
+        string className = Managers.DataMng.AlienDataDict[alienDataId].Name;
+        NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.ALIEN_PATH}/{className}");
+        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
 
-		if (creature != null)
-			Managers.ResourceMng.Destroy(creature.gameObject);
-	}
+        Alien alien = no.GetComponent<Alien>();
+        alien.SetInfo(alienDataId);
 
-    public Creature GetCreatureWithId(ulong id)
-    {
-	    Creature creature = null;
-	    if (Managers.ObjectMng.Crews.TryGetValue(id, out Crew crew))
-		    creature = crew;
-	    if (Managers.ObjectMng.Aliens.TryGetValue(id, out Alien alien))
-		    creature = alien;
-
-	    return creature;
+        return no;
     }
+
+    public void Despawn(NetworkObject no)
+    {
+        Managers.NetworkMng.Runner.Despawn(no);
+	}
 
     public CreatureData GetCreatureDataWithDataId(int dataId)
     {

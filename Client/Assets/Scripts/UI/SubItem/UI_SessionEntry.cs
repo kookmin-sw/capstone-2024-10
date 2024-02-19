@@ -73,7 +73,7 @@ public class UI_SessionEntry : UI_Base
 
     private void JoinSession()
     {
-        FusionConnection.Instance.ConnectToSession(GetText((int)Texts.RoomName).text);
+        Managers.NetworkMng.ConnectToSession(GetText((int)Texts.RoomName).text);
         _parent.gameObject.SetActive(false);
     }
 }

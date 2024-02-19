@@ -10,9 +10,9 @@ public abstract class CreatureStat
     public virtual void SetStat(Data.CreatureData creatureData)
     {
         Name = creatureData.Name;
-        Hp = creatureData.Hp;
-        MaxHp = creatureData.Hp;
-        Speed = creatureData.Speed;
+        //Hp = creatureData.Hp;
+        //MaxHp = creatureData.Hp;
+        //Speed = creatureData.Speed;
     }
 
     public void OnDamage(int damage)

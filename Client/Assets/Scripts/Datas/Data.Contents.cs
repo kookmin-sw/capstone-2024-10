@@ -12,8 +12,6 @@ namespace Data
     {
         public int DataId;
         public string Name;
-        public int Hp;
-        public int Speed;
 
     }
     #endregion

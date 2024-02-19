@@ -44,7 +44,7 @@ public class UI_Entry : UI_Popup
     public void SubmitName()
     {
         string name = GetObject((int)GameObjects.NickName).GetComponent<TMP_InputField>().text;
-        FusionConnection.Instance.ConnectToLobby(name);
+        Managers.NetworkMng.ConnectToLobby(name);
         Managers.UIMng.ClosePopupUI(this);
     }
 }

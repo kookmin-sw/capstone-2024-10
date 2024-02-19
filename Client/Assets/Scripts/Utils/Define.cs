@@ -5,7 +5,7 @@ public static class Define
     {
         None,
         Crew,
-        Monster,
+        Alien,
     }
 
     public enum ItemType
@@ -105,17 +105,18 @@ public static class Define
 
     // DataId는 나중에 Json으로 관리
     #region DataId
-    public const int CREW_AAAA_ID = 101000;
+    public const int CREW_CREWA_ID = 101000;
+    public const int CREW_CREWB_ID = 101001;
 
-    public const int ALIEN_BBBB_ID = 102000;
+    public const int ALIEN_STALKER_ID = 102000;
 
-    public const int ITEM_CCCC_ID = 201000;
+    public const int ITEM_ITEMA_ID = 201000;
 
-    public const int SKILL_DDDD_ID = 401000;
+    public const int SKILL_DDDD_ID = 202000;
     #endregion
 
     #region Path
-    public const string CREW_PATH = "Crews";
+    public const string CREW_PATH = "Prefabs/Crews";
     public const string ALIEN_PATH = "Aliens";
     #endregion
 

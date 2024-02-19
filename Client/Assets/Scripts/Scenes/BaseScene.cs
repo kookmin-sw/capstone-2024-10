@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
-using Object = UnityEngine.Object;
 
-// 모든 Scene의 조상 클래스
 public abstract class BaseScene : MonoBehaviour
 {
     public Define.SceneType SceneType { get; protected set; }
@@ -20,6 +18,7 @@ public abstract class BaseScene : MonoBehaviour
     protected virtual void Init()
     {
         // TODO - TEST CODE: 나중에는 최초 Scene에서만 실행
+        Managers.NetworkMng.Init();
         Managers.InputMng.Init();
         Managers.DataMng.Init();
         Managers.SoundMng.Init();

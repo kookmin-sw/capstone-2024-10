@@ -35,7 +35,7 @@ public class UI_Lobby : UI_Scene
     #endregion
 
     TMP_InputField _input;
-    
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -63,13 +63,13 @@ public class UI_Lobby : UI_Scene
             Destroy(child.gameObject);
         }
 
-        foreach (SessionInfo session in FusionConnection.Instance.Sessions)
+        foreach (SessionInfo session in Managers.NetworkMng.Sessions)
         {
             if (session.IsVisible)
             {
                 var entry = Managers.UIMng.MakeSubItem<UI_SessionEntry>(GetObject((int)GameObjects.RoomContent).transform);
-                var args = new SessionEntryArgs() 
-                { 
+                var args = new SessionEntryArgs()
+                {
                     session = session
                 };
                 StartCoroutine(entry.SetInfo(this, args));
@@ -92,7 +92,7 @@ public class UI_Lobby : UI_Scene
 
     void CreateGame()
     {
-        FusionConnection.Instance.CreateSession();
+        Managers.NetworkMng.CreateSession();
         Destroy(gameObject);
     }
 

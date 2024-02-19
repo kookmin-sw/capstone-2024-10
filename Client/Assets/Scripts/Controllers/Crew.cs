@@ -1,11 +1,80 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Fusion;
+using Data;
 using UnityEngine;
 
 public class Crew : Creature
 {
+    public CrewData CrewData => CreatureData as CrewData;
+
+    public override void SetInfo(int templateID)
+    {
+        CreatureType = Define.CreatureType.Crew;
+        Transform.parent = Managers.ObjectMng.CrewRoot;
+
+        base.SetInfo(templateID);
+
+        if (Camera.main != null)
+            Camera.main.GetComponent<CameraController>().Player = transform;
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        base.FixedUpdateNetwork();
+
+        HandleKeyDown();
+    }
+
+    private void HandleKeyDown()
+    {
+        Vector3 dir = Vector3.zero;
+        if (Input.GetKey(KeyCode.W))
+        {
+            dir += Vector3.forward;
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            dir += Vector3.back;
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            dir += Vector3.left;
+        }
+        if (Input.GetKey(KeyCode.D))
+        {
+            dir += Vector3.right;
+        }
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            // TODO
+        }
+
+        if (dir == Vector3.zero)
+            return;
+
+        Direction = dir.normalized;
+        CreatureState = Define.CreatureState.Move;
+    }
+
+    #region Update
+    protected override void UpdateIdle()
+    {
+    }
+
+    protected override void UpdateMove()
+    {
+    }
+
+    protected override void UpdateUseItem()
+    {
+    }
+
+    protected override void UpdateDead()
+    {
+    }
+    #endregion
+
+    #region Temp
+    /*
     float currentSpeed = 0;    //현재 속도
 
     float sitSpeed = 0;    //앉는 속도
@@ -218,5 +287,6 @@ public class Crew : Creature
             _animator.SetBool("IsDeath", true);
         }
     }
-
+    */
+    #endregion
 }
