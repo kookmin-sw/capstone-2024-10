@@ -44,6 +44,7 @@ public class Creature : NetworkBehaviour
         Transform = gameObject.GetOrAddComponent<Transform>();
         Collider = gameObject.GetOrAddComponent<CircleCollider2D>();
         RigidBody = gameObject.GetOrAddComponent<Rigidbody2D>();
+        NetworkObject = gameObject.GetOrAddComponent<NetworkObject>();
     }
 
     public virtual void SetInfo(int templateID)
@@ -67,7 +68,7 @@ public class Creature : NetworkBehaviour
 
         CreatureState = Define.CreatureState.Idle;
 
-        StartCoroutine("CoUpdateAI");
+        // StartCoroutine("CoUpdateAI");
     }
 
     public override void FixedUpdateNetwork()

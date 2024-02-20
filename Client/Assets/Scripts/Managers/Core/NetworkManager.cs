@@ -12,7 +12,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public string PlayerName { get; private set; }
     public List<SessionInfo> Sessions = new List<SessionInfo>();
     public NetworkObject Player { get; private set; }
-    private NetworkObject _playerPrefab;
 
     public void Init()
     {
@@ -25,7 +24,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
         if (Runner == null)
         {
-            Runner = gameObject.AddComponent<NetworkRunner>();
+            Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
         }
 
         Runner.JoinSessionLobby(SessionLobby.Shared);
@@ -44,7 +43,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
         if (Runner == null)
         {
-            Runner = gameObject.AddComponent<NetworkRunner>();
+            Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
         }
 
         await Runner.StartGame(new StartGameArgs()
@@ -52,7 +51,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             GameMode = GameMode.Shared,
             SessionName = sessionName,
             PlayerCount = Define.PLAYER_COUNT,
-            SceneManager = gameObject.AddComponent<NetworkSceneManagerDefault>()
+            SceneManager = Managers.Instance.gameObject.AddComponent<NetworkSceneManagerDefault>()
         });
     }
 

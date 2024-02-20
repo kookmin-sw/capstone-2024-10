@@ -1,3 +1,4 @@
+using Fusion;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -30,8 +31,10 @@ public class CameraController : MonoBehaviour
         CurrentAngle += mouseX * RotationSpeed;
         CurrentAngle = Mathf.Repeat(CurrentAngle, 360f); // 각도를 0부터 360도 사이로 유지
 
-        UpdateCameraPosition();
-
+        if (Managers.NetworkMng.Player != null)
+        {
+            UpdateCameraPosition();
+        }
     }
 
     void UpdateCameraPosition()

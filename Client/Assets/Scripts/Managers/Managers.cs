@@ -5,7 +5,7 @@ using UnityEngine;
 public class Managers : MonoBehaviour
 {
     static Managers s_instance;
-    static Managers Instance { get { Init(); return s_instance; } }
+    static public Managers Instance { get { Init(); return s_instance; } }
 
     #region Contents
     private GameManagerEX _gameMng = new GameManagerEX();
@@ -23,7 +23,7 @@ public class Managers : MonoBehaviour
     private SceneManagerEx _sceneMng = new SceneManagerEx();
     private SoundManager _soundMng = new SoundManager();
     private UIManager _uiMng = new UIManager();
-    private NetworkManager _networkMng = new NetworkManager();
+    private NetworkManager _networkMng;
 
     public static DataManager DataMng => Instance._dataMng;
     public static InputManager InputMng => Instance._inputMng;
@@ -48,6 +48,7 @@ public class Managers : MonoBehaviour
 
             DontDestroyOnLoad(go);
             s_instance = go.GetComponent<Managers>();
+            s_instance._networkMng = go.GetComponent<NetworkManager>();
         }
     }
 
