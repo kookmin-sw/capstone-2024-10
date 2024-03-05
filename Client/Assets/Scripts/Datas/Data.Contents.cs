@@ -1,8 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Data
 {
@@ -12,7 +9,7 @@ namespace Data
     {
         public int DataId;
         public string Name;
-
+        public float Speed;
     }
     #endregion
 
@@ -21,10 +18,11 @@ namespace Data
     [Serializable]
     public class CrewData : CreatureData
     {
+        public int Hp;
     }
 
     [Serializable]
-    public class CrewDataLoader : IData<int, CrewData>
+    public class CrewDataLoader : ILoader<int, CrewData>
     {
         public List<CrewData> crews = new List<CrewData>();
 
@@ -46,10 +44,11 @@ namespace Data
     [Serializable]
     public class AlienData : CreatureData
     {
+        public int Damage;
     }
 
     [Serializable]
-    public class AlienDataLoader : IData<int, AlienData>
+    public class AlienDataLoader : ILoader<int, AlienData>
     {
         public List<AlienData> aliens = new List<AlienData>();
 
@@ -75,7 +74,7 @@ namespace Data
     }
 
     [Serializable]
-    public class ItemDataLoader : IData<int, ItemData>
+    public class ItemDataLoader : ILoader<int, ItemData>
     {
         public List<ItemData> items = new List<ItemData>();
 

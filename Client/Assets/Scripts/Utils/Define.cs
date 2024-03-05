@@ -56,13 +56,18 @@ public static class Define
     {
         Idle,
         Move,
-        Skill,
+        UseItem,
+        UseSkill,
         Dead,
     }
 
     public enum AnimState
     {
-
+        Idle,
+        Move,
+        UseItem,
+        UseSkill,
+        Dead,
     }
 
     #endregion
@@ -83,6 +88,23 @@ public static class Define
         PointerUp,
         Click,
     }
+    #endregion
+
+    #region NonContent
+    public enum Layer
+    {
+        Ground = 6,
+        Block = 7,
+        Monster = 8,
+        Player = 9,
+    }
+
+    public enum CameraMode
+    {
+        QuarterView,
+    }
+
+    public const int PLAYER_COUNT = 3;
     #endregion
 
     // Name은 나중에 Json으로 관리
@@ -111,29 +133,14 @@ public static class Define
     public const int ALIEN_STALKER_ID = 102000;
 
     public const int ITEM_ITEMA_ID = 201000;
-
-    public const int SKILL_DDDD_ID = 202000;
     #endregion
 
     #region Path
     public const string CREW_PATH = "Prefabs/Crews";
-    public const string ALIEN_PATH = "Aliens";
+    public const string ALIEN_PATH = "Prefabs/Aliens";
     #endregion
 
-    #region NonContent
-    public enum Layer
-    {
-        Ground = 6,
-        Block = 7,
-        Monster = 8,
-        Player = 9,
-    }
-
-    public enum CameraMode
-    {
-        QuarterView,
-    }
-
-    public const int PLAYER_COUNT = 3;
+    #region Value
+    public const float GRAVITY_VALUE = -9.81f;
     #endregion
 }

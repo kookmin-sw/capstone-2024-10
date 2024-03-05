@@ -6,7 +6,7 @@ using System.Net;
 using UnityEngine;
 
 [Serializable]
-public class GameData
+public class SaveData
 {
     public string playerId = "player";
 }
@@ -16,64 +16,41 @@ public class GameData
 /// </summary>
 public class GameManagerEX
 {
-    GameObject _player;
-    public Action<int> OnSpawnEvent;
-    GameData _gameData = new GameData();
+    public SaveData SaveData { get; protected set; }
 
-    public GameData SaveData { get { return _gameData; } set { _gameData = value; } }
+    public string SAVEDATA_PATH;
 
     public void Init()
     {
-        _path = Path.Combine(Application.persistentDataPath, "/SaveData.json");
+        SAVEDATA_PATH = Path.Combine(Application.persistentDataPath, "/SaveData.json");
 
         if (SaveData == null)
         {
-            SaveData = new GameData();
+            SaveData = new SaveData();
         }
     }
 
-    #region Spawn & Despawn
-    private HashSet<int> _objectRegistry = new HashSet<int>();
-
-    public int GenerateID()
-    {
-        int Id = UnityEngine.Random.Range(1, int.MaxValue);
-        while (_objectRegistry.Contains(Id))
-            Id = UnityEngine.Random.Range(1, int.MaxValue);
-        _objectRegistry.Add(Id);
-        return Id;
-    }
-
-    public void DeleteID(int id)
-    {
-        _objectRegistry.Remove(id);
-    }
-    #endregion
-
-
     #region Save & Load
-    public string _path;
-
     public void SaveGame()
     {
         string jsonStr = JsonUtility.ToJson(Managers.GameMng.SaveData);
-        File.WriteAllText(_path, jsonStr);
-        Debug.Log($"Save Game Completed : {_path}");
+        File.WriteAllText(SAVEDATA_PATH, jsonStr);
+        Debug.Log($"Save Game Completed : {SAVEDATA_PATH}");
     }
 
     public bool LoadGame()
     {
-        if (File.Exists(_path) == false)
+        if (File.Exists(SAVEDATA_PATH) == false)
             return false;
 
-        string fileStr = File.ReadAllText(_path);
-        GameData data = JsonUtility.FromJson<GameData>(fileStr);
+        string fileStr = File.ReadAllText(SAVEDATA_PATH);
+        SaveData data = JsonUtility.FromJson<SaveData>(fileStr);
         if (data != null)
         {
             Managers.GameMng.SaveData = data;
         }
 
-        Debug.Log($"Save Game Loaded : {_path}");
+        Debug.Log($"Save Game Loaded : {SAVEDATA_PATH}");
         return true;
     }
 

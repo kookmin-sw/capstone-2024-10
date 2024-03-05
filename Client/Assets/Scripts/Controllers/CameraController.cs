@@ -1,12 +1,7 @@
 using Fusion;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
-using UnityEngine.Serialization;
 
-public class CameraController : MonoBehaviour
+public class CameraController : NetworkBehaviour
 {
     public Transform Player { get; set; }
     public float RotationSpeed { get; protected set; }

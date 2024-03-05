@@ -1,26 +1,26 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
+using Fusion.Addons.SimpleKCC;
 using UnityEngine;
-using UnityEngine.Rendering;
-
 
 public class Creature : NetworkBehaviour
 {
-    public NetworkObject NetworkObject { get; protected set; }
+    #region Field
+    public Camera Camera => Camera.main;
+
     public Transform Transform { get; protected set; }
     public CircleCollider2D Collider { get; protected set; }
     public Rigidbody2D RigidBody { get; protected set; }
-
-    public NetworkId Id { get; set; }
-    public int DataId { get; protected set; }
-    public Define.CreatureType CreatureType { get; protected set; }
-    public Data.CreatureData CreatureData { get; protected set; }
+    public NetworkObject NetworkObject { get; protected set; }
+    public NetworkMecanimAnimator NetworkAnim { get; protected set; }
+    public SimpleKCC KCC { get; protected set; }
     public CreatureStat CreatureStat { get; protected set; }
 
+    public int DataId { get; protected set; }
+    public Data.CreatureData CreatureData { get; protected set; }
+    [Networked] public Define.CreatureType CreatureType { get; protected set; }
+
     private Define.CreatureState _creatureState;
-    public Define.CreatureState CreatureState
+    [Networked] public Define.CreatureState CreatureState
     {
         get => _creatureState;
         set
@@ -32,9 +32,16 @@ public class Creature : NetworkBehaviour
             }
         }
     }
-    public Vector3 Direction { get; protected set; }
+
+    [Networked] public Vector3 Velocity { get; protected set; }
+    #endregion
 
     private void Awake()
+    {
+        //Init();
+    }
+
+    public override void Spawned()
     {
         Init();
     }
@@ -45,12 +52,16 @@ public class Creature : NetworkBehaviour
         Collider = gameObject.GetOrAddComponent<CircleCollider2D>();
         RigidBody = gameObject.GetOrAddComponent<Rigidbody2D>();
         NetworkObject = gameObject.GetOrAddComponent<NetworkObject>();
+        NetworkAnim = gameObject.GetOrAddComponent<NetworkMecanimAnimator>();
+        KCC = gameObject.GetOrAddComponent<SimpleKCC>();
+
+        CreatureStat = gameObject.GetOrAddComponent<CreatureStat>();
     }
 
-    public virtual void SetInfo(int templateID)
+    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
+    public virtual void Rpc_SetInfo(int templateID)
     {
         Transform.position = Vector3.zero;
-        Id = NetworkObject.Id;
         DataId = templateID;
 
         if (CreatureType == Define.CreatureType.Crew)
@@ -68,10 +79,71 @@ public class Creature : NetworkBehaviour
 
         CreatureState = Define.CreatureState.Idle;
 
-        // StartCoroutine("CoUpdateAI");
+        if (Camera != null)
+            Camera.GetComponent<CameraController>().Player = transform;
     }
 
     public override void FixedUpdateNetwork()
+    {
+        if (HasStateAuthority == false)
+        {
+            return;
+        }
+
+        HandleKeyDown();
+        UpdateByState();
+    }
+
+    #region Animation
+    protected void UpdateAnimation()
+    {
+        switch (CreatureState)
+        {
+            case Define.CreatureState.Idle:
+                //NetworkAnim.SetTrigger();
+                break;
+            case Define.CreatureState.Move:
+                //NetworkAnim.SetTrigger();
+                break;
+            case Define.CreatureState.UseItem:
+                //NetworkAnim.SetTrigger();
+                break;
+            case Define.CreatureState.UseSkill:
+                //NetworkAnim.SetTrigger();
+                break;
+            case Define.CreatureState.Dead:
+                //NetworkAnim.SetTrigger();
+                break;
+        }
+    }
+    #endregion
+
+    #region Input
+    protected virtual void HandleKeyDown()
+    {
+        Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
+
+        Vector3 velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * CreatureStat.Speed;
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            // TODO
+        }
+
+        if (velocity == Vector3.zero)
+        {
+            CreatureState = Define.CreatureState.Idle;
+            return;
+        }
+
+        Velocity = velocity;
+        CreatureState = Define.CreatureState.Move;
+    }
+    #endregion
+
+    #region Update
+
+    protected void UpdateByState()
     {
         switch (CreatureState)
         {
@@ -81,42 +153,14 @@ public class Creature : NetworkBehaviour
             case Define.CreatureState.Move:
                 UpdateMove();
                 break;
-            case Define.CreatureState.Skill:
-                UpdateSkill();
+            case Define.CreatureState.UseSkill:
+                UpdateUseSkill();
                 break;
             case Define.CreatureState.Dead:
                 UpdateDead();
                 break;
         }
     }
-
-    #region Animation
-    protected void UpdateAnimation()
-    {
-        switch (CreatureState)
-        {
-            case Define.CreatureState.Idle:
-                PlayAnimation();
-                break;
-            case Define.CreatureState.Move:
-                PlayAnimation();
-                break;
-            case Define.CreatureState.Skill:
-                PlayAnimation();
-                break;
-            case Define.CreatureState.Dead:
-                PlayAnimation();
-                break;
-        }
-    }
-
-    public void PlayAnimation()
-    {
-
-    }
-    #endregion
-
-    #region Update
 
     protected virtual void UpdateIdle()
     {
@@ -126,7 +170,7 @@ public class Creature : NetworkBehaviour
     {
     }
 
-    protected virtual void UpdateSkill()
+    protected virtual void UpdateUseSkill()
     {
     }
 
@@ -141,27 +185,9 @@ public class Creature : NetworkBehaviour
     #endregion
 
     #region Event
-
-    public void OnDamaged(int damage)
-    {
-        CreatureStat.OnDamage(damage);
-
-        if (CreatureStat.Hp <= 0)
-        {
-            OnDead();
-            return;
-        }
-
-    }
-
-    public void OnDead()
-    {
-        CreatureState = Define.CreatureState.Dead;
-    }
-
     public void OnMove(Vector3 vector)
     {
-        Direction = vector.normalized;
+        Velocity = vector.normalized;
         CreatureState = Define.CreatureState.Move;
     }
     #endregion

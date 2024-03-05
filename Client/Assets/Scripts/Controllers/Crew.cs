@@ -3,57 +3,18 @@ using UnityEngine;
 
 public class Crew : Creature
 {
+    #region Field
     public CrewData CrewData => CreatureData as CrewData;
+    public CrewStat CrewStatus => (CrewStat)CreatureStat;
 
-    public override void SetInfo(int templateID)
+    public override void Rpc_SetInfo(int templateID)
     {
         CreatureType = Define.CreatureType.Crew;
         Transform.parent = Managers.ObjectMng.CrewRoot;
 
-        base.SetInfo(templateID);
-
-        if (Camera.main != null)
-            Camera.main.GetComponent<CameraController>().Player = transform;
+        base.Rpc_SetInfo(templateID);
     }
-
-    public override void FixedUpdateNetwork()
-    {
-        base.FixedUpdateNetwork();
-
-        HandleKeyDown();
-    }
-
-    private void HandleKeyDown()
-    {
-        Vector3 dir = Vector3.zero;
-        if (Input.GetKey(KeyCode.W))
-        {
-            dir += Vector3.forward;
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            dir += Vector3.back;
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            dir += Vector3.left;
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            dir += Vector3.right;
-        }
-
-        if (Input.GetKey(KeyCode.C))
-        {
-            // TODO
-        }
-
-        if (dir == Vector3.zero)
-            return;
-
-        Direction = dir.normalized;
-        CreatureState = Define.CreatureState.Move;
-    }
+    #endregion
 
     #region Update
     protected override void UpdateIdle()
@@ -62,6 +23,11 @@ public class Crew : Creature
 
     protected override void UpdateMove()
     {
+        KCC.Move(Velocity, 0f);
+
+        Vector3 dir = Velocity;
+        dir.y = 0;
+        Transform.forward = dir;
     }
 
     protected override void UpdateUseItem()
@@ -73,7 +39,26 @@ public class Crew : Creature
     }
     #endregion
 
-    #region Temp
+    #region Event
+    public void OnDamaged(int damage)
+    {
+        CrewStatus.OnDamage(damage);
+
+        if (CrewStatus.Hp <= 0)
+        {
+            OnDead();
+            return;
+        }
+    }
+
+    public void OnDead()
+    {
+        CreatureState = Define.CreatureState.Dead;
+    }
+    #endregion
+
+
+    #region Legacy
     /*
     float currentSpeed = 0;    //현재 속도
 
