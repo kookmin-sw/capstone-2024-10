@@ -106,8 +106,6 @@ public static class Define
     {
         QuarterView,
     }
-
-    public const int PLAYER_COUNT = 3;
     #endregion
 
     // Name은 나중에 Json으로 관리
