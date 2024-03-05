@@ -1,3 +1,5 @@
+using System.Numerics;
+
 public static class Define
 {
     #region Type
@@ -23,6 +25,7 @@ public static class Define
         UnknownScene,
         LobbyScene,
         GameScene,
+        Map_JSJ,
     }
 
     // public enum SoundType
@@ -109,19 +112,19 @@ public static class Define
 
     // Name은 나중에 Json으로 관리
     #region Name
-    public enum AreaName
-    {
-        Forest,
-    }
-
     public enum MonsterName
     {
-        Slime,
+        
     }
 
     public enum ItemName
     {
-        Sword,
+        
+    }
+
+    public enum SectorName
+    {
+
     }
     #endregion
 
@@ -141,6 +144,11 @@ public static class Define
     #endregion
 
     #region Value
+    public const int PLAYER_COUNT = 3;
+    public const float PLAYER_SPAWN_POSITION_X = 20f;
+    public const float PLAYER_SPAWN_POSITION_Y = 0.3f;
+    public const float PLAYER_SPAWN_POSITION_Z = 10f;
+  
     public const float GRAVITY_VALUE = -9.81f;
     #endregion
 }

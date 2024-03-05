@@ -23,6 +23,7 @@ public class Managers : MonoBehaviour
     private SceneManagerEx _sceneMng = new SceneManagerEx();
     private SoundManager _soundMng = new SoundManager();
     private UIManager _uiMng = new UIManager();
+    private MapManager _mapMng = new MapManager();
     private NetworkManager _networkMng;
 
     public static DataManager DataMng => Instance._dataMng;
@@ -33,6 +34,7 @@ public class Managers : MonoBehaviour
     public static SoundManager SoundMng => Instance._soundMng;
     public static UIManager UIMng => Instance._uiMng;
     public static NetworkManager NetworkMng => Instance._networkMng;
+    public static MapManager MapMng => Instance._mapMng;
     #endregion
 
     static void Init()

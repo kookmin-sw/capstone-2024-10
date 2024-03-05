@@ -41,15 +41,15 @@ public class UI_WorkingBar : UI_Popup
         return true;
     }
 
-    public void CalculateBar(BaseWorking myself)
+    public void CalculateBar(WorkStation myself)
     {        
-        float ratio = GetImage((int)Images.Background).rectTransform.sizeDelta.x / myself.requiredTime;
+        //float ratio = GetImage((int)Images.Background).rectTransform.sizeDelta.x / myself.requiredTime;
 
-        Vector2 size = new Vector2(ratio * myself.workingTime, GetImage((int)Images.Background).rectTransform.sizeDelta.y);
-        Vector2 pos = new Vector2(size.x * 0.5f, 0);
+        //Vector2 size = new Vector2(ratio * myself.workingTime, GetImage((int)Images.Background).rectTransform.sizeDelta.y);
+        //Vector2 pos = new Vector2(size.x * 0.5f, 0);
 
-        GetImage((int)Images.ProgressBar).rectTransform.sizeDelta = size;
-        GetImage((int)Images.ProgressBar).rectTransform.anchoredPosition = pos;
+        //GetImage((int)Images.ProgressBar).rectTransform.sizeDelta = size;
+        //GetImage((int)Images.ProgressBar).rectTransform.anchoredPosition = pos;
 
     }
 }

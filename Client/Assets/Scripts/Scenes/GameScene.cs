@@ -14,7 +14,7 @@ public class GameScene : BaseScene
         SceneType = Define.SceneType.GameScene;
 
         Managers.ResourceMng.Instantiate("Camera");
-
+        Managers.MapMng.Init();
         //UI 세팅
         // Managers.UI.ShowSceneUI<UI_MainScene>();
     }

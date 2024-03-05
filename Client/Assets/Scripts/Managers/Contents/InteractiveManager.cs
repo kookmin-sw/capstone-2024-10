@@ -9,7 +9,7 @@ public class InteractiveManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) && !MapManager.baseSystem.isInteracting)
+        if(Input.GetKeyDown(KeyCode.Space))
         {
             if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out hit, maxDistance:15.0f))
             {
@@ -19,7 +19,7 @@ public class InteractiveManager : MonoBehaviour
 
                     if (!detectedObject.parent.TryGetComponent(out IInteractable interactable)) { interactable = detectedObject.GetComponent<IInteractable>(); }
 
-                    StartCoroutine(interactable.Interact());
+                    interactable.Interact();
                 }
             }
         }

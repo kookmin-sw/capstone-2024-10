@@ -32,7 +32,7 @@ public class UI_ElectricPanel : UI_Popup
 
     private List<GameObject> floors = new List<GameObject>();
 
-    private BaseWorking baseWorking;
+    private WorkStation _workStation;
 
     public override bool Init()
     {
@@ -43,80 +43,67 @@ public class UI_ElectricPanel : UI_Popup
         Bind<TMP_Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
 
-        gameObject.AddComponent<GraphicRaycaster>();
+        //gameObject.AddComponent<GraphicRaycaster>();
 
-        baseWorking = GetComponent<BaseWorking>();
-
-        floors.Add(GetObject((int)GameObjects.First_Floor));
-        floors.Add(GetObject((int)GameObjects.Second_Floor));
-        SetupButtons();
-
-        GetObject((int)GameObjects.First_Floor).SetActive(true);
-        GetObject((int)GameObjects.Second_Floor).SetActive(false);
 
         return true;
     }
 
     private void SetupButtons()
     {
-        foreach (GameObject nowFloor in floors)
-        {
-            for (int i = 0; i < nowFloor.transform.GetChild(0).childCount; i++)
-            {
-                nowFloor.transform.GetChild(0).GetChild(i).TryGetComponent(out ElectricsystemButton nowButton);
-                if (nowButton == null) { continue; }
+        //foreach (GameObject nowFloor in floors)
+        //{
+        //    for (int i = 0; i < nowFloor.transform.GetChild(0).childCount; i++)
+        //    {
+        //        nowFloor.transform.GetChild(0).GetChild(i).TryGetComponent(out ElectricsystemButton nowButton);
+        //        if (nowButton == null) { continue; }
 
-                switch(nowButton.buttonType)
-                {
-                    case ElectricsystemButton.ButtonType.room:
-                        MapManager.baseSystem.rooms.TryGetValue
-                            (nowFloor.name + nowButton.gameObject.name, out BaseRoom baseRoom);
-                        nowButton.inChargeRoom = baseRoom;
-                        break;
+        //        switch(nowButton.buttonType)
+        //        {
+        //            case ElectricsystemButton.ButtonType.room:
+        //                MapManager.baseSystem.rooms.TryGetValue
+        //                    (nowFloor.name + nowButton.gameObject.name, out Sector baseRoom);
+        //                nowButton.inChargeRoom = baseRoom;
+        //                break;
 
-                    case ElectricsystemButton.ButtonType.door:
-                        MapManager.baseSystem.doors.TryGetValue
-                            (nowFloor.name + nowButton.gameObject.name, out BaseDoor baseDoor);
-                        nowButton.inChargeDoor = baseDoor;
-                        break;
-                }
+        //            case ElectricsystemButton.ButtonType.door:
+        //                MapManager.baseSystem.doors.TryGetValue
+        //                    (nowFloor.name + nowButton.gameObject.name, out Gate baseDoor);
+        //                nowButton.inChargeDoor = baseDoor;
+        //                break;
+        //        }
 
-                if(nowButton.isOn) { nowButton.GetComponent<Image>().color = Color.green; }
-                else { nowButton.GetComponent<Image>().color = Color.red; }
+        //        if(nowButton.isOn) { nowButton.GetComponent<Image>().color = Color.green; }
+        //        else { nowButton.GetComponent<Image>().color = Color.red; }
 
-                nowButton.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(SelectSegment(nowButton)));
-            }
-        }
+        //        nowButton.GetComponent<Button>().onClick.AddListener(() => StartCoroutine(SelectSegment(nowButton)));
+        //    }
+        //}
     }
 
-    public void Test()
-    {
-        Debug.Log("afasdfasfdqa");
-    }
+    //public IEnumerator SelectSegment(ElectricsystemButton buttonSelf)
+    //{
+    //    if (!buttonSelf.isOn)
+    //    {
+    //        yield return StartCoroutine(_workStation.Work());
 
-    public IEnumerator SelectSegment(ElectricsystemButton buttonSelf)
-    {
-        if (!buttonSelf.isOn)
-        {
-            yield return StartCoroutine(baseWorking.Working());
+    //        if(_workStation.isComplete) 
+    //        { 
+    //            buttonSelf.ChangeIsOn();
 
-            if(baseWorking.isComplete) 
-            { 
-                buttonSelf.ChangeIsOn();
-
-                if (buttonSelf.isOn) { buttonSelf.GetComponent<Image>().color = Color.green; }
-                else { buttonSelf.GetComponent<Image>().color = Color.red; }
-            }
-        }
-    }
+    //            if (buttonSelf.isOn) { buttonSelf.GetComponent<Image>().color = Color.green; }
+    //            else { buttonSelf.GetComponent<Image>().color = Color.red; }
+    //        }
+    //    }
+    //}
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            baseWorking.StopAllCoroutines();
-            StopAllCoroutines();
-            Managers.UIMng.CloseAllPopupUI();
-        }
+        //if(Input.GetKeyDown(KeyCode.Escape))
+        //{
+        //    _workStation.StopAllCoroutines();
+        //    StopAllCoroutines();
+        //    Managers.UIMng.CloseAllPopupUI();
+        //}
     }
 }

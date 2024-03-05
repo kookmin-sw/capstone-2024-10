@@ -22,8 +22,7 @@ public class UI_InGame : UI_Scene
 
     public enum GameObjects
     {
-        //Electric_Control,
-        //ShowLongWork,
+       
     }
 
 
@@ -35,10 +34,7 @@ public class UI_InGame : UI_Scene
         Bind<Image>(typeof(Images));
         Bind<TMP_Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
-        /*
-        GetObject((int)GameObjects.Electric_Control).SetActive(false);
-        GetObject((int)GameObjects.ShowLongWork).SetActive(false);
-        */
+
         return true;
     }
 }
