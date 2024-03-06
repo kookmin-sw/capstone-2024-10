@@ -1,8 +1,8 @@
 using System.Collections.Generic;
-using UnityEngine;
-using Fusion;
-using Data;
 using System.Threading.Tasks;
+using Data;
+using Fusion;
+using UnityEngine;
 
 public class ObjectManager
 {
