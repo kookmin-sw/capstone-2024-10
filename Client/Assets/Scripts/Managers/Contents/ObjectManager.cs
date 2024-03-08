@@ -27,11 +27,11 @@ public class ObjectManager
 	    return root.transform;
     }
 
-    public NetworkObject SpawnCrew(int crewDataId)
+    public NetworkObject SpawnCrew(int crewDataId, Vector3 spawnPosition)
     {
 	    string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREW_PATH}/{className}");
-        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
+        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
 
         Crew crew = no.GetComponent<Crew>();
         crew.Rpc_SetInfo(crewDataId);
@@ -39,11 +39,11 @@ public class ObjectManager
         return no;
     }
 
-    public NetworkObject SpawnAlien(int alienDataId)
+    public NetworkObject SpawnAlien(int alienDataId, Vector3 spawnPosition)
     {
         string className = Managers.DataMng.AlienDataDict[alienDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.ALIEN_PATH}/{className}");
-        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
+        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
 
         Alien alien = no.GetComponent<Alien>();
         alien.Rpc_SetInfo(alienDataId);

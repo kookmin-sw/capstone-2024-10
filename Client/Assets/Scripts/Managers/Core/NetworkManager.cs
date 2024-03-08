@@ -65,7 +65,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnConnectedToServer(NetworkRunner runner)
     {
         Debug.Log("OnConnectedToServer");
-        Player = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID);
+        Player = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, Vector3.zero);
 
         runner.SetPlayerObject(runner.LocalPlayer, Player);
     }

@@ -1,10 +1,11 @@
 ﻿using UnityEngine;
+using Fusion;
 
 public class AlienStat: CreatureStat
 {
     private int _damage;
 
-    public int Damage { get => _damage; set { _damage = value; StatChangeAction?.Invoke(this); } }
+    [Networked] public int Damage { get => _damage; set { _damage = value; StatChangeAction?.Invoke(this); } }
 
     public override void SetStat(Data.CreatureData creatureData)
     {

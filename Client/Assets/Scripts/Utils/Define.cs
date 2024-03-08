@@ -41,17 +41,12 @@ public static class Define
     public enum Stat
     {
         Name,
+        Speed,
         Hp,
         MaxHp,
-        Attack,
-        Defense,
-        Speed,
-        Strength,
-        Intelligence,
-        Vitality,
-        Dexterity,
+        Sit,
+        Damage,
     }
-
     #endregion
 
     #region State
@@ -59,17 +54,22 @@ public static class Define
     {
         Idle,
         Move,
-        UseItem,
-        UseSkill,
+        Use,
         Dead,
+    }
+
+    public enum CreaturePose
+    {
+        Stand,
+        Sit,
+        Run
     }
 
     public enum AnimState
     {
         Idle,
         Move,
-        UseItem,
-        UseSkill,
+        Use,
         Dead,
     }
 
@@ -112,12 +112,12 @@ public static class Define
     #region Name
     public enum MonsterName
     {
-        
+
     }
 
     public enum ItemName
     {
-        
+
     }
 
     public enum SectorName
@@ -146,7 +146,7 @@ public static class Define
     public const float PLAYER_SPAWN_POSITION_X = 20f;
     public const float PLAYER_SPAWN_POSITION_Y = 0.3f;
     public const float PLAYER_SPAWN_POSITION_Z = 10f;
-  
+
     public const float GRAVITY_VALUE = -9.81f;
     #endregion
 }

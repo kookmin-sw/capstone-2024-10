@@ -1,12 +1,14 @@
 using UnityEngine;
+using Fusion;
 
 public class CrewStat : CreatureStat
 {
     private int _hp;
     private int _maxHp;
+    private NetworkBool _sit;
 
-    public int Hp { get => _hp; set { _hp = value; StatChangeAction?.Invoke(this); } }
-    public int MaxHp { get => _maxHp; set { _maxHp = value; StatChangeAction?.Invoke(this); } }
+    [Networked] public int Hp { get => _hp; set { _hp = value; StatChangeAction?.Invoke(this); } }
+    [Networked] public int MaxHp { get => _maxHp; set { _maxHp = value; StatChangeAction?.Invoke(this); } }
 
     public override void SetStat(Data.CreatureData creatureData)
     {

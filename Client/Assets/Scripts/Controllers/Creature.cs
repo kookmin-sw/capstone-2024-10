@@ -2,7 +2,7 @@ using Fusion;
 using Fusion.Addons.SimpleKCC;
 using UnityEngine;
 
-public class Creature : NetworkBehaviour
+public abstract class Creature : NetworkBehaviour
 {
     #region Field
     public Camera Camera => Camera.main;
@@ -19,8 +19,8 @@ public class Creature : NetworkBehaviour
     public Data.CreatureData CreatureData { get; protected set; }
     [Networked] public Define.CreatureType CreatureType { get; protected set; }
 
-    private Define.CreatureState _creatureState;
-    [Networked] public Define.CreatureState CreatureState
+    [Networked] private Define.CreatureState _creatureState { get; set; }
+    public Define.CreatureState CreatureState
     {
         get => _creatureState;
         set
@@ -32,6 +32,8 @@ public class Creature : NetworkBehaviour
             }
         }
     }
+    [Networked] public Define.CreaturePose CreaturePose { get; protected set; }
+    [Networked] public NetworkBool _IsDamaged { get; protected set; }
 
     [Networked] public Vector3 Velocity { get; protected set; }
     #endregion
@@ -78,9 +80,6 @@ public class Creature : NetworkBehaviour
         gameObject.name = $"{CreatureData.DataId}_{CreatureData.Name}";
 
         CreatureState = Define.CreatureState.Idle;
-
-        if (Camera != null)
-            Camera.GetComponent<CameraController>().Player = transform;
     }
 
     public override void FixedUpdateNetwork()
@@ -95,7 +94,7 @@ public class Creature : NetworkBehaviour
     }
 
     #region Animation
-    protected void UpdateAnimation()
+    protected virtual void UpdateAnimation()
     {
         switch (CreatureState)
         {
@@ -105,10 +104,7 @@ public class Creature : NetworkBehaviour
             case Define.CreatureState.Move:
                 //NetworkAnim.SetTrigger();
                 break;
-            case Define.CreatureState.UseItem:
-                //NetworkAnim.SetTrigger();
-                break;
-            case Define.CreatureState.UseSkill:
+            case Define.CreatureState.Use:
                 //NetworkAnim.SetTrigger();
                 break;
             case Define.CreatureState.Dead:
@@ -119,26 +115,9 @@ public class Creature : NetworkBehaviour
     #endregion
 
     #region Input
-    protected virtual void HandleKeyDown()
-    {
-        Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
 
-        Vector3 velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * CreatureStat.Speed;
+    protected abstract void HandleKeyDown();
 
-        if (Input.GetKey(KeyCode.C))
-        {
-            // TODO
-        }
-
-        if (velocity == Vector3.zero)
-        {
-            CreatureState = Define.CreatureState.Idle;
-            return;
-        }
-
-        Velocity = velocity;
-        CreatureState = Define.CreatureState.Move;
-    }
     #endregion
 
     #region Update
@@ -153,8 +132,8 @@ public class Creature : NetworkBehaviour
             case Define.CreatureState.Move:
                 UpdateMove();
                 break;
-            case Define.CreatureState.UseSkill:
-                UpdateUseSkill();
+            case Define.CreatureState.Use:
+                UpdateUse();
                 break;
             case Define.CreatureState.Dead:
                 UpdateDead();
@@ -170,13 +149,8 @@ public class Creature : NetworkBehaviour
     {
     }
 
-    protected virtual void UpdateUseSkill()
+    protected virtual void UpdateUse()
     {
-    }
-
-    protected virtual void UpdateUseItem()
-    {
-
     }
 
     protected virtual void UpdateDead()

@@ -6,6 +6,7 @@ public class Crew : Creature
     #region Field
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStatus => (CrewStat)CreatureStat;
+    #endregion
 
     public override void Rpc_SetInfo(int templateID)
     {
@@ -13,6 +14,28 @@ public class Crew : Creature
         Transform.parent = Managers.ObjectMng.CrewRoot;
 
         base.Rpc_SetInfo(templateID);
+    }
+
+    #region Input
+    protected override void HandleKeyDown()
+    {
+        Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
+
+        Vector3 velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * CreatureStat.Speed;
+
+        if (Input.GetKey(KeyCode.C))
+        {
+            // TODO
+        }
+
+        if (velocity == Vector3.zero)
+        {
+            CreatureState = Define.CreatureState.Idle;
+            return;
+        }
+
+        Velocity = velocity;
+        CreatureState = Define.CreatureState.Move;
     }
     #endregion
 
@@ -28,10 +51,6 @@ public class Crew : Creature
         Vector3 dir = Velocity;
         dir.y = 0;
         Transform.forward = dir;
-    }
-
-    protected override void UpdateUseItem()
-    {
     }
 
     protected override void UpdateDead()
@@ -139,7 +158,7 @@ public class Crew : Creature
                     Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
                     Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * sit_walkSpeed;
 
-                    _controller.Move(move);
+                    _controller.Walk(move);
 
                     if (move != Vector3.zero)
                     {
@@ -166,7 +185,7 @@ public class Crew : Creature
                     Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
                     Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * currentSpeed;
 
-                    _controller.Move(move);
+                    _controller.Walk(move);
 
                     if (move != Vector3.zero)
                     {
@@ -181,7 +200,7 @@ public class Crew : Creature
                     Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
                     Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * currentSpeed;
 
-                    _controller.Move(move);
+                    _controller.Walk(move);
 
                     if (move != Vector3.zero)
                     {
@@ -212,7 +231,7 @@ public class Crew : Creature
                     Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
                     Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * sit_walkSpeed;
 
-                    _controller.Move(move);
+                    _controller.Walk(move);
 
                     if (move != Vector3.zero)
                     {
@@ -239,7 +258,7 @@ public class Crew : Creature
                     Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
                     Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * currentSpeed;
 
-                    _controller.Move(move);
+                    _controller.Walk(move);
 
                     if (move != Vector3.zero)
                     {
@@ -254,7 +273,7 @@ public class Crew : Creature
                     Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
                     Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * currentSpeed;
 
-                    _controller.Move(move);
+                    _controller.Walk(move);
 
                     if (move != Vector3.zero)
                     {
