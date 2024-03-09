@@ -31,7 +31,7 @@ public class DataTransformer : EditorWindow
 		field.SetValue(loader, ParseExcelDataToList<LoaderData>(filename));
 
 		string jsonStr = JsonConvert.SerializeObject(loader, Formatting.Indented);
-		File.WriteAllText($"{Application.dataPath}/Resources/Data/JsonData/{filename}.json", jsonStr);
+		File.WriteAllText($"{Application.dataPath}/Resources/Datas/JsonData/{filename}.json", jsonStr);
 		AssetDatabase.Refresh();
 	}
 
@@ -39,7 +39,7 @@ public class DataTransformer : EditorWindow
 	{
 		List<LoaderData> loaderDatas = new List<LoaderData>();
 
-		string[] lines = File.ReadAllText($"{Application.dataPath}/Resources/Data/ExcelData/{filename}.csv").Split("\n");
+		string[] lines = File.ReadAllText($"{Application.dataPath}/Resources/Datas/ExcelData/{filename}.csv").Split("\n");
 
 		for (int l = 1; l < lines.Length; l++)
 		{

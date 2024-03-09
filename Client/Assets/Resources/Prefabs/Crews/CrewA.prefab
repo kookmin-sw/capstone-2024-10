@@ -5061,12 +5061,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7395382358586211616}
-  - component: {fileID: 3477203075125831514}
-  - component: {fileID: -6517211277596413631}
+  - component: {fileID: 9165858220502731465}
+  - component: {fileID: 9068755759678369339}
   - component: {fileID: 2937278171442536397}
-  - component: {fileID: -6522092609932875972}
+  - component: {fileID: -6517211277596413631}
   - component: {fileID: 3299225919478658973}
-  - component: {fileID: 2491162566671331933}
   m_Layer: 0
   m_Name: CrewA
   m_TagString: Untagged
@@ -5096,7 +5095,30 @@ Transform:
   - {fileID: 9192501279031242080}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &3477203075125831514
+--- !u!136 &9165858220502731465
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7920281149799720858}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.25
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!95 &9068755759678369339
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -5105,9 +5127,9 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7920281149799720858}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: ee95e2ea9cb941d40955eac8c1ab3d05, type: 3}
+  m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 9974328f9ac933e4fad5b384ee2b8063, type: 2}
-  m_CullingMode: 1
+  m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
@@ -5117,26 +5139,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-6517211277596413631
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7920281149799720858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 1805967372
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: -6522092609932875972}
-  - {fileID: 3299225919478658973}
-  - {fileID: 2491162566671331933}
 --- !u!54 &2937278171442536397
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5164,7 +5166,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &-6522092609932875972
+--- !u!114 &-6517211277596413631
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5173,32 +5175,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7920281149799720858}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -1869825851, guid: 977dbcf975465374990f471e1497f563, type: 3}
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _settings:
-    Shape: 1
-    IsTrigger: 0
-    Radius: 0.2
-    Height: 1.84
-    Extent: 0.035
-    ColliderLayer: 0
-    CollisionLayerMask:
-      serializedVersion: 2
-      m_Bits: 1
-    ProxyInterpolationMode: 0
-    TeleportThreshold: 1
-    AntiJitterDistance: {x: 0.025, y: 0.01}
-    CompressNetworkPosition: 0
-    ForcePredictedLookRotation: 0
-    StepHeight: 0.5
-    StepDepth: 0.2
-    StepSpeed: 1
-    StepMinPushBack: 0.5
-    StepGroundCheckRadiusScale: 0.5
-    StepRequireGroundTarget: 0
-    SnapDistance: 0.25
-    SnapSpeed: 4
+  SortKey: 1805967372
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 3299225919478658973}
 --- !u!114 &3299225919478658973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5211,29 +5196,12 @@ MonoBehaviour:
   m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Animator: {fileID: 3477203075125831514}
+  Animator: {fileID: 9068755759678369339}
   TotalWords: 5
   ApplyTiming: 2
   SyncSettings: 79
   StateHashes: 000000008a18fce4b9abd9d3bb60d7dc1e243063b45938cccce730ad2afa8626a8b5caa3
   TriggerHashes: 00000000
---- !u!114 &2491162566671331933
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7920281149799720858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d6771d35f40709243a77a608f5eac5bd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _CreatureType: 0
-  _CreatureState: 0
-  _Velocity: {x: 0, y: 0, z: 0}
-  _CrewState: 0
-  _AnimState: 0
 --- !u!1 &7929213206135854106
 GameObject:
   m_ObjectHideFlags: 0

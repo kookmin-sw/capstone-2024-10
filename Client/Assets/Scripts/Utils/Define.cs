@@ -1,8 +1,7 @@
-using System.Numerics;
-
 public static class Define
 {
     #region Type
+
     public enum CreatureType
     {
         None,
@@ -19,7 +18,11 @@ public static class Define
         Recover,
     }
 
-    // public enum SceneType
+    public enum SectorType
+    {
+
+    }
+
     public enum SceneType
     {
         UnknownScene,
@@ -28,7 +31,6 @@ public static class Define
         Map_JSJ,
     }
 
-    // public enum SoundType
     public enum SoundType
     {
         Bgm,
@@ -41,15 +43,19 @@ public static class Define
     public enum Stat
     {
         Name,
-        Speed,
+        WalkSpeed,
+        RunSpeed,
         Hp,
         MaxHp,
-        Sit,
+        Stamina,
+        SitSpeed,
         Damage,
     }
+
     #endregion
 
     #region State
+
     public enum CreatureState
     {
         Idle,
@@ -76,6 +82,7 @@ public static class Define
     #endregion
 
     #region Event
+
     public enum UIEvent
     {
         Press,
@@ -91,9 +98,11 @@ public static class Define
         PointerUp,
         Click,
     }
+
     #endregion
 
     #region NonContent
+
     public enum Layer
     {
         Ground = 6,
@@ -106,47 +115,35 @@ public static class Define
     {
         QuarterView,
     }
+
     #endregion
 
-    // Name은 나중에 Json으로 관리
-    #region Name
-    public enum MonsterName
-    {
-
-    }
-
-    public enum ItemName
-    {
-
-    }
-
-    public enum SectorName
-    {
-
-    }
-    #endregion
-
-    // DataId는 나중에 Json으로 관리
     #region DataId
-    public const int CREW_CREWA_ID = 0;
-    public const int CREW_CREWB_ID = 1;
+
+    public const int CREW_CREWA_ID = 101000;
+    public const int CREW_CREWB_ID = 101001;
 
     public const int ALIEN_STALKER_ID = 102000;
 
     public const int ITEM_ITEMA_ID = 201000;
+
     #endregion
 
     #region Path
+
     public const string CREW_PATH = "Prefabs/Crews";
     public const string ALIEN_PATH = "Prefabs/Aliens";
+
     #endregion
 
     #region Value
+
     public const int PLAYER_COUNT = 3;
     public const float PLAYER_SPAWN_POSITION_X = 20f;
     public const float PLAYER_SPAWN_POSITION_Y = 0.3f;
     public const float PLAYER_SPAWN_POSITION_Z = 10f;
 
     public const float GRAVITY_VALUE = -9.81f;
+
     #endregion
 }

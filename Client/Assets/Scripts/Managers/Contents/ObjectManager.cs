@@ -1,7 +1,7 @@
 using System.Collections.Generic;
-using Data;
-using Fusion;
 using UnityEngine;
+using Fusion;
+using Data;
 
 public class ObjectManager
 {

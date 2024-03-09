@@ -17,13 +17,16 @@ public abstract class BaseScene : MonoBehaviour
 
     protected virtual void Init()
     {
-        // TODO - TEST CODE: 나중에는 최초 Scene에서만 실행
-        Managers.NetworkMng.Init();
-        Managers.InputMng.Init();
-        Managers.DataMng.Init();
-        Managers.SoundMng.Init();
-        Managers.PoolMng.Init();
-        Managers.ObjectMng.Init();
+        if (!Managers.Initialized)
+        {
+            // TODO - TEST CODE: 나중에는 최초 Scene에서만 실행
+            Managers.NetworkMng.Init();
+            Managers.InputMng.Init();
+            Managers.DataMng.Init();
+            Managers.SoundMng.Init();
+            Managers.PoolMng.Init();
+            Managers.ObjectMng.Init();
+        }
 
         Object obj = FindObjectOfType(typeof(EventSystem));
 

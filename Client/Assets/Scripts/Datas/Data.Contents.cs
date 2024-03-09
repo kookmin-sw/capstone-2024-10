@@ -4,16 +4,16 @@ using System.Collections.Generic;
 namespace Data
 {
     #region CreatureData
+
     [Serializable]
     public class CreatureData
     {
         public int DataId;
         public string Name;
-        public float Speed;
-        public int Hp;
-        public int MaxHp;
-
+        public float WalkSpeed;
+        public float RunSpeed;
     }
+
     #endregion
 
     #region CrewData
@@ -21,21 +21,13 @@ namespace Data
     [Serializable]
     public class CrewData : CreatureData
     {
-        public float WalkSpeed;
-        public float RunSpeed;
-        public float SitSpeed;
-        public float Hurt_WalkSpeed;
-        public float Hurt_RunSpeed;
-        public float Hurt_SitSpeed;
+        public int MaxHp;
         public float Stamina;
-        public float Power;
-        public float Intellect;
-        public float Stealth;
-
+        public float SitSpeed;
     }
 
     [Serializable]
-    public class CrewDataLoader : IData<int, CrewData>
+    public class CrewDataLoader : ILoader<int, CrewData>
     {
         public List<CrewData> crews = new List<CrewData>();
 
@@ -61,7 +53,7 @@ namespace Data
     }
 
     [Serializable]
-    public class AlienDataLoader : IData<int, AlienData>
+    public class AlienDataLoader : ILoader<int, AlienData>
     {
         public List<AlienData> aliens = new List<AlienData>();
 
@@ -87,7 +79,7 @@ namespace Data
     }
 
     [Serializable]
-    public class ItemDataLoader : IData<int, ItemData>
+    public class ItemDataLoader : ILoader<int, ItemData>
     {
         public List<ItemData> items = new List<ItemData>();
 
@@ -100,5 +92,6 @@ namespace Data
             return dic;
         }
     }
+
     #endregion
 }

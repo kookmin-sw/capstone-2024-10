@@ -6,13 +6,13 @@ using UnityEngine;
 public class Sector : NetworkBehaviour
 {
     [SerializeField]
-    public Define.SectorName SectorName;
+    public Define.SectorType SectorName;
 
     [SerializeField]
     private Gate[] _gates;
     public WorkStation[] _workStations;
     private SectorLight _sectorLight;
-    
+
     [Networked, OnChangedRender(nameof(OnElectricPowerChanged))]
     public NetworkBool ElectricPower { get; set; }
 
@@ -23,6 +23,6 @@ public class Sector : NetworkBehaviour
 
     public void OnElectricPowerChanged()
     {
-   
+
     }
 }

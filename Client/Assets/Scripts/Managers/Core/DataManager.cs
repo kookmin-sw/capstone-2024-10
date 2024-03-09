@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using Newtonsoft.Json;
 using UnityEngine;
+using Newtonsoft.Json;
 
 public interface ILoader<Key, Value>
 {

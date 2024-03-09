@@ -1,42 +1,14 @@
-using Data;
-using Fusion;
-using Fusion.Addons.SimpleKCC;
-using System.Net;
 using UnityEngine;
-using UnityEngine.UIElements;
+using Fusion;
+using Data;
 
 public class Crew : Creature
 {
     #region Field
     public CrewData CrewData => CreatureData as CrewData;
-    public CrewStat CrewStatus => (CrewStat)CreatureStat;
+    public CrewStat CrewStat => (CrewStat)CreatureStat;
 
-    private Define.CrewState _crewState;
-    [Networked]
-    public Define.CrewState CrewState
-    {
-        get => _crewState;
-        set
-        {
-            if (_crewState != value)
-            {
-                _crewState = value;
-            }
-        }
-    }
-    private Define.AnimState _animState;
-    [Networked]
-    public Define.AnimState AnimState
-    {
-        get => _animState;
-        set
-        {
-            if (_animState != value)
-            {
-                _animState = value;
-            }
-        }
-    }
+    [Networked] public NetworkBool _IsDamaged { get; set; }
 
     //애니메이션을 위한 변수
     private float _SitDown = 0;
@@ -47,11 +19,8 @@ public class Crew : Creature
 
     public override void Spawned()
     {
-        
+
         base.Init();
-        Rpc_SetInfo(0);
-        CrewState = Define.CrewState.Stand;
-        Anim.SetFloat("Health", 100);
     }
 
 
@@ -62,15 +31,10 @@ public class Crew : Creature
 
         base.Rpc_SetInfo(templateID);
 
-        //CrewStatus.SetStat(CrewData);
-        
+        CrewStat.SetStat(CrewData);
+
     }
     #endregion
-
-    void Update()
-    {
-        HandleKeyDown();
-    }
 
     public override void FixedUpdateNetwork()
     {
@@ -79,90 +43,104 @@ public class Crew : Creature
     }
 
     #region Input
+
     protected override void HandleKeyDown()
     {
-        base.HandleKeyDown();
-        if (Input.GetKey(KeyCode.C))
+        Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
+
+        Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * CreatureStat.WalkSpeed;
+
+        if (CreatureState == Define.CreatureState.Use)
         {
-            if (CrewState == Define.CrewState.Sit)
-            {
-                CrewState = Define.CrewState.Stand;
-            }
-            else
-            {
-                CrewState = Define.CrewState.Sit;
-            }
+            // TODO
+            return;
         }
 
+        if (Velocity == Vector3.zero)
+        {
+            CreatureState = Define.CreatureState.Idle;
+            return;
+        }
+
+        CreatureState = Define.CreatureState.Move;
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            CreaturePose = Define.CreaturePose.Run;
+        }
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            CreaturePose = Define.CreaturePose.Stand;
+        }
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            CreaturePose = Define.CreaturePose.Sit;
+        }
     }
+
     #endregion
 
-    #region MoveUpdate
+    #region Update
+
     protected override void UpdateIdle()
     {
-        switch (CrewState)
+        switch (CreaturePose)
         {
-            case Define.CrewState.Sit:
-                AnimState = Define.AnimState.SitDown;
-                UpdateAnimation();
-                AnimState = Define.AnimState.SitIdle;
-                UpdateAnimation();
+            case Define.CreaturePose.Stand:
+                // TODO
                 break;
-            case Define.CrewState.Stand:
-                AnimState = Define.AnimState.Idle;
-                UpdateAnimation();
+            case Define.CreaturePose.Sit:
+                // TODO
+                break;
+            case Define.CreaturePose.Run:
+                // TODO
                 break;
         }
     }
 
     protected override void UpdateMove()
     {
-        base.UpdateMove();
+        switch (CreaturePose)
+        {
+            case Define.CreaturePose.Stand:
+                // TODO
+                break;
+            case Define.CreaturePose.Sit:
+                // TODO
+                break;
+            case Define.CreaturePose.Run:
+                Debug.Log("No Idle_Run");
+                break;
+        }
+
         KCC.Move(Velocity, 0f);
-        
+
         if (Velocity != Vector3.zero)
         {
             Quaternion newRotation = Quaternion.LookRotation(Velocity);
             KCC.SetLookRotation(newRotation);
         }
-
-        switch (CrewState)
-        {
-            case Define.CrewState.Sit:
-                AnimState = Define.AnimState.SitWalk;
-                UpdateAnimation();
-                break;
-
-            case Define.CrewState.Stand:
-                AnimState = Define.AnimState.Walk;
-                UpdateAnimation();
-                break;
-
-            case Define.CrewState.Run:
-
-                AnimState = Define.AnimState.Run;
-                UpdateAnimation();
-                break;
-        }
-
     }
 
-    protected override void UpdateUseItem()
+    protected override void UpdateUse()
     {
+        // TODO
     }
 
     protected override void UpdateDead()
     {
+        // TODO
     }
 
     #endregion
 
     #region Event
+
     public void OnDamaged(int damage)
     {
-        CrewStatus.OnDamage(damage);
+        CrewStat.OnDamage(damage);
 
-        if (CrewStatus.Hp <= 0)
+        if (CrewStat.Hp <= 0)
         {
             OnDead();
             return;
@@ -173,66 +151,6 @@ public class Crew : Creature
     {
         CreatureState = Define.CreatureState.Dead;
     }
-    #endregion
 
-    #region AnimUpdate
-    protected override void UpdateAnimation()
-    {
-        base.UpdateAnimation();
-        switch (AnimState)
-        {
-            case Define.AnimState.Run:
-                PlayAnimationRun();
-                break;
-            case Define.AnimState.SitDown:
-                PlayAnimationSitDown();
-                break;
-            case Define.AnimState.SitIdle:
-                PlayAnimationSitIdle();
-                break;
-            case Define.AnimState.SitWalk:
-                PlayAnimationSitWalk();
-                break;
-        }
-    }
-    public override void PlayAnimationIdle()
-    {
-        float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-        _SitDown = Mathf.Lerp(_SitDown, 0, Runner.DeltaTime * sit_smoothness);
-        Anim.SetFloat("Sit", _SitDown);
-        float smoothness = 5f; // 조절 가능한 부드러움 계수
-        _CurrentSpeed = Mathf.Lerp(_CurrentSpeed, 0, Runner.DeltaTime * smoothness);
-        Anim.SetFloat("moveSpeed", _CurrentSpeed);
-    }
-    public override void PlayAnimationWalk()
-    {
-        float smoothness = 4f; // 조절 가능한 부드러움 계수
-        _CurrentSpeed = Mathf.Lerp(_CurrentSpeed, 2.5f, Runner.DeltaTime * smoothness);
-        Anim.SetFloat("moveSpeed", _CurrentSpeed);
-    }
-    public void PlayAnimationRun()
-    {
-        float smoothness = 2f; // 조절 가능한 부드러움 계수
-        _CurrentSpeed = Mathf.Lerp(_CurrentSpeed, 4, Runner.DeltaTime * smoothness);
-        Anim.SetFloat("moveSpeed", _CurrentSpeed);
-    }
-    public void PlayAnimationSitDown()
-    {
-        float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-        _SitDown = Mathf.Lerp(_SitDown, 1, Runner.DeltaTime * sit_smoothness);
-        Anim.SetFloat("Sit", _SitDown);
-    }
-    public void PlayAnimationSitIdle()
-    {
-        float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-        _SitWalkSpeed = Mathf.Lerp(_SitWalkSpeed, 0, Runner.DeltaTime * sit_smoothness);
-        Anim.SetFloat("sitSpeed", _SitWalkSpeed);
-    }
-    public void PlayAnimationSitWalk()
-    {
-        float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-        _SitWalkSpeed = Mathf.Lerp(_SitWalkSpeed, 1.5f, Runner.DeltaTime * sit_smoothness);
-        Anim.SetFloat("sitSpeed", _SitWalkSpeed);
-    }
     #endregion
 }

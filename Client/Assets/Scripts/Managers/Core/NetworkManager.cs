@@ -3,7 +3,6 @@ using UnityEngine;
 using Fusion;
 using Fusion.Sockets;
 using System;
-using UnityEngine.UI;
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -53,8 +52,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             SceneManager = Managers.Instance.gameObject.AddComponent<NetworkSceneManagerDefault>()
 
         });
-
-
     }
 
     #region CallBack
@@ -68,7 +65,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnConnectedToServer(NetworkRunner runner)
     {
         Debug.Log("OnConnectedToServer");
-        Player = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID);
+        Player = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, Vector3.zero);
         runner.SetPlayerObject(runner.LocalPlayer, Player);
     }
 

@@ -1,51 +1,30 @@
+using UnityEngine;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
-using UnityEngine;
 
 public abstract class Creature : NetworkBehaviour
 {
     #region Field
-
-    private float _hAxis;
-    private float _vAxis;
 
     public Camera Camera => Camera.main;
     public Transform Transform { get; protected set; }
     public CircleCollider2D Collider { get; protected set; }
     public Rigidbody2D RigidBody { get; protected set; }
     public NetworkObject NetworkObject { get; protected set; }
-    public NetworkMecanimAnimator NetworkAnim { get; protected set; }
     public SimpleKCC KCC { get; protected set; }
     public CreatureStat CreatureStat { get; protected set; }
-    public Animator Anim { get; protected set; }
+    public AnimController AnimController { get; protected set; }
 
-    public int DataId { get; protected set; }
+    [Networked] public int DataId { get; protected set; }
     public Data.CreatureData CreatureData { get; protected set; }
-    [Networked] public Define.CreatureType CreatureType { get; protected set; }
+    [Networked] public Define.CreatureType CreatureType { get; set; }
 
-    [Networked] private Define.CreatureState _creatureState { get; set; }
-    public Define.CreatureState CreatureState
-    {
-        get => _creatureState;
-        set
-        {
-            if (_creatureState != value)
-            {
-                _creatureState = value;
-                UpdateAnimation();
-            }
-        }
-    }
-    [Networked] public Define.CreaturePose CreaturePose { get; protected set; }
-    [Networked] public NetworkBool _IsDamaged { get; protected set; }
+    [Networked] public Define.CreatureState CreatureState { get; set; }
+    [Networked] public Define.CreaturePose CreaturePose { get; set; }
 
-    [Networked] public Vector3 Velocity { get; protected set; }
+    [Networked] public Vector3 Velocity { get; set; }
+
     #endregion
-
-    private void Awake()
-    {
-        //Init();
-    }
 
     public override void Spawned()
     {
@@ -58,22 +37,20 @@ public abstract class Creature : NetworkBehaviour
         Collider = gameObject.GetOrAddComponent<CircleCollider2D>();
         RigidBody = gameObject.GetOrAddComponent<Rigidbody2D>();
         NetworkObject = gameObject.GetOrAddComponent<NetworkObject>();
-        NetworkAnim = gameObject.GetOrAddComponent<NetworkMecanimAnimator>();
         KCC = gameObject.GetOrAddComponent<SimpleKCC>();
-        Anim = gameObject.GetOrAddComponent<Animator>();
 
         CreatureStat = gameObject.GetOrAddComponent<CreatureStat>();
+        AnimController = gameObject.GetOrAddComponent<AnimController>();
 
         if (Camera.main != null)
         {
-            Camera.main.GetComponent<CameraController>().Player = transform;
+            Camera.main.GetComponent<CreatureCamera>().Creature = this;
         }
     }
 
-    [Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
+    //[Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
     public virtual void Rpc_SetInfo(int templateID)
     {
-        Transform.position = Vector3.zero;
         DataId = templateID;
 
         if (CreatureType == Define.CreatureType.Crew)
@@ -94,63 +71,25 @@ public abstract class Creature : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        if (HasStateAuthority == false)
-        {
-            return;
-        }
         UpdateByState();
+        AnimController.UpdateAnimation();
     }
-
-    #region Animation
-    protected virtual void UpdateAnimation()
-    {
-        switch (CreatureState)
-        {
-            case Define.CreatureState.Idle:
-                PlayAnimationIdle();
-                break;
-            case Define.CreatureState.Move:
-                PlayAnimationWalk();
-                break;
-            case Define.CreatureState.Use:
-                //NetworkAnim.SetTrigger();
-                break;
-            case Define.CreatureState.Dead:
-                //NetworkAnim.SetTrigger();
-                break;
-        }
-    }
-    public virtual void PlayAnimationIdle()
-    {
-    }
-    public virtual void PlayAnimationWalk()
-    {
-    }
-
-    #endregion
 
     #region Input
-    protected virtual void HandleKeyDown()
-    {
-        _hAxis = Input.GetAxisRaw("Horizontal");
-        _vAxis = Input.GetAxisRaw("Vertical");
 
-        if (_hAxis == 0 && _vAxis == 0)
-        {
-            CreatureState = Define.CreatureState.Idle;
-        }
+    protected abstract void HandleKeyDown();
 
-        if (_hAxis != 0 || _vAxis != 0)
-        {
-            CreatureState = Define.CreatureState.Move;
-        }
-    }
     #endregion
 
     #region Update
 
     protected void UpdateByState()
     {
+        if (HasStateAuthority == false)
+        {
+            return;
+        }
+
         switch (CreatureState)
         {
             case Define.CreatureState.Idle:
@@ -167,36 +106,14 @@ public abstract class Creature : NetworkBehaviour
                 break;
         }
     }
-    
-    #region Update
 
-    protected virtual void UpdateIdle()
-    {
-    }
+    protected abstract void UpdateIdle();
 
-    protected virtual void UpdateMove()
-    {
-        Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
+    protected abstract void UpdateMove();
 
-        Vector3 velocity = cameraRotationY * new Vector3(_hAxis, 0, _vAxis) * Runner.DeltaTime * 50f; //CreatureStat.Speed;
+    protected abstract void UpdateUse();
 
-        Velocity = velocity;
-    }
+    protected abstract void UpdateDead();
 
-    protected virtual void UpdateUse()
-    {
-    }
-
-    protected virtual void UpdateDead()
-    {
-    }
-    #endregion
-
-    #region Event
-    public void OnMove(Vector3 vector)
-    {
-        Velocity = vector.normalized;
-        CreatureState = Define.CreatureState.Move;
-    }
     #endregion
 }
