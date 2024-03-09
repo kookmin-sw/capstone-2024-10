@@ -51,7 +51,10 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             SessionName = sessionName,
             PlayerCount = Define.PLAYER_COUNT,
             SceneManager = Managers.Instance.gameObject.AddComponent<NetworkSceneManagerDefault>()
+
         });
+
+
     }
 
     #region CallBack
@@ -65,8 +68,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnConnectedToServer(NetworkRunner runner)
     {
         Debug.Log("OnConnectedToServer");
-        Player = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, Vector3.zero);
-
+        Player = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID);
         runner.SetPlayerObject(runner.LocalPlayer, Player);
     }
 

@@ -10,6 +10,9 @@ namespace Data
         public int DataId;
         public string Name;
         public float Speed;
+        public int Hp;
+        public int MaxHp;
+
     }
     #endregion
 
@@ -18,11 +21,21 @@ namespace Data
     [Serializable]
     public class CrewData : CreatureData
     {
-        public int Hp;
+        public float WalkSpeed;
+        public float RunSpeed;
+        public float SitSpeed;
+        public float Hurt_WalkSpeed;
+        public float Hurt_RunSpeed;
+        public float Hurt_SitSpeed;
+        public float Stamina;
+        public float Power;
+        public float Intellect;
+        public float Stealth;
+
     }
 
     [Serializable]
-    public class CrewDataLoader : ILoader<int, CrewData>
+    public class CrewDataLoader : IData<int, CrewData>
     {
         public List<CrewData> crews = new List<CrewData>();
 
@@ -48,7 +61,7 @@ namespace Data
     }
 
     [Serializable]
-    public class AlienDataLoader : ILoader<int, AlienData>
+    public class AlienDataLoader : IData<int, AlienData>
     {
         public List<AlienData> aliens = new List<AlienData>();
 
@@ -74,7 +87,7 @@ namespace Data
     }
 
     [Serializable]
-    public class ItemDataLoader : ILoader<int, ItemData>
+    public class ItemDataLoader : IData<int, ItemData>
     {
         public List<ItemData> items = new List<ItemData>();
 

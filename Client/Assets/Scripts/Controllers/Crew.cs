@@ -1,12 +1,59 @@
 using Data;
+using Fusion;
+using Fusion.Addons.SimpleKCC;
+using System.Net;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Crew : Creature
 {
     #region Field
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStatus => (CrewStat)CreatureStat;
-    #endregion
+
+    private Define.CrewState _crewState;
+    [Networked]
+    public Define.CrewState CrewState
+    {
+        get => _crewState;
+        set
+        {
+            if (_crewState != value)
+            {
+                _crewState = value;
+            }
+        }
+    }
+    private Define.AnimState _animState;
+    [Networked]
+    public Define.AnimState AnimState
+    {
+        get => _animState;
+        set
+        {
+            if (_animState != value)
+            {
+                _animState = value;
+            }
+        }
+    }
+
+    //애니메이션을 위한 변수
+    private float _SitDown = 0;
+    private float _CurrentSpeed = 0;    //현재 속도
+    private float _SitWalkSpeed = 0;    //앉아서 걷는 속도
+    private float _CurrentHp;  //현재 체력
+    private float _CurrentStamina;    //현재 스테미나
+
+    public override void Spawned()
+    {
+        
+        base.Init();
+        Rpc_SetInfo(0);
+        CrewState = Define.CrewState.Stand;
+        Anim.SetFloat("Health", 100);
+    }
+
 
     public override void Rpc_SetInfo(int templateID)
     {
@@ -14,48 +61,100 @@ public class Crew : Creature
         Transform.parent = Managers.ObjectMng.CrewRoot;
 
         base.Rpc_SetInfo(templateID);
+
+        //CrewStatus.SetStat(CrewData);
+        
+    }
+    #endregion
+
+    void Update()
+    {
+        HandleKeyDown();
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        base.FixedUpdateNetwork();
+
     }
 
     #region Input
     protected override void HandleKeyDown()
     {
-        Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
-
-        Vector3 velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * CreatureStat.Speed;
-
+        base.HandleKeyDown();
         if (Input.GetKey(KeyCode.C))
         {
-            // TODO
+            if (CrewState == Define.CrewState.Sit)
+            {
+                CrewState = Define.CrewState.Stand;
+            }
+            else
+            {
+                CrewState = Define.CrewState.Sit;
+            }
         }
 
-        if (velocity == Vector3.zero)
-        {
-            CreatureState = Define.CreatureState.Idle;
-            return;
-        }
-
-        Velocity = velocity;
-        CreatureState = Define.CreatureState.Move;
     }
     #endregion
 
-    #region Update
+    #region MoveUpdate
     protected override void UpdateIdle()
     {
+        switch (CrewState)
+        {
+            case Define.CrewState.Sit:
+                AnimState = Define.AnimState.SitDown;
+                UpdateAnimation();
+                AnimState = Define.AnimState.SitIdle;
+                UpdateAnimation();
+                break;
+            case Define.CrewState.Stand:
+                AnimState = Define.AnimState.Idle;
+                UpdateAnimation();
+                break;
+        }
     }
 
     protected override void UpdateMove()
     {
+        base.UpdateMove();
         KCC.Move(Velocity, 0f);
+        
+        if (Velocity != Vector3.zero)
+        {
+            Quaternion newRotation = Quaternion.LookRotation(Velocity);
+            KCC.SetLookRotation(newRotation);
+        }
 
-        Vector3 dir = Velocity;
-        dir.y = 0;
-        Transform.forward = dir;
+        switch (CrewState)
+        {
+            case Define.CrewState.Sit:
+                AnimState = Define.AnimState.SitWalk;
+                UpdateAnimation();
+                break;
+
+            case Define.CrewState.Stand:
+                AnimState = Define.AnimState.Walk;
+                UpdateAnimation();
+                break;
+
+            case Define.CrewState.Run:
+
+                AnimState = Define.AnimState.Run;
+                UpdateAnimation();
+                break;
+        }
+
+    }
+
+    protected override void UpdateUseItem()
+    {
     }
 
     protected override void UpdateDead()
     {
     }
+
     #endregion
 
     #region Event
@@ -76,221 +175,64 @@ public class Crew : Creature
     }
     #endregion
 
-
-    #region Legacy
-    /*
-    float currentSpeed = 0;    //현재 속도
-
-    float sitSpeed = 0;    //앉는 속도
-    float sit_walkSpeed = 0;    //앉아서 걷는 속도
-
-    float rotationSpeed = 5.0f;  //몸 회전 속도
-    public float currentHealth = 100;  //현재 체력
-
-    float hAxis;
-    float vAxis;
-
-    private bool isRunning = false;
-    private bool isSitting = false;
-    private bool isDeath = false;
-    //private bool isCasting = false;
-    //private bool isPicking = false;
-
-
-    private Animator _animator;
-    private CharacterController _controller;
-    public Camera Camera;
-
-    public override void Spawned()
+    #region AnimUpdate
+    protected override void UpdateAnimation()
     {
-        if (HasStateAuthority)
+        base.UpdateAnimation();
+        switch (AnimState)
         {
-            Camera = Camera.main;
-            Camera.GetComponent<CameraFollow>().player = transform;
-            _animator = GetComponent<Animator>();
-            _controller = GetComponent<CharacterController>();
+            case Define.AnimState.Run:
+                PlayAnimationRun();
+                break;
+            case Define.AnimState.SitDown:
+                PlayAnimationSitDown();
+                break;
+            case Define.AnimState.SitIdle:
+                PlayAnimationSitIdle();
+                break;
+            case Define.AnimState.SitWalk:
+                PlayAnimationSitWalk();
+                break;
         }
     }
-    void Update()
+    public override void PlayAnimationIdle()
     {
-        GetInput();
+        float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
+        _SitDown = Mathf.Lerp(_SitDown, 0, Runner.DeltaTime * sit_smoothness);
+        Anim.SetFloat("Sit", _SitDown);
+        float smoothness = 5f; // 조절 가능한 부드러움 계수
+        _CurrentSpeed = Mathf.Lerp(_CurrentSpeed, 0, Runner.DeltaTime * smoothness);
+        Anim.SetFloat("moveSpeed", _CurrentSpeed);
     }
-
-    public override void FixedUpdateNetwork()
+    public override void PlayAnimationWalk()
     {
-        Network_Move();
+        float smoothness = 4f; // 조절 가능한 부드러움 계수
+        _CurrentSpeed = Mathf.Lerp(_CurrentSpeed, 2.5f, Runner.DeltaTime * smoothness);
+        Anim.SetFloat("moveSpeed", _CurrentSpeed);
     }
-
-    void GetInput() // 키보드 값 받기
+    public void PlayAnimationRun()
     {
-        hAxis = Input.GetAxisRaw("Horizontal");
-        vAxis = Input.GetAxisRaw("Vertical");
-        isRunning = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            isSitting = !isSitting;
-        }
+        float smoothness = 2f; // 조절 가능한 부드러움 계수
+        _CurrentSpeed = Mathf.Lerp(_CurrentSpeed, 4, Runner.DeltaTime * smoothness);
+        Anim.SetFloat("moveSpeed", _CurrentSpeed);
     }
-
-    void Network_Move()
+    public void PlayAnimationSitDown()
     {
-        if (HasStateAuthority == false)
-        {
-            return;
-        }
-
-        if (currentHealth == 100)
-        {
-            _animator.SetFloat("Health", currentHealth);
-            if (isSitting)
-            {
-                float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-                sitSpeed = Mathf.Lerp(sitSpeed, 1, Runner.DeltaTime * sit_smoothness);
-                _animator.SetFloat("Sit", sitSpeed);
-                if (hAxis == 0 && vAxis == 0)
-                {
-                    float smoothness = 5f; // 조절 가능한 부드러움 계수
-                    sit_walkSpeed = Mathf.Lerp(sit_walkSpeed, 0, Runner.DeltaTime * smoothness);
-                    _animator.SetFloat("sitSpeed", sit_walkSpeed);
-                }
-                else
-                {
-                    Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
-                    Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * sit_walkSpeed;
-
-                    _controller.Walk(move);
-
-                    if (move != Vector3.zero)
-                    {
-                        gameObject.transform.forward = move;
-                    }
-                    float smoothness = 5f; // 조절 가능한 부드러움 계수
-                    sit_walkSpeed = Mathf.Lerp(sit_walkSpeed, 1, Runner.DeltaTime * smoothness);
-                    _animator.SetFloat("sitSpeed", sit_walkSpeed);
-                }
-            }
-            else
-            {
-                float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-                sitSpeed = Mathf.Lerp(sitSpeed, 0, Runner.DeltaTime * sit_smoothness);
-                _animator.SetFloat("Sit", sitSpeed);
-                if (hAxis == 0 && vAxis == 0 && isRunning == false)
-                {
-                    float smoothness = 5f; // 조절 가능한 부드러움 계수
-                    currentSpeed = Mathf.Lerp(currentSpeed, 0, Runner.DeltaTime * smoothness);
-                    _animator.SetFloat("moveSpeed", currentSpeed);
-                }
-                else if (isRunning == false)
-                {
-                    Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
-                    Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * currentSpeed;
-
-                    _controller.Walk(move);
-
-                    if (move != Vector3.zero)
-                    {
-                        gameObject.transform.forward = move;
-                    }
-                    float smoothness = 2f; // 조절 가능한 부드러움 계수
-                    currentSpeed = Mathf.Lerp(currentSpeed, 2, Runner.DeltaTime * smoothness);
-                    _animator.SetFloat("moveSpeed", currentSpeed);
-                }
-                else
-                {
-                    Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
-                    Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * currentSpeed;
-
-                    _controller.Walk(move);
-
-                    if (move != Vector3.zero)
-                    {
-                        gameObject.transform.forward = move;
-                    }
-                    float smoothness = 4f; // 조절 가능한 부드러움 계수
-                    currentSpeed = Mathf.Lerp(currentSpeed, 3.5f, Runner.DeltaTime * smoothness);
-                    _animator.SetFloat("moveSpeed", currentSpeed);
-                }
-            }
-        }
-        else if (currentHealth == 50)
-        {
-            _animator.SetFloat("Health", currentHealth);
-            if (isSitting)
-            {
-                float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-                sitSpeed = Mathf.Lerp(sitSpeed, 1, Runner.DeltaTime * sit_smoothness);
-                _animator.SetFloat("Sit", sitSpeed);
-                if (hAxis == 0 && vAxis == 0)
-                {
-                    float smoothness = 5f; // 조절 가능한 부드러움 계수
-                    sit_walkSpeed = Mathf.Lerp(sit_walkSpeed, 0, Runner.DeltaTime * smoothness);
-                    _animator.SetFloat("sitSpeed", sit_walkSpeed);
-                }
-                else
-                {
-                    Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
-                    Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * sit_walkSpeed;
-
-                    _controller.Walk(move);
-
-                    if (move != Vector3.zero)
-                    {
-                        gameObject.transform.forward = move;
-                    }
-                    float smoothness = 5f; // 조절 가능한 부드러움 계수
-                    sit_walkSpeed = Mathf.Lerp(sit_walkSpeed, 1, Runner.DeltaTime * smoothness);
-                    _animator.SetFloat("sitSpeed", sit_walkSpeed);
-                }
-            }
-            else
-            {
-                float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-                sitSpeed = Mathf.Lerp(sitSpeed, 0, Runner.DeltaTime * sit_smoothness);
-                _animator.SetFloat("Sit", sitSpeed);
-                if (hAxis == 0 && vAxis == 0 && isRunning == false)
-                {
-                    float smoothness = 5f; // 조절 가능한 부드러움 계수
-                    currentSpeed = Mathf.Lerp(currentSpeed, 0, Runner.DeltaTime * smoothness);
-                    _animator.SetFloat("moveSpeed", currentSpeed);
-                }
-                else if (isRunning == false)
-                {
-                    Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
-                    Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * currentSpeed;
-
-                    _controller.Walk(move);
-
-                    if (move != Vector3.zero)
-                    {
-                        gameObject.transform.forward = move;
-                    }
-                    float smoothness = 2f; // 조절 가능한 부드러움 계수
-                    currentSpeed = Mathf.Lerp(currentSpeed, 1.5f, Runner.DeltaTime * smoothness);
-                    _animator.SetFloat("moveSpeed", currentSpeed);
-                }
-                else
-                {
-                    Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
-                    Vector3 move = cameraRotationY * new Vector3(hAxis, 0, vAxis) * Runner.DeltaTime * currentSpeed;
-
-                    _controller.Walk(move);
-
-                    if (move != Vector3.zero)
-                    {
-                        gameObject.transform.forward = move;
-                    }
-                    float smoothness = 4f; // 조절 가능한 부드러움 계수
-                    currentSpeed = Mathf.Lerp(currentSpeed, 2.5f, Runner.DeltaTime * smoothness);
-                    _animator.SetFloat("moveSpeed", currentSpeed);
-                }
-            }
-        }
-        else
-        {
-            isDeath = true;
-            _animator.SetBool("IsDeath", true);
-        }
+        float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
+        _SitDown = Mathf.Lerp(_SitDown, 1, Runner.DeltaTime * sit_smoothness);
+        Anim.SetFloat("Sit", _SitDown);
     }
-    */
+    public void PlayAnimationSitIdle()
+    {
+        float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
+        _SitWalkSpeed = Mathf.Lerp(_SitWalkSpeed, 0, Runner.DeltaTime * sit_smoothness);
+        Anim.SetFloat("sitSpeed", _SitWalkSpeed);
+    }
+    public void PlayAnimationSitWalk()
+    {
+        float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
+        _SitWalkSpeed = Mathf.Lerp(_SitWalkSpeed, 1.5f, Runner.DeltaTime * sit_smoothness);
+        Anim.SetFloat("sitSpeed", _SitWalkSpeed);
+    }
     #endregion
 }

@@ -29,7 +29,7 @@ public class ObjectManager
 
     public NetworkObject SpawnCrew(int crewDataId, Vector3 spawnPosition)
     {
-	    string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
+        string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREW_PATH}/{className}");
         NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
 
