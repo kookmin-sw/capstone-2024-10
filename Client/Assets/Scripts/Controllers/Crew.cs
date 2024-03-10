@@ -8,7 +8,7 @@ public class Crew : Creature
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)CreatureStat;
 
-    [Networked] public NetworkBool _IsDamaged { get; set; }
+    [Networked] public NetworkBool _IsDamaged { get => default; set { } }
 
     //애니메이션을 위한 변수
     private float _SitDown = 0;

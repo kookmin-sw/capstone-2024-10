@@ -3,6 +3,7 @@ using UnityEngine;
 using Fusion;
 using Fusion.Sockets;
 using System;
+using System.Threading.Tasks;
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -65,8 +66,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public void OnConnectedToServer(NetworkRunner runner)
     {
         Debug.Log("OnConnectedToServer");
-        Player = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, Vector3.zero);
-        runner.SetPlayerObject(runner.LocalPlayer, Player);
     }
 
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
@@ -114,9 +113,12 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     }
 
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         Debug.Log("OnPlayerJoined");
+        Task<NetworkObject> networkObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, Vector3.zero);
+        Player = await networkObject;
+        runner.SetPlayerObject(runner.LocalPlayer, Player);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)

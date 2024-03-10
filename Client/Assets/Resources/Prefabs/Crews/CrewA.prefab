@@ -5066,6 +5066,11 @@ GameObject:
   - component: {fileID: 2937278171442536397}
   - component: {fileID: -6517211277596413631}
   - component: {fileID: 3299225919478658973}
+  - component: {fileID: -2001003088171589695}
+  - component: {fileID: -4096237301936525921}
+  - component: {fileID: 1733768450873574019}
+  - component: {fileID: -479084238685409524}
+  - component: {fileID: -4902437529698194555}
   m_Layer: 0
   m_Name: CrewA
   m_TagString: Untagged
@@ -5184,6 +5189,11 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 3299225919478658973}
+  - {fileID: -2001003088171589695}
+  - {fileID: -4096237301936525921}
+  - {fileID: 1733768450873574019}
+  - {fileID: -479084238685409524}
+  - {fileID: -4902437529698194555}
 --- !u!114 &3299225919478658973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5202,6 +5212,110 @@ MonoBehaviour:
   SyncSettings: 79
   StateHashes: 000000008a18fce4b9abd9d3bb60d7dc1e243063b45938cccce730ad2afa8626a8b5caa3
   TriggerHashes: 00000000
+--- !u!114 &-2001003088171589695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7920281149799720858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b400222cb0cf8bb4f824f28e394d4024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _PlayerName:
+    _length: 0
+    _data:
+      Data: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+--- !u!114 &-4096237301936525921
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7920281149799720858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6771d35f40709243a77a608f5eac5bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _DataId: 0
+  _CreatureType: 0
+  _CreatureState: 0
+  _CreaturePose: 0
+  _Velocity: {x: 0, y: 0, z: 0}
+  __IsDamaged:
+    _value: 0
+--- !u!114 &1733768450873574019
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7920281149799720858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6890c92ffee41c7b35303c032f1d7fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-479084238685409524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7920281149799720858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1869825851, guid: ede3bd9646ecdf247b916b34c3998ac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _settings:
+    Shape: 1
+    IsTrigger: 0
+    Radius: 0.35
+    Height: 1.8
+    Extent: 0.035
+    ColliderLayer: 0
+    CollisionLayerMask:
+      serializedVersion: 2
+      m_Bits: 1
+    ProxyInterpolationMode: 0
+    TeleportThreshold: 1
+    AntiJitterDistance: {x: 0.025, y: 0.01}
+    CompressNetworkPosition: 0
+    ForcePredictedLookRotation: 0
+    StepHeight: 0.5
+    StepDepth: 0.2
+    StepSpeed: 1
+    StepMinPushBack: 0.5
+    StepGroundCheckRadiusScale: 0.5
+    StepRequireGroundTarget: 0
+    SnapDistance: 0.25
+    SnapSpeed: 4
+--- !u!114 &-4902437529698194555
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7920281149799720858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae067d60e6cc4da98228575330e05c90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name:
+    _length: 0
+    _data:
+      Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  _WalkSpeed: 0
+  _RunSpeed: 0
+  _Hp: 0
+  _MaxHp: 0
+  _Stamina: 0
+  _SitSpeed: 0
 --- !u!1 &7929213206135854106
 GameObject:
   m_ObjectHideFlags: 0

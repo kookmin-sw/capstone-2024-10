@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using Data;
+using System.Threading.Tasks;
 
 public class ObjectManager
 {
@@ -27,11 +28,11 @@ public class ObjectManager
 	    return root.transform;
     }
 
-    public NetworkObject SpawnCrew(int crewDataId, Vector3 spawnPosition)
+    public async Task<NetworkObject> SpawnCrew(int crewDataId, Vector3 spawnPosition)
     {
         string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREW_PATH}/{className}");
-        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
+        NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPosition);
 
         Crew crew = no.GetComponent<Crew>();
         crew.Rpc_SetInfo(crewDataId);

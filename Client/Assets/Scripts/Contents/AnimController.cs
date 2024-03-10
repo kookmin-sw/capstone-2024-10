@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Fusion;
 
 public class AnimController : NetworkBehaviour
@@ -16,9 +16,9 @@ public class AnimController : NetworkBehaviour
 
     protected virtual void Init()
     {
-        NetworkAnim = gameObject.GetOrAddComponent<NetworkMecanimAnimator>();
+        NetworkAnim = gameObject.GetComponent<NetworkMecanimAnimator>();
 
-        Creature = gameObject.GetOrAddComponent<Creature>();
+        Creature = gameObject.GetComponent<Creature>();
     }
 
     #region Update

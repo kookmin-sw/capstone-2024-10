@@ -15,7 +15,7 @@ public abstract class Creature : NetworkBehaviour
     public CreatureStat CreatureStat { get; protected set; }
     public AnimController AnimController { get; protected set; }
 
-    [Networked] public int DataId { get; protected set; }
+    [Networked] public int DataId { get; set; }
     public Data.CreatureData CreatureData { get; protected set; }
     [Networked] public Define.CreatureType CreatureType { get; set; }
 
@@ -33,14 +33,14 @@ public abstract class Creature : NetworkBehaviour
 
     protected virtual void Init()
     {
-        Transform = gameObject.GetOrAddComponent<Transform>();
-        Collider = gameObject.GetOrAddComponent<CircleCollider2D>();
-        RigidBody = gameObject.GetOrAddComponent<Rigidbody2D>();
-        NetworkObject = gameObject.GetOrAddComponent<NetworkObject>();
-        KCC = gameObject.GetOrAddComponent<SimpleKCC>();
+        Transform = gameObject.GetComponent<Transform>();
+        //Collider = gameObject.GetComponent<CircleCollider2D>();
+        //RigidBody = gameObject.GetComponent<Rigidbody2D>();
+        NetworkObject = gameObject.GetComponent<NetworkObject>();
+        KCC = gameObject.GetComponent<SimpleKCC>();
 
-        CreatureStat = gameObject.GetOrAddComponent<CreatureStat>();
-        AnimController = gameObject.GetOrAddComponent<AnimController>();
+        CreatureStat = gameObject.GetComponent<CreatureStat>();
+        AnimController = gameObject.GetComponent<AnimController>();
 
         if (Camera.main != null)
         {
