@@ -7,15 +7,25 @@ using System;
 public class Player : NetworkBehaviour
 {
     [Networked] public NetworkString<_32> PlayerName { get => default; set { } }
-    public Action OnPlayerNameUpdate { get; set; }
+    [Networked, OnChangedRender(nameof(OnReadyCountUpdate))]
+    public int ReadyCount { get; set; }
 
-    private IEnumerator Start()
+    public Action OnPlayerNameUpdate { get; set; }
+    public Action OnReadyCountUpdate { get; set; }
+    public Define.PlayerState State { get; protected set; } = Define.PlayerState.None;
+
+    public override void Spawned()
     {
         if (HasStateAuthority)
         {
             PlayerName = Managers.NetworkMng.PlayerName;
         }
 
+        Managers.GameMng.Player = this;
+    }
+
+    private IEnumerator Start()
+    {
         yield return new WaitUntil(() => isActiveAndEnabled);
 
         Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
@@ -25,8 +35,12 @@ public class Player : NetworkBehaviour
         OnPlayerNameUpdate.Invoke();
     }
 
-    void Update()
+    public void GetReady()
     {
-
+        if (State == Define.PlayerState.None)
+        {
+            ReadyCount++;
+            State = Define.PlayerState.Ready;
+        }
     }
 }

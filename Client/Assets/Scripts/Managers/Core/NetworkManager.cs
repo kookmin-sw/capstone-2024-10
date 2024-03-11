@@ -67,8 +67,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public async void OnConnectedToServer(NetworkRunner runner)
     {
         Debug.Log("OnConnectedToServer");
-        Task<NetworkObject> task = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID);
-        Player = await task;
+        Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID);
 
         runner.SetPlayerObject(runner.LocalPlayer, Player);
     }
@@ -124,6 +123,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Task<NetworkObject> networkObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, Vector3.zero);
         Player = await networkObject;
         runner.SetPlayerObject(runner.LocalPlayer, Player);
+        Managers.GameMng.NumPlayers++;
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
