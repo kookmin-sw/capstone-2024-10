@@ -8,19 +8,18 @@ public class Crew : Creature
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)CreatureStat;
 
+    
+    public float _hAxis { get; set; }
+    public float _vAxis { get; set; }
+    public float _Speed { get; set; }
+
     [Networked] public NetworkBool _IsDamaged { get => default; set { } }
 
-    //애니메이션을 위한 변수
-    private float _SitDown = 0;
-    private float _CurrentSpeed = 0;    //현재 속도
-    private float _SitWalkSpeed = 0;    //앉아서 걷는 속도
-    private float _CurrentHp;  //현재 체력
-    private float _CurrentStamina;    //현재 스테미나
 
     public override void Spawned()
     {
-
         base.Init();
+        Rpc_SetInfo(0);
     }
 
 
@@ -36,6 +35,11 @@ public class Crew : Creature
     }
     #endregion
 
+    public void Update()
+    {
+        HandleKeyDown();
+    }
+
     public override void FixedUpdateNetwork()
     {
         base.FixedUpdateNetwork();
@@ -46,35 +50,48 @@ public class Crew : Creature
 
     protected override void HandleKeyDown()
     {
-        Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
-
-        Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * CreatureStat.WalkSpeed;
+        _hAxis = Input.GetAxisRaw("Horizontal");
+        _vAxis = Input.GetAxisRaw("Vertical");
 
         if (CreatureState == Define.CreatureState.Use)
         {
             // TODO
-            return;
         }
 
-        if (Velocity == Vector3.zero)
+        if (_hAxis == 0 && _vAxis == 0)
         {
             CreatureState = Define.CreatureState.Idle;
-            return;
         }
-
-        CreatureState = Define.CreatureState.Move;
+        else
+        {
+            CreatureState = Define.CreatureState.Move;
+        }
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            CreaturePose = Define.CreaturePose.Run;
+            if (CreaturePose != Define.CreaturePose.Sit)
+            {
+                CreaturePose = Define.CreaturePose.Run;
+            }
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
-            CreaturePose = Define.CreaturePose.Stand;
+            if (CreaturePose != Define.CreaturePose.Sit)
+            {
+                CreaturePose = Define.CreaturePose.Stand;
+            }
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
-            CreaturePose = Define.CreaturePose.Sit;
+            if (CreaturePose != Define.CreaturePose.Sit)
+            {
+                CreaturePose = Define.CreaturePose.Sit;
+            }
+            else
+            {
+                CreaturePose = Define.CreaturePose.Stand;
+            }
+            
         }
     }
 
@@ -93,7 +110,7 @@ public class Crew : Creature
                 // TODO
                 break;
             case Define.CreaturePose.Run:
-                // TODO
+                Debug.Log("No Idle_Run");
                 break;
         }
     }
@@ -103,15 +120,18 @@ public class Crew : Creature
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                // TODO
+                _Speed = 80;
                 break;
             case Define.CreaturePose.Sit:
-                // TODO
+                _Speed = 35;
                 break;
             case Define.CreaturePose.Run:
-                Debug.Log("No Idle_Run");
+                _Speed = 100;
                 break;
         }
+
+        Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
+        Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * _Speed;
 
         KCC.Move(Velocity, 0f);
 
