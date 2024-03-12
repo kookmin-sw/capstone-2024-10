@@ -64,12 +64,9 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Sessions = sessionList;
     }
 
-    public async void OnConnectedToServer(NetworkRunner runner)
+    public void OnConnectedToServer(NetworkRunner runner)
     {
         Debug.Log("OnConnectedToServer");
-        Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID);
-
-        runner.SetPlayerObject(runner.LocalPlayer, Player);
     }
 
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)

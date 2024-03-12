@@ -7,7 +7,7 @@ using System;
 public class Player : NetworkBehaviour
 {
     [Networked] public NetworkString<_32> PlayerName { get => default; set { } }
-    [Networked, OnChangedRender(nameof(OnReadyCountUpdate))]
+    [Networked, OnChangedRender(nameof(OnReadyCountChanged))]
     public int ReadyCount { get; set; }
 
     public Action OnPlayerNameUpdate { get; set; }
@@ -33,6 +33,11 @@ public class Player : NetworkBehaviour
         yield return new WaitUntil(() => PlayerName.Value != null);
 
         OnPlayerNameUpdate.Invoke();
+    }
+
+    public void OnReadyCountChanged()
+    {
+
     }
 
     public void GetReady()
