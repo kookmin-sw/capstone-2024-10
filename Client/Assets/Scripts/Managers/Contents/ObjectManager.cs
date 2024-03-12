@@ -10,8 +10,8 @@ public class ObjectManager
     public Dictionary<NetworkId, Alien> Aliens { get; protected set; }
 
     public NetworkObject Player { get; protected set; }
-    public Transform CrewRoot => GetRootTransform("@Heroes");
-    public Transform AlienRoot => GetRootTransform("@Monsters");
+    public Transform CrewRoot => GetRootTransform("@Crews");
+    public Transform AlienRoot => GetRootTransform("@Aliens");
 
     public void Init()
     {

@@ -9,6 +9,7 @@ using Fusion;
 public class UI_Lobby : UI_Scene
 {
     #region UI 목록들
+
     public enum Buttons
     {
         Create,
@@ -32,6 +33,7 @@ public class UI_Lobby : UI_Scene
         RoomContent,
         SendingMessage,
     }
+
     #endregion
 
     TMP_InputField _input;
@@ -67,7 +69,7 @@ public class UI_Lobby : UI_Scene
         {
             if (session.IsVisible)
             {
-                var entry = Managers.UIMng.MakeSubItem<UI_SessionEntry>(GetObject((int)GameObjects.RoomContent).transform);
+                UI_SessionEntry entry = Managers.UIMng.MakeSubItem<UI_SessionEntry>(GetObject((int)GameObjects.RoomContent).transform);
                 var args = new SessionEntryArgs()
                 {
                     session = session

@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class Managers : MonoBehaviour
 {
-    public static bool Initialized { get; set; }
+    public static bool Initialized { get; set; } = false;
 
-    static Managers s_instance;
-    static public Managers Instance { get { Init(); return s_instance; } }
-
-    public static bool InitComplete = false;
+    private static Managers s_instance;
+    public static Managers Instance { get { Init(); return s_instance; } }
 
     #region Contents
     private GameManagerEX _gameMng = new GameManagerEX();
@@ -41,7 +39,7 @@ public class Managers : MonoBehaviour
     public static MapManager MapMng => Instance._mapMng;
     #endregion
 
-    static void Init()
+    public static void Init()
     {
         if (s_instance == null || Initialized == false)
         {
@@ -56,7 +54,7 @@ public class Managers : MonoBehaviour
 
             DontDestroyOnLoad(go);
             s_instance = go.GetComponent<Managers>();
-            s_instance._networkMng = go.GetComponent<NetworkManager>();
+            s_instance._networkMng = go.GetOrAddComponent<NetworkManager>();
 
             NetworkMng.Init();
             InputMng.Init();

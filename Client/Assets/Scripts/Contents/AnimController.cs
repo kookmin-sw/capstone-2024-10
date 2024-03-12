@@ -87,17 +87,17 @@ public class AnimController : NetworkBehaviour
 
     #region SetParameter
 
-    protected void SetBoolTrigger(string parameter)
+    protected void SetTrigger(string parameter)
     {
         NetworkAnim.SetTrigger("IsRunning");
     }
 
-    protected void SetBoolTrigger(string parameter, bool value)
+    protected void SetBool(string parameter, bool value)
     {
         NetworkAnim.Animator.SetBool(parameter, value);
     }
 
-    protected void SetFloatTrigger(string parameter, float value)
+    protected void SetFloat(string parameter, float value)
     {
         NetworkAnim.Animator.SetFloat(parameter, value);
     }
