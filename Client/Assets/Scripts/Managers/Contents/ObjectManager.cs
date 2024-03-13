@@ -9,7 +9,7 @@ public class ObjectManager
 	public Dictionary<NetworkId, Crew> Crews { get; protected set; }
     public Dictionary<NetworkId, Alien> Aliens { get; protected set; }
 
-    public NetworkObject Player { get; protected set; }
+    public Creature MyCreature { get; set; }
     public Transform CrewRoot => GetRootTransform("@Crews");
     public Transform AlienRoot => GetRootTransform("@Aliens");
 
@@ -35,7 +35,7 @@ public class ObjectManager
         NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPosition);
 
         Crew crew = no.GetComponent<Crew>();
-        crew.Rpc_SetInfo(crewDataId);
+        crew.SetInfo(crewDataId);
 
         return no;
     }
@@ -47,7 +47,7 @@ public class ObjectManager
         NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
 
         Alien alien = no.GetComponent<Alien>();
-        alien.Rpc_SetInfo(alienDataId);
+        alien.SetInfo(alienDataId);
 
         return no;
     }

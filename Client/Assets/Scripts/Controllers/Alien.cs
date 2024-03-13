@@ -10,42 +10,41 @@ public class Alien : Creature
 
     #endregion
 
-    public override void Rpc_SetInfo(int templateID)
+    public override void SetInfo(int templateID)
     {
         CreatureType = Define.CreatureType.Alien;
         Transform.parent = Managers.ObjectMng.AlienRoot;
 
-        base.Rpc_SetInfo(templateID);
+        base.SetInfo(templateID);
     }
 
     #region Input
 
-    protected override void HandleKeyDown()
+    protected override void HandleInput()
     {
-        Quaternion cameraRotationY = Quaternion.Euler(0, Camera.transform.rotation.eulerAngles.y, 0);
+        base.HandleInput();
 
-        Vector3 velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * Runner.DeltaTime * CreatureStat.WalkSpeed;
+        if (CreatureState == Define.CreatureState.Use)
+        {
+            // TODO
+            return;
+        }
 
-        if (velocity == Vector3.zero)
+        if (Velocity == Vector3.zero)
         {
             CreatureState = Define.CreatureState.Idle;
             return;
         }
 
-        Velocity = velocity;
         CreatureState = Define.CreatureState.Move;
 
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             CreaturePose = Define.CreaturePose.Run;
         }
         if (Input.GetKeyUp(KeyCode.LeftShift))
         {
             CreaturePose = Define.CreaturePose.Stand;
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-            CreaturePose = Define.CreaturePose.Sit;
         }
     }
 

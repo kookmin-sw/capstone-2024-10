@@ -5067,8 +5067,9 @@ GameObject:
   - component: {fileID: -6517211277596413631}
   - component: {fileID: 3299225919478658973}
   - component: {fileID: 5850708474315694979}
-  - component: {fileID: 8581536642115369379}
   - component: {fileID: 966103578550221855}
+  - component: {fileID: 1676789717420339206}
+  - component: {fileID: 8581536642115369379}
   m_Layer: 0
   m_Name: CrewA
   m_TagString: Untagged
@@ -5188,8 +5189,9 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 3299225919478658973}
   - {fileID: 5850708474315694979}
-  - {fileID: 8581536642115369379}
   - {fileID: 966103578550221855}
+  - {fileID: 1676789717420339206}
+  - {fileID: 8581536642115369379}
 --- !u!114 &3299225919478658973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5243,18 +5245,6 @@ MonoBehaviour:
     StepRequireGroundTarget: 0
     SnapDistance: 0.25
     SnapSpeed: 4
---- !u!114 &8581536642115369379
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7920281149799720858}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6890c92ffee41c7b35303c032f1d7fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &966103578550221855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5271,9 +5261,44 @@ MonoBehaviour:
   _CreatureType: 0
   _CreatureState: 0
   _CreaturePose: 0
+  _CameraQuaternion: {x: 0, y: 0, z: 0, w: 0}
   _Velocity: {x: 0, y: 0, z: 0}
   __IsDamaged:
     _value: 0
+--- !u!114 &1676789717420339206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7920281149799720858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae067d60e6cc4da98228575330e05c90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name:
+    _length: 0
+    _data:
+      Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  _Speed: 0
+  _RunSpeed: 0
+  _Hp: 0
+  _MaxHp: 0
+  _Stamina: 0
+  _SitSpeed: 0
+--- !u!114 &8581536642115369379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7920281149799720858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6890c92ffee41c7b35303c032f1d7fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7929213206135854106
 GameObject:
   m_ObjectHideFlags: 0

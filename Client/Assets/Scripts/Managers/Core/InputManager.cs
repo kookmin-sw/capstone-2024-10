@@ -8,6 +8,7 @@ using UnityEngine.PlayerLoop;
 // 게임 내 모든 입력 처리
 public class InputManager
 {
+    public Action KeyAction;
     public Action<Define.MouseEvent> MouseAction;
 
     private bool _pressed;
@@ -15,6 +16,7 @@ public class InputManager
 
     public void Init()
     {
+        KeyAction = null;
         MouseAction = null;
 
         _pressed = false;
@@ -26,6 +28,12 @@ public class InputManager
     {
         if (EventSystem.current.IsPointerOverGameObject())
             return;
+
+
+        if (KeyAction != null && Input.anyKey)
+        {
+            KeyAction.Invoke();
+        }
 
         if (MouseAction != null)
         {
@@ -58,6 +66,22 @@ public class InputManager
 
     public void Clear()
     {
+        KeyAction = null;
         MouseAction = null;
     }
 }
+
+/* 사용예제
+    void Start()
+    {
+        Managers.InputMng.KeyAction += OnKeyboard;
+    }
+
+    void OnKeyboard()
+    {
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.position += Vector3.forward * Time.deltaTime * mSpeed;
+        }
+    }
+*/

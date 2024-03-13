@@ -1,10 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System.IO;
-using UnityEngine.SceneManagement;
-
 public class GameScene : BaseScene
 {
     // 씬이 초기에 생성될 때 수행될 목록
@@ -13,7 +6,7 @@ public class GameScene : BaseScene
         base.Init();
         SceneType = Define.SceneType.GameScene;
 
-        Managers.ResourceMng.Instantiate("Camera");
+        //Managers.ResourceMng.Instantiate("Camera");
         Managers.MapMng.Init();
         //UI 세팅
         // Managers.UI.ShowSceneUI<UI_MainScene>();

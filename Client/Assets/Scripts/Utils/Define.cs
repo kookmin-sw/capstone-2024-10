@@ -97,6 +97,7 @@ public static class Define
         PointerDown,
         PointerUp,
         Click,
+        Hover,
     }
 
     #endregion
@@ -120,8 +121,8 @@ public static class Define
 
     #region DataId
 
-    public const int CREW_CREWA_ID = 0;
-    public const int CREW_CREWB_ID = 1;
+    public const int CREW_CREWA_ID = 101000;
+    public const int CREW_CREWB_ID = 101001;
 
     public const int ALIEN_STALKER_ID = 102000;
 
