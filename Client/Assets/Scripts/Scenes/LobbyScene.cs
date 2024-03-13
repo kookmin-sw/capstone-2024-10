@@ -10,7 +10,7 @@ public class LobbyScene : BaseScene
 
         SceneType = Define.SceneType.LobbyScene;
 
-        Managers.ResourceMng.Instantiate("Camera");
+        //Managers.ResourceMng.Instantiate("Camera");
         Managers.UIMng.ShowSceneUI<UI_Lobby>();
 
         string nickname = Managers.NetworkMng.PlayerName;

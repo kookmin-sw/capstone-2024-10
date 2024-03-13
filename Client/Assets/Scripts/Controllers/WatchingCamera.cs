@@ -1,8 +1,8 @@
-using Fusion;
+﻿using Fusion;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class CreatureCamera : MonoBehaviour
+public class WatchingCamera : MonoBehaviour
 {
     public Creature Creature { get; set; }
 

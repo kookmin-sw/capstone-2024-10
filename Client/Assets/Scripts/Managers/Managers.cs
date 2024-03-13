@@ -20,7 +20,6 @@ public class Managers : MonoBehaviour
     #region Core
     private DataManager _dataMng = new DataManager();
     private InputManager _inputMng = new InputManager();
-    private PoolManager _poolMng = new PoolManager();
     private ResourceManager _resourceMng = new ResourceManager();
     private SceneManagerEx _sceneMng = new SceneManagerEx();
     private SoundManager _soundMng = new SoundManager();
@@ -30,7 +29,6 @@ public class Managers : MonoBehaviour
 
     public static DataManager DataMng => Instance._dataMng;
     public static InputManager InputMng => Instance._inputMng;
-    public static PoolManager PoolMng => Instance._poolMng;
     public static ResourceManager ResourceMng => Instance._resourceMng;
     public static SceneManagerEx SceneMng => Instance._sceneMng;
     public static SoundManager SoundMng => Instance._soundMng;
@@ -50,17 +48,17 @@ public class Managers : MonoBehaviour
             {
                 go = new GameObject { name = "@Managers" };
                 go.AddComponent<Managers>();
+                go.AddComponent<NetworkManager>();
             }
 
             DontDestroyOnLoad(go);
             s_instance = go.GetComponent<Managers>();
-            s_instance._networkMng = go.GetOrAddComponent<NetworkManager>();
+            s_instance._networkMng = go.GetComponent<NetworkManager>();
 
             NetworkMng.Init();
             InputMng.Init();
             DataMng.Init();
             SoundMng.Init();
-            PoolMng.Init();
             ObjectMng.Init();
         }
     }
@@ -72,6 +70,5 @@ public class Managers : MonoBehaviour
         InputMng.Clear();
         SceneMng.Clear();
         UIMng.Clear();
-        PoolMng.Clear();
     }
 }

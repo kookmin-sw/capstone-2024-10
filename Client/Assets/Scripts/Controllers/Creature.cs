@@ -6,7 +6,8 @@ public abstract class Creature : NetworkBehaviour
 {
     #region Field
 
-    public Camera Camera => Camera.main;
+    public CreatureCamera CreatureCamera { get; protected set; }
+    public WatchingCamera WatchingCamera { get; protected set; }
     public Transform Transform { get; protected set; }
     public CircleCollider2D Collider { get; protected set; }
     public Rigidbody2D RigidBody { get; protected set; }
@@ -22,6 +23,7 @@ public abstract class Creature : NetworkBehaviour
     [Networked] public Define.CreatureState CreatureState { get; set; }
     [Networked] public Define.CreaturePose CreaturePose { get; set; }
 
+    [Networked] public Quaternion CameraQuaternion { get; set; }
     [Networked] public Vector3 Velocity { get; set; }
 
     #endregion
@@ -34,25 +36,47 @@ public abstract class Creature : NetworkBehaviour
     protected virtual void Init()
     {
         Transform = gameObject.GetComponent<Transform>();
-        //Collider = gameObject.GetComponent<CircleCollider2D>();
-        //RigidBody = gameObject.GetComponent<Rigidbody2D>();
+        Collider = gameObject.GetComponent<CircleCollider2D>();
+        RigidBody = gameObject.GetComponent<Rigidbody2D>();
         NetworkObject = gameObject.GetComponent<NetworkObject>();
         KCC = gameObject.GetComponent<SimpleKCC>();
 
         CreatureStat = gameObject.GetComponent<CreatureStat>();
         AnimController = gameObject.GetComponent<AnimController>();
-
-        if (Camera.main != null)
-        {
-            Camera.main.GetComponent<CreatureCamera>().Creature = this;
-        }
     }
 
-    //[Rpc(sources: RpcSources.InputAuthority, targets: RpcTargets.StateAuthority)]
-    public virtual void Rpc_SetInfo(int templateID)
+    public virtual void SetInfo(int templateID)
     {
         DataId = templateID;
 
+        if (CreatureType == Define.CreatureType.Crew)
+        {
+            CreatureData = Managers.DataMng.CrewDataDict[templateID];
+        }
+        else
+        {
+            CreatureData = Managers.DataMng.AlienDataDict[templateID];
+        }
+
+        CreatureState = Define.CreatureState.Idle;
+        CreaturePose = Define.CreaturePose.Stand;
+
+        Managers.ObjectMng.MyCreature = this;
+
+        //CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", gameObject.transform).GetComponent<CreatureCamera>();
+        // CreatureCamera.enabled = true;
+        // CreatureCamera.Creature = this;
+
+        WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
+        WatchingCamera.enabled = true;
+        WatchingCamera.Creature = this;
+
+        Rpc_SetInfo(templateID);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void Rpc_SetInfo(int templateID)
+    {
         if (CreatureType == Define.CreatureType.Crew)
         {
             Managers.ObjectMng.Crews[NetworkObject.Id] = this as Crew;
@@ -65,30 +89,49 @@ public abstract class Creature : NetworkBehaviour
         }
 
         gameObject.name = $"{CreatureData.DataId}_{CreatureData.Name}";
-
-        CreatureState = Define.CreatureState.Idle;
     }
 
     public override void FixedUpdateNetwork()
     {
+        HandleInput();
         UpdateByState();
         AnimController.UpdateAnimation();
+        CameraUpdate();
     }
 
-    #region Input
-
-    protected abstract void HandleKeyDown();
-
-    #endregion
+    protected virtual void HandleInput()
+    {
+        Quaternion cameraRotationY = Quaternion.Euler(0, WatchingCamera.transform.rotation.eulerAngles.y, 0);
+        Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * CreatureStat.Speed * Runner.DeltaTime;
+    }
 
     #region Update
+
+    protected void CameraUpdate()
+    {
+        if (HasStateAuthority == false)
+            return;
+
+        if (CreatureCamera != null)
+            CreatureCameraUpdate();
+        else if (WatchingCamera != null)
+            WatchingCameraUpdate();
+    }
+
+    protected void CreatureCameraUpdate()
+    {
+        CameraQuaternion = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
+    }
+
+    protected void WatchingCameraUpdate()
+    {
+        CameraQuaternion = Quaternion.Euler(0, WatchingCamera.transform.rotation.eulerAngles.y, 0);
+    }
 
     protected void UpdateByState()
     {
         if (HasStateAuthority == false)
-        {
             return;
-        }
 
         switch (CreatureState)
         {
