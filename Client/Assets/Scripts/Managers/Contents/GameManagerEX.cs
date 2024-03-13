@@ -6,6 +6,7 @@ using System.Net;
 using UnityEngine;
 using Fusion;
 using System.Data.SqlTypes;
+using System.Linq;
 
 [Serializable]
 public class SaveData
@@ -18,8 +19,6 @@ public class GameManagerEX
     public SaveData SaveData { get; protected set; }
 
     public string SAVEDATA_PATH;
-
-    public int NumPlayers { get; set; }
 
     public Player Player { get; set; }
 
@@ -37,7 +36,11 @@ public class GameManagerEX
 
     public IEnumerator TryStartGame()
     {
-        while (NumPlayers != Define.PLAYER_COUNT || Player.ReadyCount != Define.PLAYER_COUNT)
+        yield return new WaitUntil(() => Managers.NetworkMng != null);
+
+        yield return new WaitUntil(() => Managers.NetworkMng.PlayerSystem != null);
+
+        while (Managers.NetworkMng.NumPlayers != Define.PLAYER_COUNT || Managers.NetworkMng.PlayerSystem.ReadyCount != Define.PLAYER_COUNT)
         {
             yield return null;
         }
@@ -47,6 +50,7 @@ public class GameManagerEX
 
     public void StartGame()
     {
+        Debug.Log("Game Setting Start");
     }
     #endregion
 

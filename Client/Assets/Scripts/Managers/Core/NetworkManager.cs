@@ -5,6 +5,8 @@ using Fusion.Sockets;
 using System;
 using UnityEngine.UI;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Collections;
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -12,10 +14,30 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public string PlayerName { get; private set; }
     public List<SessionInfo> Sessions = new List<SessionInfo>();
     public NetworkObject Player { get; private set; }
+    public int NumPlayers
+    {
+        get
+        {
+            if (Runner != null)
+                return Runner.ActivePlayers.Count();
+            return 0;
+        }
+    }
+
+    public PlayerSystem PlayerSystem { get; private set; }
 
     public void Init()
     {
+        StartCoroutine(Reserve());
+    }
 
+    public IEnumerator Reserve()
+    {
+        while (PlayerSystem == null)
+        {
+            PlayerSystem = FindAnyObjectByType<PlayerSystem>();
+            yield return null;
+        }
     }
 
     public void ConnectToLobby(string playerName)
@@ -52,7 +74,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             SessionName = sessionName,
             PlayerCount = Define.PLAYER_COUNT,
             SceneManager = Managers.Instance.gameObject.AddComponent<NetworkSceneManagerDefault>()
-
         });
     }
 
@@ -120,12 +141,26 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Task<NetworkObject> networkObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, Vector3.zero);
         Player = await networkObject;
         runner.SetPlayerObject(runner.LocalPlayer, Player);
-        Managers.GameMng.NumPlayers++;
+
+        if (player == Runner.LocalPlayer && Runner.IsSharedModeMasterClient)
+        {
+            NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
+            NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, Vector3.zero);
+            PlayerSystem = no.GetComponent<PlayerSystem>();
+        }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-
+        Debug.Log("OnPlayerLeft");
+        if (player == Runner.LocalPlayer)
+        {
+            Player p = Player.GetComponent<Player>();
+            if (p.State == Define.PlayerState.Ready)
+            {
+                Managers.NetworkMng.PlayerSystem.RPC_InformReady(false);
+            }
+        }
     }
 
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
@@ -140,11 +175,12 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnSceneLoadDone(NetworkRunner runner)
     {
-
+        Debug.Log("OnSceneLoadDone");
     }
 
     public void OnSceneLoadStart(NetworkRunner runner)
     {
+            
 
     }
 

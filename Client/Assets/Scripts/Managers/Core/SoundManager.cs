@@ -43,10 +43,10 @@ public class SoundManager
     {
         foreach (AudioSource audioSource in _audioSources)
         {
-            audioSource.clip = null;
             audioSource.Stop();
+            audioSource.clip = null;
         }
-        _audioClips.Clear();
+         _audioClips.Clear();
     }
 
     /// <summary>

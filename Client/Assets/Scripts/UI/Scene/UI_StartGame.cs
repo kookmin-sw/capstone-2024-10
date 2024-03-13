@@ -9,6 +9,7 @@ public class UI_StartGame : UI_Scene
     enum Buttons
     {
         ReadyGame,
+        ExitGame,
     }
 
     enum Texts
@@ -25,19 +26,46 @@ public class UI_StartGame : UI_Scene
         Bind<TMP_Text>(typeof(Texts));
 
         GetButton((int)Buttons.ReadyGame).onClick.AddListener(ReadyGame);
+        GetButton((int)Buttons.ExitGame).onClick.AddListener(ExitGame);
+
+        SetInfo(0);
+        StartCoroutine(Reserve());
 
         return true;
     }
 
-    private IEnumerator Start()
+    private void Update()
     {
-        yield return new WaitUntil(() => Managers.GameMng.Player != null);
-        Managers.GameMng.Player.OnReadyCountUpdate += () => SetInfo(Managers.GameMng.Player.ReadyCount);
+        
+    }
+
+    private IEnumerator Reserve()
+    {
+        yield return new WaitUntil(() => Managers.NetworkMng.PlayerSystem != null);
+        Managers.NetworkMng.PlayerSystem.OnReadyCountUpdate += () => SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
+        SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
     }
 
     public void ReadyGame()
     {
+        if (Managers.GameMng.Player == null)
+        {
+            Debug.Log("Player is null");
+            return;
+        }
+
         Managers.GameMng.Player.GetReady();
+    }
+
+    public void ExitGame()
+    {
+        if (Managers.GameMng.Player == null)
+        {
+            Debug.Log("Player is null");
+            return;
+        }
+
+        Managers.GameMng.Player.ExtiGame();
     }
 
     public void SetInfo(int count)

@@ -3,31 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using System;
+using ExitGames.Client.Photon;
 
 public class Player : NetworkBehaviour
 {
     [Networked] public NetworkString<_32> PlayerName { get => default; set { } }
-    [Networked, OnChangedRender(nameof(OnReadyCountChanged))]
-    public int ReadyCount { get; set; }
 
     public Action OnPlayerNameUpdate { get; set; }
-    public Action OnReadyCountUpdate { get; set; }
     public Define.PlayerState State { get; protected set; } = Define.PlayerState.None;
 
     public override void Spawned()
     {
-        if (HasStateAuthority)
-        {
-            PlayerName = Managers.NetworkMng.PlayerName;
-        }
+        if (!HasStateAuthority)
+            return;
 
-        Managers.GameMng.Player = this;
+        PlayerName = Managers.NetworkMng.PlayerName;
     }
 
     private IEnumerator Start()
     {
         yield return new WaitUntil(() => isActiveAndEnabled);
 
+        Managers.GameMng.Player = this;
         Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
 
         yield return new WaitUntil(() => PlayerName.Value != null);
@@ -35,17 +32,18 @@ public class Player : NetworkBehaviour
         OnPlayerNameUpdate.Invoke();
     }
 
-    public void OnReadyCountChanged()
-    {
-
-    }
-
     public void GetReady()
     {
         if (State == Define.PlayerState.None)
         {
-            ReadyCount++;
+            Managers.NetworkMng.PlayerSystem.RPC_InformReady(true);
             State = Define.PlayerState.Ready;
         }
+    }
+
+    public void ExtiGame()
+    {
+        Runner.Shutdown();
+        Managers.SceneMng.LoadScene(Define.SceneType.LobbyScene);
     }
 }
