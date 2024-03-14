@@ -9,7 +9,7 @@ public class Sector : NetworkBehaviour
     public Define.SectorType SectorName;
 
     [SerializeField]
-    private Gate[] _gates;
+    private Door[] _doors;
     public WorkStation[] _workStations;
     private SectorLight _sectorLight;
 
@@ -23,6 +23,6 @@ public class Sector : NetworkBehaviour
 
     public void OnElectricPowerChanged()
     {
-
+        
     }
 }

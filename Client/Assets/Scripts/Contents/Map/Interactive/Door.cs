@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-public class Gate : WorkStation
+public class Door : WorkStation
 {
     [Networked]
     public NetworkBool IsOpen { get => default; set { } }
