@@ -1,9 +1,10 @@
-﻿using Fusion;
+using Fusion;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class WatchingCamera : MonoBehaviour
 {
+    //3인칭 카메라
     public Creature Creature { get; set; }
 
     public float MouseSensitivity { get; protected set; }

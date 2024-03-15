@@ -49,22 +49,37 @@ public class Crew : Creature
         if (Velocity == Vector3.zero)
         {
             CreatureState = Define.CreatureState.Idle;
-            return;
+            //가만히 서 있는 상태일 때에도 앉기를 하기 위해 return 제거
+        }
+        else
+        {
+            CreatureState = Define.CreatureState.Move;  //else를 통해 키 입력이 있는 경우 move로 상태변환
         }
 
-        CreatureState = Define.CreatureState.Move;
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))    //앉아 있는 상태에서는 달리기가 적용되지 않게 적용
         {
-            CreaturePose = Define.CreaturePose.Run;
+            if (CreaturePose != Define.CreaturePose.Sit)
+            {
+                CreaturePose = Define.CreaturePose.Run;
+            }
         }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetKeyUp(KeyCode.LeftShift))  //앉아 있는 상태에서 shift를 눌렀다 떼어도 자세 변화가 없게 하기 위해
         {
-            CreaturePose = Define.CreaturePose.Stand;
+            if (CreaturePose != Define.CreaturePose.Sit)
+            {
+                CreaturePose = Define.CreaturePose.Stand;
+            }
         }
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))    //c키를 눌렸을 경우 현재 앉아 있는지, 서있는 상태인지에 따라 반대되는 상태로 변환되도록 설정
         {
-            CreaturePose = Define.CreaturePose.Sit;
+            if (CreaturePose != Define.CreaturePose.Sit)
+            {
+                CreaturePose = Define.CreaturePose.Sit;
+            }
+            else
+            {
+                CreaturePose = Define.CreaturePose.Stand;
+            }
         }
     }
 
@@ -86,6 +101,8 @@ public class Crew : Creature
                 Debug.Log("No Idle_Run");
                 break;
         }
+        //1인칭 카메라 회전에 따라 오브젝트도 회전
+        KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
     }
 
     protected override void UpdateMove()
@@ -105,11 +122,15 @@ public class Crew : Creature
 
         KCC.Move(Velocity, 0f);
 
-        if (Velocity != Vector3.zero)
-        {
-            Quaternion newRotation = Quaternion.LookRotation(Velocity);
-            KCC.SetLookRotation(newRotation);
-        }
+        //3인칭 오브젝트 회전
+        //if (Velocity != Vector3.zero)
+        //{
+        //    Quaternion newRotation = Quaternion.LookRotation(Velocity);
+        //    KCC.SetLookRotation(newRotation);
+        //}
+
+        //1인칭 카메라가 회전할 때만 오브젝트 회전
+        KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
     }
 
     protected override void UpdateUse()
