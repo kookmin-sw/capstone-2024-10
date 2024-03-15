@@ -63,13 +63,13 @@ public abstract class Creature : NetworkBehaviour
 
         Managers.ObjectMng.MyCreature = this;
 
-        //CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", gameObject.transform).GetComponent<CreatureCamera>();
-        // CreatureCamera.enabled = true;
-        // CreatureCamera.Creature = this;
+        CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", gameObject.transform).GetComponent<CreatureCamera>();
+        CreatureCamera.enabled = true;
+        CreatureCamera.Creature = this;
 
-        WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
-        WatchingCamera.enabled = true;
-        WatchingCamera.Creature = this;
+        //WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
+        //WatchingCamera.enabled = true;
+        //WatchingCamera.Creature = this;
 
         Rpc_SetInfo(templateID);
     }
@@ -101,7 +101,10 @@ public abstract class Creature : NetworkBehaviour
 
     protected virtual void HandleInput()
     {
-        Quaternion cameraRotationY = Quaternion.Euler(0, WatchingCamera.transform.rotation.eulerAngles.y, 0);
+        //Quaternion cameraRotationY = Quaternion.Euler(0, WatchingCamera.transform.rotation.eulerAngles.y, 0);
+        //Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * CreatureStat.Speed * Runner.DeltaTime;
+
+        Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
         Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * CreatureStat.Speed * Runner.DeltaTime;
     }
 
