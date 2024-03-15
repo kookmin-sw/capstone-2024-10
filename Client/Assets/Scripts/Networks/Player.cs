@@ -4,13 +4,16 @@ using UnityEngine;
 using Fusion;
 using System;
 using ExitGames.Client.Photon;
+using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class Player : NetworkBehaviour
 {
-    [Networked] public NetworkString<_32> PlayerName { get => default; set { } }
+    [Networked] public NetworkString<_32> PlayerName { get; set; }
 
     public Action OnPlayerNameUpdate { get; set; }
-    public Define.PlayerState State { get; protected set; } = Define.PlayerState.None;
+    [Networked]
+    public Define.PlayerState State { get; set; } = Define.PlayerState.None;
 
     public override void Spawned()
     {
@@ -18,13 +21,21 @@ public class Player : NetworkBehaviour
             return;
 
         PlayerName = Managers.NetworkMng.PlayerName;
+        Managers.GameMng.Player = this;
+    }
+
+    private void Update()
+    {
+        if (HasStateAuthority && Runner.IsSharedModeMasterClient)
+        {
+            PlayerName = "Master";
+        }
     }
 
     private IEnumerator Start()
     {
         yield return new WaitUntil(() => isActiveAndEnabled);
 
-        Managers.GameMng.Player = this;
         Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
 
         yield return new WaitUntil(() => PlayerName.Value != null);
@@ -36,14 +47,13 @@ public class Player : NetworkBehaviour
     {
         if (State == Define.PlayerState.None)
         {
-            Managers.NetworkMng.PlayerSystem.RPC_InformReady(true);
             State = Define.PlayerState.Ready;
         }
     }
 
-    public void ExtiGame()
+    public async void ExtiGame()
     {
-        Runner.Shutdown();
+        await Runner.Shutdown();
         Managers.SceneMng.LoadScene(Define.SceneType.LobbyScene);
     }
 }

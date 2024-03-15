@@ -13,7 +13,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public NetworkRunner Runner { get; private set; }
     public string PlayerName { get; private set; }
     public List<SessionInfo> Sessions = new List<SessionInfo>();
-    public NetworkObject Player { get; private set; }
     public int NumPlayers
     {
         get
@@ -29,6 +28,11 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public void Init()
     {
         StartCoroutine(Reserve());
+
+        if (Runner == null)
+        {
+            Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
+        }
     }
 
     public IEnumerator Reserve()
@@ -44,11 +48,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         PlayerName = playerName;
 
-        if (Runner == null)
-        {
-            Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
-        }
-
         Runner.JoinSessionLobby(SessionLobby.Shared);
     }
 
@@ -62,11 +61,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public async void ConnectToSession(string sessionName)
     {
         Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
-
-        if (Runner == null)
-        {
-            Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
-        }
 
         await Runner.StartGame(new StartGameArgs()
         {
@@ -137,30 +131,23 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log("OnPlayerJoined");
-        Task<NetworkObject> networkObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, Vector3.zero);
-        Player = await networkObject;
-        runner.SetPlayerObject(runner.LocalPlayer, Player);
-
-        if (player == Runner.LocalPlayer && Runner.IsSharedModeMasterClient)
+        if (player == runner.LocalPlayer)
         {
-            NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
-            NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, Vector3.zero);
-            PlayerSystem = no.GetComponent<PlayerSystem>();
+            Task<NetworkObject> networkObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, Vector3.zero);
+            NetworkObject playerObject = await networkObject;
+            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+            if (Runner.IsSharedModeMasterClient)
+            {
+                NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
+                NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, Vector3.zero);
+                PlayerSystem = no.GetComponent<PlayerSystem>();
+            }
         }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         Debug.Log("OnPlayerLeft");
-        if (player == Runner.LocalPlayer)
-        {
-            Player p = Player.GetComponent<Player>();
-            if (p.State == Define.PlayerState.Ready)
-            {
-                Managers.NetworkMng.PlayerSystem.RPC_InformReady(false);
-            }
-        }
     }
 
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)

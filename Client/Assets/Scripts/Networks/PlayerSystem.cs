@@ -1,5 +1,6 @@
 using Fusion;
 using System;
+using UnityEditor;
 using UnityEngine;
 
 public class PlayerSystem : NetworkBehaviour
@@ -12,16 +13,28 @@ public class PlayerSystem : NetworkBehaviour
         OnReadyCountUpdate.Invoke();
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void RPC_InformReady(bool ready = true)
+    public override void FixedUpdateNetwork()
     {
-        if (ready)
+        if (Runner.IsSharedModeMasterClient)
         {
-            ReadyCount++;
+            CountReady();
         }
-        else
+    }
+
+    public void CountReady()
+    {
+        int count = 0;
+        foreach (var player in Runner.ActivePlayers)
         {
-            ReadyCount--;
+            NetworkObject po = Runner.GetPlayerObject(player);
+            if (po == null)
+                continue;
+
+            if (po.GetComponent<Player>().State == Define.PlayerState.Ready)
+            {
+                count++;
+            }
         }
+        ReadyCount = count;
     }
 }

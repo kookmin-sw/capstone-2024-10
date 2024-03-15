@@ -45,6 +45,11 @@ public abstract class Creature : NetworkBehaviour
 
         CreatureStat = gameObject.GetComponent<CreatureStat>();
         AnimController = gameObject.GetComponent<AnimController>();
+
+        if (HasStateAuthority)
+        {
+            Camera.main.GetComponent<CreatureCamera>().Creature = this;
+        }
     }
 
     public virtual void SetInfo(int templateID)
