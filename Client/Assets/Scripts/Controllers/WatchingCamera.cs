@@ -1,15 +1,18 @@
-using Fusion;
+﻿using Fusion;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 public class WatchingCamera : MonoBehaviour
 {
-    //3인칭 카메라
     public Creature Creature { get; set; }
+
+    public Camera Camera { get; protected set; }
 
     public float MouseSensitivity { get; protected set; }
     public float XRotation { get; protected set; } // 카메라의 상하 회전을 위한 변수
     public float CurrentAngle { get; protected set; }
+
+    float _distance = 2f; // 원의 반지름 설정 (조절 가능)
 
     private void Awake()
     {
@@ -18,10 +21,21 @@ public class WatchingCamera : MonoBehaviour
 
     protected void Init()
     {
+        Camera = GetComponent<Camera>();
+
         CurrentAngle = 180f;
         MouseSensitivity = 1.5f;
         XRotation = 0f;
     }
+
+    public void SetInfo(Creature creature)
+    {
+        enabled = true;
+        Creature = creature;
+
+        transform.position = Util.FindChild(Creature.gameObject, "head").transform.position;
+    }
+
     private void LateUpdate()
     {
         if (Creature != null)
@@ -42,8 +56,7 @@ public class WatchingCamera : MonoBehaviour
         XRotation = Mathf.Clamp(XRotation, -90f, 90f);  // 상하 회전 범위를 -90도에서 90도로 제한
 
         float radianAngle = Mathf.Deg2Rad * CurrentAngle; // 원형 궤도 상의 위치 계산
-        float distance = 2f; // 원의 반지름 설정 (조절 가능)
-        Vector3 cameraPosition = new Vector3(Mathf.Sin(radianAngle) * distance, 1.7f, Mathf.Cos(radianAngle) * distance);
+        Vector3 cameraPosition = new Vector3(Mathf.Sin(radianAngle) * _distance, 1.7f, Mathf.Cos(radianAngle) * _distance);
 
         transform.position = Creature.transform.position + cameraPosition; // 플레이어를 중심으로 하는 원형 궤도에 따라 카메라 이동
         Vector3 lookDirection = (Creature.transform.position + Vector3.up * 1.7f) - transform.position; // 플레이어를 바라보는 방향 벡터 설정

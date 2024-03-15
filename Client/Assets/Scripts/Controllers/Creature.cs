@@ -4,6 +4,8 @@ using Fusion.Addons.SimpleKCC;
 
 public abstract class Creature : NetworkBehaviour
 {
+    public const bool IsFirstPersonView = true;
+
     #region Field
 
     public CreatureCamera CreatureCamera { get; protected set; }
@@ -23,7 +25,6 @@ public abstract class Creature : NetworkBehaviour
     [Networked] public Define.CreatureState CreatureState { get; set; }
     [Networked] public Define.CreaturePose CreaturePose { get; set; }
 
-    [Networked] public Quaternion CameraQuaternion { get; set; }
     [Networked] public Vector3 Velocity { get; set; }
 
     #endregion
@@ -63,13 +64,18 @@ public abstract class Creature : NetworkBehaviour
 
         Managers.ObjectMng.MyCreature = this;
 
-        CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", gameObject.transform).GetComponent<CreatureCamera>();
-        CreatureCamera.enabled = true;
-        CreatureCamera.Creature = this;
+        if (IsFirstPersonView)
+        {
 
-        //WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
-        //WatchingCamera.enabled = true;
-        //WatchingCamera.Creature = this;
+            CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", gameObject.transform).GetComponent<CreatureCamera>();
+            CreatureCamera.SetInfo(this);
+        }
+        else
+        {
+            WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
+            WatchingCamera.enabled = true;
+            WatchingCamera.Creature = this;
+        }
 
         Rpc_SetInfo(templateID);
     }
@@ -96,40 +102,26 @@ public abstract class Creature : NetworkBehaviour
         HandleInput();
         UpdateByState();
         AnimController.UpdateAnimation();
-        CameraUpdate();
     }
 
     protected virtual void HandleInput()
     {
-        //Quaternion cameraRotationY = Quaternion.Euler(0, WatchingCamera.transform.rotation.eulerAngles.y, 0);
-        //Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * CreatureStat.Speed * Runner.DeltaTime;
+        if (IsFirstPersonView)
+        {
 
-        Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
-        Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * CreatureStat.Speed * Runner.DeltaTime;
+            Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
+            Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) *
+                       CreatureStat.Speed * Runner.DeltaTime;
+        }
+        else
+        {
+            Quaternion cameraRotationY = Quaternion.Euler(0, WatchingCamera.transform.rotation.eulerAngles.y, 0);
+            Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) *
+                       CreatureStat.Speed * Runner.DeltaTime;
+        }
     }
 
     #region Update
-
-    protected void CameraUpdate()
-    {
-        if (HasStateAuthority == false)
-            return;
-
-        if (CreatureCamera != null)
-            CreatureCameraUpdate();
-        else if (WatchingCamera != null)
-            WatchingCameraUpdate();
-    }
-
-    protected void CreatureCameraUpdate()
-    {
-        CameraQuaternion = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
-    }
-
-    protected void WatchingCameraUpdate()
-    {
-        CameraQuaternion = Quaternion.Euler(0, WatchingCamera.transform.rotation.eulerAngles.y, 0);
-    }
 
     protected void UpdateByState()
     {
@@ -144,7 +136,7 @@ public abstract class Creature : NetworkBehaviour
             case Define.CreatureState.Move:
                 UpdateMove();
                 break;
-            case Define.CreatureState.Use:
+            case Define.CreatureState.Interact:
                 UpdateUse();
                 break;
             case Define.CreatureState.Dead:

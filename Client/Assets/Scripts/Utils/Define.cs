@@ -60,7 +60,7 @@ public static class Define
     {
         Idle,
         Move,
-        Use,
+        Interact,
         Dead,
     }
 
