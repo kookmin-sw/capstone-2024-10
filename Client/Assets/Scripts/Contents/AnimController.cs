@@ -54,10 +54,10 @@ public class AnimController : NetworkBehaviour
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                float smoothness = 5f; // 조절 가능한 부드러움 계수
-                _SitDown = Mathf.Lerp(_SitDown, 0, Runner.DeltaTime * smoothness);
+                float stand_smoothness = 5f; // 조절 가능한 부드러움 계수
+                _SitDown = Mathf.Lerp(_SitDown, 0, Runner.DeltaTime * stand_smoothness);
                 SetFloat("Sit", _SitDown);
-                _CurrentSpeed = Mathf.Lerp(_CurrentSpeed, 0, Runner.DeltaTime * smoothness);
+                _CurrentSpeed = Mathf.Lerp(_CurrentSpeed, 0, Runner.DeltaTime * stand_smoothness);
                 SetFloat("moveSpeed", _CurrentSpeed);
                 break;
             case Define.CreaturePose.Sit:
@@ -109,6 +109,11 @@ public class AnimController : NetworkBehaviour
     #endregion
 
     #region SetParameter
+
+    protected void SetParameter()
+    {
+
+    }
 
     protected void SetTrigger(string parameter)
     {
