@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 273208844532027740}
+  - component: {fileID: 7026330786116388922}
+  - component: {fileID: 4766398941969167867}
   m_Layer: 0
   m_Name: Wall_AutomaticDoor
   m_TagString: Untagged
@@ -33,6 +35,42 @@ Transform:
   - {fileID: 1835247064151176469}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7026330786116388922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169539590435371447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2876456142
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects:
+  - {fileID: 1346251957154967390}
+  NetworkedBehaviours:
+  - {fileID: 4766398941969167867}
+--- !u!114 &4766398941969167867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2169539590435371447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a63cddc2e958b834eb28525cceb11e61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _requiredWorkAmount: 0
+  _WorkProgress: 0
+  _ElectiricPower: 0
+  _IsOpen:
+    _value: 0
 --- !u!1001 &1830898603521076567
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51,7 +89,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4701440441243714, guid: cad46550824812e4f9b777d47e6cc076, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.572
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4701440441243714, guid: cad46550824812e4f9b777d47e6cc076, type: 3}
       propertyPath: m_LocalPosition.z
@@ -85,11 +123,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 848490451261751817, guid: cad46550824812e4f9b777d47e6cc076, type: 3}
+      propertyPath: SortKey
+      value: 1419602409
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cad46550824812e4f9b777d47e6cc076, type: 3}
+--- !u!114 &1346251957154967390 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 848490451261751817, guid: cad46550824812e4f9b777d47e6cc076, type: 3}
+  m_PrefabInstance: {fileID: 1830898603521076567}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1835247064151176469 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4701440441243714, guid: cad46550824812e4f9b777d47e6cc076, type: 3}

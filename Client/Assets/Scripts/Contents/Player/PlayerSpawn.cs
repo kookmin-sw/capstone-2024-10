@@ -6,12 +6,12 @@ using UnityEngine;
 public class PlayerSpawn : SimulationBehaviour, IPlayerJoined
 {
     public GameObject[] PlayerPrefab;
-
+    public Vector3 PlayerSpawnPosition;
     public void PlayerJoined(PlayerRef player)
     {
         if (player == Runner.LocalPlayer)
         {
-            NetworkObject no = Runner.Spawn(PlayerPrefab[0], new Vector3(0, 0.137f, 0), Quaternion.identity);
+            NetworkObject no = Runner.Spawn(PlayerPrefab[0], PlayerSpawnPosition, Quaternion.identity);
             Creature creature = no.GetComponent<Creature>();
             if (creature is Crew)
             {
