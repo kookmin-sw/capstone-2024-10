@@ -11,10 +11,16 @@ public class PlayerSpawn : SimulationBehaviour, IPlayerJoined
     {
         if (player == Runner.LocalPlayer)
         {
-            // 랜덤한 인덱스를 선택합니다.
-            int randomIndex = Random.Range(0, PlayerPrefab.Length);
-
-            Runner.Spawn(PlayerPrefab[randomIndex], new Vector3(0, 0.137f, 0), Quaternion.identity);
+            NetworkObject no = Runner.Spawn(PlayerPrefab[0], new Vector3(0, 0.137f, 0), Quaternion.identity);
+            Creature creature = no.GetComponent<Creature>();
+            if (creature is Crew)
+            {
+                creature.GetComponent<Crew>().SetInfo(Define.CREW_CREWA_ID);
+            }
+            else
+            {
+                creature.GetComponent<Alien>().SetInfo(Define.ALIEN_STALKER_ID);
+            }
         }
     }
 }
