@@ -24,7 +24,7 @@ public class Alien : Creature
     {
         base.HandleInput();
 
-        if (CreatureState == Define.CreatureState.Use)
+        if (CreatureState == Define.CreatureState.Interact)
         {
             // TODO
             return;

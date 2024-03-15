@@ -31,6 +31,9 @@ public class AnimController : NetworkBehaviour
     #region Update
     public void UpdateAnimation()
     {
+        if (HasStateAuthority == false)
+            return;
+
         switch (CreatureState)
         {
             case Define.CreatureState.Idle:
@@ -39,8 +42,8 @@ public class AnimController : NetworkBehaviour
             case Define.CreatureState.Move:
                 PlayMove();
                 break;
-            case Define.CreatureState.Use:
-                PlayUse();
+            case Define.CreatureState.Interact:
+                PlayInteract();
                 break;
             case Define.CreatureState.Dead:
                 PlayDead();
@@ -56,6 +59,7 @@ public class AnimController : NetworkBehaviour
             switch (CreaturePose)
             {
                 case Define.CreaturePose.Stand:
+                case Define.CreaturePose.Run:
                     float smoothness = 5f; // 조절 가능한 부드러움 계수
                     SitDown = Mathf.Lerp(SitDown, 0, Runner.DeltaTime * smoothness);
                     SetFloat("Sit", SitDown);
@@ -75,7 +79,7 @@ public class AnimController : NetworkBehaviour
         {
 
         }
-        
+
     }
 
     protected void PlayMove()
@@ -109,10 +113,10 @@ public class AnimController : NetworkBehaviour
         {
 
         }
-        
+
     }
 
-    protected void PlayUse()
+    protected void PlayInteract()
     {
         // TODO
     }

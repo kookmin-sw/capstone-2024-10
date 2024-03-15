@@ -9,8 +9,6 @@ public class Crew : Creature
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)CreatureStat;
 
-    [Networked] public NetworkBool _IsDamaged { get => default; set { } }
-
     #endregion
     public override void Spawned()
     {
@@ -25,65 +23,48 @@ public class Crew : Creature
         base.SetInfo(templateID);
 
         CrewStat.SetStat(CrewData);
-
     }
-
-    public override void FixedUpdateNetwork()
-    {
-        base.FixedUpdateNetwork();
-
-    }
-
-    #region Input
 
     protected override void HandleInput()
     {
         base.HandleInput();
 
-        if (CreatureState == Define.CreatureState.Use)
+        if (CreatureState == Define.CreatureState.Dead)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            // TODO
+            if (CreatureState == Define.CreatureState.Interact)
+                CreatureState = Define.CreatureState.Idle;
+            else
+                InterAct();
+
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.C))
+        {
+            if (CreaturePose != Define.CreaturePose.Sit)
+                CreaturePose = Define.CreaturePose.Sit;
+            else
+                CreaturePose = Define.CreaturePose.Stand;
+
             return;
         }
 
         if (Velocity == Vector3.zero)
-        {
             CreatureState = Define.CreatureState.Idle;
-            //가만히 서 있는 상태일 때에도 앉기를 하기 위해 return 제거
-        }
         else
         {
-            CreatureState = Define.CreatureState.Move;  //else를 통해 키 입력이 있는 경우 move로 상태변환
-        }
+            CreatureState = Define.CreatureState.Move;
 
-        if (Input.GetKeyDown(KeyCode.LeftShift))    //앉아 있는 상태에서는 달리기가 적용되지 않게 적용
-        {
-            if (CreaturePose != Define.CreaturePose.Sit)
-            {
+            if (Input.GetKey(KeyCode.LeftShift))
                 CreaturePose = Define.CreaturePose.Run;
-            }
-        }
-        if (Input.GetKeyUp(KeyCode.LeftShift))  //앉아 있는 상태에서 shift를 눌렀다 떼어도 자세 변화가 없게 하기 위해
-        {
-            if (CreaturePose != Define.CreaturePose.Sit)
-            {
-                CreaturePose = Define.CreaturePose.Stand;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.C))    //c키를 눌렸을 경우 현재 앉아 있는지, 서있는 상태인지에 따라 반대되는 상태로 변환되도록 설정
-        {
-            if (CreaturePose != Define.CreaturePose.Sit)
-            {
-                CreaturePose = Define.CreaturePose.Sit;
-            }
             else
-            {
-                CreaturePose = Define.CreaturePose.Stand;
-            }
+                if (CreaturePose == Define.CreaturePose.Run)
+                    CreaturePose = Define.CreaturePose.Stand;
         }
     }
-
-    #endregion
 
     #region Update
 
@@ -98,11 +79,14 @@ public class Crew : Creature
                 // TODO
                 break;
             case Define.CreaturePose.Run:
-                Debug.Log("No Idle_Run");
+                // TODO
                 break;
         }
-        //1인칭 카메라 회전에 따라 오브젝트도 회전
-        KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
+
+        if (IsFirstPersonView)
+        {
+            KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
+        }
     }
 
     protected override void UpdateMove()
@@ -120,17 +104,20 @@ public class Crew : Creature
                 break;
         }
 
+        if (IsFirstPersonView)
+        {
+            KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
+        }
+        else
+        {
+            if (Velocity != Vector3.zero)
+            {
+                Quaternion newRotation = Quaternion.LookRotation(Velocity);
+                KCC.SetLookRotation(newRotation);
+            }
+        }
+
         KCC.Move(Velocity, 0f);
-
-        //3인칭 오브젝트 회전
-        //if (Velocity != Vector3.zero)
-        //{
-        //    Quaternion newRotation = Quaternion.LookRotation(Velocity);
-        //    KCC.SetLookRotation(newRotation);
-        //}
-
-        //1인칭 카메라가 회전할 때만 오브젝트 회전
-        KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
     }
 
     protected override void UpdateUse()
@@ -146,6 +133,26 @@ public class Crew : Creature
     #endregion
 
     #region Event
+
+    protected void InterAct()
+    {
+        Ray ray = CreatureCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 3f, layerMask: LayerMask.GetMask("Interact")))
+        {
+            CreatureState = Define.CreatureState.Interact;
+
+            IInteractable interactable = rayHit.transform.gameObject.GetComponent<IInteractable>();
+            interactable.Interact();
+
+            Debug.DrawLine(ray.origin, rayHit.point, Color.red, 1f); // TODO - Test Code
+        }
+        else
+        {
+            Debug.Log("Failed to InterAct");
+            Debug.DrawRay(ray.origin, ray.direction * 3f, Color.red, 1f); // TODO - Test Code
+        }
+    }
 
     public void OnDamaged(int damage)
     {
