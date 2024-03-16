@@ -4,10 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ElectricSystem : WorkStation
-{    
-    
-    public override void Interact()
+{
+
+    public override void Interact(Creature creature)
     {
-        
+
     }
 }

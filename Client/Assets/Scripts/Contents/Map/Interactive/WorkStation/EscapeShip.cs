@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class EscapeShip : WorkStation
 {
-  
-    public override void Interact()
+
+    public override void Interact(Creature creature)
     {
-        
+
     }
 
     private void Escape()

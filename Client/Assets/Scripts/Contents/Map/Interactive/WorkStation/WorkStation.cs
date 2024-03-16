@@ -25,7 +25,7 @@ public class WorkStation : NetworkBehaviour, IInteractable
         WorkProgress = 0;
     }
 
-    public virtual void Interact()
+    public virtual void Interact(Creature creature)
     {
         StartCoroutine(ProgressWork());
     }
