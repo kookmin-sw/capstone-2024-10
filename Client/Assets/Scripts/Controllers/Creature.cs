@@ -17,6 +17,7 @@ public abstract class Creature : NetworkBehaviour
     public SimpleKCC KCC { get; protected set; }
     public CreatureStat CreatureStat { get; protected set; }
     public AnimController AnimController { get; protected set; }
+    public Inventory Inventory { get; protected set; }
 
     [Networked] public int DataId { get; set; }
     public Data.CreatureData CreatureData { get; protected set; }
@@ -59,11 +60,6 @@ public abstract class Creature : NetworkBehaviour
             CreatureData = Managers.DataMng.AlienDataDict[templateID];
         }
 
-        CreatureState = Define.CreatureState.Idle;
-        CreaturePose = Define.CreaturePose.Stand;
-
-        Managers.ObjectMng.MyCreature = this;
-
         if (IsFirstPersonView)
         {
 
@@ -76,6 +72,14 @@ public abstract class Creature : NetworkBehaviour
             WatchingCamera.enabled = true;
             WatchingCamera.Creature = this;
         }
+
+        CreatureState = Define.CreatureState.Idle;
+        CreaturePose = Define.CreaturePose.Stand;
+
+        Managers.ObjectMng.MyCreature = this;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
         Rpc_SetInfo(templateID);
     }
@@ -97,9 +101,13 @@ public abstract class Creature : NetworkBehaviour
         gameObject.name = $"{CreatureData.DataId}_{CreatureData.Name}";
     }
 
-    public override void FixedUpdateNetwork()
+    private void Update()
     {
         HandleInput();
+    }
+
+    public override void FixedUpdateNetwork()
+    {
         UpdateByState();
         AnimController.UpdateAnimation();
     }
@@ -152,6 +160,32 @@ public abstract class Creature : NetworkBehaviour
     protected abstract void UpdateUse();
 
     protected abstract void UpdateDead();
+
+    #endregion
+
+    #region Interact
+
+    protected bool RayCast()
+    {
+        Ray ray = CreatureCamera.GetComponent<Camera>().ViewportPointToRay(Vector3.one * 0.5f);
+
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 1f, layerMask: LayerMask.GetMask("Interact")))
+        {
+            CreatureState = Define.CreatureState.Interact;
+
+            IInteractable interactable = rayHit.transform.gameObject.GetComponent<IInteractable>();
+            interactable.Interact(this);
+
+            Debug.DrawLine(ray.origin, rayHit.point, Color.red, 1f); // TODO - Test Code
+            return true;
+        }
+        else
+        {
+            Debug.Log("Failed to InterAct");
+            Debug.DrawRay(ray.origin, ray.direction * 1f, Color.red, 1f); // TODO - Test Code
+            return false;
+        }
+    }
 
     #endregion
 }
