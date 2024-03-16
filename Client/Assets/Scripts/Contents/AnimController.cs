@@ -24,8 +24,11 @@ public class AnimController : NetworkBehaviour
     {
         NetworkAnim = gameObject.GetComponent<NetworkMecanimAnimator>();
         Creature = gameObject.GetComponent<Crew>();
-        SetFloat("Health", 100);
 
+        SetFloat("Health", 100);
+        SetFloat("Sit", 0);
+        SetFloat("moveSpeed", 0);
+        SetFloat("sitSpeed", 0);
     }
 
     #region Update

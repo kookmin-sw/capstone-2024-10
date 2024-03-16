@@ -6,10 +6,10 @@ using UnityEngine;
 public class Gate : WorkStation
 {
     [Networked]
-    public NetworkBool IsOpen { get => default; set { } }
+    public NetworkBool IsOpen { get; set; }
 
-    public override void Interact()
+    public override void Interact(Creature creature)
     {
-        
+
     }
 }

@@ -1,7 +1,4 @@
-using Fusion;
-using Fusion.Addons.SimpleKCC;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class CreatureCamera : MonoBehaviour
 {

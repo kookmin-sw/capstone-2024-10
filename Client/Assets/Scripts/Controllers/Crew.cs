@@ -1,6 +1,6 @@
 using UnityEngine;
-using Fusion;
 using Data;
+using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 public class Crew : Creature
 {
@@ -37,9 +37,8 @@ public class Crew : Creature
             if (CreatureState == Define.CreatureState.Interact)
                 CreatureState = Define.CreatureState.Idle;
             else
-                InterAct();
-
-            return;
+                if (RayCast())
+                    return;
         }
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -133,26 +132,6 @@ public class Crew : Creature
     #endregion
 
     #region Event
-
-    protected void InterAct()
-    {
-        Ray ray = CreatureCamera.GetComponent<Camera>().ScreenPointToRay(Input.mousePosition);
-
-        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 3f, layerMask: LayerMask.GetMask("Interact")))
-        {
-            CreatureState = Define.CreatureState.Interact;
-
-            IInteractable interactable = rayHit.transform.gameObject.GetComponent<IInteractable>();
-            interactable.Interact();
-
-            Debug.DrawLine(ray.origin, rayHit.point, Color.red, 1f); // TODO - Test Code
-        }
-        else
-        {
-            Debug.Log("Failed to InterAct");
-            Debug.DrawRay(ray.origin, ray.direction * 3f, Color.red, 1f); // TODO - Test Code
-        }
-    }
 
     public void OnDamaged(int damage)
     {

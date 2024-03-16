@@ -20,7 +20,7 @@ public class EnemyNetworkMovement : NetworkBehaviour
     int Run;
 
     int RandomWanderRange = 50;
-    float detectionRange = 25f; // ÇÃ·¹ÀÌ¾î °¨Áö ¹üÀ§
+    float detectionRange = 25f; // í”Œë ˆì´ì–´ ê°ì§€ ë²”ìœ„
 
     public override void Spawned()
     {
@@ -49,28 +49,28 @@ public class EnemyNetworkMovement : NetworkBehaviour
         }
 
         base.FixedUpdateNetwork();
-        // ÇÃ·¹ÀÌ¾î °¨Áö ¹× ÃßÀû ·ÎÁ÷ Ãß°¡
+        // í”Œë ˆì´ì–´ ê°ì§€ ë° ì¶”ì  ë¡œì§ ì¶”ê°€
         DetectAndChasePlayer();
 
-        if (Input.GetMouseButtonDown(0)) // ¸¶¿ì½º ¿ŞÂÊ ¹öÆ° Å¬¸¯ °¨Áö
+        if (Input.GetMouseButtonDown(0)) // ë§ˆìš°ìŠ¤ ì™¼ìª½ ë²„íŠ¼ í´ë¦­ ê°ì§€
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit))
             {
-                // Å¬¸¯ÇÑ À§Ä¡·Î NavMeshAgent ÀÌµ¿ ¸ñÀûÁö ¼³Á¤
+                // í´ë¦­í•œ ìœ„ì¹˜ë¡œ NavMeshAgent ì´ë™ ëª©ì ì§€ ì„¤ì •
                 navMeshAgent.SetDestination(hit.point);
             }
         }
 
-        // ¸ñÀûÁö¿¡ µµ´ŞÇÏ¸é »õ·Î¿î ·£´ı À§Ä¡·Î ÀÌµ¿
+        // ëª©ì ì§€ì— ë„ë‹¬í•˜ë©´ ìƒˆë¡œìš´ ëœë¤ ìœ„ì¹˜ë¡œ ì´ë™
         else if (!navMeshAgent.pathPending && navMeshAgent.remainingDistance < 0.1f)
         {
             WanderRandomly();
         }
 
-        // ·£´ı ¹èÈ¸ Áß¿¡ Run ¾Ö´Ï¸ŞÀÌ¼Ç ½ÇÇà
+        // ëœë¤ ë°°íšŒ ì¤‘ì— Run ì• ë‹ˆë©”ì´ì…˜ ì‹¤í–‰
         if (navMeshAgent.velocity.magnitude > 0.1f)
         {
             anim.SetBool(Run, true);
@@ -83,20 +83,20 @@ public class EnemyNetworkMovement : NetworkBehaviour
 
     void WanderRandomly()
     {
-        // ·£´ıÇÑ À§Ä¡¸¦ »ı¼ºÇÏ°í ±× À§Ä¡·Î ÀÌµ¿
+        // ëœë¤í•œ ìœ„ì¹˜ë¥¼ ìƒì„±í•˜ê³  ê·¸ ìœ„ì¹˜ë¡œ ì´ë™
         Vector3 randomPosition = GetRandomPosition();
         navMeshAgent.SetDestination(randomPosition);
     }
 
     void DetectAndChasePlayer()
     {
-        // ÁÖº¯¿¡ ÇÃ·¹ÀÌ¾î°¡ ÀÖ´ÂÁö °¨Áö
+        // ì£¼ë³€ì— í”Œë ˆì´ì–´ê°€ ìˆëŠ”ì§€ ê°ì§€
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, detectionRange);
         foreach (var hitCollider in hitColliders)
         {
             if (hitCollider.CompareTag("Player"))
             {
-                // ÇÃ·¹ÀÌ¾î°¡ °¨ÁöµÇ¸é ÃßÀû ½ÃÀÛ
+                // í”Œë ˆì´ì–´ê°€ ê°ì§€ë˜ë©´ ì¶”ì  ì‹œì‘
                 ChasePlayer(hitCollider.transform.position);
                 return;
             }
@@ -105,16 +105,16 @@ public class EnemyNetworkMovement : NetworkBehaviour
 
     void ChasePlayer(Vector3 playerPosition)
     {
-        // ÇÃ·¹ÀÌ¾î¸¦ ÃßÀûÇÏ´Â ÇÔ¼ö È£Ãâ
+        // í”Œë ˆì´ì–´ë¥¼ ì¶”ì í•˜ëŠ” í•¨ìˆ˜ í˜¸ì¶œ
         navMeshAgent.SetDestination(playerPosition);
     }
 
     Vector3 GetRandomPosition()
     {
-        // NavMeshÀÇ ¿µ¿ª¿¡¼­ ·£´ıÇÑ À§Ä¡¸¦ ¾òÀ½
+        // NavMeshì˜ ì˜ì—­ì—ì„œ ëœë¤í•œ ìœ„ì¹˜ë¥¼ ì–»ìŒ
         NavMeshHit hit;
-        Vector3 randomPosition = transform.position + Random.insideUnitSphere * RandomWanderRange;//Å½»ö ¹İÁö¸§
-        NavMesh.SamplePosition(randomPosition, out hit, RandomWanderRange, NavMesh.AllAreas);//ÃÖ´ë½ÃµµÈ½¼ö
+        Vector3 randomPosition = transform.position + Random.insideUnitSphere * RandomWanderRange;//íƒìƒ‰ ë°˜ì§€ë¦„
+        NavMesh.SamplePosition(randomPosition, out hit, RandomWanderRange, NavMesh.AllAreas);//ìµœëŒ€ì‹œë„íšŸìˆ˜
 
         return hit.position;
     }
