@@ -6,10 +6,10 @@ public class GameScene : BaseScene
         base.Init();
         SceneType = Define.SceneType.GameScene;
 
-        //Managers.ResourceMng.Instantiate("Camera");
         Managers.MapMng.Init();
-        //UI 세팅
-        // Managers.UI.ShowSceneUI<UI_MainScene>();
+
+        Managers.UIMng.ShowPopupUI<UI_StartGame>();
+        StartCoroutine(Managers.GameMng.TryStartGame());
     }
 
     // 씬이 바뀔 때 정리해야 하는 목록

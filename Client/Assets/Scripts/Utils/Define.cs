@@ -147,4 +147,12 @@ public static class Define
     public const float GRAVITY_VALUE = -9.81f;
 
     #endregion
+
+    #region PlayerState
+    public enum PlayerState
+    {
+        None,
+        Ready,
+    }
+    #endregion
 }

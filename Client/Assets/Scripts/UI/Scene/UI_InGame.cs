@@ -26,6 +26,7 @@ public class UI_InGame : UI_Scene
     }
 
 
+
     public override bool Init()
     {
         if (base.Init() == false) { return false; }
@@ -36,5 +37,10 @@ public class UI_InGame : UI_Scene
         Bind<GameObject>(typeof(GameObjects));
 
         return true;
+    }
+
+    public void SetInfo()
+    {
+
     }
 }

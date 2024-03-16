@@ -53,7 +53,7 @@ public class Managers : MonoBehaviour
 
             DontDestroyOnLoad(go);
             s_instance = go.GetComponent<Managers>();
-            s_instance._networkMng = go.GetComponent<NetworkManager>();
+            s_instance._networkMng = go.GetOrAddComponent<NetworkManager>();
 
             NetworkMng.Init();
             InputMng.Init();
@@ -66,7 +66,7 @@ public class Managers : MonoBehaviour
     public static void Clear()
     {
         GameMng.Clear();
-        SoundMng.Clear();
+        //SoundMng.Clear();
         InputMng.Clear();
         SceneMng.Clear();
         UIMng.Clear();

@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using UnityEngine;
+using Fusion;
+using System.Data.SqlTypes;
+using System.Linq;
 
 [Serializable]
 public class SaveData
@@ -11,14 +14,13 @@ public class SaveData
     public string playerId = "player";
 }
 
-/// <summary>
-/// 게임 오브젝트의 생성과 소멸에 대한 로직을 수행하고 다이렉트로 게임 오브젝트에 접근할 수 있는 권한을 가지고 있는 매니저
-/// </summary>
 public class GameManagerEX
 {
     public SaveData SaveData { get; protected set; }
 
     public string SAVEDATA_PATH;
+
+    public Player Player { get; set; }
 
     public void Init()
     {
@@ -29,6 +31,29 @@ public class GameManagerEX
             SaveData = new SaveData();
         }
     }
+
+    #region Start
+
+    public IEnumerator TryStartGame()
+    {
+        yield return new WaitUntil(() => Managers.NetworkMng != null);
+
+        yield return new WaitUntil(() => Managers.NetworkMng.PlayerSystem != null);
+
+        while (Managers.NetworkMng.NumPlayers != Define.PLAYER_COUNT || Managers.NetworkMng.PlayerSystem.ReadyCount != Define.PLAYER_COUNT)
+        {
+            yield return null;
+        }
+
+        StartGame();
+    }
+
+    public void StartGame()
+    {
+        Debug.Log("Game Setting Start");
+        Managers.UIMng.ClosePopupUI();
+    }
+    #endregion
 
     #region Save & Load
     public void SaveGame()

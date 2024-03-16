@@ -36,7 +36,7 @@ public class UI_Lobby : UI_Scene
 
     #endregion
 
-    TMP_InputField _input;
+    private TMP_InputField _input;
 
     public override bool Init()
     {
@@ -53,6 +53,8 @@ public class UI_Lobby : UI_Scene
         GetButton((int)Buttons.Setting).onClick.AddListener(GameSetting);
 
         _input = GetObject((int)GameObjects.SendingMessage).GetComponent<TMP_InputField>();
+        GetButton((int)Buttons.Create).interactable = false;
+        Managers.NetworkMng.OnSessionListUpdate += () => GetButton((int)Buttons.Create).interactable = true;
         RefreshSessionLIst();
 
         return true;

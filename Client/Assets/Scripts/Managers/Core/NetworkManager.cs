@@ -3,28 +3,54 @@ using UnityEngine;
 using Fusion;
 using Fusion.Sockets;
 using System;
+using UnityEngine.UI;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Collections;
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
     public NetworkRunner Runner { get; private set; }
-    public string PlayerName { get; private set; }
+    [SerializeField]
+    private string _playerName;
+    public string PlayerName { get => _playerName; private set { _playerName = value; } }
     public List<SessionInfo> Sessions = new List<SessionInfo>();
-    public NetworkObject Player { get; private set; }
+    public Action OnSessionListUpdate;
+
+    public int NumPlayers
+    {
+        get
+        {
+            if (Runner != null)
+                return Runner.ActivePlayers.Count();
+            return 0;
+        }
+    }
+
+    public PlayerSystem PlayerSystem { get; private set; }
 
     public void Init()
     {
-
-    }
-
-    public void ConnectToLobby(string playerName)
-    {
-        PlayerName = playerName;
+        StartCoroutine(Reserve());
 
         if (Runner == null)
         {
             Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
         }
+    }
+
+    public IEnumerator Reserve()
+    {
+        while (PlayerSystem == null)
+        {
+            PlayerSystem = FindAnyObjectByType<PlayerSystem>();
+            yield return null;
+        }
+    }
+
+    public void ConnectToLobby(string playerName)
+    {
+        PlayerName = playerName;
 
         Runner.JoinSessionLobby(SessionLobby.Shared);
     }
@@ -40,18 +66,12 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
 
-        if (Runner == null)
-        {
-            Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
-        }
-
         await Runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.Shared,
             SessionName = sessionName,
             PlayerCount = Define.PLAYER_COUNT,
             SceneManager = Managers.Instance.gameObject.AddComponent<NetworkSceneManagerDefault>()
-
         });
     }
 
@@ -61,6 +81,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Debug.Log("OnSessionListUpdated");
         Sessions.Clear();
         Sessions = sessionList;
+        OnSessionListUpdate.Invoke();
     }
 
     public void OnConnectedToServer(NetworkRunner runner)
@@ -115,15 +136,29 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
-        Debug.Log("OnPlayerJoined");
-        Task<NetworkObject> networkObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, Vector3.zero);
-        Player = await networkObject;
-        runner.SetPlayerObject(runner.LocalPlayer, Player);
+        if (player == runner.LocalPlayer)
+        {
+            Vector3 position = Vector3.zero;
+            Transform spawnPoint = GameObject.FindWithTag("Respawn").transform;
+            if (spawnPoint != null)
+            {
+                position = spawnPoint.position;
+            }
+
+            NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
+            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+            if (Runner.IsSharedModeMasterClient)
+            {
+                NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
+                NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, Vector3.zero);
+                PlayerSystem = no.GetComponent<PlayerSystem>();
+            }
+        }
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-
+        Debug.Log("OnPlayerLeft");
     }
 
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
@@ -138,11 +173,12 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnSceneLoadDone(NetworkRunner runner)
     {
-
+        Debug.Log("OnSceneLoadDone");
     }
 
     public void OnSceneLoadStart(NetworkRunner runner)
     {
+            
 
     }
 
