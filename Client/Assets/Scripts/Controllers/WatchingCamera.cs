@@ -1,6 +1,4 @@
-﻿using Fusion;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
 public class WatchingCamera : MonoBehaviour
 {
