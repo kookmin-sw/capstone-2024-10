@@ -11,8 +11,8 @@ public abstract class Creature : NetworkBehaviour
     public CreatureCamera CreatureCamera { get; protected set; }
     public WatchingCamera WatchingCamera { get; protected set; }
     public Transform Transform { get; protected set; }
-    public CircleCollider2D Collider { get; protected set; }
-    public Rigidbody2D RigidBody { get; protected set; }
+    public CapsuleCollider Collider { get; protected set; }
+    public Rigidbody RigidBody { get; protected set; }
     public NetworkObject NetworkObject { get; protected set; }
     public SimpleKCC KCC { get; protected set; }
     public CreatureStat CreatureStat { get; protected set; }
@@ -38,18 +38,13 @@ public abstract class Creature : NetworkBehaviour
     protected virtual void Init()
     {
         Transform = gameObject.GetComponent<Transform>();
-        Collider = gameObject.GetComponent<CircleCollider2D>();
-        RigidBody = gameObject.GetComponent<Rigidbody2D>();
+        Collider = gameObject.GetComponent<CapsuleCollider>();
+        RigidBody = gameObject.GetComponent<Rigidbody>();
         NetworkObject = gameObject.GetComponent<NetworkObject>();
         KCC = gameObject.GetComponent<SimpleKCC>();
 
         CreatureStat = gameObject.GetComponent<CreatureStat>();
         AnimController = gameObject.GetComponent<AnimController>();
-
-        if (HasStateAuthority)
-        {
-            Camera.main.GetComponent<CreatureCamera>().Creature = this;
-        }
     }
 
     public virtual void SetInfo(int templateID)
@@ -65,17 +60,21 @@ public abstract class Creature : NetworkBehaviour
             CreatureData = Managers.DataMng.AlienDataDict[templateID];
         }
 
-        if (IsFirstPersonView)
+        if (HasStateAuthority)
         {
+            if (IsFirstPersonView)
+            {
 
-            CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", gameObject.transform).GetComponent<CreatureCamera>();
-            CreatureCamera.SetInfo(this);
-        }
-        else
-        {
-            WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
-            WatchingCamera.enabled = true;
-            WatchingCamera.Creature = this;
+                CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", gameObject.transform).GetComponent<CreatureCamera>();
+                CreatureCamera.SetInfo(this);
+            }
+            else
+            {
+                WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
+                WatchingCamera.enabled = true;
+                WatchingCamera.Creature = this;
+            }
+            Camera.main.GetComponent<CreatureCamera>().Creature = this;
         }
 
         CreatureState = Define.CreatureState.Idle;
@@ -119,6 +118,9 @@ public abstract class Creature : NetworkBehaviour
 
     protected virtual void HandleInput()
     {
+        if (CreatureCamera == null)
+            return;
+
         if (IsFirstPersonView)
         {
 

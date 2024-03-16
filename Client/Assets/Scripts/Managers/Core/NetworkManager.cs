@@ -11,8 +11,12 @@ using System.Collections;
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
     public NetworkRunner Runner { get; private set; }
-    public string PlayerName { get; private set; }
+    [SerializeField]
+    private string _playerName;
+    public string PlayerName { get => _playerName; private set { _playerName = value; } }
     public List<SessionInfo> Sessions = new List<SessionInfo>();
+    public Action OnSessionListUpdate;
+
     public int NumPlayers
     {
         get
@@ -77,6 +81,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Debug.Log("OnSessionListUpdated");
         Sessions.Clear();
         Sessions = sessionList;
+        OnSessionListUpdate.Invoke();
     }
 
     public void OnConnectedToServer(NetworkRunner runner)
@@ -133,8 +138,14 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (player == runner.LocalPlayer)
         {
-            Task<NetworkObject> networkObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, Vector3.zero);
-            NetworkObject playerObject = await networkObject;
+            Vector3 position = Vector3.zero;
+            Transform spawnPoint = GameObject.FindWithTag("Respawn").transform;
+            if (spawnPoint != null)
+            {
+                position = spawnPoint.position;
+            }
+
+            NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
             if (Runner.IsSharedModeMasterClient)
             {

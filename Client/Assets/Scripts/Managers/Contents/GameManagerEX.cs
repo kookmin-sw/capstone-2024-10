@@ -51,6 +51,7 @@ public class GameManagerEX
     public void StartGame()
     {
         Debug.Log("Game Setting Start");
+        Managers.UIMng.ClosePopupUI();
     }
     #endregion
 

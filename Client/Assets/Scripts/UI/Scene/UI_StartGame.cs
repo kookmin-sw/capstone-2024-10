@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_StartGame : UI_Scene
+public class UI_StartGame : UI_Popup
 {
     enum Buttons
     {
@@ -36,7 +37,20 @@ public class UI_StartGame : UI_Scene
 
     private void Update()
     {
-        
+        if (Input.GetButtonDown("Submit"))
+        {
+            SimulateButtonClick(GetButton((int)Buttons.ReadyGame));
+        }
+        else if (Input.GetButton("Cancel"))
+        {
+            SimulateButtonClick(GetButton((int)Buttons.ExitGame));
+        }
+    }
+
+    private void SimulateButtonClick(Button button)
+    {
+        PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+        ExecuteEvents.Execute(button.gameObject, pointerEventData, ExecuteEvents.pointerClickHandler);
     }
 
     private IEnumerator Reserve()

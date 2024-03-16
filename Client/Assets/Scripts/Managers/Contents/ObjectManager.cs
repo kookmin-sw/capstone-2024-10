@@ -28,11 +28,11 @@ public class ObjectManager
 	    return root.transform;
     }
 
-    public async Task<NetworkObject> SpawnCrew(int crewDataId, Vector3 spawnPosition)
+    public NetworkObject SpawnCrew(int crewDataId, Vector3 spawnPosition)
     {
         string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREW_PATH}/{className}");
-        NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPosition);
+        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
 
         Crew crew = no.GetComponent<Crew>();
         crew.SetInfo(crewDataId);
