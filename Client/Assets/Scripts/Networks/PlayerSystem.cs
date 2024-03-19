@@ -7,10 +7,10 @@ public class PlayerSystem : NetworkBehaviour
 {
     [Networked, OnChangedRender(nameof(OnReadyCountChanged))]
     public int ReadyCount { get; set; }
-    public Action OnReadyCountUpdate { get; set; }
+    public Action OnReadyCountUpdated { get; set; }
     public void OnReadyCountChanged()
     {
-        OnReadyCountUpdate.Invoke();
+        OnReadyCountUpdated.Invoke();
     }
 
     public override void FixedUpdateNetwork()
@@ -18,7 +18,16 @@ public class PlayerSystem : NetworkBehaviour
         if (Runner.IsSharedModeMasterClient)
         {
             CountReady();
+            // 종료 로직 나중에 추가
         }
+    }
+
+    public Player GetPlayer()
+    {
+        if (Runner.TryGetPlayerObject(Runner.LocalPlayer, out NetworkObject player))
+            return player.GetComponent<Player>();
+
+        return null;
     }
 
     public void CountReady()
@@ -30,7 +39,11 @@ public class PlayerSystem : NetworkBehaviour
             if (po == null)
                 continue;
 
-            if (po.GetComponent<Player>().State == Define.PlayerState.Ready)
+            Player p = po.GetComponent<Player>();
+            if (p == null)
+                continue;
+
+            if (p.State == Define.PlayerState.Ready)
             {
                 count++;
             }

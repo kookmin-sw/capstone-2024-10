@@ -56,7 +56,7 @@ public class UI_StartGame : UI_Popup
     private IEnumerator Reserve()
     {
         yield return new WaitUntil(() => Managers.NetworkMng.PlayerSystem != null);
-        Managers.NetworkMng.PlayerSystem.OnReadyCountUpdate += () => SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
+        Managers.NetworkMng.PlayerSystem.OnReadyCountUpdated += () => SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
         SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
     }
 

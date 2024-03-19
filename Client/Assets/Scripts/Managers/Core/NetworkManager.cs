@@ -15,7 +15,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     private string _playerName;
     public string PlayerName { get => _playerName; private set { _playerName = value; } }
     public List<SessionInfo> Sessions = new List<SessionInfo>();
-    public Action OnSessionListUpdate;
+    public Action OnSessionUpdated;
+    public bool IsMaster { get => Runner.IsSharedModeMasterClient; }
 
     public int NumPlayers
     {
@@ -81,7 +82,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Debug.Log("OnSessionListUpdated");
         Sessions.Clear();
         Sessions = sessionList;
-        OnSessionListUpdate.Invoke();
+        OnSessionUpdated.Invoke();
     }
 
     public void OnConnectedToServer(NetworkRunner runner)
@@ -134,7 +135,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     }
 
-    public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (player == runner.LocalPlayer)
         {
@@ -150,7 +151,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             if (Runner.IsSharedModeMasterClient)
             {
                 NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
-                NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, Vector3.zero);
+                NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
                 PlayerSystem = no.GetComponent<PlayerSystem>();
             }
         }

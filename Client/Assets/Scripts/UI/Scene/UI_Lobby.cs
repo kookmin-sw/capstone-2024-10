@@ -54,7 +54,7 @@ public class UI_Lobby : UI_Scene
 
         _input = GetObject((int)GameObjects.SendingMessage).GetComponent<TMP_InputField>();
         GetButton((int)Buttons.Create).interactable = false;
-        Managers.NetworkMng.OnSessionListUpdate += () => GetButton((int)Buttons.Create).interactable = true;
+        Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Create).interactable = true;
         RefreshSessionLIst();
 
         return true;

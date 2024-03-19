@@ -23,7 +23,7 @@ public class AnimController : NetworkBehaviour
     protected virtual void Init()
     {
         NetworkAnim = gameObject.GetComponent<NetworkMecanimAnimator>();
-        Creature = gameObject.GetComponent<Crew>();
+        Creature = gameObject.GetComponent<Creature>();
 
         SetFloat("Health", 100);
         SetFloat("Sit", 0);

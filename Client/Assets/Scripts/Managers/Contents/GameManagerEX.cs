@@ -21,7 +21,6 @@ public class GameManagerEX
     public string SAVEDATA_PATH;
 
     public Player Player { get; set; }
-
     public void Init()
     {
         SAVEDATA_PATH = Path.Combine(Application.persistentDataPath, "/SaveData.json");
@@ -52,6 +51,13 @@ public class GameManagerEX
     {
         Debug.Log("Game Setting Start");
         Managers.UIMng.ClosePopupUI();
+
+        if (Managers.NetworkMng.IsMaster)
+        {
+            var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
+            int random = UnityEngine.Random.Range(0, players.Count);
+            Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, players[random], Define.ALIEN_STALKER_ID);
+        }
     }
     #endregion
 

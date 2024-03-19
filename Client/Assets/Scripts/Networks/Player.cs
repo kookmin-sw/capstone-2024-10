@@ -56,4 +56,14 @@ public class Player : NetworkBehaviour
         await Runner.Shutdown();
         Managers.SceneMng.LoadScene(Define.SceneType.LobbyScene);
     }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public static void RPC_ChangePlayerToAlien(NetworkRunner runner, [RpcTarget] PlayerRef player, int alienDataId)
+    {
+        NetworkObject po = runner.GetPlayerObject(player);
+        Managers.ObjectMng.Despawn(po);
+        Vector3 spawnPosition = po.transform.position;
+        NetworkObject no = Managers.ObjectMng.SpawnAlien(alienDataId, spawnPosition);
+        runner.SetPlayerObject(runner.LocalPlayer, no);
+    }
 }

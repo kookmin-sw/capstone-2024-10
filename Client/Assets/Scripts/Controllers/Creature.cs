@@ -60,21 +60,17 @@ public abstract class Creature : NetworkBehaviour
             CreatureData = Managers.DataMng.AlienDataDict[templateID];
         }
 
-        if (HasStateAuthority)
+        if (IsFirstPersonView)
         {
-            if (IsFirstPersonView)
-            {
 
-                CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", gameObject.transform).GetComponent<CreatureCamera>();
-                CreatureCamera.SetInfo(this);
-            }
-            else
-            {
-                WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
-                WatchingCamera.enabled = true;
-                WatchingCamera.Creature = this;
-            }
-            Camera.main.GetComponent<CreatureCamera>().Creature = this;
+            CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", gameObject.transform).GetComponent<CreatureCamera>();
+            CreatureCamera.SetInfo(this);
+        }
+        else
+        {
+            WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
+            WatchingCamera.enabled = true;
+            WatchingCamera.Creature = this;
         }
 
         CreatureState = Define.CreatureState.Idle;
@@ -137,7 +133,7 @@ public abstract class Creature : NetworkBehaviour
     }
 
     #region Update
-
+ 
     protected void UpdateByState()
     {
         if (HasStateAuthority == false)
