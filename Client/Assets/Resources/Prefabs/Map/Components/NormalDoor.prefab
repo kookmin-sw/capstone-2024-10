@@ -9,12 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4970899871150128}
-  - component: {fileID: 7197027778824661169}
-  - component: {fileID: 6159487520559648557}
-  - component: {fileID: 2416313517923906416}
-  - component: {fileID: 7850713588658312599}
-  m_Layer: 0
-  m_Name: Door
+  m_Layer: 11
+  m_Name: NormalDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37,81 +33,6 @@ Transform:
   - {fileID: 7031350947122320193}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &7197027778824661169
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931890755484744}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: aab5c3364fc92e543bf0a7ff8f9bce88, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6159487520559648557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931890755484744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Animator: {fileID: 7197027778824661169}
-  TotalWords: 1
-  ApplyTiming: 2
-  SyncSettings: 79
-  StateHashes: 00000000c0aec0d242e18c579a2c4204c8763d2d
-  TriggerHashes: 00000000
---- !u!114 &2416313517923906416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931890755484744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 1876575056
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 6159487520559648557}
-  - {fileID: 7850713588658312599}
---- !u!114 &7850713588658312599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1931890755484744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a63cddc2e958b834eb28525cceb11e61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _requiredWorkAmount: 0
-  _WorkProgress: 0
-  _ElectiricPower: 0
-  _IsOpen:
-    _value: 0
 --- !u!1 &2970732603807452959
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,7 +45,7 @@ GameObject:
   - component: {fileID: 4048720328621601821}
   - component: {fileID: 1807669088186169604}
   - component: {fileID: 1706759653307198056}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Handle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -229,8 +150,8 @@ GameObject:
   - component: {fileID: 40478404195532675}
   - component: {fileID: 2698681030278280429}
   - component: {fileID: 3842814707922145427}
-  m_Layer: 0
-  m_Name: Door
+  m_Layer: 11
+  m_Name: DoorEdge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -335,8 +256,12 @@ GameObject:
   - component: {fileID: 8399897499802888028}
   - component: {fileID: 1636309660501975297}
   - component: {fileID: 2253216096683607849}
-  m_Layer: 0
-  m_Name: Door_2
+  - component: {fileID: 507053168153418911}
+  - component: {fileID: 4325436915397708261}
+  - component: {fileID: 4958616699260365590}
+  - component: {fileID: 8982156224381343478}
+  m_Layer: 11
+  m_Name: Door
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -429,3 +354,71 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.042500027, y: 2.495, z: 1.045}
   m_Center: {x: 0, y: 1.2475, z: 0.5225}
+--- !u!95 &507053168153418911
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6607822498654245130}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: aab5c3364fc92e543bf0a7ff8f9bce88, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &4325436915397708261
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6607822498654245130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 0
+  ObjectInterest: 1
+  Flags: 262144
+  NestedObjects: []
+  NetworkedBehaviours: []
+--- !u!114 &4958616699260365590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6607822498654245130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a63cddc2e958b834eb28525cceb11e61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8982156224381343478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6607822498654245130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 507053168153418911}
+  TotalWords: 1
+  ApplyTiming: 2
+  SyncSettings: 79
+  StateHashes: 00000000c0aec0d242e18c579a2c4204c8763d2d
+  TriggerHashes: 00000000
