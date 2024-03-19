@@ -4,27 +4,26 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UI_InGame : UI_Scene
+public class UI_Ingame : UI_Scene
 {
-    public enum Buttons
+    enum Buttons
     {
 
     }
 
-    public enum Images
+    enum Images
     {
     }
 
-    public enum Texts
+    enum Texts
     {
         
     }
 
-    public enum GameObjects
+    enum SubItemUIs
     {
-       
+       UI_WorkProgressBar
     }
-
 
 
     public override bool Init()
@@ -34,13 +33,16 @@ public class UI_InGame : UI_Scene
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
         Bind<TMP_Text>(typeof(Texts));
-        Bind<GameObject>(typeof(GameObjects));
+        Bind<UI_Base>(typeof(SubItemUIs));
 
         return true;
     }
 
-    public void SetInfo()
+    public UI_WorkProgressBar ShowWorkProgressBar(string workDescription, float requiredWorkAmount)
     {
-
+        UI_WorkProgressBar bar = Get<UI_Base>((int)SubItemUIs.UI_WorkProgressBar) as UI_WorkProgressBar;
+        bar.gameObject.SetActive(true);
+        bar.SetInfo(workDescription, requiredWorkAmount);
+        return bar;
     }
 }

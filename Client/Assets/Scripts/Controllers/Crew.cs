@@ -25,8 +25,8 @@ public class Crew : Creature
         base.SetInfo(templateID);
 
         CrewStat.SetStat(CrewData);
-        UICrewStatus = FindObjectOfType<UI_CrewStat>();
-        UICrewStatus.CurrentCrew = this;
+        //UICrewStatus = FindObjectOfType<UI_CrewStat>();
+        //UICrewStatus.CurrentCrew = this;
         CanRun = true;
     }
 

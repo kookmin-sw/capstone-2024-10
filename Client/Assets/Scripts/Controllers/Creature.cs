@@ -103,6 +103,7 @@ public abstract class Creature : NetworkBehaviour
 
     private void Update()
     {
+        if (!HasStateAuthority) return;
         HandleInput();
     }
 
@@ -172,22 +173,22 @@ public abstract class Creature : NetworkBehaviour
     {
         Ray ray = CreatureCamera.GetComponent<Camera>().ViewportPointToRay(Vector3.one * 0.5f);
 
-        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 1f, layerMask: LayerMask.GetMask("Interact")))
+        Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red, 1f); // TODO - Test Code
+        if (!Physics.Raycast(ray, out RaycastHit rayHit, maxDistance:1.5f, layerMask:LayerMask.GetMask("MapObject")))
         {
-            CreatureState = Define.CreatureState.Interact;
-
-            IInteractable interactable = rayHit.transform.gameObject.GetComponent<IInteractable>();
-            interactable.Interact(this);
-
-            Debug.DrawLine(ray.origin, rayHit.point, Color.red, 1f); // TODO - Test Code
-            return true;
-        }
-        else
-        {
-            Debug.Log("Failed to InterAct");
-            Debug.DrawRay(ray.origin, ray.direction * 1f, Color.red, 1f); // TODO - Test Code
+            Debug.Log("Failed to interact - Raycast failed");
             return false;
         }
+
+        if (rayHit.transform.gameObject.TryGetComponent(out IInteractable interactable))
+        {
+            CreatureState = Define.CreatureState.Interact;
+            interactable.Interact(this);
+            return true;
+        }
+
+        Debug.Log("Failed to interact - no IInteractable component");
+        return false;
     }
 
     #endregion
