@@ -102,6 +102,12 @@ public abstract class UI_Base : MonoBehaviour
     /// <param name="go">UI 요소</param>
     /// <param name="action">이벤트 함수</param>
     /// <param name="type">구독할 이벤트 종류</param>
+    protected Slider GetSlider(int idx) { return Get<Slider>(idx); }
+    /// <summary>
+    /// Get<Image> 함수를 래핑한 함수
+    /// </summary>
+    /// <param name="idx">enum 타입 인덱스</param>
+    /// <returns></returns>
     public static void BindEvent(GameObject go, Action<PointerEventData> action, Define.UIEvent type = Define.UIEvent.Click)
     {
         UI_EventHandler evt = Util.GetOrAddComponent<UI_EventHandler>(go);
