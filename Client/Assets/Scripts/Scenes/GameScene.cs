@@ -9,6 +9,7 @@ public class GameScene : BaseScene
         Managers.MapMng.Init();
 
         Managers.UIMng.ShowPopupUI<UI_StartGame>();
+        Managers.UIMng.ShowPopupUI<UI_CrewStat>();
         StartCoroutine(Managers.GameMng.TryStartGame());
     }
 

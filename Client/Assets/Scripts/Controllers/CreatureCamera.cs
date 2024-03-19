@@ -29,7 +29,7 @@ public class CreatureCamera : MonoBehaviour
         enabled = true;
         Creature = creature;
 
-        transform.position = Util.FindChild(Creature.gameObject, "head").transform.position + new Vector3(0f, 0.2f, 0.2f);
+        transform.position = Util.FindChild(Creature.gameObject, "head").transform.position + new Vector3(0f, 0.2f, 0.3f);
     }
 
     private void LateUpdate()
