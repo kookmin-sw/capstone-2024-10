@@ -9,7 +9,7 @@ public class Crew : Creature
     public CrewStat CrewStat => (CrewStat)BaseStat;
 	public UI_CrewStat UICrewStatus { get; set; }
     public bool CanRun { get; protected set; }
-    
+
     #endregion
     public override void Spawned()
     {
@@ -20,7 +20,7 @@ public class Crew : Creature
     {
         CreatureType = Define.CreatureType.Crew;
         Transform.parent = Managers.ObjectMng.CrewRoot;
-        
+
         base.SetInfo(templateID);
 
         CrewStat.SetStat(CrewData);
@@ -76,15 +76,15 @@ public class Crew : Creature
                 if (CreaturePose != Define.CreaturePose.Sit)
                 {
                     StaminaUse();
-                }    
+                }
             }
             else
             {
                 if (CreaturePose == Define.CreaturePose.Run)
                 {
                     CreaturePose = Define.CreaturePose.Stand;
-                }   
-            }  
+                }
+            }
         }
     }
 
@@ -95,15 +95,14 @@ public class Crew : Creature
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                StaminaRecover();
                 break;
             case Define.CreaturePose.Sit:
-                StaminaRecover();
                 break;
             case Define.CreaturePose.Run:
                 CreaturePose = Define.CreaturePose.Stand;
                 break;
         }
+        StaminaRecover();
 
         if (IsFirstPersonView)
         {
@@ -176,7 +175,7 @@ public class Crew : Creature
 
     #endregion
 
-    #region stamina
+    #region Stamina
     public void StaminaUse()
     {
         if (CrewStat.Stamina > 0 && CanRun == true)
