@@ -50,7 +50,7 @@ public class UI_CrewStat : UI_Popup
 
     private void StaminaColorChange()
     {
-        if (CurrentCrew.CanRun)
+        if (CurrentCrew.IsRecoveringStamina)
         {
             GetSlider((int)Sliders.Stamina).fillRect.GetComponent<Image>().color = Color.green;
         }

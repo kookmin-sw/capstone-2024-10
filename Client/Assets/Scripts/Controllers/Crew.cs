@@ -8,7 +8,7 @@ public class Crew : Creature
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
 	public UI_CrewStat UICrewStatus { get; set; }
-    public bool CanRun { get; protected set; }
+    public bool IsRecoveringStamina { get; protected set; }
 
     #endregion
     public override void Spawned()
@@ -26,7 +26,14 @@ public class Crew : Creature
         CrewStat.SetStat(CrewData);
         //UICrewStatus = FindObjectOfType<UI_CrewStat>();
         //UICrewStatus.CurrentCrew = this;
-        CanRun = true;
+        IsRecoveringStamina = true;
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        base.FixedUpdateNetwork();
+
+        UpdateStamina();
     }
 
     protected override void HandleInput()
@@ -73,9 +80,9 @@ public class Crew : Creature
 
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                if (CreaturePose != Define.CreaturePose.Sit)
+                if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
                 {
-                    StaminaUse();
+                    CreaturePose = Define.CreaturePose.Run;
                 }
             }
             else
@@ -90,6 +97,18 @@ public class Crew : Creature
 
     #region Update
 
+    protected void UpdateStamina()
+    {
+        if (CreaturePose == Define.CreaturePose.Run && CreatureState == Define.CreatureState.Move)
+            CrewStat.OnRecoverStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
+        else
+        {
+            CrewStat.OnUseStamina(Define.RUN_USE_STAMINA * Runner.DeltaTime);
+            if (CrewStat.Stamina <= 0)
+                IsRecoveringStamina = true;
+        }
+    }
+
     protected override void UpdateIdle()
     {
         switch (CreaturePose)
@@ -102,7 +121,6 @@ public class Crew : Creature
                 CreaturePose = Define.CreaturePose.Stand;
                 break;
         }
-        StaminaRecover();
 
         if (IsFirstPersonView)
         {
@@ -116,11 +134,9 @@ public class Crew : Creature
         {
             case Define.CreaturePose.Stand:
                 BaseStat.Speed = CrewData.WalkSpeed;
-                StaminaRecover();
                 break;
             case Define.CreaturePose.Sit:
                 BaseStat.Speed = CrewData.SitSpeed;
-				StaminaRecover();
              	break;
             case Define.CreaturePose.Run:
                 BaseStat.Speed = CrewData.RunSpeed;
@@ -171,34 +187,6 @@ public class Crew : Creature
     public void OnDead()
     {
         CreatureState = Define.CreatureState.Dead;
-    }
-
-    #endregion
-
-    #region Stamina
-    public void StaminaUse()
-    {
-        if (CrewStat.Stamina > 0 && CanRun == true)
-        {
-            CreaturePose = Define.CreaturePose.Run;
-            CrewStat.Stamina -= 20.0f * Runner.DeltaTime;
-        }
-        else if (CrewStat.Stamina <= 0 || CanRun == false)    //스테미너가 0을 찍고나서 다시 20까지 회복하기 전까진 달리기 불가능
-        {
-            CreaturePose = Define.CreaturePose.Stand;
-            CanRun = false;
-        }
-    }
-    public void StaminaRecover()
-    {
-        if (CrewStat.Stamina < CrewData.Stamina)
-        {
-            if (CrewStat.Stamina >= 20.0f)    //스테미너가 0을 찍은 이후 20까지 회복되면 그때 다시 달리기 가능
-            {
-                CanRun = true;
-            }
-            CrewStat.Stamina += 15.0f * Runner.DeltaTime;
-        }
     }
 
     #endregion

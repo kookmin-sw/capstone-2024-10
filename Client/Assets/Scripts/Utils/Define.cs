@@ -142,6 +142,8 @@ public static class Define
     public const float PLAYER_SPAWN_POSITION_Z = 10f;
 
     public const float GRAVITY_VALUE = -9.81f;
+    public const int PASIVE_RECOVER_STAMINA = 5;
+    public const int RUN_USE_STAMINA = 10;
 
     #endregion
 
