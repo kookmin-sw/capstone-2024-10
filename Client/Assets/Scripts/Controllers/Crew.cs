@@ -1,16 +1,15 @@
 using UnityEngine;
 using Data;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
-using Unity.VisualScripting;
 
 public class Crew : Creature
 {
     #region Field
 
     public CrewData CrewData => CreatureData as CrewData;
-    public CrewStat CrewStat => (CrewStat)CreatureStat;
-    public UI_CrewStat UICrewStatus { get; set; }
+    public CrewStat CrewStat => (CrewStat)BaseStat;
+	public UI_CrewStat UICrewStatus { get; set; }
     public bool CanRun { get; protected set; }
+    
     #endregion
     public override void Spawned()
     {
@@ -117,15 +116,15 @@ public class Crew : Creature
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                CreatureStat.Speed = CrewData.WalkSpeed;
+                BaseStat.Speed = CrewData.WalkSpeed;
                 StaminaRecover();
                 break;
             case Define.CreaturePose.Sit:
-                CreatureStat.Speed = CrewData.SitSpeed;
-                StaminaRecover();
-                break;
+                BaseStat.Speed = CrewData.SitSpeed;
+				StaminaRecover();
+             	break;
             case Define.CreaturePose.Run:
-                CreatureStat.Speed = CrewData.RunSpeed;
+                BaseStat.Speed = CrewData.RunSpeed;
                 break;
         }
 

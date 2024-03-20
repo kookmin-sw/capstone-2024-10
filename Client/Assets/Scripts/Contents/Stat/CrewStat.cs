@@ -1,7 +1,7 @@
 using UnityEngine;
 using Fusion;
 
-public class CrewStat : CreatureStat
+public class CrewStat : BaseStat
 {
     [Networked] public int Hp { get; set; }
     [Networked] public int MaxHp { get; set; }

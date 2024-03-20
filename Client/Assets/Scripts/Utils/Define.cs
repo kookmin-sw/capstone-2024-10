@@ -11,11 +11,7 @@ public static class Define
 
     public enum ItemType
     {
-        None,
-        Attack,
-        Buff,
-        Debuff,
-        Recover,
+        Battery,
     }
 
     public enum SectorType
@@ -140,6 +136,7 @@ public static class Define
     #region Value
 
     public const int PLAYER_COUNT = 3;
+    public const int MAX_ITEM_NUM = 4;
     public const float PLAYER_SPAWN_POSITION_X = 20f;
     public const float PLAYER_SPAWN_POSITION_Y = 0.3f;
     public const float PLAYER_SPAWN_POSITION_Z = 10f;

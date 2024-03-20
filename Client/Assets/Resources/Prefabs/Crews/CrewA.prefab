@@ -5067,10 +5067,11 @@ GameObject:
   - component: {fileID: -6517211277596413631}
   - component: {fileID: 3299225919478658973}
   - component: {fileID: 5850708474315694979}
+  - component: {fileID: 3260415335646504424}
   - component: {fileID: 966103578550221855}
   - component: {fileID: 1676789717420339206}
   - component: {fileID: 8581536642115369379}
-  - component: {fileID: 3260415335646504424}
+  - component: {fileID: 879378851453885897}
   m_Layer: 0
   m_Name: CrewA
   m_TagString: Untagged
@@ -5190,10 +5191,11 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 3299225919478658973}
   - {fileID: 5850708474315694979}
+  - {fileID: 3260415335646504424}
   - {fileID: 966103578550221855}
   - {fileID: 1676789717420339206}
   - {fileID: 8581536642115369379}
-  - {fileID: 3260415335646504424}
+  - {fileID: 879378851453885897}
 --- !u!114 &3299225919478658973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5247,6 +5249,23 @@ MonoBehaviour:
     StepRequireGroundTarget: 0
     SnapDistance: 0.25
     SnapSpeed: 4
+--- !u!114 &3260415335646504424
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7920281149799720858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b400222cb0cf8bb4f824f28e394d4024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _PlayerName:
+    _length: 0
+    _data:
+      Data: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  _State: 0
 --- !u!114 &966103578550221855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5299,7 +5318,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6890c92ffee41c7b35303c032f1d7fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3260415335646504424
+--- !u!114 &879378851453885897
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -5308,14 +5327,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7920281149799720858}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b400222cb0cf8bb4f824f28e394d4024, type: 3}
+  m_Script: {fileID: 11500000, guid: f7f9690a5cbd4ad5acb85b2a9a75deec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _PlayerName:
-    _length: 0
-    _data:
-      Data: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  _State: 0
+  _CurrentItemIdx: 0
 --- !u!1 &7929213206135854106
 GameObject:
   m_ObjectHideFlags: 0
