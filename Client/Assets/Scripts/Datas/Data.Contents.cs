@@ -24,6 +24,7 @@ namespace Data
         public int MaxHp;
         public float Stamina;
         public float SitSpeed;
+        public float WorkSpeed;
     }
 
     [Serializable]
