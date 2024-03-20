@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using Fusion;
 
-public class AlienStat: CreatureStat
+public class AlienStat: BaseStat
 {
     [Networked] public int Damage { get; set; }
 

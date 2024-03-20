@@ -1,7 +1,6 @@
-using UnityEngine;
 using Fusion;
 
-public class BaseAnimController : NetworkBehaviour
+public abstract class BaseAnimController : NetworkBehaviour
 {
     public NetworkMecanimAnimator NetworkAnim { get; protected set; }
 

@@ -15,8 +15,8 @@ public abstract class Creature : NetworkBehaviour
     public Rigidbody RigidBody { get; protected set; }
     public NetworkObject NetworkObject { get; protected set; }
     public SimpleKCC KCC { get; protected set; }
-    public CreatureStat CreatureStat { get; protected set; }
-    public AnimController AnimController { get; protected set; }
+    public BaseStat BaseStat { get; protected set; }
+    public BaseAnimController BaseAnimController { get; protected set; }
     public Inventory Inventory { get; protected set; }
 
     [Networked] public int DataId { get; set; }
@@ -43,8 +43,9 @@ public abstract class Creature : NetworkBehaviour
         NetworkObject = gameObject.GetComponent<NetworkObject>();
         KCC = gameObject.GetComponent<SimpleKCC>();
 
-        CreatureStat = gameObject.GetComponent<CreatureStat>();
-        AnimController = gameObject.GetComponent<AnimController>();
+        BaseStat = gameObject.GetComponent<BaseStat>();
+        BaseAnimController = gameObject.GetComponent<BaseAnimController>();
+        Inventory = gameObject.GetComponent<Inventory>();
     }
 
     public virtual void SetInfo(int templateID)
@@ -113,7 +114,7 @@ public abstract class Creature : NetworkBehaviour
     public override void FixedUpdateNetwork()
     {
         UpdateByState();
-        AnimController.UpdateAnimation();
+        BaseAnimController.UpdateAnimation();
     }
 
     protected virtual void HandleInput()
@@ -126,13 +127,13 @@ public abstract class Creature : NetworkBehaviour
 
             Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
             Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) *
-                       CreatureStat.Speed * Runner.DeltaTime;
+                       BaseStat.Speed * Runner.DeltaTime;
         }
         else
         {
             Quaternion cameraRotationY = Quaternion.Euler(0, WatchingCamera.transform.rotation.eulerAngles.y, 0);
             Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) *
-                       CreatureStat.Speed * Runner.DeltaTime;
+                       BaseStat.Speed * Runner.DeltaTime;
         }
     }
 

@@ -1,7 +1,7 @@
 using System;
 using Fusion;
 
-public abstract class CreatureStat : NetworkBehaviour
+public abstract class BaseStat : NetworkBehaviour
 {
     [Networked] public NetworkString<_16> Name { get => default; set { } }
     [Networked] public float Speed { get; set; }

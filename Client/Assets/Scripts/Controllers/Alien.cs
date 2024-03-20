@@ -6,7 +6,7 @@ public class Alien : Creature
     #region Field
 
     public AlienData AlienData => CreatureData as AlienData;
-    public AlienStat AlienStat => (AlienStat)CreatureStat;
+    public AlienStat AlienStat => (AlienStat)BaseStat;
 
     #endregion
 

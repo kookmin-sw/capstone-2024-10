@@ -1,13 +1,12 @@
 using UnityEngine;
 using Data;
-using Unity.VisualScripting.Antlr3.Runtime.Tree;
 
 public class Crew : Creature
 {
     #region Field
 
     public CrewData CrewData => CreatureData as CrewData;
-    public CrewStat CrewStat => (CrewStat)CreatureStat;
+    public CrewStat CrewStat => (CrewStat)BaseStat;
 
     #endregion
     public override void Spawned()
@@ -93,13 +92,13 @@ public class Crew : Creature
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                CreatureStat.Speed = CrewData.WalkSpeed;
+                BaseStat.Speed = CrewData.WalkSpeed;
                 break;
             case Define.CreaturePose.Sit:
-                CreatureStat.Speed = CrewData.SitSpeed;
+                BaseStat.Speed = CrewData.SitSpeed;
                 break;
             case Define.CreaturePose.Run:
-                CreatureStat.Speed = CrewData.RunSpeed;
+                BaseStat.Speed = CrewData.RunSpeed;
                 break;
         }
 
