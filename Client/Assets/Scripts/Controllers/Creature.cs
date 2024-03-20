@@ -104,12 +104,17 @@ public abstract class Creature : NetworkBehaviour
 
     private void Update()
     {
-        if (!HasStateAuthority) return;
+        if (!HasStateAuthority)
+            return;
+
         HandleInput();
     }
 
     public override void FixedUpdateNetwork()
     {
+        if (!HasStateAuthority)
+            return;
+
         UpdateByState();
         BaseAnimController.UpdateAnimation();
     }
@@ -123,24 +128,19 @@ public abstract class Creature : NetworkBehaviour
         {
 
             Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
-            Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) *
-                       BaseStat.Speed * Runner.DeltaTime;
+            Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * (BaseStat.Speed * Runner.DeltaTime);
         }
         else
         {
             Quaternion cameraRotationY = Quaternion.Euler(0, WatchingCamera.transform.rotation.eulerAngles.y, 0);
-            Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) *
-                       BaseStat.Speed * Runner.DeltaTime;
+            Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * (BaseStat.Speed * Runner.DeltaTime);
         }
     }
 
     #region Update
- 
+
     protected void UpdateByState()
     {
-        if (HasStateAuthority == false)
-            return;
-
         switch (CreatureState)
         {
             case Define.CreatureState.Idle:

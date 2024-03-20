@@ -27,9 +27,6 @@ public abstract class BaseAnimController : NetworkBehaviour
 
     public void UpdateAnimation()
     {
-        if (HasStateAuthority == false)
-            return;
-
         switch (CreatureState)
         {
             case Define.CreatureState.Idle:
