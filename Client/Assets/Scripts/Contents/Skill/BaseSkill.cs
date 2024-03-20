@@ -1,8 +1,8 @@
-﻿using Fusion;
+using Fusion;
 
-public class BaseItem
+public class BaseSkill
 {
-    public Crew Owner { get; set; }
+    public Alien Owner { get; set; }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public virtual void Rpc_Use()
@@ -10,3 +10,4 @@ public class BaseItem
 
     }
 }
+
