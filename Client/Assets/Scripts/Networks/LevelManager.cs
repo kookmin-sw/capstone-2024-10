@@ -31,18 +31,28 @@ public class LevelManager : NetworkSceneManagerDefault
     {
         yield return base.OnSceneLoaded(newScene, loadedScene, sceneFlags);
 
-        var session = loadedScene.FindComponent<PlayerSystem>();
-        Managers.NetworkMng.PlayerSystem = session;
-
         if (loadedScene.name == Managers.SceneMng.GetSceneName(Define.SceneType.GameScene))
         {
-            session.PlayerJoined();
+            Vector3 position = Vector3.zero;
+            Transform spawnPoint = GameObject.FindWithTag("Respawn").transform;
+            if (spawnPoint != null)
+            {
+                position = spawnPoint.position;
+            }
 
-            yield return new WaitForSeconds(3);
+            NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
+            Managers.NetworkMng.Runner.SetPlayerObject(Managers.NetworkMng.Runner.LocalPlayer, playerObject);
 
-            var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
-            int random = Random.Range(0, players.Count);
-            Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, players[random], Define.ALIEN_STALKER_ID);
+            if (Runner.IsSharedModeMasterClient)
+            {
+                NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
+                NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
+                Managers.NetworkMng.PlayerSystem = no.GetComponent<PlayerSystem>();
+
+                var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
+                int random = Random.Range(0, players.Count);
+                Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, players[random], Define.ALIEN_STALKER_ID);
+            }
         }
     }
 }

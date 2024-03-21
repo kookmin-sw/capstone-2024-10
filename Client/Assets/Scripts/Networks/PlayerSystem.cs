@@ -14,17 +14,10 @@ public class PlayerSystem : NetworkBehaviour
         OnReadyCountUpdated?.Invoke();
     }
 
-    public override void Spawned()
-    {
-        if (Runner.IsSharedModeMasterClient)
-        {
-            if (Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.ReadyScene)
-                StartCoroutine(CountReady());
-        }
-    }
-
     public override void FixedUpdateNetwork()
     {
+        if (Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.ReadyScene)
+            CountReady();
     }
 
     public Player GetPlayer()
@@ -35,44 +28,26 @@ public class PlayerSystem : NetworkBehaviour
         return null;
     }
 
-    public IEnumerator CountReady()
+    public void CountReady()
     {
-        while (ReadyCount != Define.PLAYER_COUNT)
-        {
-            int count = 0;
+        int count = 0;
 
-            foreach (var player in Runner.ActivePlayers)
+        foreach (var player in Runner.ActivePlayers)
+        {
+            NetworkObject po = Runner.GetPlayerObject(player);
+            if (po == null)
+                continue;
+
+            Player p = po.GetComponent<Player>();
+            if (p == null)
+                continue;
+
+            if (p.State == Define.PlayerState.Ready)
             {
-                NetworkObject po = Runner.GetPlayerObject(player);
-                if (po == null)
-                    continue;
-
-                Player p = po.GetComponent<Player>();
-                if (p == null)
-                    continue;
-
-                if (p.State == Define.PlayerState.Ready)
-                {
-                    count++;
-                }
+                count++;
             }
-
-            ReadyCount = count;
-
-            yield return null;
-        }
-    }
-
-    public void PlayerJoined()
-    {
-        Vector3 position = Vector3.zero;
-        GameObject spawnPoint = GameObject.FindWithTag("Respawn");
-        if (spawnPoint != null)
-        {
-            position = spawnPoint.transform.position;
         }
 
-        NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
-        Runner.SetPlayerObject(Runner.LocalPlayer, playerObject);
+        ReadyCount = count;
     }
 }

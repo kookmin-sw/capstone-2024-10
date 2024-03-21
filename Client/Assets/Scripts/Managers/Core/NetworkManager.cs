@@ -37,6 +37,17 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         {
             Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
         }
+
+        StartCoroutine(Reserve());
+    }
+
+    public IEnumerator Reserve()
+    {
+        while (PlayerSystem == null)
+        {
+            PlayerSystem = FindAnyObjectByType<PlayerSystem>();
+            yield return null;
+        }
     }
 
     public void ConnectToLobby(string playerName)
@@ -133,8 +144,21 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (player == runner.LocalPlayer)
         {
-            PlayerSystem = FindAnyObjectByType<PlayerSystem>();
-            PlayerSystem.PlayerJoined();
+            Vector3 position = Vector3.zero;
+            Transform spawnPoint = GameObject.FindWithTag("Respawn").transform;
+            if (spawnPoint != null)
+            {
+                position = spawnPoint.position;
+            }
+
+            NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
+            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+            if (Runner.IsSharedModeMasterClient)
+            {
+                NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
+                NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
+                PlayerSystem = no.GetComponent<PlayerSystem>();
+            }
         }
     }
 
