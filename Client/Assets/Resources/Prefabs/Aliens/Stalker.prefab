@@ -1028,13 +1028,13 @@ GameObject:
   m_Component:
   - component: {fileID: 8694943018831317037}
   - component: {fileID: 8694943018821805677}
-  - component: {fileID: 2656646541101528400}
-  - component: {fileID: 5652327032334742129}
-  - component: {fileID: 4476358356948161216}
   - component: {fileID: 3683300922919915951}
   - component: {fileID: 788837692929703025}
+  - component: {fileID: 2656646541101528400}
   - component: {fileID: 8848567419615919483}
   - component: {fileID: 6976675480461094696}
+  - component: {fileID: 5652327032334742129}
+  - component: {fileID: 4476358356948161216}
   - component: {fileID: 9205723220890699314}
   m_Layer: 0
   m_Name: Stalker
@@ -1081,65 +1081,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &2656646541101528400
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8694943018831287373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 2930629246
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 5652327032334742129}
-  - {fileID: 4476358356948161216}
-  - {fileID: 8848567419615919483}
-  - {fileID: 6976675480461094696}
-  - {fileID: 9205723220890699314}
---- !u!114 &5652327032334742129
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8694943018831287373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 22d7dd4b10554c359084716773cb6f10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _DataId: 0
-  _CreatureType: 0
-  _CreatureState: 0
-  _CreaturePose: 0
-  _Velocity: {x: 0, y: 0, z: 0}
---- !u!114 &4476358356948161216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8694943018831287373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f345bebf2234e58b1b052dc5576710b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _Name:
-    _length: 0
-    _data:
-      Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  _Speed: 0
-  _WalkSpeed: 0
-  _RunSpeed: 0
-  _Damage: 0
 --- !u!136 &3683300922919915951
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1190,6 +1131,28 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &2656646541101528400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694943018831287373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2930629246
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 8848567419615919483}
+  - {fileID: 6976675480461094696}
+  - {fileID: 5652327032334742129}
+  - {fileID: 4476358356948161216}
+  - {fileID: 9205723220890699314}
 --- !u!114 &8848567419615919483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1243,6 +1206,43 @@ MonoBehaviour:
     StepRequireGroundTarget: 0
     SnapDistance: 0.25
     SnapSpeed: 4
+--- !u!114 &5652327032334742129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694943018831287373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22d7dd4b10554c359084716773cb6f10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _DataId: 0
+  _CreatureType: 0
+  _CreatureState: 0
+  _CreaturePose: 0
+  _Velocity: {x: 0, y: 0, z: 0}
+--- !u!114 &4476358356948161216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694943018831287373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f345bebf2234e58b1b052dc5576710b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _Name:
+    _length: 0
+    _data:
+      Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  _Speed: 0
+  _WalkSpeed: 0
+  _RunSpeed: 0
+  _Damage: 0
 --- !u!114 &9205723220890699314
 MonoBehaviour:
   m_ObjectHideFlags: 0
