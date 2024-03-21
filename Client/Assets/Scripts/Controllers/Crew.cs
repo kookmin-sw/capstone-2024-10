@@ -7,7 +7,6 @@ public class Crew : Creature
 
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
-	public UI_CrewStat UICrewStatus { get; set; }
     public bool IsRecoveringStamina { get; protected set; }
 
     #endregion

@@ -16,8 +16,8 @@ public class Computer : WorkStation
         ////////////
 
         Debug.Log($"{_workingCreature.NetworkObject.Id}: starting work...");
-        UI_Ingame ui = Managers.UIMng.SceneUI as UI_Ingame;
-        _progressbar = ui.ShowWorkProgressBar("Fixing Computer", _requiredWorkAmount);
+        UI_CrewIngame uiCrew = Managers.UIMng.SceneUI as UI_CrewIngame;
+        _progressbar = uiCrew.ShowWorkProgressBar("Fixing Computer", _requiredWorkAmount);
         while (WorkProgress < _requiredWorkAmount && !IsCompleted)
         {
 
