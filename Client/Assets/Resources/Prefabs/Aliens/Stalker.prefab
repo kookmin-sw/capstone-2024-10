@@ -1031,11 +1031,11 @@ GameObject:
   - component: {fileID: 2656646541101528400}
   - component: {fileID: 5652327032334742129}
   - component: {fileID: 4476358356948161216}
-  - component: {fileID: 7884986229739336368}
   - component: {fileID: 3683300922919915951}
   - component: {fileID: 788837692929703025}
   - component: {fileID: 8848567419615919483}
   - component: {fileID: 6976675480461094696}
+  - component: {fileID: 9205723220890699314}
   m_Layer: 0
   m_Name: Stalker
   m_TagString: Untagged
@@ -1100,9 +1100,9 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 5652327032334742129}
   - {fileID: 4476358356948161216}
-  - {fileID: 7884986229739336368}
   - {fileID: 8848567419615919483}
   - {fileID: 6976675480461094696}
+  - {fileID: 9205723220890699314}
 --- !u!114 &5652327032334742129
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1140,18 +1140,6 @@ MonoBehaviour:
   _WalkSpeed: 0
   _RunSpeed: 0
   _Damage: 0
---- !u!114 &7884986229739336368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8694943018831287373}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6890c92ffee41c7b35303c032f1d7fd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!136 &3683300922919915951
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1255,6 +1243,18 @@ MonoBehaviour:
     StepRequireGroundTarget: 0
     SnapDistance: 0.25
     SnapSpeed: 4
+--- !u!114 &9205723220890699314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694943018831287373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94ff61e00a954d2ca211bbcd85136341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8694943018831287375
 GameObject:
   m_ObjectHideFlags: 0

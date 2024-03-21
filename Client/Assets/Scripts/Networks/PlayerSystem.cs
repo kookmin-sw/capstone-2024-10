@@ -1,5 +1,6 @@
 using Fusion;
 using System;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,16 +11,13 @@ public class PlayerSystem : NetworkBehaviour
     public Action OnReadyCountUpdated { get; set; }
     public void OnReadyCountChanged()
     {
-        OnReadyCountUpdated.Invoke();
+        OnReadyCountUpdated?.Invoke();
     }
 
     public override void FixedUpdateNetwork()
     {
-        if (Runner.IsSharedModeMasterClient)
-        {
+        if (Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.ReadyScene)
             CountReady();
-            // 종료 로직 나중에 추가
-        }
     }
 
     public Player GetPlayer()
@@ -33,6 +31,7 @@ public class PlayerSystem : NetworkBehaviour
     public void CountReady()
     {
         int count = 0;
+
         foreach (var player in Runner.ActivePlayers)
         {
             NetworkObject po = Runner.GetPlayerObject(player);
@@ -48,6 +47,7 @@ public class PlayerSystem : NetworkBehaviour
                 count++;
             }
         }
+
         ReadyCount = count;
     }
 }

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -28,16 +29,16 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
-    public PlayerSystem PlayerSystem { get; private set; }
+    public PlayerSystem PlayerSystem { get; set; }
 
     public void Init()
     {
-        StartCoroutine(Reserve());
-
         if (Runner == null)
         {
             Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
         }
+
+        StartCoroutine(Reserve());
     }
 
     public IEnumerator Reserve()
@@ -65,14 +66,18 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public async void ConnectToSession(string sessionName)
     {
-        Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
+        // Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
+        NetworkSceneInfo scene = new NetworkSceneInfo();
+        scene.AddSceneRef(SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/ReadyScene.unity")));
+        Managers.SceneMng.Clear();
 
         await Runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.Shared,
             SessionName = sessionName,
             PlayerCount = Define.PLAYER_COUNT,
-            SceneManager = Managers.Instance.gameObject.AddComponent<NetworkSceneManagerDefault>()
+            SceneManager = Managers.Instance.gameObject.AddComponent<LevelManager>(),
+            Scene = scene
         });
     }
 

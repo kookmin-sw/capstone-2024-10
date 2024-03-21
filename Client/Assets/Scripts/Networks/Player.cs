@@ -38,6 +38,8 @@ public class Player : NetworkBehaviour
 
         Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
 
+        yield return new WaitUntil(() => Managers.NetworkMng.Runner.IsRunning);
+
         yield return new WaitUntil(() => PlayerName.Value != null);
 
         OnPlayerNameUpdate.Invoke();
@@ -58,12 +60,16 @@ public class Player : NetworkBehaviour
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public static void RPC_ChangePlayerToAlien(NetworkRunner runner, [RpcTarget] PlayerRef player, int alienDataId)
+    public static async void RPC_ChangePlayerToAlien(NetworkRunner runner, [RpcTarget] PlayerRef player, int alienDataId)
     {
-        NetworkObject po = runner.GetPlayerObject(player);
+        NetworkObject po;
+        while (!runner.TryGetPlayerObject(player, out po))
+        {
+            await Task.Delay(100);
+        }
         Managers.ObjectMng.Despawn(po);
         Vector3 spawnPosition = po.transform.position;
         NetworkObject no = Managers.ObjectMng.SpawnAlien(alienDataId, spawnPosition);
-        runner.SetPlayerObject(runner.LocalPlayer, no);
+        runner.SetPlayerObject(player, no);
     }
 }
