@@ -23,6 +23,12 @@ public class UI_Popup : UI_Base
     /// </summary>
     public virtual void ClosePopupUI()
     {
+        Clear();
         Managers.UIMng.ClosePopupUI(this);
+    }
+
+    public virtual void Clear()
+    {
+
     }
 }

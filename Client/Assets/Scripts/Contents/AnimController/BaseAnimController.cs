@@ -18,7 +18,7 @@ public abstract class BaseAnimController : NetworkBehaviour
     protected virtual void Init()
     {
         NetworkAnim = gameObject.GetComponent<NetworkMecanimAnimator>();
-        Creature = gameObject.GetComponent<Crew>();
+        Creature = gameObject.GetComponent<Creature>();
 
         SetFloat("moveSpeed", 0);
     }

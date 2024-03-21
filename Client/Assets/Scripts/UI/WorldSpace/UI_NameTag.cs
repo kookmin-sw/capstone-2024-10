@@ -47,6 +47,9 @@ public class UI_NameTag : UI_Base
 
     private void Update()
     {
+        if (Camera.main == null)
+            return;
+
         Nickname.transform.LookAt(Camera.main.transform);
     }
 }

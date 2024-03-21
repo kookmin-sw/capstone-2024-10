@@ -7,6 +7,8 @@ using UnityEngine;
 using Fusion;
 using System.Data.SqlTypes;
 using System.Linq;
+using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 [Serializable]
 public class SaveData
@@ -21,6 +23,13 @@ public class GameManagerEX
     public string SAVEDATA_PATH;
 
     public Player Player { get; set; }
+    public List<Player> AllPlayers
+    {
+        get
+        {
+            return Managers.NetworkMng.Runner.GetAllBehaviours<Player>();
+        }
+    } 
     public void Init()
     {
         SAVEDATA_PATH = Path.Combine(Application.persistentDataPath, "/SaveData.json");
@@ -47,16 +56,16 @@ public class GameManagerEX
         StartGame();
     }
 
-    public void StartGame()
+    public async void StartGame()
     {
         Debug.Log("Game Setting Start");
-        Managers.UIMng.ClosePopupUI();
+        var popup = Managers.UIMng.FindPopup<UI_StartGame>();
+        popup.ClosePopupUI();
 
         if (Managers.NetworkMng.IsMaster)
         {
-            var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
-            int random = UnityEngine.Random.Range(0, players.Count);
-            Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, players[random], Define.ALIEN_STALKER_ID);
+            // await Managers.NetworkMng.Runner.UnloadScene(SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex));
+            await Managers.NetworkMng.Runner.LoadScene(SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/GameScene.unity")));
         }
     }
     #endregion

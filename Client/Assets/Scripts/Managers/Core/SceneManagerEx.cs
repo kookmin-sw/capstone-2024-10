@@ -30,7 +30,7 @@ public class SceneManagerEx
     /// </summary>
     /// <param name="type"></param>
     /// <returns></returns>
-    string GetSceneName(Define.SceneType type)
+    public string GetSceneName(Define.SceneType type)
     {
         string name = System.Enum.GetName(typeof(Define.SceneType), type);
         return name;

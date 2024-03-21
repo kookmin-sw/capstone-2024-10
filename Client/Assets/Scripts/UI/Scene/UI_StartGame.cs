@@ -86,4 +86,9 @@ public class UI_StartGame : UI_Popup
     {
         GetText((int)Texts.ReadyCount).text = $"{count} / {Define.PLAYER_COUNT}";
     }
+
+    public override void Clear()
+    {
+        Managers.NetworkMng.PlayerSystem.OnReadyCountUpdated -= () => SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
+    }
 }

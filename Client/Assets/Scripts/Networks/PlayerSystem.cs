@@ -1,5 +1,6 @@
 using Fusion;
 using System;
+using System.Collections;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,16 +11,20 @@ public class PlayerSystem : NetworkBehaviour
     public Action OnReadyCountUpdated { get; set; }
     public void OnReadyCountChanged()
     {
-        OnReadyCountUpdated.Invoke();
+        OnReadyCountUpdated?.Invoke();
+    }
+
+    public override void Spawned()
+    {
+        if (Runner.IsSharedModeMasterClient)
+        {
+            if (Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.ReadyScene)
+                StartCoroutine(CountReady());
+        }
     }
 
     public override void FixedUpdateNetwork()
     {
-        if (Runner.IsSharedModeMasterClient)
-        {
-            CountReady();
-            // 종료 로직 나중에 추가
-        }
     }
 
     public Player GetPlayer()
@@ -30,24 +35,44 @@ public class PlayerSystem : NetworkBehaviour
         return null;
     }
 
-    public void CountReady()
+    public IEnumerator CountReady()
     {
-        int count = 0;
-        foreach (var player in Runner.ActivePlayers)
+        while (ReadyCount != Define.PLAYER_COUNT)
         {
-            NetworkObject po = Runner.GetPlayerObject(player);
-            if (po == null)
-                continue;
+            int count = 0;
 
-            Player p = po.GetComponent<Player>();
-            if (p == null)
-                continue;
-
-            if (p.State == Define.PlayerState.Ready)
+            foreach (var player in Runner.ActivePlayers)
             {
-                count++;
+                NetworkObject po = Runner.GetPlayerObject(player);
+                if (po == null)
+                    continue;
+
+                Player p = po.GetComponent<Player>();
+                if (p == null)
+                    continue;
+
+                if (p.State == Define.PlayerState.Ready)
+                {
+                    count++;
+                }
             }
+
+            ReadyCount = count;
+
+            yield return null;
         }
-        ReadyCount = count;
+    }
+
+    public void PlayerJoined()
+    {
+        Vector3 position = Vector3.zero;
+        GameObject spawnPoint = GameObject.FindWithTag("Respawn");
+        if (spawnPoint != null)
+        {
+            position = spawnPoint.transform.position;
+        }
+
+        NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
+        Runner.SetPlayerObject(Runner.LocalPlayer, playerObject);
     }
 }

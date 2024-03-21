@@ -54,7 +54,7 @@ public class ObjectManager
 
     public void Despawn(NetworkObject no)
     {
-        Creature creature = no.GetComponent<Crew>();
+        Creature creature = no.GetComponent<Creature>();
         if (creature.CreatureType == Define.CreatureType.Crew)
             Crews.Remove(no.Id);
         else if (creature.CreatureType == Define.CreatureType.Alien)

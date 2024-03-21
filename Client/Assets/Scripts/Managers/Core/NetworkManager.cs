@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections;
+using UnityEngine.SceneManagement;
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -28,24 +29,13 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
-    public PlayerSystem PlayerSystem { get; private set; }
+    public PlayerSystem PlayerSystem { get; set; }
 
     public void Init()
     {
-        StartCoroutine(Reserve());
-
         if (Runner == null)
         {
             Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
-        }
-    }
-
-    public IEnumerator Reserve()
-    {
-        while (PlayerSystem == null)
-        {
-            PlayerSystem = FindAnyObjectByType<PlayerSystem>();
-            yield return null;
         }
     }
 
@@ -65,14 +55,18 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public async void ConnectToSession(string sessionName)
     {
-        Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
+        // Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
+        NetworkSceneInfo scene = new NetworkSceneInfo();
+        scene.AddSceneRef(SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/ReadyScene.unity")));
+        Managers.SceneMng.Clear();
 
         await Runner.StartGame(new StartGameArgs()
         {
             GameMode = GameMode.Shared,
             SessionName = sessionName,
             PlayerCount = Define.PLAYER_COUNT,
-            SceneManager = Managers.Instance.gameObject.AddComponent<NetworkSceneManagerDefault>()
+            SceneManager = Managers.Instance.gameObject.AddComponent<LevelManager>(),
+            Scene = scene
         });
     }
 
@@ -139,21 +133,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (player == runner.LocalPlayer)
         {
-            Vector3 position = Vector3.zero;
-            Transform spawnPoint = GameObject.FindWithTag("Respawn").transform;
-            if (spawnPoint != null)
-            {
-                position = spawnPoint.position;
-            }
-
-            NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
-            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
-            if (Runner.IsSharedModeMasterClient)
-            {
-                NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
-                NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
-                PlayerSystem = no.GetComponent<PlayerSystem>();
-            }
+            PlayerSystem = FindAnyObjectByType<PlayerSystem>();
+            PlayerSystem.PlayerJoined();
         }
     }
 
