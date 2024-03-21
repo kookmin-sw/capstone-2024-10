@@ -9,10 +9,6 @@ public class Alien : Creature
     public AlienStat AlienStat => (AlienStat)BaseStat;
 
     #endregion
-    public override void Spawned()
-    {
-        base.Init();
-    }
 
     public override void SetInfo(int templateID)
     {
@@ -24,59 +20,49 @@ public class Alien : Creature
         AlienStat.SetStat(AlienData);
     }
 
-    public override void FixedUpdateNetwork()
-    {
-        base.FixedUpdateNetwork();
-    }
-
-    #region Input
-
     protected override void HandleInput()
     {
         base.HandleInput();
 
-        if (CreatureState == Define.CreatureState.Interact)
+        if (Input.GetMouseButtonDown(0))
         {
-            if (Velocity == Vector3.zero)
-            {
-                CreatureState = Define.CreatureState.Idle;
-            }
-            else
-            {
-                CreatureState = Define.CreatureState.Move;
-            }
+            UseSkill(1);
             return;
-
         }
 
         if (Velocity == Vector3.zero)
-        {
             CreatureState = Define.CreatureState.Idle;
-            return;
-        }
+        else
+        {
+            CreatureState = Define.CreatureState.Move;
 
-        CreatureState = Define.CreatureState.Move;
-
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            CreaturePose = Define.CreaturePose.Run;
-        }
-        if (Input.GetKeyUp(KeyCode.LeftShift))
-        {
-            CreaturePose = Define.CreaturePose.Stand;
-        }
-        if (Input.GetMouseButtonDown(0))
-        {
-            CreatureState = Define.CreatureState.Interact;
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                CreaturePose = Define.CreaturePose.Run;
+            }
+            else
+            {
+                if (CreaturePose == Define.CreaturePose.Run)
+                {
+                    CreaturePose = Define.CreaturePose.Stand;
+                }
+            }
         }
     }
-
-    #endregion
 
     #region Update
 
     protected override void UpdateIdle()
     {
+        switch (CreaturePose)
+        {
+            case Define.CreaturePose.Stand:
+                break;
+            case Define.CreaturePose.Run:
+                CreaturePose = Define.CreaturePose.Stand;
+                break;
+        }
+
         if (IsFirstPersonView)
         {
             KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
@@ -94,18 +80,21 @@ public class Alien : Creature
                 BaseStat.Speed = AlienData.RunSpeed;
                 break;
         }
+
         if (IsFirstPersonView)
         {
             KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
         }
-        if (Velocity != Vector3.zero)
+        else
         {
-            Quaternion newRotation = Quaternion.LookRotation(Velocity);
-            KCC.SetLookRotation(newRotation);
+            if (Velocity != Vector3.zero)
+            {
+                Quaternion newRotation = Quaternion.LookRotation(Velocity);
+                KCC.SetLookRotation(newRotation);
+            }
         }
 
         KCC.Move(Velocity, 0f);
-
     }
 
     protected override void UpdateUse()
@@ -116,6 +105,16 @@ public class Alien : Creature
 
     protected override void UpdateDead()
     {
+        // TODO
+    }
+
+    #endregion
+
+    #region Interact
+
+    protected virtual bool UseSkill(int skillNum)
+    {
+        return false;
     }
 
     #endregion
@@ -124,4 +123,3 @@ public class Alien : Creature
 
     #endregion
 }
-

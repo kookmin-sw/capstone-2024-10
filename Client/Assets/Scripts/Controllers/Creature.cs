@@ -61,6 +61,12 @@ public abstract class Creature : NetworkBehaviour
             CreatureData = Managers.DataMng.AlienDataDict[templateID];
         }
 
+        gameObject.layer = LayerMask.NameToLayer("MyCreature");
+        foreach (Transform child in gameObject.transform)
+        {
+            child.gameObject.layer = LayerMask.NameToLayer("MyCreature");
+        }
+
         if (IsFirstPersonView)
         {
 

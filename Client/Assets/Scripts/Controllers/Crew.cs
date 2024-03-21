@@ -10,10 +10,6 @@ public class Crew : Creature
     public bool IsRecoveringStamina { get; protected set; }
 
     #endregion
-    public override void Spawned()
-    {
-        base.Init();
-    }
 
     public override void SetInfo(int templateID)
     {
@@ -52,7 +48,7 @@ public class Crew : Creature
         }
         if (Input.GetKeyDown(KeyCode.E))
         {
-            OnDamaged(50);
+            OnDamaged(50); // TODO - Test Code
         }
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -107,7 +103,7 @@ public class Crew : Creature
             CrewStat.OnUseStamina(Define.RUN_USE_STAMINA * Runner.DeltaTime);
             if (CrewStat.Stamina <= 0)
                 IsRecoveringStamina = true;
-        } 
+        }
         else
         {
             CrewStat.OnRecoverStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
