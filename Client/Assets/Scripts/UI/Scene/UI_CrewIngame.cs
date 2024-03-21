@@ -4,8 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UI_Ingame : UI_Scene
+public class UI_CrewIngame : UI_Scene
 {
+    public Crew Crew { get; set; }
     enum Buttons
     {
 
@@ -13,6 +14,7 @@ public class UI_Ingame : UI_Scene
 
     enum Images
     {
+
     }
 
     enum Texts
@@ -22,7 +24,9 @@ public class UI_Ingame : UI_Scene
 
     enum SubItemUIs
     {
-       UI_WorkProgressBar
+       UI_WorkProgressBar,
+       UI_CrewHP,
+       UI_CrewStamina
     }
 
 
@@ -35,7 +39,23 @@ public class UI_Ingame : UI_Scene
         Bind<TMP_Text>(typeof(Texts));
         Bind<UI_Base>(typeof(SubItemUIs));
 
+        StartCoroutine(AssignCrew());
         return true;
+    }
+
+    // Crew를 Assign하는 방식은 추후 리팩토링 필요
+    // Crew 쪽에서 Assign 하는 게 나을 수 있음
+    private IEnumerator AssignCrew()
+    {
+        while (Managers.ObjectMng.MyCreature == null)
+        {
+            yield return null;
+        }
+        Crew = Managers.ObjectMng.MyCreature as Crew;
+
+        (Get<UI_Base>((int)SubItemUIs.UI_CrewHP) as UI_CrewHP).Crew = Crew;
+        (Get<UI_Base>((int)SubItemUIs.UI_CrewStamina) as UI_CrewStamina).Crew = Crew;
+        Debug.Log(Crew.name);
     }
 
     public UI_WorkProgressBar ShowWorkProgressBar(string workDescription, float requiredWorkAmount)

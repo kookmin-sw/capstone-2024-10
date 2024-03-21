@@ -10,8 +10,7 @@ public class GameScene : BaseScene
 
         Managers.MapMng.Init();
 
-        //Managers.UIMng.ShowPopupUI<UI_CrewStat>();
-        Managers.UIMng.ShowSceneUI<UI_Ingame>();
+        Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
     }
 
     // 씬이 바뀔 때 정리해야 하는 목록
