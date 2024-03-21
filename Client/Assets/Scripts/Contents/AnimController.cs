@@ -8,8 +8,9 @@ public class AnimController : NetworkBehaviour
     public Creature Creature { get; protected set; }
     public Define.CreatureState CreatureState => Creature.CreatureState;
     public Define.CreaturePose CreaturePose => Creature.CreaturePose;
+    public Crew Crew { get; protected set; }
 
-    ////애니메이션을 위한 변수
+    ////Crew 애니메이션을 위한 변수
     public float SitDown { get; protected set; }
     public float StandSpeedParameter { get; protected set; }
     public float SitSpeedParameter { get; protected set; }
@@ -25,6 +26,7 @@ public class AnimController : NetworkBehaviour
         NetworkAnim = gameObject.GetComponent<NetworkMecanimAnimator>();
         Creature = gameObject.GetComponent<Creature>();
 
+        Crew = gameObject.GetComponent<Crew>();
         SetFloat("Health", 100);
         SetFloat("Sit", 0);
         SetFloat("moveSpeed", 0);
@@ -36,7 +38,7 @@ public class AnimController : NetworkBehaviour
     {
         if (HasStateAuthority == false)
             return;
-
+        SetFloat("Health", Crew.CrewStat.Hp);
         switch (CreatureState)
         {
             case Define.CreatureState.Idle:
@@ -63,18 +65,12 @@ public class AnimController : NetworkBehaviour
             {
                 case Define.CreaturePose.Stand:
                 case Define.CreaturePose.Run:
-                    float smoothness = 5f; // 조절 가능한 부드러움 계수
-                    SitDown = Mathf.Lerp(SitDown, 0, Runner.DeltaTime * smoothness);
-                    SetFloat("Sit", SitDown);
-                    StandSpeedParameter = Mathf.Lerp(StandSpeedParameter, 0, Runner.DeltaTime * smoothness);
-                    SetFloat("moveSpeed", StandSpeedParameter);
+                    CrewSitDownOrUp(0);
+                    CrewStandMove(0);
                     break;
                 case Define.CreaturePose.Sit:
-                    float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-                    SitDown = Mathf.Lerp(SitDown, 1, Runner.DeltaTime * sit_smoothness);
-                    SetFloat("Sit", SitDown);
-                    SitSpeedParameter = Mathf.Lerp(SitSpeedParameter, 0, Runner.DeltaTime * sit_smoothness);
-                    SetFloat("sitSpeed", SitSpeedParameter);
+                    CrewSitDownOrUp(1);
+                    CrewSitMove(0);
                     break;
             }
         }
@@ -92,23 +88,15 @@ public class AnimController : NetworkBehaviour
             switch (CreaturePose)
             {
                 case Define.CreaturePose.Stand:
-                    float stand_smoothness = 4f; // 조절 가능한 부드러움 계수
-                    SitDown = Mathf.Lerp(SitDown, 0, Runner.DeltaTime * stand_smoothness);
-                    SetFloat("Sit", SitDown);
-                    StandSpeedParameter = Mathf.Lerp(StandSpeedParameter, 1.5f, Runner.DeltaTime * stand_smoothness);
-                    SetFloat("moveSpeed", StandSpeedParameter);
+                    CrewSitDownOrUp(0);
+                    CrewStandMove(1.5f);
                     break;
                 case Define.CreaturePose.Sit:
-                    float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-                    SitDown = Mathf.Lerp(SitDown, 1, Runner.DeltaTime * sit_smoothness);
-                    SetFloat("Sit", SitDown);
-                    SitSpeedParameter = Mathf.Lerp(SitSpeedParameter, 1, Runner.DeltaTime * sit_smoothness);
-                    SetFloat("sitSpeed", SitSpeedParameter);
+                    CrewSitDownOrUp(1);
+                    CrewSitMove(1);
                     break;
                 case Define.CreaturePose.Run:
-                    float run_smoothness = 2f; // 조절 가능한 부드러움 계수
-                    StandSpeedParameter = Mathf.Lerp(StandSpeedParameter, 2, Runner.DeltaTime * run_smoothness);
-                    SetFloat("moveSpeed", StandSpeedParameter);
+                    CrewStandMove(2);
                     break;
             }
         }
@@ -129,6 +117,27 @@ public class AnimController : NetworkBehaviour
         // TODO
     }
 
+    #endregion
+
+    #region CrewAnim
+    private void CrewSitDownOrUp(float value)
+    {
+        float smoothness = 5f; // 조절 가능한 부드러움 계수
+        SitDown = Mathf.Lerp(SitDown, value, Runner.DeltaTime * smoothness);
+        SetFloat("Sit", SitDown);
+    }
+    private void CrewSitMove(float value)
+    {
+        float smoothness = 5f; // 조절 가능한 부드러움 계수
+        SitSpeedParameter = Mathf.Lerp(SitSpeedParameter, value, Runner.DeltaTime * smoothness);
+        SetFloat("sitSpeed", SitSpeedParameter);
+    }
+    private void CrewStandMove(float value)
+    {
+        float smoothness = 5f; // 조절 가능한 부드러움 계수
+        StandSpeedParameter = Mathf.Lerp(StandSpeedParameter, value, Runner.DeltaTime * smoothness);
+        SetFloat("moveSpeed", StandSpeedParameter);
+    }
     #endregion
 
     #region SetParameter

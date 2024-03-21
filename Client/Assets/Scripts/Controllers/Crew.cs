@@ -84,6 +84,10 @@ public class Crew : Creature
                 {
                     CreaturePose = Define.CreaturePose.Run;
                 }
+                if (IsRecoveringStamina)    //스테미너가 0이 되어도 SHIFT를 계속 누르고 있으면 RUN 상태 유지를 해제하기 위해
+                {
+                    CreaturePose = Define.CreaturePose.Stand;
+                }
             }
             else
             {
@@ -100,12 +104,18 @@ public class Crew : Creature
     protected void UpdateStamina()
     {
         if (CreaturePose == Define.CreaturePose.Run && CreatureState == Define.CreatureState.Move)
-            CrewStat.OnRecoverStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
-        else
         {
             CrewStat.OnUseStamina(Define.RUN_USE_STAMINA * Runner.DeltaTime);
             if (CrewStat.Stamina <= 0)
                 IsRecoveringStamina = true;
+        } 
+        else
+        {
+            CrewStat.OnRecoverStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
+            if (CrewStat.Stamina >= 20) //스테미너가 0이하가 된 뒤 20까지 회복 되면 다시 달리기 가능으로 변경
+            {
+                IsRecoveringStamina = false;
+            }
         }
     }
 
