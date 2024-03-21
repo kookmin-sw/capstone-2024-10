@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Data;
 
 public class Alien : Creature
@@ -20,8 +20,6 @@ public class Alien : Creature
         AlienStat.SetStat(AlienData);
     }
 
-    #region Input
-
     protected override void HandleInput()
     {
         base.HandleInput();
@@ -30,24 +28,6 @@ public class Alien : Creature
         {
             UseSkill(1);
             return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (CreatureState == Define.CreatureState.Interact)
-                CreatureState = Define.CreatureState.Idle;
-            else
-            if (RayCast())
-                return;
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (CreatureState == Define.CreatureState.Interact)
-                CreatureState = Define.CreatureState.Idle;
-            else
-            if (RayCast())
-                return;
         }
 
         if (Velocity == Vector3.zero)
@@ -69,8 +49,6 @@ public class Alien : Creature
             }
         }
     }
-
-    #endregion
 
     #region Update
 
@@ -121,7 +99,8 @@ public class Alien : Creature
 
     protected override void UpdateUse()
     {
-        // TODO
+        //AlienSkill alienSkill = new AlienSkill();
+        //alienSkill.Rpc_Use();
     }
 
     protected override void UpdateDead()
@@ -131,16 +110,16 @@ public class Alien : Creature
 
     #endregion
 
-    #region Event
+    #region Interact
+
+    protected virtual bool UseSkill(int skillNum)
+    {
+        return false;
+    }
 
     #endregion
 
-    #region Interact
-
-    protected virtual void UseSkill(int skillNum)
-    {
-        // TODO
-    }
+    #region Event
 
     #endregion
 }
