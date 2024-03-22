@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Fusion;
 
 public class CrewAnimController : BaseAnimController
@@ -8,6 +8,7 @@ public class CrewAnimController : BaseAnimController
     protected override void Init()
     {
         base.Init();
+        CrewStat = gameObject.GetComponent<CrewStat>();
 
         SetFloat("Health", 100);
         SetFloat("Sit", 0);
@@ -38,6 +39,22 @@ public class CrewAnimController : BaseAnimController
 
     protected override void PlayMove()
     {
+        SetFloat("Health", CrewStat.Hp);
+        //switch (CreaturePose)
+        //{
+        //    case Define.CreaturePose.Stand:
+        //        CrewSitDownOrUp(0);
+        //        CrewStandMove(1.5f);
+        //        break;
+        //    case Define.CreaturePose.Sit:
+        //        CrewSitDownOrUp(1);
+        //        CrewSitMove(1);
+        //        break;
+        //    case Define.CreaturePose.Run:
+        //        CrewStandMove(2);
+        //        break;
+        //}
+
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
@@ -77,5 +94,56 @@ public class CrewAnimController : BaseAnimController
         // TODO
     }
 
+    #endregion
+
+    #region CrewAnim
+    private void CrewSitDownOrUp(float value)
+    {
+        float smoothness = 5f; // 조절 가능한 부드러움 계수
+        SitDown = Mathf.Lerp(SitDown, value, Runner.DeltaTime * smoothness);
+        SetFloat("Sit", SitDown);
+    }
+    private void CrewSitMove(float value)
+    {
+        float smoothness = 5f; // 조절 가능한 부드러움 계수
+        SitSpeedParameter = Mathf.Lerp(SitSpeedParameter, value, Runner.DeltaTime * smoothness);
+        SetFloat("sitSpeed", SitSpeedParameter);
+    }
+    private void CrewStandMove(float value)
+    {
+        float smoothness = 5f; // 조절 가능한 부드러움 계수
+        StandSpeedParameter = Mathf.Lerp(StandSpeedParameter, value, Runner.DeltaTime * smoothness);
+        SetFloat("moveSpeed", StandSpeedParameter);
+    }
+    #endregion
+
+    #region Input
+    private void InputHandle()
+    {
+        VerticalInput = Input.GetAxis("Vertical");
+        HorizontalInput = Input.GetAxis("Horizontal");
+        if (VerticalInput > 0)
+        {
+            // 상키를 눌렀을 때 A 애니메이션 재생
+            CrewStandMove(0.5f);
+        }
+        else if (VerticalInput < 0)
+        {
+            // 하키를 눌렀을 때 A 애니메이션 재생
+            CrewStandMove(1f);
+        }
+
+        // 좌,우키 입력에 따라 애니메이션 재생
+        if (HorizontalInput > 0)
+        {
+            // 우키를 눌렀을 때 B 애니메이션 재생
+            CrewStandMove(1.5f);
+        }
+        else if (HorizontalInput < 0)
+        {
+            // 좌키를 눌렀을 때 B 애니메이션 재생
+            CrewStandMove(2f);
+        }
+    }
     #endregion
 }
