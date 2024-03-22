@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,11 @@ public class SceneManagerEx
     {
         Managers.Clear();
         SceneManager.LoadScene(GetSceneName(type));
+    }
+
+    public async void LoadNetworkScene(Define.SceneType type)
+    {
+        await Managers.NetworkMng.Runner.LoadScene(SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath($"Assets/Scenes/{GetSceneName(type)}.unity")));
     }
 
     /// <summary>

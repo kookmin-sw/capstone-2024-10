@@ -31,13 +31,15 @@ public class LevelManager : NetworkSceneManagerDefault
     {
         yield return base.OnSceneLoaded(newScene, loadedScene, sceneFlags);
 
+        _loadedScene = newScene;
+
         if (loadedScene.name == Managers.SceneMng.GetSceneName(Define.SceneType.GameScene))
         {
             Vector3 position = Vector3.zero;
-            Transform spawnPoint = GameObject.FindWithTag("Respawn").transform;
+            GameObject spawnPoint = GameObject.FindWithTag("Respawn");
             if (spawnPoint != null)
             {
-                position = spawnPoint.position;
+                position = spawnPoint.transform.position;
             }
 
             NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);

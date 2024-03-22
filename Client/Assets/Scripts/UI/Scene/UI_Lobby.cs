@@ -102,7 +102,7 @@ public class UI_Lobby : UI_Scene
 
     void EnterGame()
     {
-        Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
+
     }
 
     void GameSetting()
