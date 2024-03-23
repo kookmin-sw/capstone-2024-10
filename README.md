@@ -1,76 +1,83 @@
-# Welcome to GitHub
+# 프로젝트 소개
 
-캡스톤 팀 생성을 축하합니다.
+- 테마 : SF 스릴러
+- 장르 : 3D 멀티 술래잡기 게임
+- 시놉시스 : 
 
-## 팀소개 및 페이지를 꾸며주세요.
+*“괴수에게 장악되어 뒤틀린 실험실에서 탈출하라”*
 
-- 프로젝트 소개
-  - 프로젝트 설치방법 및 데모, 사용방법, 프리뷰등을 readme.md에 작성.
-  - Api나 사용방법등 내용이 많을경우 wiki에 꾸미고 링크 추가.
+> 이 게임은 정체불명의 괴수에게 장악된 실험실 안에서의 플레이어의 생존을 건 협력 탈출 게임입니다. 함께 단서를 찾아 위협을 파악하고, 독특한 사운드와 어두운 분위기에서 플레이어는 긴장과 공포에 직면하게 됩니다. 괴수의 스킬 사용을 통해 활동영역이 점점 좁아지는 플레이어들은 정해진 시간안에 끊임없이 탈출을 위한 방법을 궁리하게 됩니다. 단독 플레이로는 한계가 있어, 팀원들과 함께 협력하여 이 위험한 실험실을 탈출해야 합니다. 
 
-- 팀페이지 꾸미기
-  - 프로젝트 소개 및 팀원 소개
-  - index.md 예시보고 수정.
+## 참여 인원
 
-- GitHub Pages 리파지토리 Settings > Options > GitHub Pages 
-  - Source를 marster branch
-  - Theme Chooser에서 태마선택
-  - 수정후 팀페이지 확인하여 점검.
+### 팀장
 
-**팀페이지 주소** -> https://kookmin-sw.github.io/ '{{자신의 리파지토리 아이디}}'
+- **20191657 장재만 - 아웃게임 요소 / 매치메이킹**
 
-**예시)** 2023년 0조  https://kookmin-sw.github.io/capstone-2023-00/
+    - [jmJang00 - Overview](https://github.com/jmJang00)
 
+### 팀원
 
-## 내용에 아래와 같은 내용들을 추가하세요.
+- **20181602 김태범 - 클라이언트 프레임워크**
 
-### 1. 프로잭트 소개
+    - [scarleter99 - Overview](https://github.com/scarleter99)
 
-프로젝트
+- **20213086 조서진 - 맵 디자인 / 맵 장애물 / 맵 상호작용**
 
-### 2. 소개 영상
+    - [kkilme - Overview](https://github.com/kkilme)
 
-프로젝트 소개하는 영상을 추가하세요
+- **20203162 함수연 - 플레이어 모션 / 조작 / 아이템 상호작용**
 
-### 3. 팀 소개
+    - [suyeon-ham-01 - Overview](https://github.com/suyeon-ham-01)
 
-팀을 소개하세요.
+- **20191655 장민석 - 적 모션 / 조작**
 
-팀원정보 및 담당이나 사진 및 SNS를 이용하여 소개하세요.
+    - [jangminseok-05 - Overview](https://github.com/jangminseok-05)
 
-### 4. 사용법
+- **20212636 송준 - 게임 전반 총 기획 담당**
 
-소스코드제출시 설치법이나 사용법을 작성하세요.
+## 기술 스택
 
-### 5. 기타
+### Client
 
-추가적인 내용은 자유롭게 작성하세요.
+- Unity (C#)
 
+### Server
 
-## Markdown을 사용하여 내용꾸미기
+- Photon Fusion
+- Playfab
 
-Markdown은 작문을 스타일링하기위한 가볍고 사용하기 쉬운 구문입니다. 여기에는 다음을위한 규칙이 포함됩니다.
+### Collaboration
 
-```markdown
-Syntax highlighted code block
+- Github
+- Notion
+- Slack
 
-# Header 1
-## Header 2
-### Header 3
+## 플랫폼
 
-- Bulleted
-- List
+- 기기: PC
+- 해상도: 1920 x 1080
 
-1. Numbered
-2. List
+## 프로젝트 진행
 
-**Bold** and _Italic_ and `Code` text
+- 애자일 방식 (kanban board와 sprint)
 
-[Link](url) and ![Image](src)
-```
+- 링크
 
-자세한 내용은 [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+    - [옮기기 전 프로젝트](https://github.com/KMUGameProgramming/HideNSeek)
+    - [프로젝트 관리현황 노션](https://www.notion.so/98b1141f9ad8483fafd8c783eb8fb844?v=b17ecf9e1bc94a27834986dfd7d4ae14)
+    - [프로젝트 회의록 노션](https://www.notion.so/4ada763c5f4f47ba85e27a2ed6b53a27?v=115701ea93ca43f9a09e027d7e602572)
 
-### Support or Contact
+## 설치방법 및 데모 실행 방법
 
-readme 파일 생성에 추가적인 도움이 필요하면 [도움말](https://help.github.com/articles/about-readmes/) 이나 [contact support](https://github.com/contact) 을 이용하세요.
+- 깃허브 릴리즈
+
+## 프리뷰
+
+![스크린샷 2024-03-21 223147.png](img/2024-03-21_223147.png)
+
+![스크린샷 2024-03-21 223838.png](img/2024-03-21_223838.png)
+
+![스크린샷 2024-03-21 223414.png](img/2024-03-21_223414.png)
+
+![스크린샷 2024-03-21 223643.png](img/2024-03-21_223643.png)
