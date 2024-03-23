@@ -1,6 +1,7 @@
 using UnityEngine;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
+using Data;
 
 public abstract class Creature : NetworkBehaviour
 {
@@ -17,10 +18,9 @@ public abstract class Creature : NetworkBehaviour
     public SimpleKCC KCC { get; protected set; }
     public BaseStat BaseStat { get; protected set; }
     public BaseAnimController BaseAnimController { get; protected set; }
-    public Inventory Inventory { get; protected set; }
 
     [Networked] public int DataId { get; set; }
-    public Data.CreatureData CreatureData { get; protected set; }
+    public CreatureData CreatureData { get; protected set; }
     [Networked] public Define.CreatureType CreatureType { get; set; }
 
     [Networked] public Define.CreatureState CreatureState { get; set; }
@@ -45,7 +45,6 @@ public abstract class Creature : NetworkBehaviour
 
         BaseStat = gameObject.GetComponent<BaseStat>();
         BaseAnimController = gameObject.GetComponent<BaseAnimController>();
-        Inventory = gameObject.GetComponent<Inventory>();
     }
 
     public virtual void SetInfo(int templateID)
@@ -132,7 +131,6 @@ public abstract class Creature : NetworkBehaviour
 
         if (IsFirstPersonView)
         {
-
             Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
             Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * (BaseStat.Speed * Runner.DeltaTime);
         }
@@ -174,29 +172,31 @@ public abstract class Creature : NetworkBehaviour
 
     #endregion
 
-    #region Interact
-
-    protected bool RayCast()
+    protected bool CheckInteract(bool isCheck)
     {
         Ray ray = CreatureCamera.GetComponent<Camera>().ViewportPointToRay(Vector3.one * 0.5f);
 
-        Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red, 1f); // TODO - Test Code
-        if (!Physics.Raycast(ray, out RaycastHit rayHit, maxDistance:1.5f, layerMask:LayerMask.GetMask("MapObject")))
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance:1.5f, layerMask:LayerMask.GetMask("MapObject")))
         {
-            Debug.Log("Failed to interact - Raycast failed");
-            return false;
+            if (rayHit.transform.gameObject.TryGetComponent(out IInteractable interactable))
+            {
+                if (!isCheck)
+                {
+                    Debug.Log("CheckInteract");
+                    interactable.Interact(this);
+                    Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.green, 1f);
+
+                    return true;
+                }
+                else
+                {
+                    // TODO - Interact UI 출력
+                }
+            }
         }
 
-        if (rayHit.transform.gameObject.TryGetComponent(out IInteractable interactable))
-        {
-            CreatureState = Define.CreatureState.Interact;
-            interactable.Interact(this);
-            return true;
-        }
+        Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red);
 
-        Debug.Log("Failed to interact - no IInteractable component");
         return false;
     }
-
-    #endregion
 }

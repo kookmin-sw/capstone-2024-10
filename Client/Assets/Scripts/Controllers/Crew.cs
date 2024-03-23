@@ -1,5 +1,6 @@
 using UnityEngine;
 using Data;
+using Fusion;
 
 public class Crew : Creature
 {
@@ -7,7 +8,10 @@ public class Crew : Creature
 
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
-    public bool IsRecoveringStamina { get; protected set; }
+
+    public Inventory Inventory { get; protected set; }
+
+    [Networked] public bool IsRecoveringStamina { get; protected set; }
 
     #endregion
 
@@ -19,9 +23,12 @@ public class Crew : Creature
         base.SetInfo(templateID);
 
         CrewStat.SetStat(CrewData);
+
+        Inventory = gameObject.GetComponent<Inventory>();
+        IsRecoveringStamina = true;
+
         //UICrewStatus = FindObjectOfType<UI_CrewStat>();
         //UICrewStatus.CurrentCrew = this;
-        IsRecoveringStamina = true;
     }
 
     public override void FixedUpdateNetwork()
@@ -38,17 +45,35 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Dead)
             return;
 
+        // TODO - Test Code
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            OnDamaged(50);
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (CreatureState == Define.CreatureState.Interact)
                 CreatureState = Define.CreatureState.Idle;
-            else
-                if (RayCast())
-                    return;
+            else if (CheckInteract(false))
+                CreatureState = Define.CreatureState.Interact;
+
+            return;
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        else
+            CheckInteract(true);
+
+        if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
+            return;
+
+        if (Input.GetMouseButtonDown(0))
         {
-            OnDamaged(50); // TODO - Test Code
+            if (CheckAndUseItem())
+            {
+                CreatureState = Define.CreatureState.Use;
+                return;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.C))
@@ -79,7 +104,7 @@ public class Crew : Creature
                 {
                     CreaturePose = Define.CreaturePose.Run;
                 }
-                if (IsRecoveringStamina)    //스테미너가 0이 되어도 SHIFT를 계속 누르고 있으면 RUN 상태 유지를 해제하기 위해
+                if (IsRecoveringStamina)
                 {
                     CreaturePose = Define.CreaturePose.Stand;
                 }
@@ -195,4 +220,15 @@ public class Crew : Creature
     }
 
     #endregion
+
+    protected bool CheckAndUseItem()
+    {
+        if (Inventory.CurrentItem == null)
+        {
+            Debug.Log("No Item");
+            return false;
+        }
+
+        return Inventory.CurrentItem.CheckAndUseItem();
+    }
 }

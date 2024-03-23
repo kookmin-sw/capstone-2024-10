@@ -21,7 +21,7 @@ public class Computer : WorkStation
         while (WorkProgress < _requiredWorkAmount && !IsCompleted)
         {
 
-            if (_workingCreature.Velocity.magnitude >= 1f)
+            if (_workingCreature.CreatureState != Define.CreatureState.Interact)
             {
                 Interrupt();
             }
@@ -37,7 +37,7 @@ public class Computer : WorkStation
                 tempworkamount = WorkProgress;
             }
             /////////////////
-       
+
             yield return null;
         }
 

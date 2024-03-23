@@ -2,8 +2,14 @@
 
 public class Battery : BaseItem
 {
+    public override bool CheckAndUseItem()
+    {
+        Rpc_Use();
+        return true;
+    }
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public override void Rpc_Use()
+    protected override void Rpc_Use()
     {
 
     }

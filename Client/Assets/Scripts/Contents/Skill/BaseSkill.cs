@@ -1,13 +1,12 @@
 using Fusion;
 
-public class BaseSkill
+public abstract class BaseSkill
 {
     public Alien Owner { get; set; }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public virtual void Rpc_Use()
-    {
+    public abstract bool CheckAndUseSkill();
 
-    }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public abstract void Rpc_UseSkill();
 }
 

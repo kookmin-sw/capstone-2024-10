@@ -27,12 +27,17 @@ public class Inventory: NetworkBehaviour
         CurrentItemIdx = 0;
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_CheckAndGetItem(Define.ItemType itemType)
+    public void CheckAndGetItem(Define.ItemType itemType)
     {
         if (CurrentItem != null)
             return;
 
+        Rpc_GetItem(itemType);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void Rpc_GetItem(Define.ItemType itemType)
+    {
         Type type = Type.GetType(itemType.ToString());
         if (type == null)
         {
@@ -40,21 +45,16 @@ public class Inventory: NetworkBehaviour
             return;
         }
 
-        BaseItem item = (BaseItem)(Activator.CreateInstance(type));
-        item.Owner = Owner;
+        Items[CurrentItemIdx] = (BaseItem)(Activator.CreateInstance(type));
+        Items[CurrentItemIdx].Owner = Owner;
     }
 
-    protected void UseItem()
-    {
-        CurrentItem.Rpc_Use();
-    }
-
-    protected void DropItem()
+    public void DropItem()
     {
 
     }
 
-    protected void ChangeItem(int idx)
+    public void ChangeItem(int idx)
     {
         CurrentItemIdx = idx;
     }

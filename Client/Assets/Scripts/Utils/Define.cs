@@ -36,21 +36,6 @@ public static class Define
     }
     #endregion
 
-    #region Attribute
-    public enum Stat
-    {
-        Name,
-        WalkSpeed,
-        RunSpeed,
-        Hp,
-        MaxHp,
-        Stamina,
-        SitSpeed,
-        Damage,
-    }
-
-    #endregion
-
     #region State
 
     public enum CreatureState
@@ -58,6 +43,7 @@ public static class Define
         Idle,
         Move,
         Interact,
+        Use,
         Dead,
     }
 
