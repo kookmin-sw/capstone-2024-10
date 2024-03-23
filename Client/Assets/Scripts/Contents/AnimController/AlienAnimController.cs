@@ -29,15 +29,10 @@ public class AlienAnimController : BaseAnimController
         }
     }
 
-    protected override void PlayInteract()
+    public void PlayUseSkill1()
     {
         SetTrigger("attack");
         Debug.Log("Alien PlayInteract anim called");
-    }
-
-    protected override void PlayDead()
-    {
-        // TODO
     }
 
     #endregion

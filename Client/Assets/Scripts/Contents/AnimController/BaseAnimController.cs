@@ -35,12 +35,6 @@ public abstract class BaseAnimController : NetworkBehaviour
             case Define.CreatureState.Move:
                 PlayMove();
                 break;
-            case Define.CreatureState.Interact:
-                PlayInteract();
-                break;
-            case Define.CreatureState.Dead:
-                PlayDead();
-                break;
         }
     }
 
@@ -52,22 +46,9 @@ public abstract class BaseAnimController : NetworkBehaviour
     {
     }
 
-    protected virtual void PlayInteract()
-    {
-    }
-
-    protected virtual void PlayDead()
-    {
-    }
-
     #endregion
 
     #region SetParameter
-
-    protected void SetParameter()
-    {
-
-    }
 
     protected void SetTrigger(string parameter)
     {

@@ -13,6 +13,6 @@ public abstract class BaseItemObject : NetworkBehaviour, IInteractable
 
     public void Interact(Creature creature)
     {
-        creature.Inventory.Rpc_CheckAndGetItem(ItemType);
+        ((Crew)creature).Inventory.CheckAndGetItem(ItemType);
     }
 }

@@ -1,12 +1,15 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Data;
 
-public class Alien : Creature
+public abstract class Alien : Creature
 {
     #region Field
 
     public AlienData AlienData => CreatureData as AlienData;
     public AlienStat AlienStat => (AlienStat)BaseStat;
+
+    public List<BaseSkill> Skills { get; protected set; }
 
     #endregion
 
@@ -18,16 +21,59 @@ public class Alien : Creature
         base.SetInfo(templateID);
 
         AlienStat.SetStat(AlienData);
+
+        Skills = new List<BaseSkill>();
     }
 
     protected override void HandleInput()
     {
         base.HandleInput();
 
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            if (CheckInteract(false))
+            {
+                CreatureState = Define.CreatureState.Interact;
+                return;
+            }
+        }
+        else
+            CheckInteract(true);
+
         if (Input.GetMouseButtonDown(0))
         {
-            UseSkill(1);
-            return;
+            if (CheckAndUseSkill(0))
+            {
+                CreatureState = Define.CreatureState.Use;
+                return;
+            }
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (CheckAndUseSkill(1))
+            {
+                CreatureState = Define.CreatureState.Use;
+                return;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            if (CheckAndUseSkill(2))
+            {
+                CreatureState = Define.CreatureState.Use;
+                return;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            if (CheckAndUseSkill(3))
+            {
+                CreatureState = Define.CreatureState.Use;
+                return;
+            }
         }
 
         if (Velocity == Vector3.zero)
@@ -110,16 +156,14 @@ public class Alien : Creature
 
     #endregion
 
-    #region Interact
-
-    protected virtual bool UseSkill(int skillNum)
+    protected bool CheckAndUseSkill(int skillIdx)
     {
-        return false;
+        if (Skills[skillIdx] == null)
+        {
+            Debug.Log("No SKill" + skillIdx);
+            return false;
+        }
+
+        return Skills[skillIdx].CheckAndUseSkill();
     }
-
-    #endregion
-
-    #region Event
-
-    #endregion
 }

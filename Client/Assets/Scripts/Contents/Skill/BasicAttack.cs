@@ -1,14 +1,18 @@
 using Fusion;
-using System.Buffers;
 using UnityEngine;
 
-public class AlienSkill : BaseSkill
+public class BasicAttack : BaseSkill
 {
-    [SerializeField] private float attackRange = 2f; // 근접 공격 범위
+    private float attackRange = 2f; // 근접 공격 범위
+
+    public override bool CheckAndUseSkill()
+    {
+        Rpc_UseSkill();
+        return true;
+    }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-
-    public override void Rpc_Use()
+    public override void Rpc_UseSkill()
     {
         try
         {

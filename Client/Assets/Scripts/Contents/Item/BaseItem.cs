@@ -1,12 +1,11 @@
 ﻿using Fusion;
 
-public class BaseItem
+public abstract class BaseItem
 {
     public Crew Owner { get; set; }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public virtual void Rpc_Use()
-    {
+    public abstract bool CheckAndUseItem();
 
-    }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    protected abstract void Rpc_Use();
 }

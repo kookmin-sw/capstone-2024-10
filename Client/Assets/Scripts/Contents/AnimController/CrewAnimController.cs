@@ -3,8 +3,8 @@ using Fusion;
 
 public class CrewAnimController : BaseAnimController
 {
-    public float SitDown { get; protected set; }
-    public float SitSpeedParameter { get; protected set; }
+    [Networked] public float SitDown { get; protected set; }
+    [Networked] public float SitSpeedParameter { get; protected set; }
 
     protected override void Init()
     {
@@ -73,12 +73,17 @@ public class CrewAnimController : BaseAnimController
         }
     }
 
-    protected override void PlayInteract()
+    public void PlayInteract()
     {
         // TODO
     }
 
-    protected override void PlayDead()
+    public void PlayUseItem()
+    {
+        // TODO
+    }
+
+    public void PlayDead()
     {
         // TODO
     }
