@@ -27,6 +27,8 @@ public class UI_CrewHP : UI_Base
     private void Update()
     {
         if (Crew == null) return;
+
+        if (Crew.Object == null || !Crew.Object.IsValid) return;
     
         _fill.fillAmount = (float) Crew.CrewStat.Hp / Crew.CrewStat.MaxHp;
         

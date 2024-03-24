@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,6 +26,11 @@ public class SceneManagerEx
         SceneManager.LoadScene(GetSceneName(type));
     }
 
+    public async void LoadNetworkScene(Define.SceneType type)
+    {
+        await Managers.NetworkMng.Runner.LoadScene(SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath($"Assets/Scenes/{GetSceneName(type)}.unity")));
+    }
+
     /// <summary>
     /// 씬의 이름을 가져온다. 씬의 이름에 특정 규칙이 있을 경우 여기에 반영한다.
     /// </summary>
@@ -34,6 +40,11 @@ public class SceneManagerEx
     {
         string name = System.Enum.GetName(typeof(Define.SceneType), type);
         return name;
+    }
+
+    public SceneRef GetSceneRef(Define.SceneType type)
+    {
+        return SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath($"Assets/Scenes/{GetSceneName(type)}.unity"));
     }
 
     /// <summary>

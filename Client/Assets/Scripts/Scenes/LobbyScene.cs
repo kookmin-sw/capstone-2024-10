@@ -10,16 +10,16 @@ public class LobbyScene : BaseScene
 
         SceneType = Define.SceneType.LobbyScene;
 
-        Managers.UIMng.ShowSceneUI<UI_Lobby>();
+        // Managers.UIMng.ShowSceneUI<UI_Lobby>();
 
-        Managers.ResourceMng.Instantiate("Cameras/LobbyCamera");
+        // Managers.ResourceMng.Instantiate("Cameras/LobbyCamera");
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
         string nickname = Managers.NetworkMng.PlayerName;
         if (string.IsNullOrEmpty(nickname))
         {
-            Managers.UIMng.ShowPopupUI<UI_Entry>();
+            // Managers.UIMng.ShowPopupUI<UI_Entry>();
         }
         else
         {
