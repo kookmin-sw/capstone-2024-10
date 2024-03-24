@@ -13,6 +13,6 @@ public abstract class BaseStat : NetworkBehaviour
         Name = creatureData.Name;
         Speed = creatureData.WalkSpeed;
         WalkSpeed = creatureData.WalkSpeed;
-        WalkSpeed = creatureData.RunSpeed;
+        RunSpeed = creatureData.RunSpeed;
     }
 }
