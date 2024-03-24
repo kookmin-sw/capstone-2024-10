@@ -38,9 +38,7 @@ public class Player : NetworkBehaviour
 
         Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
 
-        yield return new WaitUntil(() => Managers.NetworkMng.Runner.IsRunning);
-
-        yield return new WaitUntil(() => PlayerName.Value != null);
+        yield return new WaitUntil(() => Object != null && Object.IsValid);
 
         OnPlayerNameUpdate.Invoke();
     }

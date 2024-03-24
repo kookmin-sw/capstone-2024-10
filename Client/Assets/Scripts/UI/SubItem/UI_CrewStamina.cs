@@ -28,6 +28,8 @@ public class UI_CrewStamina : UI_Base
     private void Update()
     {
         if (Crew == null) return;
+
+        if (Crew.Object == null || !Crew.Object.IsValid) return;
         
         _fill.fillAmount = Crew.CrewStat.Stamina / Crew.CrewStat.MaxStamina;
         _fill.color = Crew.IsRecoveringStamina ? Color.red : Color.white;
