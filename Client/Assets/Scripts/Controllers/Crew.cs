@@ -45,6 +45,8 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Dead)
             return;
 
+        CheckInteract(true);
+
         // TODO - Test Code
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -52,20 +54,24 @@ public class Crew : Creature
             return;
         }
 
+        if (CreatureState == Define.CreatureState.Use)
+            return;
+
+        if (CreatureState == Define.CreatureState.Interact)
+            if (Input.GetKeyDown(KeyCode.F))
+            {
+                CreatureState = Define.CreatureState.Idle;
+                return;
+            }
+
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (CreatureState == Define.CreatureState.Interact)
-                CreatureState = Define.CreatureState.Idle;
-            else if (CheckInteract(false))
+            if (CheckInteract(false))
+            {
                 CreatureState = Define.CreatureState.Interact;
-
-            return;
+                return;
+            }
         }
-        else
-            CheckInteract(true);
-
-        if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
-            return;
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -98,7 +104,7 @@ public class Crew : Creature
         {
             CreatureState = Define.CreatureState.Move;
 
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && Direction.z > 0.1)
             {
                 if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
                 {
