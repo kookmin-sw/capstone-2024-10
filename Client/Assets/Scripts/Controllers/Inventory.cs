@@ -23,7 +23,10 @@ public class Inventory: NetworkBehaviour
         Owner = gameObject.GetComponent<Crew>();
 
         Items = new List<BaseItem>(Define.MAX_ITEM_NUM);
-
+        for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
+        {
+            Items.Add(null);
+        }
         CurrentItemIdx = 0;
     }
 

@@ -3,8 +3,7 @@ using Fusion;
 
 public class CrewAnimController : BaseAnimController
 {
-    [Networked] public float SitDown { get; protected set; }
-    [Networked] public float SitSpeedParameter { get; protected set; }
+    [Networked] public float SitParameter { get; protected set; }
 
     protected override void Init()
     {
@@ -19,32 +18,22 @@ public class CrewAnimController : BaseAnimController
 
     protected override void PlayIdle()
     {
-        if (Creature.CreatureType == Define.CreatureType.Crew)
+        switch (CreaturePose)
         {
-            switch (CreaturePose)
-            {
-                case Define.CreaturePose.Stand:
-                case Define.CreaturePose.Run:
-                    float smoothness = 5f; // 조절 가능한 부드러움 계수
-                    SitDown = Mathf.Lerp(SitDown, 0, Runner.DeltaTime * smoothness);
-                    SetFloat("Sit", SitDown);
-                    StandSpeedParameter = Mathf.Lerp(StandSpeedParameter, 0, Runner.DeltaTime * smoothness);
-                    SetFloat("moveSpeed", StandSpeedParameter);
-                    break;
-                case Define.CreaturePose.Sit:
-                    float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-                    SitDown = Mathf.Lerp(SitDown, 1, Runner.DeltaTime * sit_smoothness);
-                    SetFloat("Sit", SitDown);
-                    SitSpeedParameter = Mathf.Lerp(SitSpeedParameter, 0, Runner.DeltaTime * sit_smoothness);
-                    SetFloat("sitSpeed", SitSpeedParameter);
-                    break;
-            }
-        }
-        else
-        {
-
+            case Define.CreaturePose.Stand:
+            case Define.CreaturePose.Run:
+                SitParameter = Mathf.Lerp(SitParameter, 0, Runner.DeltaTime * 5);
+                break;
+            case Define.CreaturePose.Sit:
+                SitParameter = Mathf.Lerp(SitParameter, 1, Runner.DeltaTime * 5);
+                break;
         }
 
+        SetFloat("X", 0);
+        SetFloat("Z", 0);
+        SetFloat("SitParameter", SitParameter);
+        SpeedParameter = Mathf.Lerp(SpeedParameter, 0, Runner.DeltaTime * 5);
+        SetFloat("Speed", SpeedParameter);
     }
 
     protected override void PlayMove()
@@ -52,25 +41,25 @@ public class CrewAnimController : BaseAnimController
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                float stand_smoothness = 4f; // 조절 가능한 부드러움 계수
-                SitDown = Mathf.Lerp(SitDown, 0, Runner.DeltaTime * stand_smoothness);
-                SetFloat("Sit", SitDown);
-                StandSpeedParameter = Mathf.Lerp(StandSpeedParameter, 1.5f, Runner.DeltaTime * stand_smoothness);
-                SetFloat("moveSpeed", StandSpeedParameter);
+                SetFloat("Z", Creature.Direction.z);
+                SitParameter = Mathf.Lerp(SitParameter, 0, Runner.DeltaTime * 5);
+                SpeedParameter = Mathf.Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5);
                 break;
             case Define.CreaturePose.Sit:
-                float sit_smoothness = 5f; // 조절 가능한 부드러움 계수
-                SitDown = Mathf.Lerp(SitDown, 1, Runner.DeltaTime * sit_smoothness);
-                SetFloat("Sit", SitDown);
-                SitSpeedParameter = Mathf.Lerp(SitSpeedParameter, 1, Runner.DeltaTime * sit_smoothness);
-                SetFloat("sitSpeed", SitSpeedParameter);
+                SetFloat("Z", Creature.Direction.z);
+                SitParameter = Mathf.Lerp(SitParameter, 1, Runner.DeltaTime * 5);
+                SpeedParameter = Mathf.Lerp(SpeedParameter, 1, Runner.DeltaTime * 5);
+
                 break;
             case Define.CreaturePose.Run:
-                float run_smoothness = 2f; // 조절 가능한 부드러움 계수
-                StandSpeedParameter = Mathf.Lerp(StandSpeedParameter, 2, Runner.DeltaTime * run_smoothness);
-                SetFloat("moveSpeed", StandSpeedParameter);
+                SetFloat("Z", Creature.Direction.z * 2);
+                SpeedParameter = Mathf.Lerp(SpeedParameter, 2, Runner.DeltaTime * 5);
                 break;
         }
+
+        SetFloat("X", Creature.Direction.x);
+        SetFloat("SitParameter", SitParameter);
+        SetFloat("Speed", SpeedParameter);
     }
 
     public void PlayInteract()

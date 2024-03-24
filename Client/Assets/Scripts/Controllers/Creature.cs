@@ -26,7 +26,10 @@ public abstract class Creature : NetworkBehaviour
     [Networked] public Define.CreatureState CreatureState { get; set; }
     [Networked] public Define.CreaturePose CreaturePose { get; set; }
 
+    [Networked] public Vector3 Direction { get; set; }
     [Networked] public Vector3 Velocity { get; set; }
+
+    public IInteractable CurrentInteractable { get; protected set; }
 
     #endregion
 
@@ -132,7 +135,8 @@ public abstract class Creature : NetworkBehaviour
         if (IsFirstPersonView)
         {
             Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
-            Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * (BaseStat.Speed * Runner.DeltaTime);
+            Direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+            Velocity = cameraRotationY * Direction * (BaseStat.Speed * Runner.DeltaTime);
         }
         else
         {
@@ -182,7 +186,8 @@ public abstract class Creature : NetworkBehaviour
             {
                 if (!isCheck)
                 {
-                    Debug.Log("CheckInteract");
+                    CurrentInteractable = interactable;
+                    Debug.Log("Interact Success");
                     interactable.Interact(this);
                     Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.green, 1f);
 
