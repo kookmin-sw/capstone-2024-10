@@ -158,14 +158,6 @@ public class Crew : Creature
                 IsRecoveringStamina = false;
             }
         }
-        else
-        {
-            CrewStat.OnRecoverStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
-            if (CrewStat.Stamina >= 20) //스테미너가 0이하가 된 뒤 20까지 회복 되면 다시 달리기 가능으로 변경
-            {
-                IsRecoveringStamina = false;
-            }
-        }
     }
 
     protected override void UpdateIdle()
