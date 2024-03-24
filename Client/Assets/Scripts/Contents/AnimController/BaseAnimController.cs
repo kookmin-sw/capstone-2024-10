@@ -8,7 +8,7 @@ public abstract class BaseAnimController : NetworkBehaviour
     public Define.CreatureState CreatureState => Creature.CreatureState;
     public Define.CreaturePose CreaturePose => Creature.CreaturePose;
 
-    public float StandSpeedParameter { get; protected set; }
+    public float SpeedParameter { get; protected set; }
 
     public override void Spawned()
     {
