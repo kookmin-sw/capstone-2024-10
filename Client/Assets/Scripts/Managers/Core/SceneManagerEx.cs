@@ -42,6 +42,11 @@ public class SceneManagerEx
         return name;
     }
 
+    public SceneRef GetSceneRef(Define.SceneType type)
+    {
+        return SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath($"Assets/Scenes/{GetSceneName(type)}.unity"));
+    }
+
     /// <summary>
     /// 베이스 씬을 상속한 각각의 씬에 정의되어 있는 클리어 함수를 불러온다.
     /// </summary>

@@ -68,7 +68,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         // Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
         NetworkSceneInfo scene = new NetworkSceneInfo();
-        scene.AddSceneRef(SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/ReadyScene.unity")));
+        scene.AddSceneRef(Managers.SceneMng.GetSceneRef(Define.SceneType.ReadyScene));
         Managers.SceneMng.Clear();
 
         await Runner.StartGame(new StartGameArgs()

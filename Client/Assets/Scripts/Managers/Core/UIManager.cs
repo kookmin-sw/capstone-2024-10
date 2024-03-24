@@ -100,6 +100,9 @@ public class UIManager
         if (parent != null)
             go.transform.SetParent(parent);
 
+        go.transform.localRotation = Quaternion.Euler(Vector3.zero);
+        go.transform.localPosition = Vector3.zero;
+
         return Util.GetOrAddComponent<T>(go);
     }
 
