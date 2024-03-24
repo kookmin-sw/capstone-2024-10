@@ -10,6 +10,7 @@ public class CrewAnimController : BaseAnimController
         base.Init();
         CrewStat = gameObject.GetComponent<CrewStat>();
 
+        SetFloat("Action", 0);
         SetFloat("Health", 100);
         SetFloat("Sit", 0);
         SetFloat("sitSpeed", 0);
@@ -115,6 +116,12 @@ public class CrewAnimController : BaseAnimController
         StandSpeedParameter = Mathf.Lerp(StandSpeedParameter, value, Runner.DeltaTime * smoothness);
         SetFloat("moveSpeed", StandSpeedParameter);
     }
+    private void CrewMoveDirection(float value)
+    {
+        float smoothness = 5f; // 조절 가능한 부드러움 계수
+        MoveDirectionParameter = Mathf.Lerp(MoveDirectionParameter, value, Runner.DeltaTime * smoothness);
+        SetFloat("moveDirection", MoveDirectionParameter);
+    }
     #endregion
 
     #region Input
@@ -125,24 +132,24 @@ public class CrewAnimController : BaseAnimController
         if (VerticalInput > 0)
         {
             // 상키를 눌렀을 때 A 애니메이션 재생
-            CrewStandMove(0.5f);
+            CrewMoveDirection(3);
         }
         else if (VerticalInput < 0)
         {
             // 하키를 눌렀을 때 A 애니메이션 재생
-            CrewStandMove(1f);
+            CrewMoveDirection(0);
         }
 
         // 좌,우키 입력에 따라 애니메이션 재생
         if (HorizontalInput > 0)
         {
             // 우키를 눌렀을 때 B 애니메이션 재생
-            CrewStandMove(1.5f);
+            CrewMoveDirection(2);
         }
         else if (HorizontalInput < 0)
         {
             // 좌키를 눌렀을 때 B 애니메이션 재생
-            CrewStandMove(2f);
+            CrewMoveDirection(1);
         }
     }
     #endregion
