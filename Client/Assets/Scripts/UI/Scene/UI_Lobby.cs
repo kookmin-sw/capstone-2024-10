@@ -5,38 +5,28 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
 using Fusion;
+using SlimUI.ModernMenu;
+using System;
 
-public class UI_Lobby : UI_Scene
+public class UI_Lobby : UI_Base
 {
     #region UI 목록들
 
     public enum Buttons
     {
-        Create,
-        Refresh,
-        Setting,
-    }
-
-    public enum Images
-    {
-    }
-
-    public enum Texts
-    {
-        ReceivedMessage,
-        FirstBtnText,
-        SecondBtnText,
+        Btn_QuickStart,
+        Btn_CreateGame,
+        Btn_RefreshSession,
     }
 
     public enum GameObjects
     {
         RoomContent,
-        SendingMessage,
     }
 
     #endregion
 
-    private TMP_InputField _input;
+    public UI_LobbyController UIMenuController { get; private set; }
 
     public override bool Init()
     {
@@ -44,17 +34,14 @@ public class UI_Lobby : UI_Scene
             return false;
 
         Bind<Button>(typeof(Buttons));
-        Bind<Image>(typeof(Images));
-        Bind<TMP_Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
 
-        GetButton((int)Buttons.Create).onClick.AddListener(CreateGame);
-        GetButton((int)Buttons.Refresh).onClick.AddListener(RefreshSessionLIst);
-        GetButton((int)Buttons.Setting).onClick.AddListener(GameSetting);
+        GetButton((int)Buttons.Btn_QuickStart).onClick.AddListener(EnterGame);
+        GetButton((int)Buttons.Btn_CreateGame).onClick.AddListener(CreateGame);
+        GetButton((int)Buttons.Btn_RefreshSession).onClick.AddListener(Refresh);
 
-        _input = GetObject((int)GameObjects.SendingMessage).GetComponent<TMP_InputField>();
-        GetButton((int)Buttons.Create).interactable = false;
-        Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Create).interactable = true;
+        GetButton((int)Buttons.Btn_CreateGame).interactable = false;
+        Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Btn_CreateGame).interactable = true;
         RefreshSessionLIst();
 
         return true;
@@ -81,6 +68,18 @@ public class UI_Lobby : UI_Scene
         }
     }
 
+    public void SetInfo(UI_LobbyController controller)
+    {
+        UIMenuController = controller;
+        foreach (int i in Enum.GetValues(typeof(Buttons)))
+        {
+            BindEvent(GetButton(i).gameObject, (e) => {
+                if (GetButton(i).interactable)
+                    UIMenuController?.PlayHover();
+            }, Define.UIEvent.PointerEnter);
+        }
+    }
+
     void Refresh()
     {
         StartCoroutine(RefreshWait());
@@ -88,10 +87,10 @@ public class UI_Lobby : UI_Scene
 
     IEnumerator RefreshWait()
     {
-        GetButton((int)Buttons.Refresh).interactable = false;
+        GetButton((int)Buttons.Btn_RefreshSession).interactable = false;
         RefreshSessionLIst();
         yield return new WaitForSeconds(3f);
-        GetButton((int)Buttons.Refresh).interactable = true;
+        GetButton((int)Buttons.Btn_RefreshSession).interactable = true;
     }
 
     void CreateGame()
@@ -101,11 +100,6 @@ public class UI_Lobby : UI_Scene
     }
 
     void EnterGame()
-    {
-
-    }
-
-    void GameSetting()
     {
 
     }
