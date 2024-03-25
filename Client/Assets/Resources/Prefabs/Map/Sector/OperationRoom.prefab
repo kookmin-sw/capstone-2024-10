@@ -41,8 +41,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 745738969842464459}
-  - component: {fileID: 3613581927921907817}
   - component: {fileID: 7870968447045478683}
+  - component: {fileID: -3792083174078081579}
   m_Layer: 0
   m_Name: OperationRoom
   m_TagString: Untagged
@@ -68,24 +68,6 @@ Transform:
   - {fileID: 8124200662799351245}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3613581927921907817
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 976432387822530030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 3592466016
-  ObjectInterest: 1
-  Flags: 131073
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 7870968447045478683}
 --- !u!114 &7870968447045478683
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,11 +80,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a2b6f88f3b3b2847819ca908b010363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SectorName: 0
+  SectorName: 2
   _doors: []
   _workStations: []
-  _ElectricPower:
-    _value: 0
+--- !u!114 &-3792083174078081579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 976432387822530030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2791839902
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 7870968447045478683}
 --- !u!1 &1981704067338547242
 GameObject:
   m_ObjectHideFlags: 0

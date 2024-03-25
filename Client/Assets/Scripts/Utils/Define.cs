@@ -14,9 +14,15 @@ public static class Define
         Battery,
     }
 
-    public enum SectorType
+    public enum SectorName
     {
-
+        F1_HallwayA,
+        MainRoom,
+        OperationRoom,
+        ReactorRoom,
+        TubeRoom,
+        F2_HallwayA,
+        F2_SmallRoom
     }
 
     public enum SceneType

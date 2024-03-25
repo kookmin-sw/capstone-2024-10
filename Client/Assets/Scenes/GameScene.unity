@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1.121193, g: 0.8641804, b: 0.9683758, a: 1}
+  m_IndirectSpecularColor: {r: 1.1216525, g: 0.8648306, b: 0.96941197, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 14874633}
   - component: {fileID: 14874632}
+  - component: {fileID: 14874634}
   m_Layer: 0
   m_Name: '@Scene'
   m_TagString: Untagged
@@ -167,6 +168,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &14874634
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 14874631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6991fad599db5a41a0b4c49e1eb61e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _totalItemCount: 6
+  _itemSpawnDatas:
+  - Prefab: {fileID: 4972526152966947178, guid: 7fe2ab2345a8f6c47a48f48bd77a8cae, type: 3}
+    GlobalMinCount: 1
+    GlobalMaxCount: 4
+    MaxCountPerSector: 2
+  - Prefab: {fileID: 3789344646060339833, guid: 54d1a0c68d0d8cb4e91b862f9f5bdd11, type: 3}
+    GlobalMinCount: 1
+    GlobalMaxCount: 4
+    MaxCountPerSector: 2
 --- !u!1001 &21547074
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -9,10 +9,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1845699543241681820}
-  - component: {fileID: 76067771806322262}
   - component: {fileID: 3881515276718189880}
+  - component: {fileID: -7191254219799594112}
   m_Layer: 0
-  m_Name: 2FHallwayA
+  m_Name: 2F_HallwayA
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,24 +35,6 @@ Transform:
   - {fileID: 3028905732507931442}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &76067771806322262
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2310513665737383023}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 3926005705
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 3881515276718189880}
 --- !u!114 &3881515276718189880
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65,11 +47,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a2b6f88f3b3b2847819ca908b010363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SectorName: 0
+  SectorName: 5
   _doors: []
   _workStations: []
-  _ElectricPower:
-    _value: 0
+--- !u!114 &-7191254219799594112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2310513665737383023}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2693865697
+  ObjectInterest: 1
+  Flags: 262145
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 3881515276718189880}
 --- !u!1 &4695019282019647307
 GameObject:
   m_ObjectHideFlags: 0

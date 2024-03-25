@@ -55,7 +55,6 @@ public class UI_CrewIngame : UI_Scene
 
         (Get<UI_Base>((int)SubItemUIs.UI_CrewHP) as UI_CrewHP).Crew = Crew;
         (Get<UI_Base>((int)SubItemUIs.UI_CrewStamina) as UI_CrewStamina).Crew = Crew;
-        Debug.Log(Crew.name);
     }
 
     public UI_WorkProgressBar ShowWorkProgressBar(string workDescription, float requiredWorkAmount)

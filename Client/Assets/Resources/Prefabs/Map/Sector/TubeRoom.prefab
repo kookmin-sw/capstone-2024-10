@@ -601,8 +601,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7053547055976591750}
-  - component: {fileID: 2745531498441078155}
   - component: {fileID: 936615625692771946}
+  - component: {fileID: 307271828787182045}
   m_Layer: 0
   m_Name: TubeRoom
   m_TagString: Untagged
@@ -628,24 +628,6 @@ Transform:
   - {fileID: 5932274820399853714}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2745531498441078155
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4094177302106422935}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SortKey: 2468805359
-  ObjectInterest: 1
-  Flags: 262145
-  NestedObjects: []
-  NetworkedBehaviours:
-  - {fileID: 936615625692771946}
 --- !u!114 &936615625692771946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -658,11 +640,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a2b6f88f3b3b2847819ca908b010363, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SectorName: 0
+  SectorName: 4
   _doors: []
   _workStations: []
-  _ElectricPower:
-    _value: 0
+--- !u!114 &307271828787182045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094177302106422935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1588014911
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 936615625692771946}
 --- !u!1 &6374099852599505326
 GameObject:
   m_ObjectHideFlags: 0

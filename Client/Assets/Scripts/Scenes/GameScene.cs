@@ -13,6 +13,11 @@ public class GameScene : BaseScene
         //Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
     }
 
+    public void OnSceneLoaded()
+    {
+        FindObjectOfType<MapSystem>().Init();
+    }
+
     // 씬이 바뀔 때 정리해야 하는 목록
     public override void Clear()
     {

@@ -95,14 +95,14 @@ public class Crew : Creature
             }
         }
 
-        if (Input.GetMouseButtonDown(0))
-        {
-            if (CheckAndUseItem())
-            {
-                CreatureState = Define.CreatureState.Use;
-                return;
-            }
-        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    if (CheckAndUseItem())
+        //    {
+        //        CreatureState = Define.CreatureState.Use;
+        //        return;
+        //    }
+        //}
 
         if (Input.GetKeyDown(KeyCode.C))
         {
