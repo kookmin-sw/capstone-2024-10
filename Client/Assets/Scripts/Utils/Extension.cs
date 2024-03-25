@@ -51,7 +51,6 @@ public static class Extension
     public static void RegisterRunner(this SimulationBehaviour sb)
     {
         var runner = NetworkRunner.GetRunnerForGameObject(sb.gameObject);
-        Debug.Log(runner.IsSharedModeMasterClient);
         if (runner.IsRunning)
         {
             runner.AddGlobal(sb);
