@@ -56,7 +56,7 @@ public class GameManagerEX
         StartGame();
     }
 
-    public async void StartGame()
+    public void StartGame()
     {
         Debug.Log("Game Setting Start");
         var popup = Managers.UIMng.FindPopup<UI_StartGame>();
@@ -64,8 +64,7 @@ public class GameManagerEX
 
         if (Managers.NetworkMng.IsMaster)
         {
-            // await Managers.NetworkMng.Runner.UnloadScene(SceneRef.FromIndex(SceneManager.GetActiveScene().buildIndex));
-            await Managers.NetworkMng.Runner.LoadScene(SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/GameScene.unity")));
+            Managers.SceneMng.LoadNetworkScene(Define.SceneType.GameScene);
         }
     }
     #endregion

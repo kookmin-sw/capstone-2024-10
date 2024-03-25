@@ -1,23 +1,22 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Fusion;
 
 public class CrewAnimController : BaseAnimController
 {
     [Networked] public float SitParameter { get; protected set; }
+    public CrewStat CrewStat { get; protected set; }
 
     protected override void Init()
     {
         base.Init();
-
-        SetFloat("Health", 100);
-        SetFloat("Sit", 0);
-        SetFloat("sitSpeed", 0);
+        CrewStat = gameObject.GetComponent<CrewStat>();
     }
 
     #region Update
 
     protected override void PlayIdle()
     {
+        //SetFloat("Health", CrewStat.Hp);
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
@@ -38,6 +37,7 @@ public class CrewAnimController : BaseAnimController
 
     protected override void PlayMove()
     {
+        //SetFloat("Health", CrewStat.Hp);
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
@@ -64,7 +64,7 @@ public class CrewAnimController : BaseAnimController
 
     public void PlayInteract()
     {
-        // TODO
+        
     }
 
     public void PlayUseItem()
@@ -78,4 +78,5 @@ public class CrewAnimController : BaseAnimController
     }
 
     #endregion
+
 }

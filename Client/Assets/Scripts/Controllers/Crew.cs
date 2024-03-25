@@ -8,7 +8,7 @@ public class Crew : Creature
 
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
-
+    public CrewAnimController CrewAnimController { get; protected set; }
     public Inventory Inventory { get; protected set; }
 
     [Networked] public bool IsRecoveringStamina { get; protected set; }
@@ -24,11 +24,9 @@ public class Crew : Creature
 
         CrewStat.SetStat(CrewData);
 
+        CrewAnimController = gameObject.GetComponent<CrewAnimController>();
         Inventory = gameObject.GetComponent<Inventory>();
         IsRecoveringStamina = true;
-
-        //UICrewStatus = FindObjectOfType<UI_CrewStat>();
-        //UICrewStatus.CurrentCrew = this;
     }
 
     public override void FixedUpdateNetwork()
@@ -104,7 +102,7 @@ public class Crew : Creature
         {
             CreatureState = Define.CreatureState.Move;
 
-            if (Input.GetKey(KeyCode.LeftShift) && Direction.z > 0.1)
+            if (Input.GetKey(KeyCode.LeftShift))
             {
                 if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
                 {
@@ -134,7 +132,7 @@ public class Crew : Creature
             CrewStat.OnUseStamina(Define.RUN_USE_STAMINA * Runner.DeltaTime);
             if (CrewStat.Stamina <= 0)
                 IsRecoveringStamina = true;
-        }
+        } 
         else
         {
             CrewStat.OnRecoverStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
@@ -197,12 +195,12 @@ public class Crew : Creature
 
     protected override void UpdateUse()
     {
-        // TODO
+        CrewAnimController.PlayUseItem();
     }
 
     protected override void UpdateDead()
     {
-        // TODO
+        CrewAnimController.PlayDead();
     }
 
     #endregion

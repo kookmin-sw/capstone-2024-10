@@ -7,7 +7,7 @@ public class SoundManager
     /// <summary>
     /// 오디오 소스를 담는 배열이다. Define에 정의되어 있는 MaxCount의 수만큼 사운드의 종류를 정의한다.
     /// </summary>
-    AudioSource[] _audioSources = new AudioSource[(int)Define.SoundType.MaxCount];
+    static AudioSource[] _audioSources = new AudioSource[(int)Define.SoundType.MaxCount];
     /// <summary>
     /// 오디오 클립을 담는 딕셔너리로, 이름을 통해 딕셔너리에 있는 오디오 클립을 가져올 수 있다.
     /// </summary>
@@ -74,6 +74,8 @@ public class SoundManager
         if (type == Define.SoundType.Bgm)
         {
             AudioSource audioSource = _audioSources[(int)Define.SoundType.Bgm];
+            if (audioSource == null)
+                return;
 
             if (audioSource.isPlaying)
                 audioSource.Stop();
@@ -86,6 +88,8 @@ public class SoundManager
         else
         {
             AudioSource audioSource = _audioSources[(int)Define.SoundType.Effect];
+            if (audioSource == null)
+                return;
             //audioSource.pitch = pitch;
             audioSource.volume = pitch;
             audioSource.PlayOneShot(audioClip);

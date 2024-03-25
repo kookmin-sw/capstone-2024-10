@@ -72,6 +72,8 @@ public static class Define
         PointerDown,
         PointerUp,
         Click,
+        PointerEnter,
+        PointerExit,
     }
 
     public enum MouseEvent

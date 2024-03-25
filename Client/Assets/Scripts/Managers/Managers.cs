@@ -66,7 +66,7 @@ public class Managers : MonoBehaviour
     public static void Clear()
     {
         GameMng.Clear();
-        //SoundMng.Clear();
+        SoundMng.Clear();
         InputMng.Clear();
         SceneMng.Clear();
         UIMng.Clear();

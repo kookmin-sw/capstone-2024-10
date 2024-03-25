@@ -68,7 +68,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         // Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
         NetworkSceneInfo scene = new NetworkSceneInfo();
-        scene.AddSceneRef(SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath("Assets/Scenes/ReadyScene.unity")));
+        scene.AddSceneRef(Managers.SceneMng.GetSceneRef(Define.SceneType.ReadyScene));
         Managers.SceneMng.Clear();
 
         await Runner.StartGame(new StartGameArgs()
@@ -145,10 +145,10 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         if (player == runner.LocalPlayer)
         {
             Vector3 position = Vector3.zero;
-            Transform spawnPoint = GameObject.FindWithTag("Respawn").transform;
+            GameObject spawnPoint = GameObject.FindWithTag("Respawn");
             if (spawnPoint != null)
             {
-                position = spawnPoint.position;
+                position = spawnPoint.transform.position;
             }
 
             NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
