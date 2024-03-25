@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
 using Fusion;
 using UnityEngine;
@@ -31,7 +30,7 @@ public class ObjectManager
     public NetworkObject SpawnCrew(int crewDataId, Vector3 spawnPosition)
     {
         string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
-        NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREW_PATH}/{className}");
+        NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");
         NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
 
         Crew crew = no.GetComponent<Crew>();
@@ -43,7 +42,7 @@ public class ObjectManager
     public NetworkObject SpawnAlien(int alienDataId, Vector3 spawnPosition)
     {
         string className = Managers.DataMng.AlienDataDict[alienDataId].Name;
-        NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.ALIEN_PATH}/{className}");
+        NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");
         NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
 
         Alien alien = no.GetComponent<Alien>();

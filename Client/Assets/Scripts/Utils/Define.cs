@@ -117,8 +117,7 @@ public static class Define
 
     #region Path
 
-    public const string CREW_PATH = "Prefabs/Crews";
-    public const string ALIEN_PATH = "Prefabs/Aliens";
+    public const string CREATURE_PATH = "Prefabs/Creatures";
 
     #endregion
 
