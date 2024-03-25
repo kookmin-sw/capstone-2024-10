@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Fusion;
 
 public static class Extension
 {
@@ -24,5 +25,36 @@ public static class Extension
     public static bool IsValid(this GameObject go)
     {
         return go != null && go.activeSelf;
+    }
+
+    public static List<GameObject> FindObjectsWithTag(this Transform parent, string tag)
+    {
+        List<GameObject> taggedGameObjects = new List<GameObject>();
+
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.CompareTag(tag))
+            {
+                taggedGameObjects.Add(child.gameObject);
+            }
+            if (child.childCount > 0)
+            {
+                taggedGameObjects.AddRange(FindObjectsWithTag(child, tag));
+            }
+        }
+        return taggedGameObjects;
+    }
+
+    // SimulationBehaviour를 Runner에 할당
+    // Runner.Spawn 등 Runner를 사용하는 데 필요함
+    public static void RegisterRunner(this SimulationBehaviour sb)
+    {
+        var runner = NetworkRunner.GetRunnerForGameObject(sb.gameObject);
+        Debug.Log(runner.IsSharedModeMasterClient);
+        if (runner.IsRunning)
+        {
+            runner.AddGlobal(sb);
+        }
     }
 }
