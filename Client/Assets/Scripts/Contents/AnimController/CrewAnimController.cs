@@ -28,43 +28,50 @@ public class CrewAnimController : BaseAnimController
                 break;
         }
 
-        SetFloat("X", 0);
-        SetFloat("Z", 0);
-        SetFloat("SitParameter", SitParameter);
+        XParameter = Mathf.Lerp(XParameter, 0, Runner.DeltaTime * 5);
+        ZParameter = Mathf.Lerp(ZParameter, 0, Runner.DeltaTime * 5);
         SpeedParameter = Mathf.Lerp(SpeedParameter, 0, Runner.DeltaTime * 5);
+
+        SetFloat("X", XParameter);
+        SetFloat("Z", ZParameter);
+        SetFloat("SitParameter", SitParameter);
         SetFloat("Speed", SpeedParameter);
     }
 
     protected override void PlayMove()
     {
         //SetFloat("Health", CrewStat.Hp);
+        XParameter = Mathf.Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5);
+        ZParameter = Mathf.Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5);
+
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                SetFloat("Z", Creature.Direction.z);
+                SetFloat("Z", ZParameter);
                 SitParameter = Mathf.Lerp(SitParameter, 0, Runner.DeltaTime * 5);
                 SpeedParameter = Mathf.Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5);
                 break;
             case Define.CreaturePose.Sit:
-                SetFloat("Z", Creature.Direction.z);
+                SetFloat("Z", ZParameter);
                 SitParameter = Mathf.Lerp(SitParameter, 1, Runner.DeltaTime * 5);
                 SpeedParameter = Mathf.Lerp(SpeedParameter, 1, Runner.DeltaTime * 5);
-
                 break;
             case Define.CreaturePose.Run:
-                SetFloat("Z", Creature.Direction.z * 2);
+                SetFloat("Z", ZParameter * 2);
+                SitParameter = Mathf.Lerp(SitParameter, 0, Runner.DeltaTime * 5);
                 SpeedParameter = Mathf.Lerp(SpeedParameter, 2, Runner.DeltaTime * 5);
                 break;
         }
 
-        SetFloat("X", Creature.Direction.x);
+
+        SetFloat("X", XParameter);
         SetFloat("SitParameter", SitParameter);
         SetFloat("Speed", SpeedParameter);
     }
 
     public void PlayInteract()
     {
-        
+
     }
 
     public void PlayUseItem()
