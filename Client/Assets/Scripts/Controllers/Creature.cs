@@ -9,6 +9,7 @@ public abstract class Creature : NetworkBehaviour
 
     #region Field
 
+    public GameObject Head { get; protected set; }
     public CreatureCamera CreatureCamera { get; protected set; }
     public WatchingCamera WatchingCamera { get; protected set; }
     public Transform Transform { get; protected set; }
@@ -54,34 +55,6 @@ public abstract class Creature : NetworkBehaviour
     {
         DataId = templateID;
 
-        if (CreatureType == Define.CreatureType.Crew)
-        {
-            CreatureData = Managers.DataMng.CrewDataDict[templateID];
-        }
-        else
-        {
-            CreatureData = Managers.DataMng.AlienDataDict[templateID];
-        }
-
-        gameObject.layer = LayerMask.NameToLayer("MyCreature");
-        foreach (Transform child in gameObject.transform)
-        {
-            child.gameObject.layer = LayerMask.NameToLayer("MyCreature");
-        }
-
-        if (IsFirstPersonView)
-        {
-
-            CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", gameObject.transform).GetComponent<CreatureCamera>();
-            CreatureCamera.SetInfo(this);
-        }
-        else
-        {
-            WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
-            WatchingCamera.enabled = true;
-            WatchingCamera.Creature = this;
-        }
-
         CreatureState = Define.CreatureState.Idle;
         CreaturePose = Define.CreaturePose.Stand;
 
@@ -98,12 +71,10 @@ public abstract class Creature : NetworkBehaviour
     {
         if (CreatureType == Define.CreatureType.Crew)
         {
-            Managers.ObjectMng.Crews[NetworkObject.Id] = this as Crew;
             CreatureData = Managers.DataMng.CrewDataDict[templateID];
         }
         else
         {
-            Managers.ObjectMng.Aliens[NetworkObject.Id] = this as Alien;
             CreatureData = Managers.DataMng.AlienDataDict[templateID];
         }
 

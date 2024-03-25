@@ -27,6 +27,7 @@ public class Inventory: NetworkBehaviour
         {
             Items.Add(null);
         }
+
         CurrentItemIdx = 0;
     }
 

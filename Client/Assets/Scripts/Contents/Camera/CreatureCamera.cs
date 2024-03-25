@@ -29,13 +29,13 @@ public class CreatureCamera : MonoBehaviour
         enabled = true;
         Creature = creature;
 
-        Vector3 cameraPosition;
-        if (Creature.CreatureType == Define.CreatureType.Crew)
-            cameraPosition = new Vector3(0, 1.7f, 0.13f);
-        else
-            cameraPosition = new Vector3(0, 2.8f, 0.8f);
-
-        transform.position = Creature.gameObject.transform.position + cameraPosition;
+        // Vector3 cameraPosition;
+        // if (Creature.CreatureType == Define.CreatureType.Crew)
+        //     cameraPosition = new Vector3(0, 1.7f, 0.13f);
+        // else
+        //     cameraPosition = new Vector3(0, 2.8f, 0.8f);
+        //
+        // transform.position = Creature.gameObject.transform.position + cameraPosition;
     }
 
     private void LateUpdate()

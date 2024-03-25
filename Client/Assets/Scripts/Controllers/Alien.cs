@@ -16,13 +16,34 @@ public abstract class Alien : Creature
     public override void SetInfo(int templateID)
     {
         CreatureType = Define.CreatureType.Alien;
-        Transform.parent = Managers.ObjectMng.AlienRoot;
 
         base.SetInfo(templateID);
 
+        Transform.parent = Managers.ObjectMng.AlienRoot;
+        Head = Util.FindChild(gameObject, "head", true);
+        Head.transform.localScale = Vector3.zero;
+
+        if (IsFirstPersonView)
+        {
+
+            CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", Util.FindChild(gameObject, "Anglerox_ Neck", true).transform).GetComponent<CreatureCamera>();
+            CreatureCamera.transform.localPosition = new Vector3(-0.2f, 0f, 0f);
+            CreatureCamera.SetInfo(this);
+        }
+        else
+        {
+            WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
+            WatchingCamera.enabled = true;
+            WatchingCamera.Creature = this;
+        }
+
         AlienStat.SetStat(AlienData);
 
-        Skills = new List<BaseSkill>();
+        Skills = new List<BaseSkill>(4);
+        for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
+        {
+            Skills.Add(null);
+        }
     }
 
     protected override void HandleInput()

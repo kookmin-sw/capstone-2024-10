@@ -8,24 +8,48 @@ public class Crew : Creature
 
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
-    public CrewAnimController CrewAnimController { get; protected set; }
+    public CrewAnimController CrewAnimController => (CrewAnimController)BaseAnimController;
     public Inventory Inventory { get; protected set; }
 
     [Networked] public bool IsRecoveringStamina { get; protected set; }
 
     #endregion
 
+    protected override void Init()
+    {
+        base.Init();
+
+        Inventory = gameObject.GetComponent<Inventory>();
+
+        Managers.ObjectMng.Crews[NetworkObject.Id] = this as Crew;
+    }
+
     public override void SetInfo(int templateID)
     {
         CreatureType = Define.CreatureType.Crew;
-        Transform.parent = Managers.ObjectMng.CrewRoot;
 
         base.SetInfo(templateID);
 
+        Transform.parent = Managers.ObjectMng.CrewRoot;
+        Head = Util.FindChild(gameObject, "head.x", true);
+        Head.transform.localScale = Vector3.zero;
+
+        if (IsFirstPersonView)
+        {
+
+            CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", Util.FindChild(gameObject, "neck.x", true).transform).GetComponent<CreatureCamera>();
+            CreatureCamera.transform.localPosition = new Vector3(0f, 0.2f, 0f);
+            CreatureCamera.SetInfo(this);
+        }
+        else
+        {
+            WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
+            WatchingCamera.enabled = true;
+            WatchingCamera.Creature = this;
+        }
+
         CrewStat.SetStat(CrewData);
 
-        CrewAnimController = gameObject.GetComponent<CrewAnimController>();
-        Inventory = gameObject.GetComponent<Inventory>();
         IsRecoveringStamina = true;
     }
 
@@ -83,16 +107,9 @@ public class Crew : Creature
         if (Input.GetKeyDown(KeyCode.C))
         {
             if (CreaturePose != Define.CreaturePose.Sit)
-            {
                 CreaturePose = Define.CreaturePose.Sit;
-                CreatureCamera.transform.position -= new Vector3(0f, 0.5f, 0f); //앉을 경우 카메라도 같이 시점 동기화를 위해 y값 낮추기
-
-            }
             else
-            {
                 CreaturePose = Define.CreaturePose.Stand;
-                CreatureCamera.transform.position += new Vector3(0f, 0.5f, 0f);
-            }
             return;
         }
 
@@ -132,7 +149,7 @@ public class Crew : Creature
             CrewStat.OnUseStamina(Define.RUN_USE_STAMINA * Runner.DeltaTime);
             if (CrewStat.Stamina <= 0)
                 IsRecoveringStamina = true;
-        } 
+        }
         else
         {
             CrewStat.OnRecoverStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
