@@ -14,12 +14,14 @@ public class LevelManager : NetworkSceneManagerDefault
 
     public override void Shutdown()
     {
-        if (_loadedScene.IsValid)
-        {
-            SceneManager.UnloadSceneAsync(_loadedScene.AsIndex);
-            _loadedScene = SceneRef.None;
-        }
+        _loadedScene = SceneRef.None;
+        Managers.Clear();
         base.Shutdown();
+    }
+
+    public async void UnloadScene()
+    {
+        await UnloadScene(_loadedScene);
     }
 
     protected override IEnumerator UnloadSceneCoroutine(SceneRef prevScene)
