@@ -6,7 +6,6 @@ using Data;
 public abstract class Creature : NetworkBehaviour
 {
     public const bool IsFirstPersonView = true;
-
     #region Field
 
     public GameObject Head { get; protected set; }
@@ -32,6 +31,7 @@ public abstract class Creature : NetworkBehaviour
 
     public BaseInteractable CurrentInteractable { get; set; }
 
+    public bool IsDead { get; protected set; }  //Dead 애니메이션이 한번만 실행하기 위한 bool값
     #endregion
 
     public override void Spawned()
@@ -85,7 +85,8 @@ public abstract class Creature : NetworkBehaviour
     {
         if (!HasStateAuthority)
             return;
-
+        if (IsDead)
+            return;
         HandleInput();
     }
 
@@ -93,7 +94,8 @@ public abstract class Creature : NetworkBehaviour
     {
         if (!HasStateAuthority)
             return;
-
+        if (IsDead)
+            return;
         UpdateByState();
         BaseAnimController.UpdateAnimation();
     }

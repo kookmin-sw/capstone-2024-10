@@ -54,7 +54,7 @@ public abstract class BaseAnimController : NetworkBehaviour
 
     protected void SetTrigger(string parameter)
     {
-        NetworkAnim.SetTrigger("IsRunning");
+        NetworkAnim.SetTrigger(parameter);
     }
 
     protected void SetBool(string parameter, bool value)
