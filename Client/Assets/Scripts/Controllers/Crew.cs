@@ -51,6 +51,7 @@ public class Crew : Creature
         CrewStat.SetStat(CrewData);
 
         IsRecoveringStamina = true;
+        IsDead = false;
     }
 
     public override void FixedUpdateNetwork()
@@ -81,9 +82,11 @@ public class Crew : Creature
 
         if (CreatureState == Define.CreatureState.Interact)
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F)){
+                PoseReset();   //이동으로 돌아가기 위해 animation 리셋
                 CreatureState = Define.CreatureState.Idle;
-            return;
+                return;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -94,7 +97,6 @@ public class Crew : Creature
                 return;
             }
         }
-
         //if (Input.GetMouseButtonDown(0))
         //{
         //    if (CheckAndUseItem())
@@ -113,31 +115,35 @@ public class Crew : Creature
             return;
         }
 
-        if (Velocity == Vector3.zero)
-            CreatureState = Define.CreatureState.Idle;
-        else
+        if (CreatureState != Define.CreatureState.Interact) //상호작용하는 경우에는 이동 및 서있기 인식을 못하게 설정
         {
-            CreatureState = Define.CreatureState.Move;
-
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
-                if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
-                {
-                    CreaturePose = Define.CreaturePose.Run;
-                }
-                if (IsRecoveringStamina)
-                {
-                    CreaturePose = Define.CreaturePose.Stand;
-                }
-            }
+            if (Velocity == Vector3.zero)
+                CreatureState = Define.CreatureState.Idle;
             else
             {
-                if (CreaturePose == Define.CreaturePose.Run)
+                CreatureState = Define.CreatureState.Move;
+
+                if (Input.GetKey(KeyCode.LeftShift))
                 {
-                    CreaturePose = Define.CreaturePose.Stand;
+                    if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
+                    {
+                        CreaturePose = Define.CreaturePose.Run;
+                    }
+                    if (IsRecoveringStamina)
+                    {
+                        CreaturePose = Define.CreaturePose.Stand;
+                    }
+                }
+                else
+                {
+                    if (CreaturePose == Define.CreaturePose.Run)
+                    {
+                        CreaturePose = Define.CreaturePose.Stand;
+                    }
                 }
             }
         }
+        
     }
 
     #region Update
@@ -218,8 +224,13 @@ public class Crew : Creature
     protected override void UpdateDead()
     {
         CrewAnimController.PlayDead();
+        IsDead = true;
     }
 
+    public void PoseReset()
+    {
+        CrewAnimController.PlayReset();
+    }
     #endregion
 
     #region Event
