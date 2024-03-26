@@ -41,7 +41,7 @@ public class UI_WorkingBar : UI_Popup
         return true;
     }
 
-    public void CalculateBar(WorkStation myself)
+    public void CalculateBar(BaseWorkStation myself)
     {        
         //float ratio = GetImage((int)Images.Background).rectTransform.sizeDelta.x / myself.requiredTime;
 

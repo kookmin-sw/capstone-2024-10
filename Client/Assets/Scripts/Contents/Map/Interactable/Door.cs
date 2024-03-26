@@ -4,31 +4,49 @@ using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
-public class Door : NetworkBehaviour, IInteractable
+public class Door : BaseWorkStation
 {
-    [Networked]
-    public NetworkBool IsOpen { get; set; }
+    public Crew CurrentWorkCrew => (Crew)CurrentWorkCreature;
 
-    private Animator _animator;
-    private int _isOpenParameterId;
+    [Networked] public NetworkBool IsOpen { get; set; }
 
-    public override void Spawned()
+    public NetworkMecanimAnimator NetworkAnim { get; protected set; }
+
+    public override void Init()
     {
-        base.Spawned();
-        _animator = transform.GetComponent<Animator>();
-        _isOpenParameterId = Animator.StringToHash("isOpen");
+        base.Init();
+
+        NetworkAnim = transform.GetComponent<NetworkMecanimAnimator>();
+
+        IsRememberWork = false;
+        IsCompleted = false;
+        IsSomeoneWork = false;
+
+        RequiredWorkAmount = 5f;
     }
 
-    public void Interact(Creature creature)
+    protected override IEnumerator WorkProgress()
     {
-        RPC_Open();
-        creature.CreatureState = Define.CreatureState.Idle;
+        while (CurrentWorkAmount < RequiredWorkAmount)
+        {
+            if (CurrentWorkCreature.CreatureState != Define.CreatureState.Interact)
+                OnWorkInterrupt();
+
+            CurrentWorkAmount += Time.deltaTime * CurrentWorkCrew.CrewStat.WorkSpeed;
+            ProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
+
+            yield return null;
+        }
+
+        OnWorkInterrupt();
+        OnWorkComplete();
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    private void RPC_Open()
+    protected void OnWorkComplete()
     {
         IsOpen = !IsOpen;
-        _animator.SetBool(_isOpenParameterId, IsOpen);
+        NetworkAnim.Animator.SetBool("OpenParameter", IsOpen);
+
+        Debug.Log("Door Opened");
     }
 }

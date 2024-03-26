@@ -32,7 +32,7 @@ public class UI_ElectricPanel : UI_Popup
 
     private List<GameObject> floors = new List<GameObject>();
 
-    private WorkStation _workStation;
+    private BaseWorkStation _baseWorkStation;
 
     public override bool Init()
     {

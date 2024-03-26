@@ -1,7 +1,7 @@
 using Fusion;
 using UnityEngine;
 
-public abstract class BaseItemObject : NetworkBehaviour, IInteractable
+public abstract class BaseItemObject : BaseInteractable
 {
     public Define.ItemType ItemType { get; protected set; }
 
@@ -12,7 +12,7 @@ public abstract class BaseItemObject : NetworkBehaviour, IInteractable
 
     protected abstract void Init();
 
-    public void Interact(Creature creature)
+    public override void CheckAndInteract(Creature creature)
     {
         ((Crew)creature).Inventory.CheckAndGetItem(ItemType);
     }

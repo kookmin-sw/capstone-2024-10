@@ -32,6 +32,7 @@ public class CrewAnimController : BaseAnimController
         ZParameter = Mathf.Lerp(ZParameter, 0, Runner.DeltaTime * 5);
         SpeedParameter = Mathf.Lerp(SpeedParameter, 0, Runner.DeltaTime * 5);
 
+        SetBool("KeypadUse", false);
         SetFloat("X", XParameter);
         SetFloat("Z", ZParameter);
         SetFloat("SitParameter", SitParameter);
@@ -57,21 +58,21 @@ public class CrewAnimController : BaseAnimController
                 SpeedParameter = Mathf.Lerp(SpeedParameter, 1, Runner.DeltaTime * 5);
                 break;
             case Define.CreaturePose.Run:
-                SetFloat("Z", ZParameter * 2);
+                SetFloat("Z", ZParameter * 1.8f);
                 SitParameter = Mathf.Lerp(SitParameter, 0, Runner.DeltaTime * 5);
                 SpeedParameter = Mathf.Lerp(SpeedParameter, 2, Runner.DeltaTime * 5);
                 break;
         }
 
-
+        SetBool("KeypadUse", false);
         SetFloat("X", XParameter);
         SetFloat("SitParameter", SitParameter);
         SetFloat("Speed", SpeedParameter);
     }
 
-    public void PlayInteract()
+    public void PlayKeypadUse()
     {
-
+        SetBool("KeypadUse", true);
     }
 
     public void PlayUseItem()

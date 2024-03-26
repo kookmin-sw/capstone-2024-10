@@ -1,68 +1,52 @@
 using Fusion;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Computer : WorkStation
+public class Computer : BaseWorkStation
 {
-    //TODO: test code
-    private const float WORK_SPEED = 0.5f;
+    public Crew CurrentWorkCrew => (Crew)CurrentWorkCreature;
 
-    protected override IEnumerator ProgressWork()
+    public override void Init()
     {
-        //TODO: Test code
+        base.Init();
+
+        IsRememberWork = true;
+        IsCompleted = false;
+        IsSomeoneWork = false;
+
+        RequiredWorkAmount = 100f;
+    }
+
+    protected override IEnumerator WorkProgress()
+    {
+        // TODO - Test code
         float time = Time.time;
-        float tempworkamount = WorkProgress;
-        ////////////
 
-        Debug.Log($"{_workingCreature.NetworkObject.Id}: starting work...");
-        UI_CrewIngame uiCrew = Managers.UIMng.SceneUI as UI_CrewIngame;
-        _progressbar = uiCrew.ShowWorkProgressBar("Fixing Computer", _requiredWorkAmount);
-        while (WorkProgress < _requiredWorkAmount && !IsCompleted)
+        while (CurrentWorkAmount < RequiredWorkAmount)
         {
+            if (CurrentWorkCreature.CreatureState != Define.CreatureState.Interact)
+                OnWorkInterrupt();
 
-            if (_workingCreature.CreatureState != Define.CreatureState.Interact)
-            {
-                Interrupt();
-            }
+            CurrentWorkAmount += Time.deltaTime * CurrentWorkCrew.CrewStat.WorkSpeed;
+            ProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
 
-            Rpc_ProgressWork(Time.deltaTime, WORK_SPEED);
-            _progressbar.CurrentWorkAmount = WorkProgress;
-
-            //TODO: Test code
+            // TODO - Test code
             if (time + 1 < Time.time)
             {
                 time = Time.time;
-                Debug.Log($"Work progress for 1sec: {WorkProgress - tempworkamount}");
-                tempworkamount = WorkProgress;
+                Debug.Log($"CurrentWorkProgress: {CurrentWorkAmount}");
             }
-            /////////////////
 
             yield return null;
         }
 
-        _progressbar.gameObject.SetActive(false);
-        Rpc_CompleteWork();
+        OnWorkInterrupt();
+        OnWorkComplete();
     }
 
-    protected override void OnWorkComplete()
+    protected void OnWorkComplete()
     {
+        IsCompleted = true;
         Debug.Log("Computer Work Completed");
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    private void Rpc_CompleteWork()
-    {
-        if (!IsCompleted)
-        {
-            IsCompleted = true;
-            OnWorkComplete();
-        }
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    private void Rpc_ProgressWork(float deltatime, float workSpeed)
-    {
-        WorkProgress += deltatime * workSpeed;
     }
 }

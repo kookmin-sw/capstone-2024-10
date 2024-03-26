@@ -12,7 +12,7 @@ public class Sector : NetworkBehaviour
 
     [SerializeField]
     private Door[] _doors;
-    private WorkStation[] _workStations;
+    private BaseWorkStation[] _workStations;
     private SectorLight _sectorLight;
 
     private List<Transform> _itemSpawnPoints = new();
@@ -20,7 +20,7 @@ public class Sector : NetworkBehaviour
 
     public void Init()
     {
-        _workStations = GetComponentsInChildren<WorkStation>();
+        _workStations = GetComponentsInChildren<BaseWorkStation>();
         _itemSpawnPoints = gameObject.transform.FindObjectsWithTag("ItemSpawnPoint")
             .Select(obj => obj.transform)
             .ToList();

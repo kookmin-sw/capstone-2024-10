@@ -10,7 +10,7 @@ public class GameScene : BaseScene
 
         Managers.MapMng.Init();
 
-        //Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
+        Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
     }
 
     public void OnSceneLoaded()
