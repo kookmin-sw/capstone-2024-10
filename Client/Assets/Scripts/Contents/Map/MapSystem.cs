@@ -40,12 +40,23 @@ public class MapSystem : SimulationBehaviour
         if(!Runner.IsSharedModeMasterClient) return;
 
         int totalCount = 0;
-        Dictionary<ItemSpawnData, int> count = new();
+        Dictionary<ItemSpawnData, int> totalItemCount = new();
+        Dictionary<Define.SectorName, Dictionary<ItemSpawnData, int>> itemPerSectorCount = new();
         List<Define.SectorName> availableSectors = new(Sectors.Keys);
         List<ItemSpawnData> itemSpawnData = new(_itemSpawnDatas);
         foreach (var key in itemSpawnData)
         {
-            count.Add(key, 0);
+            totalItemCount.Add(key, 0);
+        }
+
+        foreach (var sector in availableSectors)
+        {
+            Dictionary<ItemSpawnData, int> itemSpawnDataCount = new();
+            foreach (var data in itemSpawnData)
+            {
+                itemSpawnDataCount[data] = 0;
+            }
+            itemPerSectorCount.Add(sector, itemSpawnDataCount);
         }
 
         // 아이템별 최소 개수 충족시키기
@@ -78,22 +89,45 @@ public class MapSystem : SimulationBehaviour
 
         bool TrySpawnItem(ItemSpawnData data)
         {
-            Define.SectorName selectedSector = availableSectors[Random.Range(0, availableSectors.Count)];
+            if(!TrySelectSector(data, out Define.SectorName selectedSector)) return false;
+            
             while (!Sectors[selectedSector].SpawnItem(data.Prefab))
             {
                 availableSectors.Remove(selectedSector);
                 if (availableSectors.Count == 0)
                 {
-                    Debug.LogError("Cannot spawn more items: no more available sectors");
+                    Debug.LogWarning("Cannot spawn more items: no more available sectors");
                     return false;
                 }
-                selectedSector = availableSectors[Random.Range(0, availableSectors.Count)];
+                if (!TrySelectSector(data, out selectedSector)) return false;
             }
 
-            count[data]++;
+            totalItemCount[data]++;
+            itemPerSectorCount[selectedSector][data]++;
             totalCount++;
-            if (data.GlobalMaxCount == count[data]) itemSpawnData.Remove(data);
+            if (data.GlobalMaxCount == totalItemCount[data]) itemSpawnData.Remove(data);
             return true;
+        }
+
+        bool TrySelectSector(ItemSpawnData data, out Define.SectorName selectedSector)
+        {
+            List<Define.SectorName> availableSectorsCopy = new(availableSectors);
+
+            selectedSector = Define.SectorName.MainRoom;
+
+            // Item의 섹터 당 개수 제한을 고려하여 섹터 선택
+            while (availableSectorsCopy.Count > 0)
+            {
+                selectedSector = availableSectorsCopy[Random.Range(0, availableSectorsCopy.Count)];
+                if (itemPerSectorCount[selectedSector][data] < data.MaxCountPerSector)
+                {
+                    return true;
+                }
+
+                availableSectorsCopy.Remove(selectedSector);
+            }
+            Debug.LogWarning($"{data.Prefab.name}: Could not select sector!");
+            return false;
         }
     }
 }
