@@ -80,11 +80,11 @@ public class Crew : Creature
             return;
 
         if (CreatureState == Define.CreatureState.Interact)
+        {
             if (Input.GetKeyDown(KeyCode.F))
-            {
                 CreatureState = Define.CreatureState.Idle;
-                return;
-            }
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.F))
         {

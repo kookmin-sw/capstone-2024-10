@@ -30,7 +30,7 @@ public abstract class Creature : NetworkBehaviour
     [Networked] public Vector3 Direction { get; set; }
     [Networked] public Vector3 Velocity { get; set; }
 
-    public IInteractable CurrentInteractable { get; protected set; }
+    public BaseInteractable CurrentInteractable { get; set; }
 
     #endregion
 
@@ -147,19 +147,18 @@ public abstract class Creature : NetworkBehaviour
 
     #endregion
 
-    protected bool CheckInteract(bool isCheck)
+    protected bool CheckInteract(bool isOnlyCheck)
     {
         Ray ray = CreatureCamera.GetComponent<Camera>().ViewportPointToRay(Vector3.one * 0.5f);
 
         if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance:1.5f, layerMask:LayerMask.GetMask("MapObject")))
         {
-            if (rayHit.transform.gameObject.TryGetComponent(out IInteractable interactable))
+            if (rayHit.transform.gameObject.TryGetComponent(out BaseInteractable interactable))
             {
-                if (!isCheck)
+                if (!isOnlyCheck)
                 {
-                    CurrentInteractable = interactable;
+                    interactable.CheckAndInteract(this);
                     Debug.Log("Interact Success");
-                    interactable.Interact(this);
                     Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.green, 1f);
 
                     return true;
