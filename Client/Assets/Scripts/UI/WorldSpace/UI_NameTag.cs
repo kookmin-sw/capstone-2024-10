@@ -39,6 +39,9 @@ public class UI_NameTag : UI_Base
 
         Nickname = GetText((int)Texts.Nickname);
 
+        transform.localPosition = new Vector3(0, 2.0f, 0);
+        transform.localRotation = Quaternion.Euler(0, 0, 0);
+
         Player = transform.parent.GetComponent<Player>();
         Player.OnPlayerNameUpdate += () => Nickname.text = Player.PlayerName.Value;
 

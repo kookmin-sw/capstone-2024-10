@@ -153,6 +153,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
             NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+            
             if (Runner.IsSharedModeMasterClient)
             {
                 NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
