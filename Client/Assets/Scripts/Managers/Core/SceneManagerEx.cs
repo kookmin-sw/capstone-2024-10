@@ -28,6 +28,7 @@ public class SceneManagerEx
 
     public async void LoadNetworkScene(Define.SceneType type)
     {
+        Managers.Clear();
         await Managers.NetworkMng.Runner.LoadScene(SceneRef.FromIndex(SceneUtility.GetBuildIndexByScenePath($"Assets/Scenes/{GetSceneName(type)}.unity")));
     }
 

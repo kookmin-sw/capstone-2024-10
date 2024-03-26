@@ -14,11 +14,8 @@ public class LevelManager : NetworkSceneManagerDefault
 
     public override void Shutdown()
     {
-        if (_loadedScene.IsValid)
-        {
-            SceneManager.UnloadSceneAsync(_loadedScene.AsIndex);
-            _loadedScene = SceneRef.None;
-        }
+        _loadedScene = SceneRef.None;
+        Managers.Clear();
         base.Shutdown();
     }
 

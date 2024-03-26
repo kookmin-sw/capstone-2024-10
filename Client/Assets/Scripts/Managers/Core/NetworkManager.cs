@@ -87,7 +87,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Debug.Log("OnSessionListUpdated");
         Sessions.Clear();
         Sessions = sessionList;
-        OnSessionUpdated.Invoke();
+        OnSessionUpdated?.Invoke();
     }
 
     public void OnConnectedToServer(NetworkRunner runner)
