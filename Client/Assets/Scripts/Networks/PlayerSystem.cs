@@ -1,6 +1,7 @@
 using Fusion;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,6 +10,15 @@ public class PlayerSystem : NetworkBehaviour
     [Networked, OnChangedRender(nameof(OnReadyCountChanged))]
     public int ReadyCount { get; set; }
     public Action OnReadyCountUpdated { get; set; }
+
+    [Networked, Capacity(Define.PLAYER_COUNT)]
+    public NetworkDictionary<PlayerRef, Vector3> SpawnPoints { get; }
+
+    public override void Spawned()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     public void OnReadyCountChanged()
     {
         OnReadyCountUpdated?.Invoke();

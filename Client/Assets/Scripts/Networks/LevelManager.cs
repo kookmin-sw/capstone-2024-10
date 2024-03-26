@@ -42,15 +42,20 @@ public class LevelManager : NetworkSceneManagerDefault
                 position = spawnPoint.transform.position;
             }
 
+            try
+            {
+                position = Managers.NetworkMng.PlayerSystem.SpawnPoints.Get(Managers.NetworkMng.Runner.LocalPlayer);
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e);
+            }
+
             NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
             Managers.NetworkMng.Runner.SetPlayerObject(Managers.NetworkMng.Runner.LocalPlayer, playerObject);
 
             if (Runner.IsSharedModeMasterClient)
             {
-                NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
-                NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
-                Managers.NetworkMng.PlayerSystem = no.GetComponent<PlayerSystem>();
-
                 var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
                 int random = Random.Range(0, players.Count);
                 Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, players[random], Define.ALIEN_STALKER_ID);

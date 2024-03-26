@@ -1036,6 +1036,7 @@ GameObject:
   - component: {fileID: 2516994780171337258}
   - component: {fileID: 4476358356948161216}
   - component: {fileID: 9205723220890699314}
+  - component: {fileID: -3236823099726202573}
   m_Layer: 0
   m_Name: Stalker
   m_TagString: Untagged
@@ -1153,6 +1154,7 @@ MonoBehaviour:
   - {fileID: 2516994780171337258}
   - {fileID: 4476358356948161216}
   - {fileID: 9205723220890699314}
+  - {fileID: -3236823099726202573}
 --- !u!114 &8848567419615919483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1256,6 +1258,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ff61e00a954d2ca211bbcd85136341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &-3236823099726202573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694943018831287373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b400222cb0cf8bb4f824f28e394d4024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _PlayerName:
+    _length: 0
+    _data:
+      Data: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  _State: 0
 --- !u!1 &8694943018831287375
 GameObject:
   m_ObjectHideFlags: 0

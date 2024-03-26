@@ -11,7 +11,11 @@ public class Player : NetworkBehaviour
 {
     [Networked] public NetworkString<_32> PlayerName { get; set; }
 
+    [Networked]
+    public PlayerRef PlayerRef { get; set; }
     public Action OnPlayerNameUpdate { get; set; }
+
+    public Creature Creature { get; set; }
     [Networked]
     public Define.PlayerState State { get; set; } = Define.PlayerState.None;
 
@@ -36,11 +40,20 @@ public class Player : NetworkBehaviour
     {
         yield return new WaitUntil(() => isActiveAndEnabled);
 
-        Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
+        var creature = GetComponent<Creature>();
+        if (creature.CreatureType == Define.CreatureType.Crew)
+        {
+            var ui = Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
+
+            if (PlayerRef == Runner.LocalPlayer)
+            {
+                ui.gameObject.SetActive(false);
+            }
+        }
 
         yield return new WaitUntil(() => Object != null && Object.IsValid);
 
-        OnPlayerNameUpdate.Invoke();
+        OnPlayerNameUpdate?.Invoke();
     }
 
     public void GetReady()
@@ -65,8 +78,8 @@ public class Player : NetworkBehaviour
         {
             await Task.Delay(100);
         }
-        Managers.ObjectMng.Despawn(po);
         Vector3 spawnPosition = po.transform.position;
+        Managers.ObjectMng.Despawn(po);
         NetworkObject no = Managers.ObjectMng.SpawnAlien(alienDataId, spawnPosition);
         runner.SetPlayerObject(player, no);
     }
