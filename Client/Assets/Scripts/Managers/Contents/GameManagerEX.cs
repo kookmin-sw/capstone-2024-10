@@ -90,6 +90,8 @@ public class GameManagerEX
 
     public void StartGame()
     {
+        LevelManager level = Managers.NetworkMng.Runner.SceneManager as LevelManager;
+        level.UnloadScene();
         Managers.SceneMng.LoadNetworkScene(Define.SceneType.GameScene);
     }
     #endregion

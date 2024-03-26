@@ -22,6 +22,11 @@ public class LevelManager : NetworkSceneManagerDefault
         base.Shutdown();
     }
 
+    public async void UnloadScene()
+    {
+        await UnloadScene(_loadedScene);
+    }
+
     protected override IEnumerator UnloadSceneCoroutine(SceneRef prevScene)
     {
         yield return base.UnloadSceneCoroutine(prevScene);

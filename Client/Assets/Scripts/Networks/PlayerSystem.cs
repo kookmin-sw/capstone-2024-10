@@ -26,6 +26,12 @@ public class PlayerSystem : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
+        if (!HasStateAuthority)
+            return;
+
+        if (Managers.SceneMng.CurrentScene == null)
+            return;
+
         if (Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.ReadyScene)
             CountReady();
     }
