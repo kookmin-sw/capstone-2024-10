@@ -78,8 +78,8 @@ public class Player : NetworkBehaviour
         {
             await Task.Delay(100);
         }
-        Managers.ObjectMng.Despawn(po);
         Vector3 spawnPosition = po.transform.position;
+        Managers.ObjectMng.Despawn(po);
         NetworkObject no = Managers.ObjectMng.SpawnAlien(alienDataId, spawnPosition);
         runner.SetPlayerObject(player, no);
     }

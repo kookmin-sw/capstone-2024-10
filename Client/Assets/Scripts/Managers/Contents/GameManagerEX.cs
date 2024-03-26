@@ -9,6 +9,7 @@ using System.Data.SqlTypes;
 using System.Linq;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 
 [Serializable]
 public class SaveData
@@ -29,7 +30,8 @@ public class GameManagerEX
         {
             return Managers.NetworkMng.Runner.GetAllBehaviours<Player>();
         }
-    } 
+    }
+
     public void Init()
     {
         SAVEDATA_PATH = Path.Combine(Application.persistentDataPath, "/SaveData.json");
@@ -53,19 +55,42 @@ public class GameManagerEX
             yield return null;
         }
 
-        StartGame();
-    }
-
-    public void StartGame()
-    {
         Debug.Log("Game Setting Start");
         var popup = Managers.UIMng.FindPopup<UI_StartGame>();
         popup.ClosePopupUI();
 
         if (Managers.NetworkMng.IsMaster)
         {
-            Managers.SceneMng.LoadNetworkScene(Define.SceneType.GameScene);
+            var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
+            var spawnPoints = GameObject.FindObjectsOfType<SpawnPoint>().ToList();
+            var respawn = GameObject.FindWithTag("Respawn");
+
+            foreach (var player in players)
+            {
+                Vector3 spawnPoint = Vector3.zero;
+                if (spawnPoints.Count == 0)
+                {
+                    spawnPoint = respawn.transform.position;
+                    Debug.LogError("Not Enough Spawn Points");
+                }
+                else
+                {
+                    int rand = UnityEngine.Random.Range(0, spawnPoints.Count);
+                    spawnPoint = spawnPoints[rand].transform.position;
+                    spawnPoints.RemoveAt(rand);
+                }
+                Managers.NetworkMng.PlayerSystem.SpawnPoints.Set(player, spawnPoint);
+            }
+
+            yield return new WaitForSeconds(1.0f);
+
+            StartGame();
         }
+    }
+
+    public void StartGame()
+    {
+        Managers.SceneMng.LoadNetworkScene(Define.SceneType.GameScene);
     }
     #endregion
 
