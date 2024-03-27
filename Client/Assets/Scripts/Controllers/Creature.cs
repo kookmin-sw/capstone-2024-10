@@ -8,9 +8,12 @@ public abstract class Creature : NetworkBehaviour
     public const bool IsFirstPersonView = true;
     #region Field
 
+    public UI_CrewInGame CrewInGameUI { get; protected set; }
+
     public GameObject Head { get; protected set; }
     public CreatureCamera CreatureCamera { get; protected set; }
     public WatchingCamera WatchingCamera { get; protected set; }
+
     public Transform Transform { get; protected set; }
     public CapsuleCollider Collider { get; protected set; }
     public Rigidbody RigidBody { get; protected set; }
@@ -29,9 +32,8 @@ public abstract class Creature : NetworkBehaviour
     [Networked] public Vector3 Direction { get; set; }
     [Networked] public Vector3 Velocity { get; set; }
 
-    public BaseInteractable CurrentInteractable { get; set; }
+    public BaseWorkStation CurrentWorkStation { get; set; }
 
-    public bool IsDead { get; protected set; }  //Dead 애니메이션이 한번만 실행하기 위한 bool값
     #endregion
 
     public override void Spawned()
@@ -63,6 +65,8 @@ public abstract class Creature : NetworkBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        CrewInGameUI = Managers.UIMng.SceneUI as UI_CrewInGame;
+
         Rpc_SetInfo(templateID);
     }
 
@@ -83,19 +87,17 @@ public abstract class Creature : NetworkBehaviour
 
     private void Update()
     {
-        if (!HasStateAuthority)
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead)
             return;
-        if (IsDead)
-            return;
+
         HandleInput();
     }
 
     public override void FixedUpdateNetwork()
     {
-        if (!HasStateAuthority)
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead)
             return;
-        if (IsDead)
-            return;
+
         UpdateByState();
         BaseAnimController.UpdateAnimation();
     }
@@ -131,6 +133,9 @@ public abstract class Creature : NetworkBehaviour
                 UpdateMove();
                 break;
             case Define.CreatureState.Interact:
+                UpdateInteract();
+                break;
+            case Define.CreatureState.Use:
                 UpdateUse();
                 break;
             case Define.CreatureState.Dead:
@@ -143,37 +148,53 @@ public abstract class Creature : NetworkBehaviour
 
     protected abstract void UpdateMove();
 
+    protected abstract void UpdateInteract();
     protected abstract void UpdateUse();
 
     protected abstract void UpdateDead();
 
     #endregion
 
-    protected bool CheckInteract(bool isOnlyCheck)
+    protected bool CheckAndInteract(bool isOnlyCheck)
     {
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead)
+            return false;
+
         Ray ray = CreatureCamera.GetComponent<Camera>().ViewportPointToRay(Vector3.one * 0.5f);
 
         if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance:1.5f, layerMask:LayerMask.GetMask("MapObject")))
         {
             if (rayHit.transform.gameObject.TryGetComponent(out BaseInteractable interactable))
             {
-                if (!isOnlyCheck)
+                if (!isOnlyCheck && interactable.CheckAndInteract(this))
                 {
-                    interactable.CheckAndInteract(this);
+                    CurrentWorkStation = interactable as BaseWorkStation;
+                    CrewInGameUI.ShowWorkProgressBar(CurrentWorkStation.Description.ToString(), CurrentWorkStation.TotalWorkAmount);
+                    CreatureState = Define.CreatureState.Interact;
+
                     Debug.Log("Interact Success");
                     Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.green, 1f);
 
                     return true;
                 }
-                else
-                {
-                    // TODO - Interact UI 출력
-                }
+                // TODO - Interact UI 출력
             }
         }
 
         Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red);
 
         return false;
+    }
+
+    public void InterruptInteract()
+    {
+        if (!HasStateAuthority || CurrentWorkStation == null || CreatureState == Define.CreatureState.Dead)
+            return;
+
+        CrewInGameUI.HideWorkProgressBar();
+        CreatureState = Define.CreatureState.Idle;
+
+        CurrentWorkStation.MyWorkInterrupt();
+        CurrentWorkStation = null;
     }
 }

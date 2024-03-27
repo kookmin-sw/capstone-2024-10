@@ -2,5 +2,7 @@ using Fusion;
 
 public abstract class BaseInteractable : NetworkBehaviour
 {
-    public abstract void CheckAndInteract(Creature creature);
+    public abstract bool CheckAndInteract(Creature creature);
+
+    public abstract void PlayInteract();
 }

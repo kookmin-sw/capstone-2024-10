@@ -1,58 +1,79 @@
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
 public abstract class BaseWorkStation : BaseInteractable
 {
-    [Networked] public float RequiredWorkAmount { get; set; }
+    [Networked] public float TotalWorkAmount { get; set; }
     [Networked] public float CurrentWorkAmount { get; set; }
-    [Networked] public NetworkBool IsRememberWork { get; set; }
+    [Networked] public NetworkBool CanUseAgain { get; set; }
+    [Networked] public NetworkBool CanRememberWork { get; set; }
+    [Networked] public NetworkBool CanCollaborate { get; set; }
     [Networked] public NetworkBool IsCompleted { get; set; }
-    [Networked] public NetworkBool IsSomeoneWork { get; set; }
+    [Networked] public NetworkString<_16> Description { get; set; }
 
-    public Creature CurrentWorkCreature { get; protected set; }
-    public UI_WorkProgressBar ProgressBarUI { get; protected set; }
+    [Networked, Capacity(3)] public NetworkLinkedList<NetworkId> CurrentWorkers { get; }
+    public Creature MyWorker => Managers.ObjectMng.MyCreature;
 
     public override void Spawned()
     {
         Init();
     }
 
-    public virtual void Init()
+    protected virtual void Init()
     {
         CurrentWorkAmount = 0f;
     }
 
-    public override void CheckAndInteract(Creature creature)
+    public override bool CheckAndInteract(Creature creature)
     {
-        if (IsCompleted || IsSomeoneWork)
-            return;
+        if (CanUseAgain)
+            IsCompleted = false;
 
-        IsSomeoneWork = true;
-        CurrentWorkCreature = creature;
-        ((Crew)CurrentWorkCreature).CreatureState = Define.CreatureState.Interact;
-        ((Crew)CurrentWorkCreature).CrewAnimController.PlayKeypadUse();
+        if (IsCompleted || CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
+            return false;
 
-        ProgressBarUI = ((UI_CrewIngame)Managers.UIMng.SceneUI).ShowWorkProgressBar("Fixing Computer", RequiredWorkAmount);
+        Rpc_AddWorker(MyWorker.NetworkObject.Id);
+        PlayInteract();
 
-        Debug.Log($"{CurrentWorkCreature.NetworkObject.Id}: Start Work");
-
-        StartCoroutine(WorkProgress());
+        return true;
     }
 
-    public void OnWorkInterrupt()
+    public void MyWorkInterrupt()
     {
-        IsSomeoneWork = false;
-        CurrentWorkCreature.CreatureState = Define.CreatureState.Idle;
-        ProgressBarUI.gameObject.SetActive(false);
         StopAllCoroutines();
 
-        if (!IsRememberWork)
-            CurrentWorkAmount = 0f;
+        Rpc_MyWorkInterrupt(MyWorker.NetworkObject.Id);
 
-        Debug.Log($"{CurrentWorkCreature.NetworkObject.Id}: Interrupt Work"); // TODO - Test code
+        Debug.Log($"{MyWorker.NetworkObject.Id}: Interrupt Work"); // TODO - Test code
     }
 
-    protected abstract IEnumerator WorkProgress();
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    protected void Rpc_AddWorker(NetworkId networkId)
+    {
+        CurrentWorkers.Add(networkId);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    protected void Rpc_MyWorkInterrupt(NetworkId networkId)
+    {
+        CurrentWorkers.Remove(networkId);
+
+        if (!CanRememberWork && CurrentWorkers.Count <= 0)
+            CurrentWorkAmount = 0f;
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    protected virtual void Rpc_WorkComplete()
+    {
+        IsCompleted = true;
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void Rpc_WorkProgress(float workSpeed)
+    {
+        CurrentWorkAmount = Mathf.Clamp(CurrentWorkAmount + Time.deltaTime * workSpeed, 0, TotalWorkAmount);
+
+        if (CurrentWorkAmount >= TotalWorkAmount)
+            Rpc_WorkComplete();
+    }
 }

@@ -1,11 +1,6 @@
-using System;
-using Fusion;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-
 
 public class UI_WorkProgressBar : UI_Base
 {
@@ -25,9 +20,9 @@ public class UI_WorkProgressBar : UI_Base
     }
     #endregion
 
+    public float TotalWorkAmount { get; protected set; }
     public float CurrentWorkAmount { get; set; }
-    private Image _progress;
-    private float _totalWorkAmount;
+    public Image Progress { get; protected set; }
 
     public override bool Init()
     {
@@ -38,20 +33,33 @@ public class UI_WorkProgressBar : UI_Base
         Bind<TMP_Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
 
-        _progress = GetImage((int)Images.Progress);
+        Progress = GetImage((int)Images.Progress);
 
         gameObject.SetActive(false);
         return true;
     }
 
-    public void SetInfo(string workDescription, float workAmount)
+    public void StartWork(string workDescription, float workAmount)
     {
         GetText((int)Texts.WorkDescription).text = workDescription;
-        _totalWorkAmount = workAmount;
+        CurrentWorkAmount = 0f;
+        TotalWorkAmount = workAmount;
+        Progress.fillAmount = 0f;
+
+        gameObject.SetActive(true);
+    }
+
+    public void EndWork()
+    {
+        CurrentWorkAmount = 0f;
+        TotalWorkAmount = 100f;
+        Progress.fillAmount = 0f;
+
+        gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        _progress.fillAmount = CurrentWorkAmount / _totalWorkAmount;
+        Progress.fillAmount = CurrentWorkAmount / TotalWorkAmount;
     }
 }

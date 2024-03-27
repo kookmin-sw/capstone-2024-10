@@ -16,6 +16,13 @@ public abstract class Alien : Creature
 
     #endregion
 
+    protected override void Init()
+    {
+        base.Init();
+
+        Managers.ObjectMng.Aliens[NetworkObject.Id] = this;
+    }
+
     public override void SetInfo(int templateID)
     {
         CreatureType = Define.CreatureType.Alien;
@@ -60,14 +67,14 @@ public abstract class Alien : Creature
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (CheckInteract(false))
+            if (CheckAndInteract(false))
             {
                 CreatureState = Define.CreatureState.Interact;
                 return;
             }
         }
         else
-            CheckInteract(true);
+            CheckAndInteract(true);
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -184,10 +191,15 @@ public abstract class Alien : Creature
         KCC.Move(Velocity, 0f);
     }
 
-    protected override void UpdateUse()
+    protected override void UpdateInteract()
     {
         //AlienSkill alienSkill = new AlienSkill();
         //alienSkill.Rpc_Use();
+    }
+
+    protected override void UpdateUse()
+    {
+
     }
 
     protected override void UpdateDead()

@@ -1,52 +1,22 @@
-using Fusion;
-using System.Collections;
-using UnityEngine;
-
 public class Computer : BaseWorkStation
 {
-    public Crew CurrentWorkCrew => (Crew)CurrentWorkCreature;
+    public Crew MyCrew => (Crew)MyWorker;
 
-    public override void Init()
+    protected override void Init()
     {
         base.Init();
 
-        IsRememberWork = true;
+        CanUseAgain = false;
+        CanRememberWork = true;
+        CanCollaborate = true;
         IsCompleted = false;
-        IsSomeoneWork = false;
 
-        RequiredWorkAmount = 100f;
+        TotalWorkAmount = 100f;
+        Description = "COMPUTER";
     }
 
-    protected override IEnumerator WorkProgress()
+    public override void PlayInteract()
     {
-        // TODO - Test code
-        float time = Time.time;
-
-        while (CurrentWorkAmount < RequiredWorkAmount)
-        {
-            if (CurrentWorkCreature.CreatureState != Define.CreatureState.Interact)
-                OnWorkInterrupt();
-
-            CurrentWorkAmount += Time.deltaTime * CurrentWorkCrew.CrewStat.WorkSpeed;
-            ProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
-
-            // TODO - Test code
-            if (time + 1 < Time.time)
-            {
-                time = Time.time;
-                Debug.Log($"CurrentWorkProgress: {CurrentWorkAmount}");
-            }
-
-            yield return null;
-        }
-
-        OnWorkInterrupt();
-        OnWorkComplete();
-    }
-
-    protected void OnWorkComplete()
-    {
-        IsCompleted = true;
-        Debug.Log("Computer Work Completed");
+        MyCrew.CrewAnimController.PlayKeypadUse();
     }
 }

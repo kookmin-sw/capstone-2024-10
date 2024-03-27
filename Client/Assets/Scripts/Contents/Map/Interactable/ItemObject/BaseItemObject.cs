@@ -1,6 +1,3 @@
-using Fusion;
-using UnityEngine;
-
 public abstract class BaseItemObject : BaseInteractable
 {
     public Define.ItemType ItemType { get; protected set; }
@@ -12,8 +9,13 @@ public abstract class BaseItemObject : BaseInteractable
 
     protected abstract void Init();
 
-    public override void CheckAndInteract(Creature creature)
+    public override bool CheckAndInteract(Creature creature)
     {
-        ((Crew)creature).Inventory.CheckAndGetItem(ItemType);
+        return ((Crew)creature).Inventory.CheckAndGetItem(ItemType);
+    }
+
+    public override void PlayInteract()
+    {
+        // TODO
     }
 }
