@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Data;
+using System.Collections;
 
 public abstract class Alien : Creature
 {
@@ -10,6 +11,8 @@ public abstract class Alien : Creature
     public AlienStat AlienStat => (AlienStat)BaseStat;
 
     public List<BaseSkill> Skills { get; protected set; }
+
+    private bool isInputBlocked = false;
 
     #endregion
 
@@ -42,12 +45,17 @@ public abstract class Alien : Creature
         Skills = new List<BaseSkill>(4);
         for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
         {
-            Skills.Add(null);
+            Skills.Add(new BasicAttack(i));
         }
     }
 
     protected override void HandleInput()
     {
+        if (isInputBlocked)
+        {
+            return;
+        }
+
         base.HandleInput();
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -66,6 +74,8 @@ public abstract class Alien : Creature
             if (CheckAndUseSkill(0))
             {
                 CreatureState = Define.CreatureState.Use;
+                CreaturePose = Define.CreaturePose.Stand;
+                StartCoroutine(BlockInputForSeconds(1.5f));
                 return;
             }
         }
@@ -84,6 +94,9 @@ public abstract class Alien : Creature
             if (CheckAndUseSkill(2))
             {
                 CreatureState = Define.CreatureState.Use;
+                CreaturePose = Define.CreaturePose.Run;
+                StartCoroutine(BlockInputForSeconds(1.5f));
+
                 return;
             }
         }
@@ -93,6 +106,7 @@ public abstract class Alien : Creature
             if (CheckAndUseSkill(3))
             {
                 CreatureState = Define.CreatureState.Use;
+                CreaturePose = Define.CreaturePose.Run;
                 return;
             }
         }
@@ -115,6 +129,12 @@ public abstract class Alien : Creature
                 }
             }
         }
+    }
+    private IEnumerator BlockInputForSeconds(float seconds)
+    {
+        isInputBlocked = true;
+        yield return new WaitForSeconds(seconds);
+        isInputBlocked = false;
     }
 
     #region Update

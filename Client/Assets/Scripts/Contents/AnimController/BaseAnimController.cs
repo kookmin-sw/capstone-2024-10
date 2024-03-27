@@ -37,6 +37,9 @@ public abstract class BaseAnimController : NetworkBehaviour
             case Define.CreatureState.Move:
                 PlayMove();
                 break;
+            case Define.CreatureState.Use:
+                PlayUse();
+                break;
         }
     }
 
@@ -45,6 +48,10 @@ public abstract class BaseAnimController : NetworkBehaviour
     }
 
     protected virtual void PlayMove()
+    {
+    }
+
+    protected virtual void PlayUse()
     {
     }
 
