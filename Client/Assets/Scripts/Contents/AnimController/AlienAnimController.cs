@@ -7,6 +7,7 @@ public class AlienAnimController : BaseAnimController
     {
         base.Init();
         SetFloat("currentSpeed", 0);
+        SetFloat("skill", 0);
     }
 
     #region Update
@@ -14,6 +15,7 @@ public class AlienAnimController : BaseAnimController
     protected override void PlayIdle()
     {
         SetFloat("currentSpeed", 0);
+        SetFloat("skill", 0);
     }
 
     protected override void PlayMove()
@@ -29,10 +31,25 @@ public class AlienAnimController : BaseAnimController
         }
     }
 
-    public void PlayUseSkill1()
+    protected override void PlayUse()
     {
-        SetTrigger("attack");
-        Debug.Log("Alien PlayInteract anim called");
+        switch (CreaturePose)
+        {
+            case Define.CreaturePose.Stand:
+                SetFloat("skill", 5);
+                //Debug.Log("Alien PlayInteract anim called");
+                break;
+            case Define.CreaturePose.Run:
+                SetFloat("skill", -5);
+                //Debug.Log("Alien PlayInteract anim called");
+                break;
+            case Define.CreaturePose.Sit:
+                SetFloat("skill", 5);
+                //Debug.Log("Alien PlayInteract anim called");
+                break;
+
+        }
+
     }
 
     #endregion
