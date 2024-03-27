@@ -80,6 +80,11 @@ public class CrewAnimController : BaseAnimController
         SetBool("KeypadUse", true);
     }
 
+    public void PlayOpenDoor()
+    {
+        SetTrigger("OpenDoor");
+    }
+
     public void PlayUseItem()
     {
         if (!IsAction)

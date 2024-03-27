@@ -3,7 +3,7 @@ using Fusion;
 
 public abstract class BaseStat : NetworkBehaviour
 {
-    [Networked] public NetworkString<_16> Name { get => default; set { } }
+    [Networked] public NetworkString<_16> Name { get; set; }
     [Networked] public float Speed { get; set; }
     [Networked] public float WalkSpeed { get; set; }
     [Networked] public float RunSpeed { get; set; }

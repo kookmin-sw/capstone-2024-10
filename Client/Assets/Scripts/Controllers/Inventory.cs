@@ -31,12 +31,13 @@ public class Inventory: NetworkBehaviour
         CurrentItemIdx = 0;
     }
 
-    public void CheckAndGetItem(Define.ItemType itemType)
+    public bool CheckAndGetItem(Define.ItemType itemType)
     {
         if (CurrentItem != null)
-            return;
+            return false;
 
         Rpc_GetItem(itemType);
+        return true;
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

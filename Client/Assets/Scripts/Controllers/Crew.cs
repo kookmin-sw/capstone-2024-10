@@ -21,7 +21,7 @@ public class Crew : Creature
 
         Inventory = gameObject.GetComponent<Inventory>();
 
-        Managers.ObjectMng.Crews[NetworkObject.Id] = this as Crew;
+        Managers.ObjectMng.Crews[NetworkObject.Id] = this;
     }
 
     public override void SetInfo(int templateID)
@@ -51,7 +51,6 @@ public class Crew : Creature
         CrewStat.SetStat(CrewData);
 
         IsRecoveringStamina = true;
-        IsDead = false;
     }
 
     public override void FixedUpdateNetwork()
@@ -68,7 +67,7 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Dead)
             return;
 
-        CheckInteract(true);
+        CheckAndInteract(true);
 
         // TODO - Test Code
         if (Input.GetKeyDown(KeyCode.E))
@@ -82,16 +81,14 @@ public class Crew : Creature
 
         if (CreatureState == Define.CreatureState.Interact)
         {
-            if (Input.GetKeyDown(KeyCode.F)){
-                PoseReset();   //이동으로 돌아가기 위해 animation 리셋
-                CreatureState = Define.CreatureState.Idle;
-                return;
-            }
+            if (Input.GetKeyDown(KeyCode.F))
+                InterruptInteract();
+            return;
         }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (CheckInteract(false))
+            if (CheckAndInteract(false))
             {
                 CreatureState = Define.CreatureState.Interact;
                 return;
@@ -115,35 +112,33 @@ public class Crew : Creature
             return;
         }
 
-        if (CreatureState != Define.CreatureState.Interact) //상호작용하는 경우에는 이동 및 서있기 인식을 못하게 설정
+
+        if (Velocity == Vector3.zero)
+            CreatureState = Define.CreatureState.Idle;
+        else
         {
-            if (Velocity == Vector3.zero)
-                CreatureState = Define.CreatureState.Idle;
+            CreatureState = Define.CreatureState.Move;
+
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
+                {
+                    CreaturePose = Define.CreaturePose.Run;
+                }
+                if (IsRecoveringStamina)
+                {
+                    CreaturePose = Define.CreaturePose.Stand;
+                }
+            }
             else
             {
-                CreatureState = Define.CreatureState.Move;
-
-                if (Input.GetKey(KeyCode.LeftShift))
+                if (CreaturePose == Define.CreaturePose.Run)
                 {
-                    if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
-                    {
-                        CreaturePose = Define.CreaturePose.Run;
-                    }
-                    if (IsRecoveringStamina)
-                    {
-                        CreaturePose = Define.CreaturePose.Stand;
-                    }
-                }
-                else
-                {
-                    if (CreaturePose == Define.CreaturePose.Run)
-                    {
-                        CreaturePose = Define.CreaturePose.Stand;
-                    }
+                    CreaturePose = Define.CreaturePose.Stand;
                 }
             }
         }
-        
+
     }
 
     #region Update
@@ -155,7 +150,7 @@ public class Crew : Creature
             CrewStat.OnUseStamina(Define.RUN_USE_STAMINA * Runner.DeltaTime);
             if (CrewStat.Stamina <= 0)
                 IsRecoveringStamina = true;
-        } 
+        }
         else
         {
             CrewStat.OnRecoverStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
@@ -216,21 +211,28 @@ public class Crew : Creature
         KCC.Move(Velocity, 0f);
     }
 
+    protected override void UpdateInteract()
+    {
+        if (CurrentWorkStation.IsCompleted)
+        {
+            InterruptInteract();
+            return;
+        }
+
+        CurrentWorkStation.Rpc_WorkProgress(CrewStat.WorkSpeed);
+        CrewInGameUI.UpdateProgressBar(CurrentWorkStation.CurrentWorkAmount);
+    }
+
     protected override void UpdateUse()
     {
-        CrewAnimController.PlayUseItem();
+
     }
 
     protected override void UpdateDead()
     {
-        CrewAnimController.PlayDead();
-        IsDead = true;
+
     }
 
-    public void PoseReset()
-    {
-        CrewAnimController.PlayReset();
-    }
     #endregion
 
     #region Event
@@ -249,12 +251,17 @@ public class Crew : Creature
     public void OnDead()
     {
         CreatureState = Define.CreatureState.Dead;
+
+        CrewAnimController.PlayDead();
     }
 
     #endregion
 
     protected bool CheckAndUseItem()
     {
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead)
+            return false;
+
         if (Inventory.CurrentItem == null)
         {
             Debug.Log("No Item");

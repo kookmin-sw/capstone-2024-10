@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class UI_CrewIngame : UI_Scene
+public class UI_CrewInGame : UI_Scene
 {
     public Crew Crew { get; set; }
     enum Buttons
@@ -19,7 +17,7 @@ public class UI_CrewIngame : UI_Scene
 
     enum Texts
     {
-        
+
     }
 
     enum SubItemUIs
@@ -57,11 +55,21 @@ public class UI_CrewIngame : UI_Scene
         (Get<UI_Base>((int)SubItemUIs.UI_CrewStamina) as UI_CrewStamina).Crew = Crew;
     }
 
-    public UI_WorkProgressBar ShowWorkProgressBar(string workDescription, float requiredWorkAmount)
+    public void ShowWorkProgressBar(string workDescription, float requiredWorkAmount)
     {
         UI_WorkProgressBar bar = Get<UI_Base>((int)SubItemUIs.UI_WorkProgressBar) as UI_WorkProgressBar;
-        bar.gameObject.SetActive(true);
-        bar.SetInfo(workDescription, requiredWorkAmount);
-        return bar;
+        bar.StartWork(workDescription, requiredWorkAmount);
+    }
+
+    public void HideWorkProgressBar()
+    {
+        UI_WorkProgressBar bar = Get<UI_Base>((int)SubItemUIs.UI_WorkProgressBar) as UI_WorkProgressBar;
+        bar.EndWork();
+    }
+
+    public void UpdateProgressBar(float currentWorkAmount)
+    {
+        UI_WorkProgressBar bar = Get<UI_Base>((int)SubItemUIs.UI_WorkProgressBar) as UI_WorkProgressBar;
+        bar.CurrentWorkAmount = currentWorkAmount;
     }
 }

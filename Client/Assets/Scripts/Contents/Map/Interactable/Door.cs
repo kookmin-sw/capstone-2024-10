@@ -1,52 +1,59 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
-using UnityEngine;
 
 public class Door : BaseWorkStation
 {
-    public Crew CurrentWorkCrew => (Crew)CurrentWorkCreature;
+    public Crew MyCrew => (Crew)MyWorker;
 
-    [Networked] public NetworkBool IsOpen { get; set; }
+    [Networked] public NetworkBool IsOpened { get; set; }
 
     public NetworkMecanimAnimator NetworkAnim { get; protected set; }
 
-    public override void Init()
+    protected override void Init()
     {
         base.Init();
 
         NetworkAnim = transform.GetComponent<NetworkMecanimAnimator>();
 
-        IsRememberWork = false;
+        CanUseAgain = true;
+        CanCollaborate = false;
+        CanRememberWork = false;
         IsCompleted = false;
-        IsSomeoneWork = false;
 
-        RequiredWorkAmount = 5f;
+        TotalWorkAmount = 5f;
+        Description = "DOOR";
     }
 
-    protected override IEnumerator WorkProgress()
+    public override bool CheckAndInteract(Creature creature)
     {
-        while (CurrentWorkAmount < RequiredWorkAmount)
-        {
-            if (CurrentWorkCreature.CreatureState != Define.CreatureState.Interact)
-                OnWorkInterrupt();
+        if (IsOpened)
+            TotalWorkAmount = 1;
+        else
+            TotalWorkAmount = 5;
 
-            CurrentWorkAmount += Time.deltaTime * CurrentWorkCrew.CrewStat.WorkSpeed;
-            ProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
+        if (CanUseAgain)
+            IsCompleted = false;
 
-            yield return null;
-        }
+        if (IsCompleted || CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
+            return false;
 
-        OnWorkInterrupt();
-        OnWorkComplete();
+        Rpc_AddWorker(MyWorker.NetworkObject.Id);
+        PlayInteract();
+
+        return true;
     }
 
-    protected void OnWorkComplete()
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    protected override void Rpc_WorkComplete()
     {
-        IsOpen = !IsOpen;
-        NetworkAnim.Animator.SetBool("OpenParameter", IsOpen);
+        base.Rpc_WorkComplete();
 
-        Debug.Log("Door Opened");
+        IsOpened = !IsOpened;
+        NetworkAnim.Animator.SetBool("OpenParameter", IsOpened);
+    }
+
+    public override void PlayInteract()
+    {
+        if (!IsOpened)
+            MyCrew.CrewAnimController.PlayOpenDoor();
     }
 }
