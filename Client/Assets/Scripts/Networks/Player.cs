@@ -41,15 +41,15 @@ public class Player : NetworkBehaviour
         yield return new WaitUntil(() => isActiveAndEnabled);
 
         var creature = GetComponent<Creature>();
-        if (creature.CreatureType == Define.CreatureType.Crew)
-        {
-            var ui = Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
-
-            if (PlayerRef == Runner.LocalPlayer)
-            {
-                ui.gameObject.SetActive(false);
-            }
-        }
+        // if (creature.CreatureType == Define.CreatureType.Crew)
+        // {
+        //     var ui = Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
+        //
+        //     if (PlayerRef == Runner.LocalPlayer)
+        //     {
+        //         ui.gameObject.SetActive(false);
+        //     }
+        // }
 
         yield return new WaitUntil(() => Object != null && Object.IsValid);
 
