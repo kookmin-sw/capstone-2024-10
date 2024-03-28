@@ -12,6 +12,7 @@ namespace Data
         public string Name;
         public float WalkSpeed;
         public float RunSpeed;
+        public float WorkSpeed;
     }
 
     #endregion
@@ -24,7 +25,6 @@ namespace Data
         public int MaxHp;
         public float Stamina;
         public float SitSpeed;
-        public float WorkSpeed;
     }
 
     [Serializable]

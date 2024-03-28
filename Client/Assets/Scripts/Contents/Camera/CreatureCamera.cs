@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class CreatureCamera : MonoBehaviour
@@ -7,7 +8,7 @@ public class CreatureCamera : MonoBehaviour
     public Camera Camera { get; protected set; }
 
     public float MouseSensitivity { get; protected set; }
-    public float XRotation { get; protected set; } // 카메라의 상하 회전을 위한 변수
+    public float XRotation { get; protected set; } // 카메라의 상하 회전 값
     public float CurrentAngle { get; protected set; }
 
     private void Awake()
@@ -28,28 +29,23 @@ public class CreatureCamera : MonoBehaviour
     {
         enabled = true;
         Creature = creature;
-
-        // Vector3 cameraPosition;
-        // if (Creature.CreatureType == Define.CreatureType.Crew)
-        //     cameraPosition = new Vector3(0, 1.7f, 0.13f);
-        // else
-        //     cameraPosition = new Vector3(0, 2.8f, 0.8f);
-        //
-        // transform.position = Creature.gameObject.transform.position + cameraPosition;
     }
 
-    private void LateUpdate()
+    public void UpdateCameraAngle()
     {
-        if (Creature != null)
+        try
         {
-            UpdateCameraAngle();
+            if (!(Creature.CreatureState == Define.CreatureState.Idle || Creature.CreatureState == Define.CreatureState.Move))
+            {
+                transform.forward = Creature.transform.forward;
+                return;
+            }
         }
-    }
+        catch (Exception e)
+        {
+            Debug.LogError("Failed to UpdateCameraAngle: " + e);
+        }
 
-    #region past
-
-    void UpdateCameraAngle()
-    {
         // 마우스 입력을 받아와 회전 각도 계산
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
@@ -62,6 +58,4 @@ public class CreatureCamera : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(XRotation, CurrentAngle, 0);
         transform.rotation = rotation; // 카메라 회전 적용
     }
-
-    #endregion
 }

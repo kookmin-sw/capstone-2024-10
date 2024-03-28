@@ -7,6 +7,7 @@ public abstract class BaseStat : NetworkBehaviour
     [Networked] public float Speed { get; set; }
     [Networked] public float WalkSpeed { get; set; }
     [Networked] public float RunSpeed { get; set; }
+    [Networked] public float WorkSpeed { get; set; }
 
     public virtual void SetStat(Data.CreatureData creatureData)
     {
@@ -14,5 +15,6 @@ public abstract class BaseStat : NetworkBehaviour
         Speed = creatureData.WalkSpeed;
         WalkSpeed = creatureData.WalkSpeed;
         RunSpeed = creatureData.RunSpeed;
+        WorkSpeed = creatureData.WorkSpeed;
     }
 }

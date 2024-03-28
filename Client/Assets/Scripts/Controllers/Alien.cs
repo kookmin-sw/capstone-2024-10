@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Data;
-using System.Collections;
 
 public abstract class Alien : Creature
 {
@@ -9,10 +8,9 @@ public abstract class Alien : Creature
 
     public AlienData AlienData => CreatureData as AlienData;
     public AlienStat AlienStat => (AlienStat)BaseStat;
+    public AlienAnimController AlienAnimController => (AlienAnimController)BaseAnimController;
 
     public List<BaseSkill> Skills { get; protected set; }
-
-    private bool isInputBlocked = false;
 
     #endregion
 
@@ -37,7 +35,7 @@ public abstract class Alien : Creature
         {
 
             CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", Util.FindChild(gameObject, "Anglerox_ Neck", true).transform).GetComponent<CreatureCamera>();
-            CreatureCamera.transform.localPosition = new Vector3(-0.2f, 0f, 0f);
+            CreatureCamera.transform.localPosition = new Vector3(-0.15f, 0.5f, 0f);
             CreatureCamera.SetInfo(this);
         }
         else
@@ -49,32 +47,27 @@ public abstract class Alien : Creature
 
         AlienStat.SetStat(AlienData);
 
-        Skills = new List<BaseSkill>(4);
-        for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
-        {
-            Skills.Add(new BasicAttack(i));
-        }
+        Skills = new List<BaseSkill>(Define.MAX_SKILL_NUM);
+
+        IsSpawned = true;
     }
 
     protected override void HandleInput()
     {
-        if (isInputBlocked)
-        {
-            return;
-        }
-
         base.HandleInput();
+
+        if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
+            return;
+
+        CheckAndInteract(true);
 
         if (Input.GetKeyDown(KeyCode.F))
         {
             if (CheckAndInteract(false))
             {
-                CreatureState = Define.CreatureState.Interact;
                 return;
             }
         }
-        else
-            CheckAndInteract(true);
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -82,7 +75,6 @@ public abstract class Alien : Creature
             {
                 CreatureState = Define.CreatureState.Use;
                 CreaturePose = Define.CreaturePose.Stand;
-                StartCoroutine(BlockInputForSeconds(1.5f));
                 return;
             }
         }
@@ -92,6 +84,7 @@ public abstract class Alien : Creature
             if (CheckAndUseSkill(1))
             {
                 CreatureState = Define.CreatureState.Use;
+                CreaturePose = Define.CreaturePose.Stand;
                 return;
             }
         }
@@ -102,7 +95,6 @@ public abstract class Alien : Creature
             {
                 CreatureState = Define.CreatureState.Use;
                 CreaturePose = Define.CreaturePose.Run;
-                StartCoroutine(BlockInputForSeconds(1.5f));
 
                 return;
             }
@@ -136,12 +128,6 @@ public abstract class Alien : Creature
                 }
             }
         }
-    }
-    private IEnumerator BlockInputForSeconds(float seconds)
-    {
-        isInputBlocked = true;
-        yield return new WaitForSeconds(seconds);
-        isInputBlocked = false;
     }
 
     #region Update
@@ -193,24 +179,19 @@ public abstract class Alien : Creature
 
     protected override void UpdateInteract()
     {
-        //AlienSkill alienSkill = new AlienSkill();
-        //alienSkill.Rpc_Use();
     }
 
     protected override void UpdateUse()
     {
-
-    }
-
-    protected override void UpdateDead()
-    {
-        // TODO
     }
 
     #endregion
 
     protected bool CheckAndUseSkill(int skillIdx)
     {
+        if (!HasStateAuthority)
+            return false;
+
         if (Skills[skillIdx] == null)
         {
             Debug.Log("No SKill" + skillIdx);
@@ -218,5 +199,22 @@ public abstract class Alien : Creature
         }
 
         return Skills[skillIdx].CheckAndUseSkill();
+    }
+
+    public void InterruptUseSkill()
+    {
+        if (!HasStateAuthority)
+            return;
+
+        CreatureState = Define.CreatureState.Idle;
+    }
+
+    public void OnDrawGizmos()
+    {
+        if (!IsSpawned)
+            return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere( Head.transform.position + CreatureCamera.transform.forward * 1.5f, 1.5f);
     }
 }

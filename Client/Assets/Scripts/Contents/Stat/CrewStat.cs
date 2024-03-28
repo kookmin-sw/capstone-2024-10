@@ -8,7 +8,6 @@ public class CrewStat : BaseStat
     [Networked] public float Stamina { get; set; }
     [Networked] public float MaxStamina { get; set; }
     [Networked] public float SitSpeed { get; set; }
-    [Networked] public float WorkSpeed { get; set; }
 
     public override void SetStat(Data.CreatureData creatureData)
     {
@@ -21,7 +20,6 @@ public class CrewStat : BaseStat
         Stamina = crewData.Stamina;
         MaxStamina = crewData.Stamina;
         SitSpeed = crewData.SitSpeed;
-        WorkSpeed = crewData.WorkSpeed;
     }
 
     #region Event

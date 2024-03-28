@@ -1,3 +1,6 @@
+using System.Collections;
+using UnityEngine;
+
 public class Computer : BaseWorkStation
 {
     public Crew MyCrew => (Crew)MyWorker;
