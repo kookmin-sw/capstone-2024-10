@@ -16,6 +16,7 @@ public class Door : BaseWorkStation
         CanCollaborate = false;
         CanRememberWork = false;
         IsCompleted = false;
+        IsOpened = false;
 
         TotalWorkAmount = 5f;
         Description = "DOOR";
@@ -23,7 +24,10 @@ public class Door : BaseWorkStation
 
     public override bool CheckAndInteract(Creature creature)
     {
-        if (IsCompleted || CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
+        if (!CanUseAgain && IsCompleted)
+            return false;
+
+        if (CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
             return false;
 
         if (!(creature.CreatureState == Define.CreatureState.Idle || creature.CreatureState == Define.CreatureState.Move))
@@ -59,13 +63,11 @@ public class Door : BaseWorkStation
         NetworkAnim.Animator.SetBool("OpenParameter", IsOpened);
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_AlienWorkComplete()
     {
-        //gameObject.SetActive(false);
-        //IsOpened = !IsOpened;
-        //NetworkAnim.Animator.SetBool("OpenParameter", IsOpened);
-        Managers.NetworkMng.Runner.Despawn(gameObject.GetComponent<NetworkObject>());
+        gameObject.SetActive(false);
+        //Managers.NetworkMng.Runner.Despawn(gameObject.GetComponent<NetworkObject>());
     }
 
     public override void PlayInteract()
