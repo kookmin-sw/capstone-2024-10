@@ -58,9 +58,12 @@ public class LevelManager : NetworkSceneManagerDefault
 
             if (Runner.IsSharedModeMasterClient)
             {
+                /*
                 var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
                 int random = Random.Range(0, players.Count);
                 Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, players[random], Define.ALIEN_STALKER_ID);
+                */
+                Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, Runner.LocalPlayer, Define.ALIEN_STALKER_ID);
             }
             ((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded();
         }
