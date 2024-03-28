@@ -53,19 +53,17 @@ public class LevelManager : NetworkSceneManagerDefault
                 Debug.Log(e);
             }
 
-            NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
-            Managers.NetworkMng.Runner.SetPlayerObject(Managers.NetworkMng.Runner.LocalPlayer, playerObject);
-
             if (Runner.IsSharedModeMasterClient)
             {
-                /*
                 var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
-                int random = Random.Range(0, players.Count);
-                Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, players[random], Define.ALIEN_STALKER_ID);
-                */
-                Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, Runner.LocalPlayer, Define.ALIEN_STALKER_ID);
+                Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, Runner.LocalPlayer, position, true);
+                foreach (var player in players)
+                {
+                    if(player == Runner.LocalPlayer) continue;
+                    Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, player, position, false);
+                }
             }
-            ((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded();
+            //StartCoroutine(((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded());
         }
     }
 }

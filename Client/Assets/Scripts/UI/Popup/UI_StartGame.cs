@@ -79,7 +79,7 @@ public class UI_StartGame : UI_Popup
             return;
         }
 
-        Managers.GameMng.Player.ExtiGame();
+        Managers.GameMng.Player.ExitGame();
     }
 
     public void SetInfo(int count)

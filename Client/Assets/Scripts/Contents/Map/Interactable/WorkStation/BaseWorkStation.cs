@@ -10,7 +10,7 @@ public abstract class BaseWorkStation : BaseInteractable
     [Networked] public NetworkBool CanRememberWork { get; set; }
     [Networked] public NetworkBool CanCollaborate { get; set; }
     [Networked] public NetworkBool IsCompleted { get; set; }
-    [Networked] public NetworkString<_16> Description { get; set; }
+    [Networked] public NetworkString<_16> WorkingDescription { get; set; }
 
     [Networked, Capacity(3)] public NetworkLinkedList<NetworkId> CurrentWorkers { get; }
     public Creature MyWorker { get; protected set; }

@@ -11,6 +11,7 @@ public abstract class Creature : NetworkBehaviour
     #region Field
 
     public bool IsSpawned { get; protected set; } = false;
+    public UI_Ingame IngameUI { get; set; }
 
     public GameObject Head { get; protected set; }
     public CreatureCamera CreatureCamera { get; protected set; }
@@ -165,7 +166,7 @@ public abstract class Creature : NetworkBehaviour
 
     protected bool CheckAndInteract(bool isOnlyCheck)
     {
-        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead)
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || IngameUI == null)
             return false;
 
         Ray ray = CreatureCamera.GetComponent<Camera>().ViewportPointToRay(Vector3.one * 0.5f);
@@ -176,20 +177,28 @@ public abstract class Creature : NetworkBehaviour
             {
                 if (!isOnlyCheck && interactable.CheckAndInteract(this))
                 {
+                    IngameUI.InteractInfo.Hide();
                     CreatureState = Define.CreatureState.Interact;
                     CreaturePose = Define.CreaturePose.Stand;
                     CurrentWorkStation = interactable as BaseWorkStation;
 
-                    if (CurrentWorkStation != null)
+                    if (CurrentWorkStation != null){
                         CurrentWorkStation.StartInteract(this);
+                        IngameUI.WorkProgressBar.Show(CurrentWorkStation.WorkingDescription.ToString(), CurrentWorkStation.TotalWorkAmount);
+                    }
 
                     Debug.Log("Interact Success");
                     Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.green, 1f);
 
                     return true;
                 }
-                // TODO - Interact UI 출력
+
+                IngameUI.InteractInfo.Show(interactable.InteractDescription);
             }
+        }
+        else
+        {
+            IngameUI.InteractInfo.Hide();
         }
 
         Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red);
@@ -202,6 +211,7 @@ public abstract class Creature : NetworkBehaviour
         if (!HasStateAuthority || CurrentWorkStation == null || CreatureState == Define.CreatureState.Dead)
             return;
 
+        IngameUI.WorkProgressBar.Hide();
         CreatureState = Define.CreatureState.Idle;
 
         CurrentWorkStation = null;

@@ -9,7 +9,7 @@ public abstract class Alien : Creature
     public AlienData AlienData => CreatureData as AlienData;
     public AlienStat AlienStat => (AlienStat)BaseStat;
     public AlienAnimController AlienAnimController => (AlienAnimController)BaseAnimController;
-
+    public UI_AlienIngame AlienIngameUI => IngameUI as UI_AlienIngame;
     public List<BaseSkill> Skills { get; protected set; }
 
     #endregion
@@ -50,6 +50,11 @@ public abstract class Alien : Creature
         Skills = new List<BaseSkill>(Define.MAX_SKILL_NUM);
 
         IsSpawned = true;
+
+        if (HasStateAuthority && Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.GameScene)
+        {
+            StartCoroutine(((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded());
+        }
     }
 
     protected override void HandleInput()

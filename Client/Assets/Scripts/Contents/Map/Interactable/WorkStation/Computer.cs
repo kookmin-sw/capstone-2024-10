@@ -15,7 +15,8 @@ public class Computer : BaseWorkStation
         IsCompleted = false;
 
         TotalWorkAmount = 100f;
-        Description = "COMPUTER";
+        WorkingDescription = "Fixing Computer...";
+        InteractDescription = "Fix computer";
     }
 
     public override void PlayInteract()

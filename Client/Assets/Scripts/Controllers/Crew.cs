@@ -13,6 +13,8 @@ public class Crew : Creature
     public CrewAnimController CrewAnimController => (CrewAnimController)BaseAnimController;
     public Inventory Inventory { get; protected set; }
 
+    public UI_CrewIngame CrewIngameUI => IngameUI as UI_CrewIngame;
+
     [Networked] public bool IsRecoveringStamina { get; protected set; }
 
     #endregion
@@ -57,6 +59,10 @@ public class Crew : Creature
         IsRecoveringStamina = true;
 
         IsSpawned = true;
+        if (HasStateAuthority && Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.GameScene)
+        {
+            StartCoroutine(((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded());
+        }
     }
 
     public override void FixedUpdateNetwork()
@@ -216,6 +222,7 @@ public class Crew : Creature
 
     protected override void UpdateInteract()
     {
+        
     }
 
     protected override void UpdateUse()
