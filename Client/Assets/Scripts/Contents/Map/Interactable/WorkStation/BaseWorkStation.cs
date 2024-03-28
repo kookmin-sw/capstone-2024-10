@@ -28,7 +28,13 @@ public abstract class BaseWorkStation : BaseInteractable
 
     public override bool CheckAndInteract(Creature creature)
     {
-        if (IsCompleted || CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
+        if (creature.CreatureType == Define.CreatureType.Alien)
+            return false;
+
+        if (!CanUseAgain && IsCompleted)
+            return false;
+
+        if (CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
             return false;
 
         if (!(creature.CreatureState == Define.CreatureState.Idle || creature.CreatureState == Define.CreatureState.Move))
