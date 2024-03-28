@@ -1,55 +1,53 @@
 using UnityEngine;
-using Fusion;
 
 public class AlienAnimController : BaseAnimController
 {
-    protected override void Init()
-    {
-        base.Init();
-        SetFloat("currentSpeed", 0);
-        SetFloat("skill", 0);
-    }
-
     #region Update
 
     protected override void PlayIdle()
     {
-        SetFloat("currentSpeed", 0);
-        SetFloat("skill", 0);
+        XParameter = Mathf.Lerp(XParameter, 0, Runner.DeltaTime * 5);
+        ZParameter = Mathf.Lerp(ZParameter, 0, Runner.DeltaTime * 5);
+        SpeedParameter = Mathf.Lerp(SpeedParameter, 0, Runner.DeltaTime * 5);
+
+        SetFloat("X", XParameter);
+        SetFloat("Z", ZParameter);
+        SetFloat("Speed", SpeedParameter);
     }
 
     protected override void PlayMove()
     {
-        switch (CreaturePose)
-        {
-            case Define.CreaturePose.Stand:
-                SetFloat("currentSpeed", 5);
-                break;
-            case Define.CreaturePose.Run:
-                SetFloat("currentSpeed", 10);
-                break;
-        }
-    }
+        XParameter = Mathf.Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5);
+        ZParameter = Mathf.Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5);
 
-    protected override void PlayUse()
-    {
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                SetFloat("skill", 5);
-                //Debug.Log("Alien PlayInteract anim called");
-                break;
-            case Define.CreaturePose.Run:
-                SetFloat("skill", -5);
-                //Debug.Log("Alien PlayInteract anim called");
+                SetFloat("Z", ZParameter);
+                SpeedParameter = Mathf.Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5);
                 break;
             case Define.CreaturePose.Sit:
-                SetFloat("skill", 5);
-                //Debug.Log("Alien PlayInteract anim called");
+                SetFloat("Z", ZParameter);
+                SpeedParameter = Mathf.Lerp(SpeedParameter, 1, Runner.DeltaTime * 5);
                 break;
-
+            case Define.CreaturePose.Run:
+                SetFloat("Z", ZParameter * 1.8f);
+                SpeedParameter = Mathf.Lerp(SpeedParameter, 2, Runner.DeltaTime * 5);
+                break;
         }
 
+        SetFloat("X", XParameter);
+        SetFloat("Speed", SpeedParameter);
+    }
+
+    public void PlayBasicAttack()
+    {
+        SetTrigger("BasicAttack");
+    }
+
+    public void PlayCrashDoor()
+    {
+        SetTrigger("CrashDoor");
     }
 
     #endregion

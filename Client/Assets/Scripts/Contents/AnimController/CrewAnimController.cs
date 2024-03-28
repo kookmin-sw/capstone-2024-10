@@ -3,25 +3,12 @@ using Fusion;
 
 public class CrewAnimController : BaseAnimController
 {
-    [Networked] public float SitParameter { get; protected set; }
-    public bool IsAction { get; protected set; }
-
-    public CrewStat CrewStat { get; protected set; }
-    public Animator animator { get; protected set; }
-    protected override void Init()
-    {
-        base.Init();
-        CrewStat = gameObject.GetComponent<CrewStat>();
-        animator = gameObject.GetComponent<Animator>();
-
-        IsAction = false;
-    }
+    [Networked] public float SitParameter { get; set; }
 
     #region Update
 
     protected override void PlayIdle()
     {
-        //SetFloat("Health", CrewStat.Hp);
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
@@ -46,7 +33,6 @@ public class CrewAnimController : BaseAnimController
 
     protected override void PlayMove()
     {
-        //SetFloat("Health", CrewStat.Hp);
         XParameter = Mathf.Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5);
         ZParameter = Mathf.Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5);
 
@@ -87,27 +73,16 @@ public class CrewAnimController : BaseAnimController
 
     public void PlayUseItem()
     {
-        if (!IsAction)
-        {
-            SetTrigger("ButtonPush");
-            IsAction = true;
-        }
-        else
-        {
-            animator.ResetTrigger("ButtonPush");
-        }
+    }
+
+    public void PlayDamaged()
+    {
+        SetTrigger("Damaged");
     }
 
     public void PlayDead()
     {
-        SetTrigger("IsDead");
-    }
-
-    public void PlayReset()
-    {
-        IsAction = false;
-        SetTrigger("Reset");
-        animator.ResetTrigger("Reset");
+        SetBool("IsDead", true);
     }
 
     #endregion

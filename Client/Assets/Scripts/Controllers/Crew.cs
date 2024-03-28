@@ -6,6 +6,8 @@ public class Crew : Creature
 {
     #region Field
 
+    public UI_CrewInGame CrewInGameUI { get; protected set; }
+
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
     public CrewAnimController CrewAnimController => (CrewAnimController)BaseAnimController;
@@ -30,6 +32,8 @@ public class Crew : Creature
 
         base.SetInfo(templateID);
 
+        CrewInGameUI = Managers.UIMng.SceneUI as UI_CrewInGame;
+
         Transform.parent = Managers.ObjectMng.CrewRoot;
         Head = Util.FindChild(gameObject, "head.x", true);
         Head.transform.localScale = Vector3.zero;
@@ -51,6 +55,8 @@ public class Crew : Creature
         CrewStat.SetStat(CrewData);
 
         IsRecoveringStamina = true;
+
+        IsSpawned = true;
     }
 
     public override void FixedUpdateNetwork()
@@ -64,7 +70,7 @@ public class Crew : Creature
     {
         base.HandleInput();
 
-        if (CreatureState == Define.CreatureState.Dead)
+        if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead || CreatureState == Define.CreatureState.Use)
             return;
 
         CheckAndInteract(true);
@@ -72,17 +78,14 @@ public class Crew : Creature
         // TODO - Test Code
         if (Input.GetKeyDown(KeyCode.E))
         {
-            OnDamaged(50);
+            Rpc_OnDamaged(50);
             return;
         }
-
-        if (CreatureState == Define.CreatureState.Use)
-            return;
 
         if (CreatureState == Define.CreatureState.Interact)
         {
             if (Input.GetKeyDown(KeyCode.F))
-                InterruptInteract();
+                CreatureState = Define.CreatureState.Idle;
             return;
         }
 
@@ -90,10 +93,10 @@ public class Crew : Creature
         {
             if (CheckAndInteract(false))
             {
-                CreatureState = Define.CreatureState.Interact;
                 return;
             }
         }
+
         //if (Input.GetMouseButtonDown(0))
         //{
         //    if (CheckAndUseItem())
@@ -213,14 +216,6 @@ public class Crew : Creature
 
     protected override void UpdateInteract()
     {
-        if (CurrentWorkStation.IsCompleted)
-        {
-            InterruptInteract();
-            return;
-        }
-
-        CurrentWorkStation.Rpc_WorkProgress(CrewStat.WorkSpeed);
-        CrewInGameUI.UpdateProgressBar(CurrentWorkStation.CurrentWorkAmount);
     }
 
     protected override void UpdateUse()
@@ -237,8 +232,10 @@ public class Crew : Creature
 
     #region Event
 
-    public void OnDamaged(int damage)
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void Rpc_OnDamaged(int damage)
     {
+        CreatureState = Define.CreatureState.Damaged;
         CrewStat.OnDamage(damage);
 
         if (CrewStat.Hp <= 0)
@@ -246,6 +243,9 @@ public class Crew : Creature
             OnDead();
             return;
         }
+
+        CrewAnimController.PlayDamaged();
+        ReturnToIdle(1f);
     }
 
     public void OnDead()

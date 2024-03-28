@@ -50,6 +50,7 @@ public static class Define
         Move,
         Interact,
         Use,
+        Damaged,
         Dead,
     }
 
@@ -131,6 +132,7 @@ public static class Define
 
     public const int PLAYER_COUNT = 2;
     public const int MAX_ITEM_NUM = 4;
+    public const int MAX_SKILL_NUM = 4;
     public const float PLAYER_SPAWN_POSITION_X = 20f;
     public const float PLAYER_SPAWN_POSITION_Y = 0.3f;
     public const float PLAYER_SPAWN_POSITION_Z = 10f;

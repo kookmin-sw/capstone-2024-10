@@ -21,8 +21,6 @@ public abstract class BaseAnimController : NetworkBehaviour
     {
         NetworkAnim = gameObject.GetComponent<NetworkMecanimAnimator>();
         Creature = gameObject.GetComponent<Creature>();
-
-        SetFloat("moveSpeed", 0);
     }
 
     #region Update
@@ -37,9 +35,6 @@ public abstract class BaseAnimController : NetworkBehaviour
             case Define.CreatureState.Move:
                 PlayMove();
                 break;
-            case Define.CreatureState.Use:
-                PlayUse();
-                break;
         }
     }
 
@@ -48,10 +43,6 @@ public abstract class BaseAnimController : NetworkBehaviour
     }
 
     protected virtual void PlayMove()
-    {
-    }
-
-    protected virtual void PlayUse()
     {
     }
 

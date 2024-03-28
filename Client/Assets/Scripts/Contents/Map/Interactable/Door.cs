@@ -2,8 +2,6 @@ using Fusion;
 
 public class Door : BaseWorkStation
 {
-    public Crew MyCrew => (Crew)MyWorker;
-
     [Networked] public NetworkBool IsOpened { get; set; }
 
     public NetworkMecanimAnimator NetworkAnim { get; protected set; }
@@ -25,35 +23,59 @@ public class Door : BaseWorkStation
 
     public override bool CheckAndInteract(Creature creature)
     {
+        if (IsCompleted || CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
+            return false;
+
+        if (!(creature.CreatureState == Define.CreatureState.Idle || creature.CreatureState == Define.CreatureState.Move))
+            return false;
+
+        if (creature.CreatureType == Define.CreatureType.Alien && IsOpened)
+            return false;
+
+        return true;
+    }
+
+    public override void StartInteract(Creature creature)
+    {
+        MyWorker = creature;
+        Rpc_AddWorker(MyWorker.NetworkObject.Id);
+        PlayInteract();
+
         if (IsOpened)
             TotalWorkAmount = 1;
         else
             TotalWorkAmount = 5;
 
-        if (CanUseAgain)
-            IsCompleted = false;
+        if (MyWorker.CreatureType == Define.CreatureType.Crew)
+            ((Crew)MyWorker).CrewInGameUI.ShowWorkProgressBar(Description.ToString(), TotalWorkAmount);
 
-        if (IsCompleted || CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
-            return false;
-
-        Rpc_AddWorker(MyWorker.NetworkObject.Id);
-        PlayInteract();
-
-        return true;
+        StartCoroutine(CoWorkProgress());
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    protected override void Rpc_WorkComplete()
+    protected override void Rpc_CrewWorkComplete()
     {
-        base.Rpc_WorkComplete();
-
         IsOpened = !IsOpened;
         NetworkAnim.Animator.SetBool("OpenParameter", IsOpened);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    protected override void Rpc_AlienWorkComplete()
+    {
+        //gameObject.SetActive(false);
+        //IsOpened = !IsOpened;
+        //NetworkAnim.Animator.SetBool("OpenParameter", IsOpened);
+        Managers.NetworkMng.Runner.Despawn(gameObject.GetComponent<NetworkObject>());
     }
 
     public override void PlayInteract()
     {
         if (!IsOpened)
-            MyCrew.CrewAnimController.PlayOpenDoor();
+        {
+            if (MyWorker.CreatureType == Define.CreatureType.Crew)
+                ((Crew)MyWorker).CrewAnimController.PlayOpenDoor();
+            else
+                ((Alien)MyWorker).AlienAnimController.PlayCrashDoor();
+        }
     }
 }
