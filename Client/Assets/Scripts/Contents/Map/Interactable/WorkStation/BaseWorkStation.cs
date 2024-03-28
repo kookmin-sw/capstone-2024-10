@@ -49,18 +49,12 @@ public abstract class BaseWorkStation : BaseInteractable
         Rpc_AddWorker(MyWorker.NetworkObject.Id);
         PlayInteract();
 
-        if (MyWorker.CreatureType == Define.CreatureType.Crew)
-            ((Crew)MyWorker).CrewInGameUI.ShowWorkProgressBar(Description.ToString(), TotalWorkAmount);
-
         StartCoroutine(CoWorkProgress());
     }
 
     public void MyWorkInterrupt()
     {
         StopAllCoroutines();
-
-        if (MyWorker.CreatureType == Define.CreatureType.Crew)
-            ((Crew)MyWorker).CrewInGameUI.HideWorkProgressBar();
 
         MyWorker.InterruptInteract();
         Rpc_MyWorkInterrupt(MyWorker.NetworkObject.Id);
@@ -110,7 +104,7 @@ public abstract class BaseWorkStation : BaseInteractable
 
             Rpc_WorkProgress(MyWorker.CreatureData.WorkSpeed);
             if (MyWorker.CreatureType == Define.CreatureType.Crew)
-                ((Crew)MyWorker).CrewInGameUI.UpdateProgressBar(CurrentWorkAmount);
+                ((Crew)MyWorker).CrewIngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
 
             yield return null;
         }

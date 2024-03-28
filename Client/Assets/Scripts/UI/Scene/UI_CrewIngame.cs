@@ -10,20 +10,6 @@ public class UI_CrewIngame : UI_Ingame
         get => Creature as Crew;
         set => Creature = value;
     }
-    enum CrewButtons
-    {
-
-    }
-
-    enum CrewImages
-    {
-
-    }
-
-    enum CrewTexts
-    {
-
-    }
 
     enum CrewSubItemUIs
     {
@@ -36,9 +22,6 @@ public class UI_CrewIngame : UI_Ingame
     {
         if (base.Init() == false) { return false; }
 
-        Bind<Button>(typeof(CrewButtons));
-        Bind<Image>(typeof(CrewImages));
-        Bind<TMP_Text>(typeof(CrewTexts));
         Bind<UI_Base>(typeof(CrewSubItemUIs));
 
         return true;

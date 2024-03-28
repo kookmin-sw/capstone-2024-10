@@ -72,20 +72,11 @@ public class Player : NetworkBehaviour
     }
 
     [Rpc]
-    public static async void RPC_ChangePlayerToAlien(NetworkRunner runner, [RpcTarget] PlayerRef player, Vector3 spawnPos, bool isAlien)
+    public static void RPC_SpawnPlayer(NetworkRunner runner, [RpcTarget] PlayerRef player, Vector3 spawnPos, bool isAlien)
     {
-        NetworkObject no;
-        Debug.Log(isAlien);
-        //while (!runner.TryGetPlayerObject(player, out po))
-        //{
-        //    await Task.Delay(100);
-        //}
-        //Vector3 spawnPosition = po.transform.position;
-        //Managers.ObjectMng.Despawn(po);
-        no = isAlien
+        NetworkObject no = isAlien
             ? Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPos)
             : Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPos);
         runner.SetPlayerObject(player, no);
-
     }
 }

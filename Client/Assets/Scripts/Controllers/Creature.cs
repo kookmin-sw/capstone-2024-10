@@ -177,14 +177,14 @@ public abstract class Creature : NetworkBehaviour
             {
                 if (!isOnlyCheck && interactable.CheckAndInteract(this))
                 {
-                    IngameUI.InteractInfo.Hide();
+                    IngameUI.InteractInfoUI.Hide();
                     CreatureState = Define.CreatureState.Interact;
                     CreaturePose = Define.CreaturePose.Stand;
                     CurrentWorkStation = interactable as BaseWorkStation;
 
                     if (CurrentWorkStation != null){
                         CurrentWorkStation.StartInteract(this);
-                        IngameUI.WorkProgressBar.Show(CurrentWorkStation.WorkingDescription.ToString(), CurrentWorkStation.TotalWorkAmount);
+                        IngameUI.WorkProgressBarUI.Show(CurrentWorkStation.WorkingDescription.ToString(), CurrentWorkStation.TotalWorkAmount);
                     }
 
                     Debug.Log("Interact Success");
@@ -193,12 +193,12 @@ public abstract class Creature : NetworkBehaviour
                     return true;
                 }
 
-                IngameUI.InteractInfo.Show(interactable.InteractDescription);
+                IngameUI.InteractInfoUI.Show(interactable.InteractDescription);
             }
         }
         else
         {
-            IngameUI.InteractInfo.Hide();
+            IngameUI.InteractInfoUI.Hide();
         }
 
         Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red);
@@ -211,7 +211,7 @@ public abstract class Creature : NetworkBehaviour
         if (!HasStateAuthority || CurrentWorkStation == null || CreatureState == Define.CreatureState.Dead)
             return;
 
-        IngameUI.WorkProgressBar.Hide();
+        IngameUI.WorkProgressBarUI.Hide();
         CreatureState = Define.CreatureState.Idle;
 
         CurrentWorkStation = null;

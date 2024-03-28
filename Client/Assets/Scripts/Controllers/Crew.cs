@@ -5,9 +5,7 @@ using Fusion;
 public class Crew : Creature
 {
     #region Field
-
-    public UI_CrewInGame CrewInGameUI { get; protected set; }
-
+    
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
     public CrewAnimController CrewAnimController => (CrewAnimController)BaseAnimController;
@@ -33,8 +31,6 @@ public class Crew : Creature
         CreatureType = Define.CreatureType.Crew;
 
         base.SetInfo(templateID);
-
-        CrewInGameUI = Managers.UIMng.SceneUI as UI_CrewInGame;
 
         Transform.parent = Managers.ObjectMng.CrewRoot;
         Head = Util.FindChild(gameObject, "head.x", true);

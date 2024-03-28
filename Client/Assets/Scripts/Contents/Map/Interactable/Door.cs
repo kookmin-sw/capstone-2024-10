@@ -53,7 +53,7 @@ public class Door : BaseWorkStation
             TotalWorkAmount = 5;
 
         if (MyWorker.CreatureType == Define.CreatureType.Crew)
-            ((Crew)MyWorker).CrewInGameUI.ShowWorkProgressBar(Description.ToString(), TotalWorkAmount);
+            ((Crew)MyWorker).CrewIngameUI.WorkProgressBarUI.Show(WorkingDescription.ToString(), TotalWorkAmount);
 
         StartCoroutine(CoWorkProgress());
     }

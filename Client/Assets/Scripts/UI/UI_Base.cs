@@ -40,15 +40,23 @@ public abstract class UI_Base : MonoBehaviour
     protected void Bind<T>(Type type) where T : UnityEngine.Object
     {
         string[] names = Enum.GetNames(type);
+
+        if (names.Length == 0) return;
+
         int startIdx = 0;
-        UnityEngine.Object[] objects = new UnityEngine.Object[names.Length];
-        if(!_objects.TryAdd(typeof(T), objects))
+  
+        if (!_objects.TryGetValue(typeof(T), out UnityEngine.Object[] objects))
+        {   
+            // T key값이 _objects에 없음
+            objects = new UnityEngine.Object[names.Length];
+            _objects[typeof(T)] = objects;
+        }
+        else
         {
-            var oldObjects = _objects[typeof(T)];
-            startIdx = oldObjects.Length;
-            oldObjects = new UnityEngine.Object[oldObjects.Length + names.Length];
-            _objects[typeof(T)] = oldObjects;
-            objects = _objects[typeof(T)];
+            // T key값이 이미 _objects에 있음: 배열 길이 늘리기
+            startIdx = objects.Length;
+            Array.Resize(ref objects, objects.Length + names.Length);
+            _objects[typeof(T)] = objects;
         }
 
         for (int i = 0; i < names.Length; i++)
