@@ -11,7 +11,6 @@ public class ReadyScene : BaseScene
 
         Managers.MapMng.Init();
 
-        Managers.UIMng.ShowSceneUI<UI_CrewInGame>();
         Managers.UIMng.ShowPopupUI<UI_StartGame>(parent: Managers.UIMng.Root.transform);
         StartCoroutine(Managers.GameMng.TryStartGame());
     }

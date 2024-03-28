@@ -6,6 +6,8 @@ public class Door : BaseWorkStation
 
     public NetworkMecanimAnimator NetworkAnim { get; protected set; }
 
+    public override string InteractDescription => IsOpened ? "Close door" : "Open door"; 
+
     protected override void Init()
     {
         base.Init();
@@ -19,7 +21,7 @@ public class Door : BaseWorkStation
         IsOpened = false;
 
         TotalWorkAmount = 5f;
-        Description = "DOOR";
+        WorkingDescription = "DOOR";
     }
 
     public override bool CheckAndInteract(Creature creature)
@@ -51,7 +53,7 @@ public class Door : BaseWorkStation
             TotalWorkAmount = 5;
 
         if (MyWorker.CreatureType == Define.CreatureType.Crew)
-            ((Crew)MyWorker).CrewInGameUI.ShowWorkProgressBar(Description.ToString(), TotalWorkAmount);
+            ((Crew)MyWorker).CrewIngameUI.WorkProgressBarUI.Show(WorkingDescription.ToString(), TotalWorkAmount);
 
         StartCoroutine(CoWorkProgress());
     }

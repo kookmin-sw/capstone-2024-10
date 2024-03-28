@@ -5,13 +5,13 @@ using Fusion;
 public class Crew : Creature
 {
     #region Field
-
-    public UI_CrewInGame CrewInGameUI { get; protected set; }
-
+    
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
     public CrewAnimController CrewAnimController => (CrewAnimController)BaseAnimController;
     public Inventory Inventory { get; protected set; }
+
+    public UI_CrewIngame CrewIngameUI => IngameUI as UI_CrewIngame;
 
     [Networked] public bool IsRecoveringStamina { get; protected set; }
 
@@ -31,8 +31,6 @@ public class Crew : Creature
         CreatureType = Define.CreatureType.Crew;
 
         base.SetInfo(templateID);
-
-        CrewInGameUI = Managers.UIMng.SceneUI as UI_CrewInGame;
 
         Transform.parent = Managers.ObjectMng.CrewRoot;
         Head = Util.FindChild(gameObject, "head.x", true);
@@ -57,6 +55,10 @@ public class Crew : Creature
         IsRecoveringStamina = true;
 
         IsSpawned = true;
+        if (HasStateAuthority && Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.GameScene)
+        {
+            StartCoroutine(((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded());
+        }
     }
 
     public override void FixedUpdateNetwork()
@@ -216,6 +218,7 @@ public class Crew : Creature
 
     protected override void UpdateInteract()
     {
+        
     }
 
     protected override void UpdateUse()

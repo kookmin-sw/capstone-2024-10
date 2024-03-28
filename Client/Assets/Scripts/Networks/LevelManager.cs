@@ -37,35 +37,23 @@ public class LevelManager : NetworkSceneManagerDefault
 
         if (loadedScene.name == Managers.SceneMng.GetSceneName(Define.SceneType.GameScene))
         {
-            Vector3 position = Vector3.zero;
             GameObject spawnPoint = GameObject.FindWithTag("Respawn");
-            if (spawnPoint != null)
-            {
-                position = spawnPoint.transform.position;
-            }
-
-            try
-            {
-                position = Managers.NetworkMng.PlayerSystem.SpawnPoints.Get(Managers.NetworkMng.Runner.LocalPlayer);
-            }
-            catch (Exception e)
-            {
-                Debug.Log(e);
-            }
-
-            NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
-            Managers.NetworkMng.Runner.SetPlayerObject(Managers.NetworkMng.Runner.LocalPlayer, playerObject);
 
             if (Runner.IsSharedModeMasterClient)
             {
-                /*
                 var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
-                int random = Random.Range(0, players.Count);
-                Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, players[random], Define.ALIEN_STALKER_ID);
-                */
-                Player.RPC_ChangePlayerToAlien(Managers.NetworkMng.Runner, Runner.LocalPlayer, Define.ALIEN_STALKER_ID);
+                
+                foreach (var player in players)
+                {
+                    if (!Managers.NetworkMng.PlayerSystem.SpawnPoints.TryGet(player, out Vector3 position))
+                    {
+                        position = ( spawnPoint != null ? spawnPoint.transform.position : Vector3.zero);
+                    }
+
+                    // Mater client: alien & Other clients: crew
+                    Player.RPC_SpawnPlayer(Managers.NetworkMng.Runner, player, position, player == Runner.LocalPlayer);
+                }
             }
-            ((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded();
         }
     }
 }

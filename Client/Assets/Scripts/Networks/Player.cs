@@ -6,6 +6,7 @@ using System;
 using ExitGames.Client.Photon;
 using UnityEngine.SceneManagement;
 using System.Threading.Tasks;
+using UnityEngine.UIElements;
 
 public class Player : NetworkBehaviour
 {
@@ -64,23 +65,18 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public async void ExtiGame()
+    public async void ExitGame()
     {
         await Runner.Shutdown();
         Managers.SceneMng.LoadScene(Define.SceneType.LobbyScene);
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    public static async void RPC_ChangePlayerToAlien(NetworkRunner runner, [RpcTarget] PlayerRef player, int alienDataId)
+    [Rpc]
+    public static void RPC_SpawnPlayer(NetworkRunner runner, [RpcTarget] PlayerRef player, Vector3 spawnPos, bool isAlien)
     {
-        NetworkObject po;
-        while (!runner.TryGetPlayerObject(player, out po))
-        {
-            await Task.Delay(100);
-        }
-        Vector3 spawnPosition = po.transform.position;
-        Managers.ObjectMng.Despawn(po);
-        NetworkObject no = Managers.ObjectMng.SpawnAlien(alienDataId, spawnPosition);
+        NetworkObject no = isAlien
+            ? Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPos)
+            : Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPos);
         runner.SetPlayerObject(player, no);
     }
 }

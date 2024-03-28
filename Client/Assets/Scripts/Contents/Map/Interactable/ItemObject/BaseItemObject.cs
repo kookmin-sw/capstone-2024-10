@@ -2,6 +2,8 @@ public abstract class BaseItemObject : BaseInteractable
 {
     public Define.ItemType ItemType { get; protected set; }
 
+    public override string InteractDescription => $"Get {gameObject.name}";
+
     public override void Spawned()
     {
         Init();

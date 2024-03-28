@@ -10,7 +10,7 @@ public abstract class BaseWorkStation : BaseInteractable
     [Networked] public NetworkBool CanRememberWork { get; set; }
     [Networked] public NetworkBool CanCollaborate { get; set; }
     [Networked] public NetworkBool IsCompleted { get; set; }
-    [Networked] public NetworkString<_16> Description { get; set; }
+    [Networked] public NetworkString<_16> WorkingDescription { get; set; }
 
     [Networked, Capacity(3)] public NetworkLinkedList<NetworkId> CurrentWorkers { get; }
     public Creature MyWorker { get; protected set; }
@@ -49,18 +49,12 @@ public abstract class BaseWorkStation : BaseInteractable
         Rpc_AddWorker(MyWorker.NetworkObject.Id);
         PlayInteract();
 
-        if (MyWorker.CreatureType == Define.CreatureType.Crew)
-            ((Crew)MyWorker).CrewInGameUI.ShowWorkProgressBar(Description.ToString(), TotalWorkAmount);
-
         StartCoroutine(CoWorkProgress());
     }
 
     public void MyWorkInterrupt()
     {
         StopAllCoroutines();
-
-        if (MyWorker.CreatureType == Define.CreatureType.Crew)
-            ((Crew)MyWorker).CrewInGameUI.HideWorkProgressBar();
 
         MyWorker.InterruptInteract();
         Rpc_MyWorkInterrupt(MyWorker.NetworkObject.Id);
@@ -110,7 +104,7 @@ public abstract class BaseWorkStation : BaseInteractable
 
             Rpc_WorkProgress(MyWorker.CreatureData.WorkSpeed);
             if (MyWorker.CreatureType == Define.CreatureType.Crew)
-                ((Crew)MyWorker).CrewInGameUI.UpdateProgressBar(CurrentWorkAmount);
+                ((Crew)MyWorker).CrewIngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
 
             yield return null;
         }

@@ -39,7 +39,7 @@ public class UI_WorkProgressBar : UI_Base
         return true;
     }
 
-    public void StartWork(string workDescription, float workAmount)
+    public void Show(string workDescription, float workAmount)
     {
         GetText((int)Texts.WorkDescription).text = workDescription;
         CurrentWorkAmount = 0f;
@@ -49,7 +49,7 @@ public class UI_WorkProgressBar : UI_Base
         gameObject.SetActive(true);
     }
 
-    public void EndWork()
+    public void Hide()
     {
         CurrentWorkAmount = 0f;
         TotalWorkAmount = 100f;

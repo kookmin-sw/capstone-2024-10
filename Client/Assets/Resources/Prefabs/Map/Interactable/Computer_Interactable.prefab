@@ -170,10 +170,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 862ad9f17d5e4f248808b494eca8b43f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _requiredWorkAmount: 10
-  _isContinuable: 1
-  _isMultiWorkAllowed: 1
+  _TotalWorkAmount: 0
+  _CurrentWorkAmount: 0
+  _CanUseAgain:
+    _value: 0
+  _CanRememberWork:
+    _value: 0
+  _CanCollaborate:
+    _value: 0
   _IsCompleted:
     _value: 0
-  _WorkProgress: 0
-  _WorkingCreatures: []
+  _WorkingDescription:
+    _length: 0
+    _data:
+      Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  _CurrentWorkers: []
