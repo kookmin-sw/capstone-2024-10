@@ -103,8 +103,7 @@ public abstract class BaseWorkStation : BaseInteractable
                 MyWorkInterrupt();
 
             Rpc_WorkProgress(MyWorker.CreatureData.WorkSpeed);
-            if (MyWorker.CreatureType == Define.CreatureType.Crew)
-                ((Crew)MyWorker).CrewIngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
+            MyWorker.IngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
 
             yield return null;
         }
