@@ -254,10 +254,10 @@ MonoBehaviour:
     m_Value: 0
   limitMin:
     m_OverrideState: 1
-    m_Value: -2.487537
+    m_Value: -3.5
   limitMax:
     m_OverrideState: 1
-    m_Value: 2.4779816
+    m_Value: 0
   curveMap:
     m_OverrideState: 0
     m_Value:
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f077503be6ae942a1e1245dbd53ea9, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   quality:
     m_OverrideState: 1
     m_Value: 1
@@ -576,10 +576,10 @@ MonoBehaviour:
     m_Value: 0.15
   intensity:
     m_OverrideState: 1
-    m_Value: 0.218
+    m_Value: 0.255
   scatter:
     m_OverrideState: 1
-    m_Value: 0.225
+    m_Value: 0.06
   tint:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -869,7 +869,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b24b200358312b4fa1004e2431c2f1f, type: 3}
   m_Name: ShadowsMidtonesHighlights
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   shadows:
     m_OverrideState: 1
     m_Value: {x: 0.995, y: 0.97, z: 1, w: -0.10770133}
@@ -939,7 +939,7 @@ MonoBehaviour:
     m_Value: 100
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 50
+    m_Value: 30
   enableVolumetricFog:
     m_OverrideState: 1
     m_Value: 1
@@ -1222,10 +1222,10 @@ MonoBehaviour:
   active: 1
   postExposure:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0
   contrast:
     m_OverrideState: 1
-    m_Value: -30
+    m_Value: 0
   colorFilter:
     m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -1234,7 +1234,7 @@ MonoBehaviour:
     m_Value: 0
   saturation:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 0
 --- !u!114 &5485672168618896869
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1495,7 +1495,7 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: {fileID: 0}
   intensity:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0.144
   m_MaxSamples:
     m_OverrideState: 0
@@ -1521,7 +1521,7 @@ MonoBehaviour:
     m_Value: {r: 0.22116414, g: 0.231054, b: 0.23584908, a: 1}
   balance:
     m_OverrideState: 1
-    m_Value: 31.4
+    m_Value: 0
 --- !u!114 &7613851196081975063
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1729,7 +1729,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ddcec8a8eb2d684d833ac8f5d26aebd, type: 3}
   m_Name: HDShadowSettings
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   maxShadowDistance:
     m_OverrideState: 1
     m_Value: 50
