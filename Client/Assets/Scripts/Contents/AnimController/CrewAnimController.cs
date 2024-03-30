@@ -24,7 +24,7 @@ public class CrewAnimController : BaseAnimController
         ZParameter = Mathf.Lerp(ZParameter, 0, Runner.DeltaTime * 5);
         SpeedParameter = Mathf.Lerp(SpeedParameter, 0, Runner.DeltaTime * 5);
 
-        SetBool("KeypadUse", false);
+        SetParameterFalse();
         SetFloat("X", XParameter);
         SetFloat("Z", ZParameter);
         SetFloat("SitParameter", SitParameter);
@@ -55,7 +55,7 @@ public class CrewAnimController : BaseAnimController
                 break;
         }
 
-        SetBool("KeypadUse", false);
+        SetParameterFalse();
         SetFloat("X", XParameter);
         SetFloat("SitParameter", SitParameter);
         SetFloat("Speed", SpeedParameter);
@@ -68,7 +68,7 @@ public class CrewAnimController : BaseAnimController
 
     public void PlayOpenDoor()
     {
-        SetTrigger("OpenDoor");
+        SetBool("OpenDoor", true);
     }
 
     public void PlayUseItem()
@@ -77,7 +77,7 @@ public class CrewAnimController : BaseAnimController
 
     public void PlayDamaged()
     {
-        SetTrigger("Damaged");
+        SetBool("Damaged", true);
     }
 
     public void PlayDead()
@@ -87,4 +87,10 @@ public class CrewAnimController : BaseAnimController
 
     #endregion
 
+    protected override void SetParameterFalse()
+    {
+        SetBool("KeypadUse", false);
+        SetBool("OpenDoor", false);
+        SetBool("Damaged", false);
+    }
 }

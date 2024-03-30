@@ -5,7 +5,7 @@ using Fusion;
 public class Crew : Creature
 {
     #region Field
-    
+
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
     public CrewAnimController CrewAnimController => (CrewAnimController)BaseAnimController;
@@ -32,7 +32,6 @@ public class Crew : Creature
 
         base.SetInfo(templateID);
 
-        Transform.parent = Managers.ObjectMng.CrewRoot;
         Head = Util.FindChild(gameObject, "head.x", true);
         Head.transform.localScale = Vector3.zero;
 
@@ -218,7 +217,7 @@ public class Crew : Creature
 
     protected override void UpdateInteract()
     {
-        
+
     }
 
     protected override void UpdateUse()
@@ -238,7 +237,6 @@ public class Crew : Creature
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void Rpc_OnDamaged(int damage)
     {
-        CreatureState = Define.CreatureState.Damaged;
         CrewStat.OnDamage(damage);
 
         if (CrewStat.Hp <= 0)
@@ -247,6 +245,7 @@ public class Crew : Creature
             return;
         }
 
+        CreatureState = Define.CreatureState.Damaged;
         CrewAnimController.PlayDamaged();
         ReturnToIdle(1f);
     }

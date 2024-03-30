@@ -10,6 +10,7 @@ public class AlienAnimController : BaseAnimController
         ZParameter = Mathf.Lerp(ZParameter, 0, Runner.DeltaTime * 5);
         SpeedParameter = Mathf.Lerp(SpeedParameter, 0, Runner.DeltaTime * 5);
 
+        SetParameterFalse();
         SetFloat("X", XParameter);
         SetFloat("Z", ZParameter);
         SetFloat("Speed", SpeedParameter);
@@ -36,19 +37,26 @@ public class AlienAnimController : BaseAnimController
                 break;
         }
 
+        SetParameterFalse();
         SetFloat("X", XParameter);
         SetFloat("Speed", SpeedParameter);
     }
 
     public void PlayBasicAttack()
     {
-        SetTrigger("BasicAttack");
+        SetBool("BasicAttack", true);
     }
 
     public void PlayCrashDoor()
     {
-        SetTrigger("CrashDoor");
+        SetBool("CrashDoor", true);
     }
 
     #endregion
+
+    protected override void SetParameterFalse()
+    {
+        SetBool("BasicAttack", false);
+        SetBool("CrashDoor", false);
+    }
 }
