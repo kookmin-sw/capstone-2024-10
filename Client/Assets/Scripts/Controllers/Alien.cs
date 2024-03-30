@@ -9,6 +9,7 @@ public abstract class Alien : Creature
     public AlienData AlienData => CreatureData as AlienData;
     public AlienStat AlienStat => (AlienStat)BaseStat;
     public AlienAnimController AlienAnimController => (AlienAnimController)BaseAnimController;
+
     public UI_AlienIngame AlienIngameUI => IngameUI as UI_AlienIngame;
     public List<BaseSkill> Skills { get; protected set; }
 
@@ -27,7 +28,6 @@ public abstract class Alien : Creature
 
         base.SetInfo(templateID);
 
-        Transform.parent = Managers.ObjectMng.AlienRoot;
         Head = Util.FindChild(gameObject, "head", true);
         Head.transform.localScale = Vector3.zero;
 

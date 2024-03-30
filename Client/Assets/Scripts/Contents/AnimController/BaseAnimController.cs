@@ -66,4 +66,6 @@ public abstract class BaseAnimController : NetworkBehaviour
     }
 
     #endregion
+
+    protected abstract void SetParameterFalse();
 }
