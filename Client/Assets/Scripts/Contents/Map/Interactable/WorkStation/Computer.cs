@@ -15,11 +15,11 @@ public class Computer : BaseWorkStation
         IsCompleted = false;
 
         TotalWorkAmount = 100f;
-        WorkingDescription = "Fixing Computer...";
+        WorkingDescription = "Fixing Computer";
         InteractDescription = "Fix computer";
     }
 
-    public override void PlayInteract()
+    public override void PlayInteractAnimation()
     {
         MyCrew.CrewAnimController.PlayKeypadUse();
     }
