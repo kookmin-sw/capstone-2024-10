@@ -2,7 +2,7 @@ public abstract class BaseItemObject : BaseInteractable
 {
     public Define.ItemType ItemType { get; protected set; }
 
-    public override string InteractDescription => $"Get {gameObject.name}";
+    public override string InteractDescription => $"Get {ItemType}";
 
     public override void Spawned()
     {
@@ -11,12 +11,17 @@ public abstract class BaseItemObject : BaseInteractable
 
     protected abstract void Init();
 
-    public override bool CheckAndInteract(Creature creature)
+    public override bool IsInteractable(Creature creature)
     {
-        return ((Crew)creature).Inventory.CheckAndGetItem(ItemType);
+        return creature is Crew;
     }
 
-    public override void PlayInteract()
+    public override void Interact(Creature creature)
+    {
+        ((Crew)creature).Inventory.CheckAndGetItem(ItemType);
+    }
+
+    public override void PlayInteractAnimation()
     {
         // TODO
     }

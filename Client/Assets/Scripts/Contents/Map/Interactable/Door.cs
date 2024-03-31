@@ -24,7 +24,7 @@ public class Door : BaseWorkStation
         WorkingDescription = "DOOR";
     }
 
-    public override bool CheckAndInteract(Creature creature)
+    public override bool IsInteractable(Creature creature)
     {
         if (!CanUseAgain && IsCompleted)
             return false;
@@ -41,11 +41,12 @@ public class Door : BaseWorkStation
         return true;
     }
 
-    public override void StartInteract(Creature creature)
+    public override void Interact(Creature creature)
     {
         MyWorker = creature;
+        MyWorker.IngameUI.WorkProgressBarUI.Show(WorkingDescription.ToString(), TotalWorkAmount);
         Rpc_AddWorker(MyWorker.NetworkObject.Id);
-        PlayInteract();
+        PlayInteractAnimation();
 
         if (IsOpened)
             TotalWorkAmount = 1;
@@ -71,7 +72,7 @@ public class Door : BaseWorkStation
         //Managers.NetworkMng.Runner.Despawn(gameObject.GetComponent<NetworkObject>());
     }
 
-    public override void PlayInteract()
+    public override void PlayInteractAnimation()
     {
         if (!IsOpened)
         {

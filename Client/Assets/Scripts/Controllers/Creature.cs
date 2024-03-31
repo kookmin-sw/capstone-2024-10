@@ -34,9 +34,7 @@ public abstract class Creature : NetworkBehaviour
 
     [Networked] public Vector3 Direction { get; set; }
     [Networked] public Vector3 Velocity { get; set; }
-
-    public BaseWorkStation CurrentWorkStation { get; set; }
-
+    
     #endregion
 
     public override void Spawned()
@@ -166,36 +164,31 @@ public abstract class Creature : NetworkBehaviour
 
     #endregion
 
-    protected bool CheckAndInteract(bool isOnlyCheck)
+    protected bool CheckInteract(bool tryInteract)
     {
         if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || IngameUI == null)
             return false;
 
         Ray ray = CreatureCamera.GetComponent<Camera>().ViewportPointToRay(Vector3.one * 0.5f);
 
-        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance:1.5f, layerMask:LayerMask.GetMask("MapObject")))
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance:2f, layerMask:LayerMask.GetMask("MapObject")))
         {
-            if (rayHit.transform.gameObject.TryGetComponent(out BaseInteractable interactable))
+            if (rayHit.transform.gameObject.TryGetComponent(out BaseInteractable interactable) && interactable.IsInteractable(this))
             {
-                if (!isOnlyCheck && interactable.CheckAndInteract(this))
+                IngameUI.InteractInfoUI.Show(interactable.InteractDescription);
+
+                if (tryInteract)
                 {
                     IngameUI.InteractInfoUI.Hide();
                     CreatureState = Define.CreatureState.Interact;
                     CreaturePose = Define.CreaturePose.Stand;
-                    CurrentWorkStation = interactable as BaseWorkStation;
 
-                    if (CurrentWorkStation != null){
-                        CurrentWorkStation.StartInteract(this);
-                        IngameUI.WorkProgressBarUI.Show(CurrentWorkStation.WorkingDescription.ToString(), CurrentWorkStation.TotalWorkAmount);
-                    }
+                    interactable.Interact(this);
 
-                    Debug.Log("Interact Success");
-                    Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.green, 1f);
+                    Debug.DrawRay(ray.origin, ray.direction * 2f, Color.green, 1f);
 
                     return true;
                 }
-
-                IngameUI.InteractInfoUI.Show(interactable.InteractDescription);
             }
         }
         else
@@ -210,13 +203,11 @@ public abstract class Creature : NetworkBehaviour
 
     public void InterruptInteract()
     {
-        if (!HasStateAuthority || CurrentWorkStation == null || CreatureState == Define.CreatureState.Dead)
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead)
             return;
 
         IngameUI.WorkProgressBarUI.Hide();
         CreatureState = Define.CreatureState.Idle;
-
-        CurrentWorkStation = null;
     }
 
     public void ReturnToIdle(float time)

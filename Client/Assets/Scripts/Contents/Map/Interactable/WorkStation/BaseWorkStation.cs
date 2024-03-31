@@ -26,7 +26,7 @@ public abstract class BaseWorkStation : BaseInteractable
         CurrentWorkAmount = 0f;
     }
 
-    public override bool CheckAndInteract(Creature creature)
+    public override bool IsInteractable(Creature creature)
     {
         if (creature.CreatureType == Define.CreatureType.Alien)
             return false;
@@ -43,11 +43,13 @@ public abstract class BaseWorkStation : BaseInteractable
         return true;
     }
 
-    public virtual void StartInteract(Creature creature)
+    public override void Interact(Creature creature)
     {
         MyWorker = creature;
+        MyWorker.IngameUI.WorkProgressBarUI.Show(WorkingDescription.ToString(), TotalWorkAmount);
+
         Rpc_AddWorker(MyWorker.NetworkObject.Id);
-        PlayInteract();
+        PlayInteractAnimation();
 
         StartCoroutine(CoWorkProgress());
     }

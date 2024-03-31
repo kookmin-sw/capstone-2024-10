@@ -74,7 +74,7 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead || CreatureState == Define.CreatureState.Use)
             return;
 
-        CheckAndInteract(true);
+        CheckInteract(false);
 
         // TODO - Test Code
         if (Input.GetKeyDown(KeyCode.E))
@@ -92,7 +92,7 @@ public class Crew : Creature
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (CheckAndInteract(false))
+            if (CheckInteract(true))
             {
                 return;
             }
