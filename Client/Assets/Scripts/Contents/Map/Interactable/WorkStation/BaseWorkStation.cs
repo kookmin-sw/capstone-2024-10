@@ -25,7 +25,7 @@ public abstract class BaseWorkStation : BaseInteractable
         CurrentWorkAmount = 0f;
     }
 
-    public override bool CheckAndInteract(Creature creature)
+    public override bool IsInteractable(Creature creature, bool isDoInteract)
     {
         if (creature.CreatureType == Define.CreatureType.Alien)
             return false;
@@ -33,12 +33,22 @@ public abstract class BaseWorkStation : BaseInteractable
         if (!CanUseAgain && IsCompleted)
             return false;
 
+        creature.IngameUI.InteractInfoUI.Show(InteractDescription.ToString());
+
         if (CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
             return false;
 
         if (!(creature.CreatureState == Define.CreatureState.Idle || creature.CreatureState == Define.CreatureState.Move))
             return false;
 
+        if (isDoInteract)
+            Interact(creature);
+
+        return true;
+    }
+
+    public override void Interact(Creature creature)
+    {
         MyWorker = creature;
         MyWorker.IngameUI.InteractInfoUI.Hide();
         MyWorker.CreatureState = Define.CreatureState.Interact;
@@ -46,12 +56,10 @@ public abstract class BaseWorkStation : BaseInteractable
         MyWorker.CurrentWorkStation = this;
         MyWorker.IngameUI.WorkProgressBarUI.Show(InteractDescription.ToString(), TotalWorkAmount);
 
+        PlayInteractAnimation();
         Rpc_AddWorker(MyWorker.NetworkObject.Id);
-        PlayInteract();
 
         StartCoroutine(CoWorkProgress());
-
-        return true;
     }
 
     public void MyWorkInterrupt()

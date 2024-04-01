@@ -16,7 +16,7 @@ public class Computer : BaseWorkStation
         TotalWorkAmount = 100f;
     }
 
-    public override void PlayInteract()
+    public override void PlayInteractAnimation()
     {
         MyCrew.CrewAnimController.PlayKeypadUse();
     }

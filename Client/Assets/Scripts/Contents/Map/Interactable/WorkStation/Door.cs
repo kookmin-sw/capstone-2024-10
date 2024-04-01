@@ -29,7 +29,7 @@ public class Door : BaseWorkStation
         TotalWorkAmount = IsOpened ? CloseWorkAmount : OpenWorkAmount;
     }
 
-    public override bool CheckAndInteract(Creature creature)
+    public override bool IsInteractable(Creature creature, bool isDoInteract)
     {
         if (creature.CreatureType == Define.CreatureType.Alien && IsOpened)
             return false;
@@ -37,25 +37,18 @@ public class Door : BaseWorkStation
         if (!CanUseAgain && IsCompleted)
             return false;
 
+        creature.IngameUI.InteractInfoUI.Show(InteractDescription.ToString());
+
         if (CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
             return false;
 
         if (!(creature.CreatureState == Define.CreatureState.Idle || creature.CreatureState == Define.CreatureState.Move))
             return false;
 
-        MyWorker = creature;
-        MyWorker.IngameUI.InteractInfoUI.Hide();
-        MyWorker.CreatureState = Define.CreatureState.Interact;
-        MyWorker.CreaturePose = Define.CreaturePose.Stand;
-        MyWorker.CurrentWorkStation = this;
-
         TotalWorkAmount = IsOpened ? CloseWorkAmount : OpenWorkAmount;
-        MyWorker.IngameUI.WorkProgressBarUI.Show(InteractDescription.ToString(), TotalWorkAmount);
 
-        Rpc_AddWorker(MyWorker.NetworkObject.Id);
-        PlayInteract();
-
-        StartCoroutine(CoWorkProgress());
+        if (isDoInteract)
+            Interact(creature);
 
         return true;
     }
@@ -78,7 +71,7 @@ public class Door : BaseWorkStation
         //Managers.NetworkMng.Runner.Despawn(gameObject.GetComponent<NetworkObject>());
     }
 
-    public override void PlayInteract()
+    public override void PlayInteractAnimation()
     {
         if (!IsOpened)
         {

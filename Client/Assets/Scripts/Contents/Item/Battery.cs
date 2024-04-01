@@ -1,6 +1,4 @@
-﻿using Fusion;
-
-public class Battery : BaseItem
+﻿public class Battery : BaseItem
 {
     public override bool CheckAndUseItem(Crew crew)
     {

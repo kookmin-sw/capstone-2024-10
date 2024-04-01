@@ -166,7 +166,7 @@ public abstract class Creature : NetworkBehaviour
 
     #endregion
 
-    protected bool CheckAndInteract(bool isOnlyCheck)
+    protected bool CheckAndInteract(bool isDoInteract)
     {
         if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || IngameUI == null)
             return false;
@@ -174,24 +174,10 @@ public abstract class Creature : NetworkBehaviour
         Ray ray = CreatureCamera.GetComponent<Camera>().ViewportPointToRay(Vector3.one * 0.5f);
 
         if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance:1.5f, layerMask:LayerMask.GetMask("MapObject")))
-        {
             if (rayHit.transform.gameObject.TryGetComponent(out BaseInteractable interactable))
-            {
-                if (!isOnlyCheck && interactable.CheckAndInteract(this))
-                {
-                    Debug.Log("Interact Success");
-                    Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.green, 1f);
+                return interactable.IsInteractable(this, isDoInteract);
 
-                    return true;
-                }
-
-                IngameUI.InteractInfoUI.Show(interactable.InteractDescription.ToString());
-            }
-        }
-        else
-        {
-            IngameUI.InteractInfoUI.Hide();
-        }
+        IngameUI.InteractInfoUI.Hide();
 
         Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red);
 

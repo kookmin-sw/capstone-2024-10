@@ -1,7 +1,4 @@
-﻿using Fusion;
-using UnityEngine;
-
-public class BatteryCharger : BaseWorkStation
+﻿public class BatteryCharger : BaseWorkStation
 {
     public Crew MyCrew => (Crew)MyWorker;
 
@@ -19,13 +16,15 @@ public class BatteryCharger : BaseWorkStation
         TotalWorkAmount = 10f;
     }
 
-    public override bool CheckAndInteract(Creature creature)
+    public override bool IsInteractable(Creature creature, bool isDoInteract)
     {
         if (creature.CreatureType == Define.CreatureType.Alien)
             return false;
 
         if (!CanUseAgain && IsCompleted)
             return false;
+
+        creature.IngameUI.InteractInfoUI.Show(InteractDescription.ToString());
 
         if (CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
             return false;
@@ -36,17 +35,8 @@ public class BatteryCharger : BaseWorkStation
         if (((Crew)creature).Inventory.CurrentItem.ItemType != Define.ItemType.Battery)
             return false;
 
-        MyWorker = creature;
-        MyWorker.IngameUI.InteractInfoUI.Hide();
-        MyWorker.CreatureState = Define.CreatureState.Interact;
-        MyWorker.CreaturePose = Define.CreaturePose.Stand;
-        MyWorker.CurrentWorkStation = this;
-        MyWorker.IngameUI.WorkProgressBarUI.Show(InteractDescription.ToString(), TotalWorkAmount);
-
-        Rpc_AddWorker(MyWorker.NetworkObject.Id);
-        PlayInteract();
-
-        StartCoroutine(CoWorkProgress());
+        if (isDoInteract)
+            Interact(creature);
 
         return true;
     }
@@ -59,7 +49,7 @@ public class BatteryCharger : BaseWorkStation
     }
 
 
-    public override void PlayInteract()
+    public override void PlayInteractAnimation()
     {
         MyCrew.CrewAnimController.PlayKeypadUse();
     }

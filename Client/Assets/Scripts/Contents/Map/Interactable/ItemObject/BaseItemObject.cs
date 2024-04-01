@@ -1,3 +1,6 @@
+using Fusion;
+using UnityEngine;
+
 public abstract class BaseItemObject : BaseInteractable
 {
     public int DataId { get; protected set; }
@@ -9,20 +12,41 @@ public abstract class BaseItemObject : BaseInteractable
 
     protected abstract void Init();
 
-    public override bool CheckAndInteract(Creature creature)
+    public override bool IsInteractable(Creature creature, bool isDoInteract)
     {
         if (creature.CreatureType == Define.CreatureType.Alien)
             return false;
 
-        if (!((Crew)creature).Inventory.CheckAndGetItem(DataId))
+        creature.IngameUI.InteractInfoUI.Show(InteractDescription.ToString());
+
+        if (!(creature.CreatureState == Define.CreatureState.Idle || creature.CreatureState == Define.CreatureState.Move))
             return false;
 
-        gameObject.SetActive(false);
+        if (!((Crew)creature).Inventory.CheckCanGetItem())
+            return false;
+
+        if (isDoInteract)
+            Interact(creature);
+
         return true;
     }
 
-    public override void PlayInteract()
+    public override void Interact(Creature creature)
     {
-        // TODO
+        PlayInteractAnimation();
+        Rpc_InteractComplete();
+
+        ((Crew)creature).Inventory.GetItem(DataId);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    public virtual void Rpc_InteractComplete()
+    {
+        gameObject.SetActive(false);
+    }
+
+    public override void PlayInteractAnimation()
+    {
+
     }
 }

@@ -64,11 +64,11 @@ public abstract class Alien : Creature
         if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
             return;
 
-        CheckAndInteract(true);
+        CheckAndInteract(false);
 
         if (Input.GetKeyDown(KeyCode.F))
         {
-            if (CheckAndInteract(false))
+            if (CheckAndInteract(true))
             {
                 return;
             }

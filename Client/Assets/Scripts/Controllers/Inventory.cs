@@ -27,24 +27,31 @@ public class Inventory: NetworkBehaviour
         CurrentItemIdx = 0;
     }
 
-    public bool CheckAndGetItem(int itemId)
+    public bool CheckCanGetItem()
+    {
+        for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
+        {
+            if (ItemInventory[i] == -1)
+                return true;
+        }
+
+        return false;
+    }
+
+    public void GetItem(int itemId)
     {
         if (ItemInventory[CurrentItemIdx] == -1)
         {
             ItemInventory[CurrentItemIdx] = itemId;
-            return true;
+            return;
         }
 
         for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
-        {
             if (ItemInventory[i] == -1)
             {
                 ItemInventory[i] = itemId;
-                return true;
+                return;
             }
-        }
-
-        return false;
     }
 
     public bool CheckAndUseItem(int itemIdx)
