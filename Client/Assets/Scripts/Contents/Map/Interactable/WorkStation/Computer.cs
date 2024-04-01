@@ -1,6 +1,3 @@
-using System.Collections;
-using UnityEngine;
-
 public class Computer : BaseWorkStation
 {
     public Crew MyCrew => (Crew)MyWorker;
@@ -9,14 +6,14 @@ public class Computer : BaseWorkStation
     {
         base.Init();
 
+        InteractDescription = "USE COMPUTER";
+
         CanUseAgain = false;
         CanRememberWork = true;
         CanCollaborate = true;
         IsCompleted = false;
 
         TotalWorkAmount = 100f;
-        WorkingDescription = "Fixing Computer";
-        InteractDescription = "Fix computer";
     }
 
     public override void PlayInteractAnimation()

@@ -1,14 +1,10 @@
-﻿using Fusion;
-
-public class Battery : BaseItem
+﻿public class Battery : BaseItem
 {
-    public override bool CheckAndUseItem()
+    public override bool CheckAndUseItem(Crew crew)
     {
-        Rpc_Use();
-        return true;
+        return false;
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected override void Rpc_Use()
     {
 

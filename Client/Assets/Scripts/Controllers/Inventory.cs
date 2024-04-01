@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Fusion;
-using UnityEngine;
 
 public class Inventory: NetworkBehaviour
 {
     public Crew Owner { get; protected set; }
-    public Define.CreatureState CreatureState => Owner.CreatureState;
-    public Define.CreaturePose CreaturePose => Owner.CreaturePose;
 
-    public List<BaseItem> Items { get; protected set; }
-    [Networked] public int CurrentItemIdx { get; protected set; }
-    public BaseItem CurrentItem => Items[CurrentItemIdx];
+    public List<int> ItemInventory { get; protected set; }
+    [Networked] public int CurrentItemIdx { get; set; }
+    public BaseItem CurrentItem => Managers.ObjectMng.Items[ItemInventory[CurrentItemIdx]];
 
     public override void Spawned()
     {
@@ -22,36 +18,52 @@ public class Inventory: NetworkBehaviour
     {
         Owner = gameObject.GetComponent<Crew>();
 
-        Items = new List<BaseItem>(Define.MAX_ITEM_NUM);
+        ItemInventory = new List<int>(Define.MAX_ITEM_NUM);
         for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
         {
-            Items.Add(null);
+            ItemInventory.Add(-1);
         }
 
         CurrentItemIdx = 0;
     }
 
-    public bool CheckAndGetItem(Define.ItemType itemType)
+    public bool CheckCanGetItem()
     {
-        if (CurrentItem != null)
-            return false;
+        for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
+        {
+            if (ItemInventory[i] == -1)
+                return true;
+        }
 
-        Rpc_GetItem(itemType);
-        return true;
+        return false;
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_GetItem(Define.ItemType itemType)
+    public void GetItem(int itemId)
     {
-        Type type = Type.GetType(itemType.ToString());
-        if (type == null)
+        if (ItemInventory[CurrentItemIdx] == -1)
         {
-            Debug.LogError("Failed to Rpc_CheckAndGetItem: " + itemType);
+            ItemInventory[CurrentItemIdx] = itemId;
             return;
         }
 
-        Items[CurrentItemIdx] = (BaseItem)(Activator.CreateInstance(type));
-        Items[CurrentItemIdx].Owner = Owner;
+        for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
+            if (ItemInventory[i] == -1)
+            {
+                ItemInventory[i] = itemId;
+                return;
+            }
+    }
+
+    public bool CheckAndUseItem(int itemIdx)
+    {
+        if (ItemInventory[CurrentItemIdx] == -1)
+            return false;
+
+        if (!CurrentItem.CheckAndUseItem(Owner))
+            return false;
+
+        ItemInventory[CurrentItemIdx] = -1;
+        return true;
     }
 
     public void DropItem()

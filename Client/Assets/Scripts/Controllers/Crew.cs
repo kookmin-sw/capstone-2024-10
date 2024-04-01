@@ -74,7 +74,7 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead || CreatureState == Define.CreatureState.Use)
             return;
 
-        CheckInteract(false);
+        CheckAndInteract(false);
 
         // TODO - Test Code
         if (Input.GetKeyDown(KeyCode.E))
@@ -91,12 +91,8 @@ public class Crew : Creature
         }
 
         if (Input.GetKeyDown(KeyCode.F))
-        {
-            if (CheckInteract(true))
-            {
+            if (CheckAndInteract(true))
                 return;
-            }
-        }
 
         //if (Input.GetMouseButtonDown(0))
         //{
@@ -126,20 +122,14 @@ public class Crew : Creature
             if (Input.GetKey(KeyCode.LeftShift))
             {
                 if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
-                {
                     CreaturePose = Define.CreaturePose.Run;
-                }
                 if (IsRecoveringStamina)
-                {
                     CreaturePose = Define.CreaturePose.Stand;
-                }
             }
             else
             {
                 if (CreaturePose == Define.CreaturePose.Run)
-                {
                     CreaturePose = Define.CreaturePose.Stand;
-                }
             }
         }
 
@@ -159,9 +149,7 @@ public class Crew : Creature
         {
             CrewStat.OnRecoverStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
             if (CrewStat.Stamina >= 20) //스테미너가 0이하가 된 뒤 20까지 회복 되면 다시 달리기 가능으로 변경
-            {
                 IsRecoveringStamina = false;
-            }
         }
     }
 
@@ -270,6 +258,6 @@ public class Crew : Creature
             return false;
         }
 
-        return Inventory.CurrentItem.CheckAndUseItem();
+        return Inventory.CurrentItem.CheckAndUseItem(this);
     }
 }
