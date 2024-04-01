@@ -1,8 +1,6 @@
 public abstract class BaseItemObject : BaseInteractable
 {
-    public Define.ItemType ItemType { get; protected set; }
-
-    public override string InteractDescription => $"Get {gameObject.name}";
+    public int DataId { get; protected set; }
 
     public override void Spawned()
     {
@@ -13,7 +11,14 @@ public abstract class BaseItemObject : BaseInteractable
 
     public override bool CheckAndInteract(Creature creature)
     {
-        return ((Crew)creature).Inventory.CheckAndGetItem(ItemType);
+        if (creature.CreatureType == Define.CreatureType.Alien)
+            return false;
+
+        if (!((Crew)creature).Inventory.CheckAndGetItem(DataId))
+            return false;
+
+        gameObject.SetActive(false);
+        return true;
     }
 
     public override void PlayInteract()

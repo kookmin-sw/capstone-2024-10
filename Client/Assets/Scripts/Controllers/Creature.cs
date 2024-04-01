@@ -179,23 +179,13 @@ public abstract class Creature : NetworkBehaviour
             {
                 if (!isOnlyCheck && interactable.CheckAndInteract(this))
                 {
-                    IngameUI.InteractInfoUI.Hide();
-                    CreatureState = Define.CreatureState.Interact;
-                    CreaturePose = Define.CreaturePose.Stand;
-                    CurrentWorkStation = interactable as BaseWorkStation;
-
-                    if (CurrentWorkStation != null){
-                        CurrentWorkStation.StartInteract(this);
-                        IngameUI.WorkProgressBarUI.Show(CurrentWorkStation.WorkingDescription.ToString(), CurrentWorkStation.TotalWorkAmount);
-                    }
-
                     Debug.Log("Interact Success");
                     Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.green, 1f);
 
                     return true;
                 }
 
-                IngameUI.InteractInfoUI.Show(interactable.InteractDescription);
+                IngameUI.InteractInfoUI.Show(interactable.InteractDescription.ToString());
             }
         }
         else

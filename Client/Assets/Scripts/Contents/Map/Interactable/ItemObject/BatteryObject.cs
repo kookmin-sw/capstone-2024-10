@@ -2,6 +2,8 @@
 {
     protected override void Init()
     {
-        ItemType = Define.ItemType.Battery;
+        DataId = Define.ITEM_Battery_ID;
+
+        InteractDescription = "GET BATTERY";
     }
 }

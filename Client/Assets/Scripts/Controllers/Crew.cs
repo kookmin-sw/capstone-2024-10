@@ -270,6 +270,6 @@ public class Crew : Creature
             return false;
         }
 
-        return Inventory.CurrentItem.CheckAndUseItem();
+        return Inventory.CurrentItem.CheckAndUseItem(this);
     }
 }

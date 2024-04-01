@@ -2,9 +2,9 @@ using Fusion;
 
 public abstract class BaseInteractable : NetworkBehaviour
 {
-    public virtual string InteractDescription { get; set; }
+    [Networked] public virtual NetworkString<_16> InteractDescription { get; set; }
 
     public abstract bool CheckAndInteract(Creature creature);
-    
+
     public abstract void PlayInteract();
 }
