@@ -24,8 +24,8 @@ public class UI_AlienIngame : UI_Ingame
         return true;
     }
 
-    public override void AssignCreature(Creature creature)
+    public override void InitAfterNetworkSpawn(Creature creature)
     {
-        base.AssignCreature(creature);
+        base.InitAfterNetworkSpawn(creature);
     }
 }

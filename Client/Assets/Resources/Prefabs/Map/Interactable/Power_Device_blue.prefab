@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3364864359537357495}
   - component: {fileID: 3690806273880013435}
   - component: {fileID: 2448866105969019076}
+  - component: {fileID: 4555986533757274071}
   m_Layer: 11
   m_Name: Base
   m_TagString: Untagged
@@ -104,9 +105,36 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2376846653350502569, guid: 04d79a650e19b8a4e8e4eae04a5bbf8a, type: 3}
+--- !u!114 &4555986533757274071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605375618894036222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6f761c8b53645c6a3a0f637a602eb8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _InteractDescription:
+    _length: 0
+    _data:
+      Data: 00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  _TotalWorkAmount: 0
+  _CurrentWorkAmount: 0
+  _CanUseAgain:
+    _value: 0
+  _CanRememberWork:
+    _value: 0
+  _CanCollaborate:
+    _value: 0
+  _IsCompleted:
+    _value: 0
+  _CurrentWorkers: []
 --- !u!1 &5115746516234326036
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,7 +373,8 @@ MonoBehaviour:
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 4555986533757274071}
 --- !u!1 &9048701772966562858
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,6 +479,6 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 7576320299568308518, guid: 04d79a650e19b8a4e8e4eae04a5bbf8a, type: 3}

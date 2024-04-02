@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MapManager
 {
-    private Sector[] _sectors;
+    public MapSystem MapSystem { get; set; }
 
     public void Init()
     {
