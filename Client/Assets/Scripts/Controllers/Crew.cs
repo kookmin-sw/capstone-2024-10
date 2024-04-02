@@ -6,12 +6,12 @@ public class Crew : Creature
 {
     #region Field
 
+    public UI_CrewInGame CrewInGameUI { get; protected set; }
+
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
     public CrewAnimController CrewAnimController => (CrewAnimController)BaseAnimController;
     public Inventory Inventory { get; protected set; }
-
-    public UI_CrewIngame CrewIngameUI => IngameUI as UI_CrewIngame;
 
     [Networked] public bool IsRecoveringStamina { get; protected set; }
 
@@ -21,9 +21,9 @@ public class Crew : Creature
     {
         base.Init();
 
-        Managers.ObjectMng.Crews[NetworkObject.Id] = this;
-
         Inventory = gameObject.GetComponent<Inventory>();
+
+        Managers.ObjectMng.Crews[NetworkObject.Id] = this;
     }
 
     public override void SetInfo(int templateID)
@@ -32,6 +32,9 @@ public class Crew : Creature
 
         base.SetInfo(templateID);
 
+        CrewInGameUI = Managers.UIMng.SceneUI as UI_CrewInGame;
+
+        Transform.parent = Managers.ObjectMng.CrewRoot;
         Head = Util.FindChild(gameObject, "head.x", true);
         Head.transform.localScale = Vector3.zero;
 
@@ -52,12 +55,7 @@ public class Crew : Creature
         CrewStat.SetStat(CrewData);
 
         IsRecoveringStamina = true;
-        IsSpawned = true;
-
-        if (HasStateAuthority && Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.GameScene)
-        {
-            StartCoroutine(((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded());
-        }
+        IsDead = false;
     }
 
     public override void FixedUpdateNetwork()
@@ -74,7 +72,7 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead || CreatureState == Define.CreatureState.Use)
             return;
 
-        CheckAndInteract(false);
+        CheckAndInteract(true);
 
         // TODO - Test Code
         if (Input.GetKeyDown(KeyCode.E))
@@ -85,18 +83,28 @@ public class Crew : Creature
 
         if (CreatureState == Define.CreatureState.Interact)
         {
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F)){
+                PoseReset();   //이동으로 돌아가기 위해 animation 리셋
                 CreatureState = Define.CreatureState.Idle;
-            return;
+                return;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.F))
-            if (CheckAndInteract(true))
+        {
+            if (CheckAndInteract(false))
+            {
                 return;
-
-        // if (Input.GetMouseButtonDown(0))
-        //     if (CheckAndUseItem())
-        //         return;
+            }
+        }
+        //if (Input.GetMouseButtonDown(0))
+        //{
+        //    if (CheckAndUseItem())
+        //    {
+        //        CreatureState = Define.CreatureState.Use;
+        //        return;
+        //    }
+        //}
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -107,24 +115,35 @@ public class Crew : Creature
             return;
         }
 
-        if (Velocity == Vector3.zero)
-            CreatureState = Define.CreatureState.Idle;
-        else
+        if (CreatureState != Define.CreatureState.Interact) //상호작용하는 경우에는 이동 및 서있기 인식을 못하게 설정
         {
-            CreatureState = Define.CreatureState.Move;
-
-            if (Input.GetKey(KeyCode.LeftShift) && Direction.z > 0)
-            {
-                if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
-                    CreaturePose = Define.CreaturePose.Run;
-                if (IsRecoveringStamina)
-                    CreaturePose = Define.CreaturePose.Stand;
-            }
+            if (Velocity == Vector3.zero)
+                CreatureState = Define.CreatureState.Idle;
             else
-                if (CreaturePose == Define.CreaturePose.Run)
-                    CreaturePose = Define.CreaturePose.Stand;
-        }
+            {
+                CreatureState = Define.CreatureState.Move;
 
+                if (Input.GetKey(KeyCode.LeftShift))
+                {
+                    if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
+                    {
+                        CreaturePose = Define.CreaturePose.Run;
+                    }
+                    if (IsRecoveringStamina)
+                    {
+                        CreaturePose = Define.CreaturePose.Stand;
+                    }
+                }
+                else
+                {
+                    if (CreaturePose == Define.CreaturePose.Run)
+                    {
+                        CreaturePose = Define.CreaturePose.Stand;
+                    }
+                }
+            }
+        }
+        
     }
 
     #region Update
@@ -136,12 +155,14 @@ public class Crew : Creature
             CrewStat.OnUseStamina(Define.RUN_USE_STAMINA * Runner.DeltaTime);
             if (CrewStat.Stamina <= 0)
                 IsRecoveringStamina = true;
-        }
+        } 
         else
         {
             CrewStat.OnRecoverStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
             if (CrewStat.Stamina >= 20) //스테미너가 0이하가 된 뒤 20까지 회복 되면 다시 달리기 가능으로 변경
+            {
                 IsRecoveringStamina = false;
+            }
         }
     }
 
@@ -197,7 +218,6 @@ public class Crew : Creature
 
     protected override void UpdateInteract()
     {
-
     }
 
     protected override void UpdateUse()
@@ -207,9 +227,14 @@ public class Crew : Creature
 
     protected override void UpdateDead()
     {
-
+        CrewAnimController.PlayDead();
+        IsDead = true;
     }
 
+    public void PoseReset()
+    {
+        CrewAnimController.PlayReset();
+    }
     #endregion
 
     #region Event
@@ -217,6 +242,7 @@ public class Crew : Creature
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void Rpc_OnDamaged(int damage)
     {
+        CreatureState = Define.CreatureState.Damaged;
         CrewStat.OnDamage(damage);
 
         if (CrewStat.Hp <= 0)
@@ -225,7 +251,6 @@ public class Crew : Creature
             return;
         }
 
-        CreatureState = Define.CreatureState.Damaged;
         CrewAnimController.PlayDamaged();
         ReturnToIdle(1f);
     }
@@ -250,6 +275,6 @@ public class Crew : Creature
             return false;
         }
 
-        return Inventory.CheckAndUseItem();
+        return Inventory.CurrentItem.CheckAndUseItem();
     }
 }
