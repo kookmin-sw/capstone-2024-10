@@ -140,6 +140,7 @@ public static class Define
     public const int PASIVE_RECOVER_STAMINA = 5;
     public const int RUN_USE_STAMINA = 10;
 
+    public const int BATTERY_COLLECT_GOAL = 3;
     #endregion
 
     #region PlayerState

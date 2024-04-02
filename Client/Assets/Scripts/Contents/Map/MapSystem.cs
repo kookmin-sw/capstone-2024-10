@@ -6,19 +6,22 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
-public class MapSystem : SimulationBehaviour
+public class MapSystem : NetworkBehaviour
 {
     [Header("Item Spawn")]
     [SerializeField] private int _totalItemCount;
     [SerializeField] private List<ItemSpawnData> _itemSpawnDatas;
 
     public Dictionary<Define.SectorName, Sector> Sectors { get; set; } = new();
+
+    [Networked, OnChangedRender(nameof(OnBatteryCollect))] public int BatteryCollectCount { get; set; }
+    public bool BatteryCollectFinished { get; set; }
     
     public void Init()
     {
-        this.RegisterRunner();
         AssignSector();
         SpawnItems();
+        Managers.MapMng.MapSystem = this;
     }
 
     private void AssignSector()
@@ -44,6 +47,7 @@ public class MapSystem : SimulationBehaviour
         Dictionary<Define.SectorName, Dictionary<ItemSpawnData, int>> itemPerSectorCount = new();
         List<Define.SectorName> availableSectors = new(Sectors.Keys);
         List<ItemSpawnData> itemSpawnData = new(_itemSpawnDatas);
+
         foreach (var key in itemSpawnData)
         {
             totalItemCount.Add(key, 0);
@@ -128,6 +132,16 @@ public class MapSystem : SimulationBehaviour
             }
             Debug.LogWarning($"{data.Prefab.name}: Could not select sector!");
             return false;
+        }
+    }
+
+    private void OnBatteryCollect()
+    {
+        (Managers.ObjectMng.MyCreature.IngameUI as UI_CrewIngame).ObjectiveUI.UpdateUI(BatteryCollectCount);
+
+        if (BatteryCollectCount == Define.BATTERY_COLLECT_GOAL)
+        {
+            BatteryCollectFinished = true;
         }
     }
 }

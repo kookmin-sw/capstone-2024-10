@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Fusion;
 
 public class BatteryCharger : BaseWorkStation
 {
@@ -8,7 +9,7 @@ public class BatteryCharger : BaseWorkStation
     {
         base.Init();
 
-        InteractDescription = "USE COMPUTER";
+        InteractDescription = "Charge battery";
 
         CanUseAgain = true;
         CanRememberWork = true;
@@ -26,6 +27,9 @@ public class BatteryCharger : BaseWorkStation
         if (!CanUseAgain && IsCompleted)
             return false;
 
+        if (Managers.MapMng.MapSystem.BatteryCollectFinished)
+            return false;
+
         creature.IngameUI.InteractInfoUI.Show(InteractDescription.ToString());
 
         if (CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
@@ -34,7 +38,7 @@ public class BatteryCharger : BaseWorkStation
         if (!(creature.CreatureState == Define.CreatureState.Idle || creature.CreatureState == Define.CreatureState.Move))
             return false;
 
-        if (((Crew)creature).Inventory.CurrentItem.ItemType != Define.ItemType.Battery)
+        if (!((Crew)creature).Inventory.HasItem(Define.ITEM_Battery_ID))
             return false;
 
         if (isDoInteract)
@@ -45,17 +49,17 @@ public class BatteryCharger : BaseWorkStation
 
     public override void WorkComplete()
     {
-        if (MyCrew.Inventory.CurrentItem.ItemType != Define.ItemType.Battery)
-        {
-            Debug.LogError("Failed to WorkComplete BatteryCharger");
-            return;
-        }
-
-        MyCrew.Inventory.CurrentItemIdx = -1;
+        MyCrew.Inventory.RemoveItem(Define.ITEM_Battery_ID);
 
         base.WorkComplete();
     }
 
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    protected override void Rpc_CrewWorkComplete()
+    {
+        CurrentWorkAmount = 0;
+        Managers.MapMng.MapSystem.BatteryCollectCount++;
+    }
     public override void PlayInteractAnimation()
     {
         MyCrew.CrewAnimController.PlayKeypadUse();

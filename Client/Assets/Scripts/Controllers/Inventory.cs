@@ -1,6 +1,6 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using Fusion;
+using UnityEngine;
 
 public class Inventory: NetworkBehaviour
 {
@@ -49,12 +49,40 @@ public class Inventory: NetworkBehaviour
         }
 
         for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
+        {
             if (ItemInventory[i] == -1)
             {
                 ItemInventory[i] = itemId;
                 UI_Inventory.Show(i);
                 return;
             }
+        }
+    }
+
+    public bool HasItem(int itemId)
+    {
+        for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
+        {
+            if (ItemInventory[i] == itemId) return true;
+        }
+
+        return false;
+    }
+
+    public void RemoveItem(int itemId)
+    {
+        if (!HasItem(itemId))
+        {
+            Debug.LogWarning($"No such item in inventory: {Managers.ObjectMng.Items[itemId]}");
+        }
+        for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
+        {
+            if (ItemInventory[i] == itemId)
+            {
+                ItemInventory[i] = -1;
+                break;
+            }
+        }
     }
 
     public bool CheckAndUseItem()

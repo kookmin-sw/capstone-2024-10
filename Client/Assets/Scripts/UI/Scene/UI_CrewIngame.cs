@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class UI_CrewIngame : UI_Ingame
 {
+    public UI_CrewObjective ObjectiveUI;
+
     private Crew Crew {
         get => Creature as Crew;
         set => Creature = value;
@@ -16,6 +18,7 @@ public class UI_CrewIngame : UI_Ingame
        UI_CrewHP,
        UI_CrewStamina,
        UI_Inventory,
+       UI_CrewObjective,
     }
 
 
@@ -24,16 +27,17 @@ public class UI_CrewIngame : UI_Ingame
         if (base.Init() == false) { return false; }
 
         Bind<UI_Base>(typeof(CrewSubItemUIs));
-
+        ObjectiveUI = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewObjective) as UI_CrewObjective;
         return true;
     }
 
-    public override void AssignCreature(Creature creature)
+    public override void InitAfterNetworkSpawn(Creature creature)
     {
-        base.AssignCreature(creature);
-
+        base.InitAfterNetworkSpawn(creature);
+ 
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewHP) as UI_CrewHP).Crew = Crew;
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewStamina) as UI_CrewStamina).Crew = Crew;
         Crew.Inventory.UI_Inventory = (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_Inventory) as UI_Inventory);
+        ObjectiveUI.UpdateUI(0);
     }
 }

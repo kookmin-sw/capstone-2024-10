@@ -28,7 +28,7 @@ public class UI_Ingame : UI_Scene
         return true;
     }
 
-    public virtual void AssignCreature(Creature creature)
+    public virtual void InitAfterNetworkSpawn(Creature creature)
     {
         Creature = creature;
     }
