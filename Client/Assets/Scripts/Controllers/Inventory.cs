@@ -9,7 +9,7 @@ public class Inventory: NetworkBehaviour
     public List<int> ItemInventory { get; protected set; }
     [Networked] public int CurrentItemIdx { get; set; }
     public BaseItem CurrentItem => Managers.ObjectMng.Items[ItemInventory[CurrentItemIdx]];
-    public UI_Inventory UI_Inventory;
+    public UI_Inventory UI_Inventory { get; set; }
     public override void Spawned()
     {
         Init();
