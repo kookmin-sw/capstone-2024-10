@@ -24,14 +24,12 @@ public class UI_Inventory : UI_Base
         Item2,
         Item3
     }
-    public Crew Crew { get; set; }
     public List<GameObject> ItemList { get; protected set; }
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
 
-        Crew.Inventory.UI_Inventory = this;
         Bind<Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));
 
