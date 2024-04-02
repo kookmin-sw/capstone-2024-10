@@ -4,10 +4,7 @@ public class Stalker : Alien
     {
         base.SetInfo(templateID);
 
-        for (int i = 0; i < Define.MAX_SKILL_NUM; i++)
-        {
-            Skills.Add(new BasicAttack());
-            Skills[i].Owner = this;
-        }
+        SkillController.Skills[0] = gameObject.GetComponent<BasicAttack>();
+        SkillController.Skills[1] = gameObject.GetComponent<Roar>();
     }
 }

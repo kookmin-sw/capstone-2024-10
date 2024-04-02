@@ -9,9 +9,11 @@ public abstract class Alien : Creature
     public AlienData AlienData => CreatureData as AlienData;
     public AlienStat AlienStat => (AlienStat)BaseStat;
     public AlienAnimController AlienAnimController => (AlienAnimController)BaseAnimController;
+    public SkillController SkillController { get; protected set; }
 
     public UI_AlienIngame AlienIngameUI => IngameUI as UI_AlienIngame;
-    public List<BaseSkill> Skills { get; protected set; }
+
+    public float CurrentSkillRange;
 
     #endregion
 
@@ -20,6 +22,9 @@ public abstract class Alien : Creature
         base.Init();
 
         Managers.ObjectMng.Aliens[NetworkObject.Id] = this;
+
+        SkillController = gameObject.GetComponent<SkillController>();
+        SkillController.Skills = new Dictionary<int, BaseSkill>(Define.MAX_SKILL_NUM);
     }
 
     public override void SetInfo(int templateID)
@@ -47,11 +52,10 @@ public abstract class Alien : Creature
 
         AlienStat.SetStat(AlienData);
 
-        Skills = new List<BaseSkill>(Define.MAX_SKILL_NUM);
-
+        CurrentSkillRange = 1.5f;
         IsSpawned = true;
 
-        if (HasStateAuthority && Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.GameScene)
+        if (Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.GameScene)
         {
             StartCoroutine(((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded());
         }
@@ -67,53 +71,24 @@ public abstract class Alien : Creature
         CheckAndInteract(false);
 
         if (Input.GetKeyDown(KeyCode.F))
-        {
             if (CheckAndInteract(true))
-            {
                 return;
-            }
-        }
 
         if (Input.GetMouseButtonDown(0))
-        {
             if (CheckAndUseSkill(0))
-            {
-                CreatureState = Define.CreatureState.Use;
-                CreaturePose = Define.CreaturePose.Stand;
                 return;
-            }
-        }
 
         if (Input.GetMouseButtonDown(1))
-        {
             if (CheckAndUseSkill(1))
-            {
-                CreatureState = Define.CreatureState.Use;
-                CreaturePose = Define.CreaturePose.Stand;
                 return;
-            }
-        }
 
         if (Input.GetKeyDown(KeyCode.Q))
-        {
             if (CheckAndUseSkill(2))
-            {
-                CreatureState = Define.CreatureState.Use;
-                CreaturePose = Define.CreaturePose.Run;
-
                 return;
-            }
-        }
 
         if (Input.GetKeyDown(KeyCode.R))
-        {
             if (CheckAndUseSkill(3))
-            {
-                CreatureState = Define.CreatureState.Use;
-                CreaturePose = Define.CreaturePose.Run;
                 return;
-            }
-        }
 
         if (Velocity == Vector3.zero)
             CreatureState = Define.CreatureState.Idle;
@@ -121,17 +96,11 @@ public abstract class Alien : Creature
         {
             CreatureState = Define.CreatureState.Move;
 
-            if (Input.GetKey(KeyCode.LeftShift))
-            {
+            if (Input.GetKey(KeyCode.LeftShift) && Direction.z > 0)
                 CreaturePose = Define.CreaturePose.Run;
-            }
             else
-            {
                 if (CreaturePose == Define.CreaturePose.Run)
-                {
                     CreaturePose = Define.CreaturePose.Stand;
-                }
-            }
         }
     }
 
@@ -197,21 +166,7 @@ public abstract class Alien : Creature
         if (!HasStateAuthority)
             return false;
 
-        if (Skills[skillIdx] == null)
-        {
-            Debug.Log("No SKill" + skillIdx);
-            return false;
-        }
-
-        return Skills[skillIdx].CheckAndUseSkill();
-    }
-
-    public void InterruptUseSkill()
-    {
-        if (!HasStateAuthority)
-            return;
-
-        CreatureState = Define.CreatureState.Idle;
+        return SkillController.CheckAndUseSkill(skillIdx);
     }
 
     public void OnDrawGizmos()
@@ -220,6 +175,6 @@ public abstract class Alien : Creature
             return;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere( Head.transform.position + CreatureCamera.transform.forward * 1.5f, 1.5f);
+        Gizmos.DrawWireSphere( Head.transform.position + CreatureCamera.transform.forward * CurrentSkillRange, CurrentSkillRange);
     }
 }

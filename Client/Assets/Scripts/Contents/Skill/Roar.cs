@@ -1,16 +1,16 @@
-using UnityEngine;
+﻿using UnityEngine;
 
-public class BasicAttack : BaseSkill
+public class Roar : BaseSkill
 {
     protected override void Init()
     {
         base.Init();
 
-        SkillDescription = "BASIC ATTACK";
-        SkillTime = 1.5f;
-        CoolTime = 2f;
-        TotalSkillAmount = -1f;
-        AttackRange = 1.5f;
+        SkillDescription = "ROAR";
+        SkillTime = 2f;
+        CoolTime = 4f;
+        TotalSkillAmount = 3f;
+        AttackRange = 3f;
     }
 
     public override bool CheckAndUseSkill()
@@ -19,7 +19,7 @@ public class BasicAttack : BaseSkill
             return false;
 
         Owner.CurrentSkillRange = AttackRange;
-        UseSkill();
+        ReadySkill();
         return true;
     }
 
@@ -27,7 +27,7 @@ public class BasicAttack : BaseSkill
     {
         base.UseSkill();
 
-        Owner.AlienAnimController.PlayBasicAttack();
+        Owner.AlienAnimController.PlayRoar();
 
         Vector3 attackPosition = Owner.transform.position + Owner.CreatureCamera.transform.forward * AttackRange;
 

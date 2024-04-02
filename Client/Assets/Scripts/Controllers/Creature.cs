@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Fusion;
 using Fusion.Addons.SimpleKCC;
@@ -58,6 +57,9 @@ public abstract class Creature : NetworkBehaviour
 
     public virtual void SetInfo(int templateID)
     {
+        if (!HasStateAuthority)
+            return;
+
         DataId = templateID;
 
         CreatureState = Define.CreatureState.Idle;
@@ -184,19 +186,12 @@ public abstract class Creature : NetworkBehaviour
         return false;
     }
 
-    public void InterruptInteract()
-    {
-        if (!HasStateAuthority || CurrentWorkStation == null || CreatureState == Define.CreatureState.Dead)
-            return;
-
-        IngameUI.WorkProgressBarUI.Hide();
-        CreatureState = Define.CreatureState.Idle;
-
-        CurrentWorkStation = null;
-    }
-
     public void ReturnToIdle(float time)
     {
-        DOVirtual.DelayedCall(time, () => { CreatureState = Define.CreatureState.Idle; });
+        DOVirtual.DelayedCall(time, () =>
+        {
+            CreatureState = Define.CreatureState.Idle;
+            CreaturePose = Define.CreaturePose.Stand;
+        });
     }
 }
