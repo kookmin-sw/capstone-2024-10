@@ -9,7 +9,7 @@ public class Inventory: NetworkBehaviour
     public List<int> ItemInventory { get; protected set; }
     [Networked] public int CurrentItemIdx { get; set; }
     public BaseItem CurrentItem => Managers.ObjectMng.Items[ItemInventory[CurrentItemIdx]];
-    public UI_Inventory UI_Inventory { get; set; }
+
     public override void Spawned()
     {
         Init();
@@ -44,7 +44,7 @@ public class Inventory: NetworkBehaviour
         if (ItemInventory[CurrentItemIdx] == -1)
         {
             ItemInventory[CurrentItemIdx] = itemId;
-            UI_Inventory.Show(CurrentItemIdx);
+            Owner.CrewIngameUI.UI_Inventory.Show(CurrentItemIdx);
             return;
         }
 
@@ -53,7 +53,7 @@ public class Inventory: NetworkBehaviour
             if (ItemInventory[i] == -1)
             {
                 ItemInventory[i] = itemId;
-                UI_Inventory.Show(i);
+                Owner.CrewIngameUI.UI_Inventory.Show(i);
                 return;
             }
         }
@@ -95,7 +95,7 @@ public class Inventory: NetworkBehaviour
 
         ItemInventory[CurrentItemIdx] = -1;
 
-        UI_Inventory.Hide(CurrentItemIdx);
+        Owner.CrewIngameUI.UI_Inventory.Hide(CurrentItemIdx);
         return true;
     }
 

@@ -7,8 +7,8 @@ using UnityEngine.UI;
 public class UI_Ingame : UI_Scene
 {
     public Creature Creature { get; set; }
-    public UI_WorkProgressBar WorkProgressBarUI;
-    public UI_InteractInfo InteractInfoUI;
+    public UI_WorkProgressBar WorkProgressBarUI { get; private set; }
+    public UI_InteractInfo InteractInfoUI { get; private set; }
 
     protected enum SubItemUIs
     {
