@@ -1,4 +1,6 @@
-﻿public class BatteryCharger : BaseWorkStation
+﻿using UnityEngine;
+
+public class BatteryCharger : BaseWorkStation
 {
     public Crew MyCrew => (Crew)MyWorker;
 
@@ -43,11 +45,16 @@
 
     public override void WorkComplete()
     {
+        if (MyCrew.Inventory.CurrentItem.ItemType != Define.ItemType.Battery)
+        {
+            Debug.LogError("Failed to WorkComplete BatteryCharger");
+            return;
+        }
+
         MyCrew.Inventory.CurrentItemIdx = -1;
 
         base.WorkComplete();
     }
-
 
     public override void PlayInteractAnimation()
     {

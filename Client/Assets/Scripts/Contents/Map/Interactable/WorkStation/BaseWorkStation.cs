@@ -4,6 +4,8 @@ using UnityEngine;
 
 public abstract class BaseWorkStation : BaseInteractable
 {
+    #region Field
+
     [Networked] public float TotalWorkAmount { get; set; }
     [Networked] public float CurrentWorkAmount { get; set; }
     [Networked] public NetworkBool CanUseAgain { get; set; }
@@ -12,7 +14,10 @@ public abstract class BaseWorkStation : BaseInteractable
     [Networked] public NetworkBool IsCompleted { get; set; }
 
     [Networked, Capacity(3)] public NetworkLinkedList<NetworkId> CurrentWorkers { get; }
+
     public Creature MyWorker { get; protected set; }
+
+    #endregion
 
     public override void Spawned()
     {
@@ -21,8 +26,8 @@ public abstract class BaseWorkStation : BaseInteractable
 
     protected virtual void Init()
     {
-        IsCompleted = false;
         CurrentWorkAmount = 0f;
+        IsCompleted = false;
     }
 
     public override bool IsInteractable(Creature creature, bool isDoInteract)
@@ -66,7 +71,11 @@ public abstract class BaseWorkStation : BaseInteractable
     {
         StopAllCoroutines();
 
-        MyWorker.InterruptInteract();
+        MyWorker.IngameUI.WorkProgressBarUI.Hide();
+        MyWorker.CreatureState = Define.CreatureState.Idle;
+        MyWorker.CreaturePose = Define.CreaturePose.Stand;
+        MyWorker.CurrentWorkStation = null;
+
         Rpc_MyWorkInterrupt(MyWorker.NetworkObject.Id);
 
         Debug.Log($"{MyWorker.NetworkObject.Id}: Interrupt Work"); // TODO - Test code

@@ -54,7 +54,7 @@ public class Inventory: NetworkBehaviour
             }
     }
 
-    public bool CheckAndUseItem(int itemIdx)
+    public bool CheckAndUseItem()
     {
         if (ItemInventory[CurrentItemIdx] == -1)
             return false;
@@ -63,6 +63,7 @@ public class Inventory: NetworkBehaviour
             return false;
 
         ItemInventory[CurrentItemIdx] = -1;
+
         return true;
     }
 

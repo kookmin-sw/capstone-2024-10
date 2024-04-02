@@ -1033,10 +1033,13 @@ GameObject:
   - component: {fileID: 2656646541101528400}
   - component: {fileID: 8848567419615919483}
   - component: {fileID: 6976675480461094696}
+  - component: {fileID: -3236823099726202573}
   - component: {fileID: 2516994780171337258}
   - component: {fileID: 4476358356948161216}
   - component: {fileID: 9205723220890699314}
-  - component: {fileID: -3236823099726202573}
+  - component: {fileID: -6216331502391492118}
+  - component: {fileID: 6361414726338469051}
+  - component: {fileID: -4598067215046518199}
   m_Layer: 7
   m_Name: Stalker
   m_TagString: Untagged
@@ -1151,10 +1154,13 @@ MonoBehaviour:
   NetworkedBehaviours:
   - {fileID: 8848567419615919483}
   - {fileID: 6976675480461094696}
+  - {fileID: -3236823099726202573}
   - {fileID: 2516994780171337258}
   - {fileID: 4476358356948161216}
   - {fileID: 9205723220890699314}
-  - {fileID: -3236823099726202573}
+  - {fileID: -6216331502391492118}
+  - {fileID: 6361414726338469051}
+  - {fileID: -4598067215046518199}
 --- !u!114 &8848567419615919483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1208,6 +1214,23 @@ MonoBehaviour:
     StepRequireGroundTarget: 0
     SnapDistance: 0.25
     SnapSpeed: 4
+--- !u!114 &-3236823099726202573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694943018831287373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b400222cb0cf8bb4f824f28e394d4024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _PlayerName:
+    _length: 0
+    _data:
+      Data: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  _State: 0
 --- !u!114 &2516994780171337258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1259,7 +1282,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94ff61e00a954d2ca211bbcd85136341, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &-3236823099726202573
+  _XParameter: 0
+  _ZParameter: 0
+  _SpeedParameter: 0
+--- !u!114 &-6216331502391492118
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1268,14 +1294,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 8694943018831287373}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b400222cb0cf8bb4f824f28e394d4024, type: 3}
+  m_Script: {fileID: 11500000, guid: d3c73f648c43422992408db82fc94cc0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _PlayerName:
-    _length: 0
-    _data:
-      Data: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  _State: 0
+--- !u!114 &6361414726338469051
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694943018831287373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 523e91b092aa3c64e845d904c7b22611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-4598067215046518199
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694943018831287373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e84441bb26e49e8805033363d4d9c34, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8694943018831287375
 GameObject:
   m_ObjectHideFlags: 0

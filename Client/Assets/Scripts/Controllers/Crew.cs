@@ -21,9 +21,9 @@ public class Crew : Creature
     {
         base.Init();
 
-        Inventory = gameObject.GetComponent<Inventory>();
-
         Managers.ObjectMng.Crews[NetworkObject.Id] = this;
+
+        Inventory = gameObject.GetComponent<Inventory>();
     }
 
     public override void SetInfo(int templateID)
@@ -52,8 +52,8 @@ public class Crew : Creature
         CrewStat.SetStat(CrewData);
 
         IsRecoveringStamina = true;
-
         IsSpawned = true;
+
         if (HasStateAuthority && Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.GameScene)
         {
             StartCoroutine(((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded());
@@ -94,14 +94,9 @@ public class Crew : Creature
             if (CheckAndInteract(true))
                 return;
 
-        //if (Input.GetMouseButtonDown(0))
-        //{
-        //    if (CheckAndUseItem())
-        //    {
-        //        CreatureState = Define.CreatureState.Use;
-        //        return;
-        //    }
-        //}
+        // if (Input.GetMouseButtonDown(0))
+        //     if (CheckAndUseItem())
+        //         return;
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -112,14 +107,13 @@ public class Crew : Creature
             return;
         }
 
-
         if (Velocity == Vector3.zero)
             CreatureState = Define.CreatureState.Idle;
         else
         {
             CreatureState = Define.CreatureState.Move;
 
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (Input.GetKey(KeyCode.LeftShift) && Direction.z > 0)
             {
                 if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
                     CreaturePose = Define.CreaturePose.Run;
@@ -127,10 +121,8 @@ public class Crew : Creature
                     CreaturePose = Define.CreaturePose.Stand;
             }
             else
-            {
                 if (CreaturePose == Define.CreaturePose.Run)
                     CreaturePose = Define.CreaturePose.Stand;
-            }
         }
 
     }
@@ -258,6 +250,6 @@ public class Crew : Creature
             return false;
         }
 
-        return Inventory.CurrentItem.CheckAndUseItem(this);
+        return Inventory.CheckAndUseItem();
     }
 }

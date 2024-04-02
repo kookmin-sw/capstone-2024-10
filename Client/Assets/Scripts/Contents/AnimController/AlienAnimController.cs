@@ -42,6 +42,10 @@ public class AlienAnimController : BaseAnimController
         SetFloat("Speed", SpeedParameter);
     }
 
+    #endregion
+
+    #region Play
+
     public void PlayBasicAttack()
     {
         SetBool("BasicAttack", true);
@@ -51,6 +55,15 @@ public class AlienAnimController : BaseAnimController
     {
         SetBool("CrashDoor", true);
     }
+    public void PlayReadyRoar()
+    {
+        SetBool("ReadyRoar", true);
+    }
+    public void PlayRoar()
+    {
+        SetBool("Roar", true);
+        SetBool("ReadyRoar", false);
+    }
 
     #endregion
 
@@ -58,5 +71,7 @@ public class AlienAnimController : BaseAnimController
     {
         SetBool("BasicAttack", false);
         SetBool("CrashDoor", false);
+        SetBool("Roar", false);
+        SetBool("ReadyRoar", false);
     }
 }
