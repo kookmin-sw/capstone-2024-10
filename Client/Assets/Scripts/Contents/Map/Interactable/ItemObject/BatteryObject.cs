@@ -1,4 +1,4 @@
-﻿public class BatteryObject : BaseItemObject
+public class BatteryObject : BaseItemObject
 {
     protected override void Init()
     {

@@ -13,6 +13,7 @@ public static class Define
     {
         None,
         Battery,
+        Medicine,
     }
 
     public enum SectorName
@@ -120,6 +121,7 @@ public static class Define
     public const int ALIEN_STALKER_ID = 102000;
 
     public const int ITEM_Battery_ID = 201000;
+    public const int ITEM_Medicine_ID = 202000;
 
     #endregion
 

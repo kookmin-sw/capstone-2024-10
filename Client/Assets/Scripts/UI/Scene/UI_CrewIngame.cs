@@ -14,7 +14,8 @@ public class UI_CrewIngame : UI_Ingame
     enum CrewSubItemUIs
     {
        UI_CrewHP,
-       UI_CrewStamina
+       UI_CrewStamina,
+       UI_Inventory,
     }
 
 
@@ -30,8 +31,9 @@ public class UI_CrewIngame : UI_Ingame
     public override void AssignCreature(Creature creature)
     {
         base.AssignCreature(creature);
- 
+
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewHP) as UI_CrewHP).Crew = Crew;
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewStamina) as UI_CrewStamina).Crew = Crew;
+        (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_Inventory) as UI_Inventory).Crew = Crew;
     }
 }
