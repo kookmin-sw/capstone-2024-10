@@ -30,9 +30,9 @@ public class UI_CrewStamina : UI_Base
         if (Crew == null) return;
 
         if (Crew.Object == null || !Crew.Object.IsValid) return;
-        
+
         _fill.fillAmount = Crew.CrewStat.Stamina / Crew.CrewStat.MaxStamina;
-        _fill.color = Crew.IsRecoveringStamina ? Color.red : Color.white;
+        _fill.color = Crew.CrewStat.IsRunnable ? Color.white : Color.red;
         _fill.DOFade(_fill.fillAmount > 0.9f ? 0 : 1, 0.5f);
     }
 }

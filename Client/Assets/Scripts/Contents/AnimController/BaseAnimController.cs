@@ -17,7 +17,7 @@ public abstract class BaseAnimController : NetworkBehaviour
         Init();
     }
 
-    protected virtual void Init()
+    protected void Init()
     {
         NetworkAnim = gameObject.GetComponent<NetworkMecanimAnimator>();
         Creature = gameObject.GetComponent<Creature>();

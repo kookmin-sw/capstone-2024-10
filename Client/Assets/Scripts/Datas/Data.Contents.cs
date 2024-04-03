@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 namespace Data
 {
@@ -23,7 +24,8 @@ namespace Data
     public class CrewData : CreatureData
     {
         public int MaxHp;
-        public float Stamina;
+        public float MaxStamina;
+        public float MaxSpirit;
         public float SitSpeed;
     }
 
@@ -50,7 +52,8 @@ namespace Data
     [Serializable]
     public class AlienData : CreatureData
     {
-        public int Damage;
+        public int AttackDamage;
+        [FormerlySerializedAs("RoarSiritDamage")] public int RoarSpiritDamage;
     }
 
     [Serializable]

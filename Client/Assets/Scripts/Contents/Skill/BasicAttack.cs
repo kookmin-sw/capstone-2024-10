@@ -38,7 +38,7 @@ public class BasicAttack : BaseSkill
             foreach (Collider col in hitColliders)
             {
                 if (col != null && col.gameObject.TryGetComponent(out Crew crew))
-                    crew.Rpc_OnDamaged(Owner.AlienStat.Damage);
+                    crew.Rpc_OnDamaged(Owner.AlienStat.AttackDamage);
             }
         }
 

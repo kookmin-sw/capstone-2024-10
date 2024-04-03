@@ -13,8 +13,6 @@ public class Crew : Creature
 
     public UI_CrewIngame CrewIngameUI => IngameUI as UI_CrewIngame;
 
-    [Networked] public bool IsRecoveringStamina { get; protected set; }
-
     #endregion
 
     protected override void Init()
@@ -51,7 +49,6 @@ public class Crew : Creature
 
         CrewStat.SetStat(CrewData);
 
-        IsRecoveringStamina = true;
         IsSpawned = true;
 
         if (HasStateAuthority && Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.GameScene)
@@ -115,9 +112,9 @@ public class Crew : Creature
 
             if (Input.GetKey(KeyCode.LeftShift) && Direction.z > 0)
             {
-                if (CreaturePose != Define.CreaturePose.Sit && !IsRecoveringStamina)
+                if (CreaturePose != Define.CreaturePose.Sit && CrewStat.IsRunnable)
                     CreaturePose = Define.CreaturePose.Run;
-                if (IsRecoveringStamina)
+                if (!CrewStat.IsRunnable)
                     CreaturePose = Define.CreaturePose.Stand;
             }
             else
@@ -132,17 +129,12 @@ public class Crew : Creature
     protected void UpdateStamina()
     {
         if (CreaturePose == Define.CreaturePose.Run && CreatureState == Define.CreatureState.Move)
-        {
-            CrewStat.OnUseStamina(Define.RUN_USE_STAMINA * Runner.DeltaTime);
-            if (CrewStat.Stamina <= 0)
-                IsRecoveringStamina = true;
-        }
+            CrewStat.OnStaminaChanged(-Define.RUN_USE_STAMINA * Runner.DeltaTime);
         else
-        {
-            CrewStat.OnRecoverStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
-            if (CrewStat.Stamina >= 20) //스테미너가 0이하가 된 뒤 20까지 회복 되면 다시 달리기 가능으로 변경
-                IsRecoveringStamina = false;
-        }
+            CrewStat.OnStaminaChanged(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
+
+        if (CreatureState == Define.CreatureState.Idle)
+            CrewStat.OnSpiritChanged(Define.PASIVE_RECOVER_SPIRIT * Runner.DeltaTime);
     }
 
     protected override void UpdateIdle()
@@ -215,9 +207,9 @@ public class Crew : Creature
     #region Event
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void Rpc_OnDamaged(int damage)
+    public void Rpc_OnDamaged(int value)
     {
-        CrewStat.OnDamage(damage);
+        CrewStat.OnHpChanged(-value);
 
         if (CrewStat.Hp <= 0)
         {
@@ -228,6 +220,12 @@ public class Crew : Creature
         CreatureState = Define.CreatureState.Damaged;
         CrewAnimController.PlayDamaged();
         ReturnToIdle(1f);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void Rpc_OnSpiritDamaged(int value)
+    {
+        CrewStat.OnSpiritChanged(-value);
     }
 
     public void OnDead()
