@@ -1,16 +1,18 @@
-using UnityEngine;
-using Fusion;
+using Data;
 
 public class AlienStat: BaseStat
 {
-    [Networked] public int Damage { get; set; }
+    public Alien Alien => Creature as Alien;
+    AlienData AlienData => CreatureData as AlienData;
 
-    public override void SetStat(Data.CreatureData creatureData)
+    public int AttackDamage { get; set; }
+    public int RoarSpiritDamage { get; set; }
+
+    public override void SetStat(CreatureData creatureData)
     {
         base.SetStat(creatureData);
 
-        Data.AlienData alienData = (Data.AlienData)creatureData;
-
-        Damage = alienData.Damage;
+        AttackDamage = AlienData.AttackDamage;
+        RoarSpiritDamage = AlienData.RoarSpiritDamage;
     }
 }

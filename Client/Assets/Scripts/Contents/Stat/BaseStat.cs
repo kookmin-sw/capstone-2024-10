@@ -1,16 +1,31 @@
-using System;
+using Data;
 using Fusion;
 
 public abstract class BaseStat : NetworkBehaviour
 {
+    public Creature Creature { get; protected set; }
+    public CreatureData CreatureData { get; protected set; }
+
     [Networked] public NetworkString<_16> Name { get; set; }
-    [Networked] public float Speed { get; set; }
-    [Networked] public float WalkSpeed { get; set; }
-    [Networked] public float RunSpeed { get; set; }
-    [Networked] public float WorkSpeed { get; set; }
+    public float Speed { get; set; }
+    public float WalkSpeed { get; set; }
+    public float RunSpeed { get; set; }
+    public float WorkSpeed { get; set; }
+
+    public override void Spawned()
+    {
+        Init();
+    }
+
+    protected virtual void Init()
+    {
+        Creature = gameObject.GetComponent<Creature>();
+    }
 
     public virtual void SetStat(Data.CreatureData creatureData)
     {
+        CreatureData = creatureData;
+
         Name = creatureData.Name;
         Speed = creatureData.WalkSpeed;
         WalkSpeed = creatureData.WalkSpeed;
