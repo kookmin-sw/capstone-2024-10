@@ -1,12 +1,18 @@
 # 프로젝트 소개
 
 - 테마 : SF 스릴러
-- 장르 : 3D 멀티 술래잡기 게임
+- 장르 : 3D 비대칭 PVP 공포 게임
 - 시놉시스 : 
 
 *“괴수에게 장악되어 뒤틀린 실험실에서 탈출하라”*
 
-> 이 게임은 정체불명의 괴수에게 장악된 실험실 안에서의 플레이어의 생존을 건 협력 탈출 게임입니다. 함께 단서를 찾아 위협을 파악하고, 독특한 사운드와 어두운 분위기에서 플레이어는 긴장과 공포에 직면하게 됩니다. 괴수의 스킬 사용을 통해 활동영역이 점점 좁아지는 플레이어들은 정해진 시간안에 끊임없이 탈출을 위한 방법을 궁리하게 됩니다. 단독 플레이로는 한계가 있어, 팀원들과 함께 협력하여 이 위험한 실험실을 탈출해야 합니다. 
+> 이 게임은 3명의 생존자와 1명의 괴수가 경쟁하는 공포 테마의 비대칭 PVP 게임입니다. 생존자들은 괴수와 여러 시각적 효과들로부터 오는 극도의 긴장감 및 공포감 밑에서 실험실을 탈출해야 합니다. 괴수는 능력을 사용하여 시간이 갈수록 생존자들의 숨통을 조여오기 때문에, 너무 늦게 된다면 승리하는 것은 괴수가 될 것입니다. 그러므로 생존자들은 조심스럽지만 동시에 신속하게 목표를 달성해야 하며, 이를 위해서는 협력은 선택이 아닌 필수가 될 것입니다.
+
+# Abstarct
+
+*“Escape from a twisted laboratory seized by unknown creature”*
+
+> This game is a horror-themed asymmetrical multiplayer game where three *Surviors* and one *Creature* compete each other. Surviors must escape from the laboratory under intense tension and fear from the Creature. As time is on the Creature's side, delaying too much will result in defeat for the survivors. Therefore, survivors must achieve their goals cautiously but not too slowly, making cooperation not just an option but a necessity.
 
 ## 참여 인원
 
