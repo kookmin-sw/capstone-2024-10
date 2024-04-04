@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Fusion;
+using UnityEditor;
 using UnityEngine;
 
 public class Inventory: NetworkBehaviour
@@ -44,7 +45,7 @@ public class Inventory: NetworkBehaviour
         if (ItemInventory[CurrentItemIdx] == -1)
         {
             ItemInventory[CurrentItemIdx] = itemId;
-            Owner.CrewIngameUI.UI_Inventory.Show(CurrentItemIdx);
+            Owner.CrewIngameUI.UI_Inventory.Show(CurrentItemIdx, itemId);
             return;
         }
 
@@ -53,7 +54,7 @@ public class Inventory: NetworkBehaviour
             if (ItemInventory[i] == -1)
             {
                 ItemInventory[i] = itemId;
-                Owner.CrewIngameUI.UI_Inventory.Show(i);
+                Owner.CrewIngameUI.UI_Inventory.Show(i, itemId);
                 return;
             }
         }
@@ -80,6 +81,7 @@ public class Inventory: NetworkBehaviour
             if (ItemInventory[i] == itemId)
             {
                 ItemInventory[i] = -1;
+                Owner.CrewIngameUI.UI_Inventory.Hide(i);
                 break;
             }
         }
@@ -107,5 +109,6 @@ public class Inventory: NetworkBehaviour
     public void ChangeItem(int idx)
     {
         CurrentItemIdx = idx;
+        Owner.CrewIngameUI.UI_Inventory.Highlight(CurrentItemIdx);
     }
 }
