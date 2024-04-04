@@ -76,7 +76,7 @@ public class Crew : Creature
         // TODO - Test Code
         if (Input.GetKeyDown(KeyCode.E))
         {
-            Rpc_OnDamaged(50);
+            Rpc_OnDamaged(1);
             return;
         }
 
@@ -90,6 +90,22 @@ public class Crew : Creature
         if (Input.GetKeyDown(KeyCode.F))
             if (CheckAndInteract(true))
                 return;
+
+        //inventory
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+            Inventory.ChangeItem(0);
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+            Inventory.ChangeItem(1);
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+            Inventory.ChangeItem(2);
+        if (Input.GetKeyDown(KeyCode.Alpha4))
+            Inventory.ChangeItem(3);
+
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+            Inventory.ChangeItem(Mathf.Clamp(Inventory.CurrentItemIdx - 1, 0, 3));
+            
+        if (Input.GetAxis("Mouse ScrollWheel") < 0)
+            Inventory.ChangeItem(Mathf.Clamp(Inventory.CurrentItemIdx + 1, 0, 3));
 
         // if (Input.GetMouseButtonDown(0))
         //     if (CheckAndUseItem())
