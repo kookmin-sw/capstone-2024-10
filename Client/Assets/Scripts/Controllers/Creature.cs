@@ -34,8 +34,6 @@ public abstract class Creature : NetworkBehaviour
     [Networked] public Vector3 Direction { get; set; }
     [Networked] public Vector3 Velocity { get; set; }
 
-    public BaseWorkStation CurrentWorkStation { get; set; }
-
     #endregion
 
     public override void Spawned()
@@ -74,7 +72,7 @@ public abstract class Creature : NetworkBehaviour
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_SetInfo(int templateID)
+    private void Rpc_SetInfo(int templateID)
     {
         if (CreatureType == Define.CreatureType.Crew)
         {
@@ -168,21 +166,31 @@ public abstract class Creature : NetworkBehaviour
 
     #endregion
 
-    protected bool CheckAndInteract(bool isDoInteract)
+    protected bool CheckInteractable(bool tryInteract)
     {
-        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || IngameUI == null)
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || IngameUI == null || CreatureState == Define.CreatureState.Interact)
             return false;
 
         Ray ray = CreatureCamera.GetComponent<Camera>().ViewportPointToRay(Vector3.one * 0.5f);
 
-        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance:1.5f, layerMask:LayerMask.GetMask("MapObject")))
-            if (rayHit.transform.gameObject.TryGetComponent(out BaseInteractable interactable))
-                return interactable.IsInteractable(this, isDoInteract);
+        Debug.DrawRay(ray.origin, ray.direction * 2f, Color.red);
+
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 2f, layerMask: LayerMask.GetMask("MapObject")))
+        {
+            if (rayHit.transform.gameObject.TryGetComponent(out IInteractable interactable))
+            {
+                if (!interactable.TryShowInfoUI(this, out bool isInteractable))
+                {
+                    IngameUI.InteractInfoUI.Hide();
+                    IngameUI.ErrorTextUI.Hide();
+                }
+
+                return tryInteract && isInteractable && interactable.Interact(this);
+            }
+        }
 
         IngameUI.InteractInfoUI.Hide();
-
-        Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red);
-
+        IngameUI.ErrorTextUI.Hide();
         return false;
     }
 

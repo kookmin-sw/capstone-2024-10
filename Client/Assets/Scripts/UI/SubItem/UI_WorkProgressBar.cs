@@ -20,9 +20,9 @@ public class UI_WorkProgressBar : UI_Base
     }
     #endregion
 
-    public float TotalWorkAmount { get; protected set; }
     public float CurrentWorkAmount { get; set; }
-    public Image Progress { get; protected set; }
+    private float _totalWorkAmount;
+    private Image _progress;
 
     public override bool Init()
     {
@@ -33,33 +33,29 @@ public class UI_WorkProgressBar : UI_Base
         Bind<TMP_Text>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
 
-        Progress = GetImage((int)Images.Progress);
+        _progress = GetImage((int)Images.Progress);
 
         gameObject.SetActive(false);
         return true;
     }
 
-    public void Show(string workDescription, float workAmount)
+    public void Show(string workDescription, float currentWorkAmount, float totalWorkAmount)
     {
         GetText((int)Texts.WorkDescription).text = workDescription;
-        CurrentWorkAmount = 0f;
-        TotalWorkAmount = workAmount;
-        Progress.fillAmount = 0f;
+        CurrentWorkAmount = currentWorkAmount;
+        _totalWorkAmount = totalWorkAmount;
+        _progress.fillAmount = CurrentWorkAmount / totalWorkAmount;
 
         gameObject.SetActive(true);
     }
 
     public void Hide()
     {
-        CurrentWorkAmount = 0f;
-        TotalWorkAmount = 100f;
-        Progress.fillAmount = 0f;
-
         gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        Progress.fillAmount = CurrentWorkAmount / TotalWorkAmount;
+        _progress.fillAmount = CurrentWorkAmount / _totalWorkAmount >= 1? 1 : Mathf.Lerp(_progress.fillAmount, CurrentWorkAmount / _totalWorkAmount, 10 * Time.deltaTime);
     }
 }

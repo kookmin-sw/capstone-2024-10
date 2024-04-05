@@ -2,21 +2,17 @@ using System.Collections;
 using Fusion;
 using UnityEngine;
 
-public abstract class BaseWorkStation : BaseInteractable
+public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 {
     #region Field
-
-    [Networked] public float TotalWorkAmount { get; set; }
-    [Networked] public float CurrentWorkAmount { get; set; }
-    [Networked] public NetworkBool CanUseAgain { get; set; }
-    [Networked] public NetworkBool CanRememberWork { get; set; }
-    [Networked] public NetworkBool CanCollaborate { get; set; }
-    [Networked] public NetworkBool IsCompleted { get; set; }
-
-    [Networked, Capacity(3)] public NetworkLinkedList<NetworkId> CurrentWorkers { get; }
-
-    public Creature MyWorker { get; protected set; }
-
+    [Networked] protected float CurrentWorkAmount { get; set; }
+    [Networked] protected float TotalWorkAmount { get; set; }
+    [Networked] protected NetworkBool IsCompleted { get; set; }
+    [Networked] protected int WorkerCount { get; set; }
+    public abstract string InteractDescription { get; }
+    protected Creature Worker { get; set; }
+    protected Crew CrewWorker => Worker as Crew;
+    protected bool _canRememberWork;
     #endregion
 
     public override void Spawned()
@@ -30,114 +26,81 @@ public abstract class BaseWorkStation : BaseInteractable
         IsCompleted = false;
     }
 
-    public override bool IsInteractable(Creature creature, bool isDoInteract)
+    public abstract bool TryShowInfoUI(Creature creature, out bool isInteractable);
+    protected abstract bool IsInteractable(Creature creature);
+    protected abstract void PlayInteractAnimation();
+    public virtual bool Interact(Creature creature)
     {
-        if (creature.CreatureType == Define.CreatureType.Alien)
-            return false;
+        if (!IsInteractable(creature)) return false;
 
-        if (!CanUseAgain && IsCompleted)
-            return false;
+        Worker = creature;
+        Worker.IngameUI.InteractInfoUI.Hide();
+        Worker.CreatureState = Define.CreatureState.Interact;
+        Worker.CreaturePose = Define.CreaturePose.Stand;
+        Worker.IngameUI.WorkProgressBarUI.Show(InteractDescription, CurrentWorkAmount, TotalWorkAmount);
 
-        creature.IngameUI.InteractInfoUI.Show(InteractDescription.ToString());
+        PlayInteractAnimation();
+        Rpc_AddWorker();
 
-        if (CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
-            return false;
-
-        if (!(creature.CreatureState == Define.CreatureState.Idle || creature.CreatureState == Define.CreatureState.Move))
-            return false;
-
-        if (isDoInteract)
-            Interact(creature);
-
+        StartCoroutine(ProgressWork());
         return true;
     }
 
-    public override void Interact(Creature creature)
+    protected IEnumerator ProgressWork()
     {
-        MyWorker = creature;
-        MyWorker.IngameUI.InteractInfoUI.Hide();
-        MyWorker.CreatureState = Define.CreatureState.Interact;
-        MyWorker.CreaturePose = Define.CreaturePose.Stand;
-        MyWorker.CurrentWorkStation = this;
-        MyWorker.IngameUI.WorkProgressBarUI.Show(InteractDescription.ToString(), TotalWorkAmount);
+        Worker.IngameUI.InteractInfoUI.Show("Cancel interaction");
+        while (CurrentWorkAmount < TotalWorkAmount)
+        {
+            if (Worker.CreatureState != Define.CreatureState.Interact)
+                InterruptWork();
 
-        PlayInteractAnimation();
-        Rpc_AddWorker(MyWorker.NetworkObject.Id);
+            Rpc_UpdateWorkAmount(Time.deltaTime, Worker.CreatureData.WorkSpeed);
+            Worker.IngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
+            yield return null;
+        }
+        Worker.IngameUI.InteractInfoUI.Hide();
 
-        StartCoroutine(CoWorkProgress());
+        InterruptWork();
+        WorkComplete();
     }
 
-    public void MyWorkInterrupt()
+    protected void InterruptWork()
     {
         StopAllCoroutines();
 
-        MyWorker.IngameUI.WorkProgressBarUI.Hide();
-        MyWorker.CreatureState = Define.CreatureState.Idle;
-        MyWorker.CreaturePose = Define.CreaturePose.Stand;
-        MyWorker.CurrentWorkStation = null;
+        Worker.IngameUI.WorkProgressBarUI.Hide();
+        Worker.CreatureState = Define.CreatureState.Idle;
+        Worker.CreaturePose = Define.CreaturePose.Stand;
 
-        Rpc_MyWorkInterrupt(MyWorker.NetworkObject.Id);
-
-        Debug.Log($"{MyWorker.NetworkObject.Id}: Interrupt Work"); // TODO - Test code
+        Rpc_RemoveWorker();
     }
 
-    public virtual void WorkComplete()
+    protected virtual void WorkComplete()
     {
-        if (MyWorker.CreatureType == Define.CreatureType.Crew)
-            Rpc_CrewWorkComplete();
-        else if (MyWorker.CreatureType == Define.CreatureType.Alien)
-            Rpc_AlienWorkComplete();
-        else
-            Debug.LogError("Failed to WorkComplete");
+        Rpc_WorkComplete();
+    }
+
+    protected abstract void Rpc_WorkComplete();
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    protected void Rpc_AddWorker()
+    {
+        WorkerCount++;
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    protected void Rpc_AddWorker(NetworkId networkId)
+    protected void Rpc_RemoveWorker()
     {
-        CurrentWorkers.Add(networkId);
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    protected void Rpc_MyWorkInterrupt(NetworkId networkId)
-    {
-        CurrentWorkers.Remove(networkId);
-
-        if (!CanRememberWork && CurrentWorkers.Count <= 0)
+        WorkerCount--;
+        
+        if (!_canRememberWork && WorkerCount <= 0)
             CurrentWorkAmount = 0f;
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public virtual void Rpc_WorkProgress(float workSpeed)
+    private void Rpc_UpdateWorkAmount(float deltaTime, float workSpeed)
     {
-        CurrentWorkAmount = Mathf.Clamp(CurrentWorkAmount + Time.deltaTime * workSpeed, 0, TotalWorkAmount);
+        CurrentWorkAmount = Mathf.Clamp(CurrentWorkAmount + deltaTime * workSpeed, 0, TotalWorkAmount);
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    protected virtual void Rpc_CrewWorkComplete()
-    {
-        IsCompleted = true;
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    protected virtual void Rpc_AlienWorkComplete()
-    {
-        IsCompleted = true;
-    }
-
-    protected virtual IEnumerator CoWorkProgress()
-    {
-        while (CurrentWorkAmount < TotalWorkAmount)
-        {
-            if (MyWorker.CreatureState != Define.CreatureState.Interact)
-                MyWorkInterrupt();
-
-            Rpc_WorkProgress(MyWorker.CreatureData.WorkSpeed);
-            MyWorker.IngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
-
-            yield return null;
-        }
-
-        MyWorkInterrupt();
-        WorkComplete();
-    }
 }

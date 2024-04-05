@@ -1,68 +1,68 @@
-﻿using UnityEngine;
+using UnityEngine;
 using Fusion;
 
 public class BatteryCharger : BaseWorkStation
 {
-    public Crew MyCrew => (Crew)MyWorker;
+    public override string InteractDescription => "Charge battery";
 
     protected override void Init()
     {
         base.Init();
-
-        InteractDescription = "Charge battery";
-
-        CanUseAgain = true;
-        CanRememberWork = true;
-        CanCollaborate = true;
+        
+        _canRememberWork = false;
         IsCompleted = false;
 
         TotalWorkAmount = 10f;
     }
-
-    public override bool IsInteractable(Creature creature, bool isDoInteract)
+    public override bool TryShowInfoUI(Creature creature, out bool isInteractable)
     {
+        isInteractable = false;
         if (creature.CreatureType == Define.CreatureType.Alien)
             return false;
 
-        if (!CanUseAgain && IsCompleted)
-            return false;
-
-        if (Managers.MapMng.MapSystem.BatteryCollectFinished)
-            return false;
-
-        creature.IngameUI.InteractInfoUI.Show(InteractDescription.ToString());
-
-        if (CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
-            return false;
-
-        if (!(creature.CreatureState == Define.CreatureState.Idle || creature.CreatureState == Define.CreatureState.Move))
+        if (creature.CreatureState == Define.CreatureState.Interact)
             return false;
 
         if (!((Crew)creature).Inventory.HasItem(Define.ITEM_Battery_ID))
-            return false;
+        {
+            creature.IngameUI.ErrorTextUI.Show("You don't have any battery");
+            return true;
+        }
 
-        if (isDoInteract)
-            Interact(creature);
+        if (Managers.MapMng.MapSystem.BatteryCollectFinished)
+        {
+            creature.IngameUI.ErrorTextUI.Show("All batteries are already charged");
+            return true;
+        }
+
+        creature.IngameUI.InteractInfoUI.Show(InteractDescription);
+        isInteractable = true;
+        return true;
+    }
+
+    protected override bool IsInteractable(Creature creature)
+    {
+        if (WorkerCount > 0) return false;
 
         return true;
     }
 
-    public override void WorkComplete()
+    protected override void WorkComplete()
     {
-        MyCrew.Inventory.RemoveItem(Define.ITEM_Battery_ID);
+        CrewWorker.Inventory.RemoveItem(Define.ITEM_Battery_ID);
 
         base.WorkComplete();
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    protected override void Rpc_CrewWorkComplete()
+    protected override void Rpc_WorkComplete()
     {
         CurrentWorkAmount = 0;
         Managers.MapMng.MapSystem.BatteryCollectCount++;
     }
-    public override void PlayInteractAnimation()
+    protected override void PlayInteractAnimation()
     {
-        MyCrew.CrewAnimController.PlayKeypadUse();
+        CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 }
 
