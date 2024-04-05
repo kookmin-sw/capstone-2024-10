@@ -40,7 +40,7 @@ public abstract class BaseSkill : NetworkBehaviour
 
     public void ReadySkill()
     {
-        Owner.IngameUI.WorkProgressBarUI.Show(SkillDescription.ToString(), TotalSkillAmount);
+        Owner.IngameUI.WorkProgressBarUI.Show(SkillDescription.ToString(), CurrentSkillAmount, TotalSkillAmount);
         Owner.CreatureState = Define.CreatureState.Use;
         Owner.CreaturePose = Define.CreaturePose.Stand;
 

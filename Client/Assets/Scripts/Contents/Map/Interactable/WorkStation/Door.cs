@@ -1,13 +1,11 @@
 using Fusion;
+using UnityEngine;
 
 public class Door : BaseWorkStation
 {
-    [Networked] public float OpenWorkAmount { get; set; }
-    [Networked] public float CloseWorkAmount { get; set; }
-
-    [Networked] public NetworkBool IsOpened { get; set; }
-
+    [Networked] private NetworkBool IsOpened { get; set; }
     public NetworkMecanimAnimator NetworkAnim { get; protected set; }
+    public override string InteractDescription => IsOpened ? "Close Door" : "Open Door";
 
     protected override void Init()
     {
@@ -15,70 +13,98 @@ public class Door : BaseWorkStation
 
         NetworkAnim = transform.GetComponent<NetworkMecanimAnimator>();
 
-        InteractDescription = "USE DOOR";
-
-        CanUseAgain = true;
-        CanCollaborate = false;
-        CanRememberWork = false;
-        IsCompleted = false;
         IsOpened = false;
+        _canRememberWork = false;
 
-        OpenWorkAmount = 5;
-        CloseWorkAmount = 1;
-
-        TotalWorkAmount = IsOpened ? CloseWorkAmount : OpenWorkAmount;
+        TotalWorkAmount = 5f; // only for alien crashing door
     }
 
-    public override bool IsInteractable(Creature creature, bool isDoInteract)
+    public override bool TryShowInfoUI(Creature creature, out bool isInteractable)   
     {
-        if (creature.CreatureType == Define.CreatureType.Alien && IsOpened)
+        isInteractable = false;
+        if (creature.CreatureState == Define.CreatureState.Interact)
             return false;
 
-        if (!CanUseAgain && IsCompleted)
-            return false;
+        creature.IngameUI.InteractInfoUI.Show(InteractDescription);
 
-        creature.IngameUI.InteractInfoUI.Show(InteractDescription.ToString());
+        isInteractable = true;
+        return true;
+    }
 
-        if (CurrentWorkers.Count >= 3 || (!CanCollaborate && CurrentWorkers.Count >= 1))
-            return false;
+    protected override bool IsInteractable(Creature creature)
+    {
+        if (WorkerCount > 0) return false;
 
-        if (!(creature.CreatureState == Define.CreatureState.Idle || creature.CreatureState == Define.CreatureState.Move))
-            return false;
-
-        TotalWorkAmount = IsOpened ? CloseWorkAmount : OpenWorkAmount;
-
-        if (isDoInteract)
-            Interact(creature);
+        if (creature is Alien && IsOpened) return false;
 
         return true;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    protected override void Rpc_CrewWorkComplete()
+    public override bool Interact(Creature creature)
     {
-        base.Rpc_CrewWorkComplete();
+        if (!IsInteractable(creature)) return false;
 
+        Worker = creature;
+        Worker.IngameUI.InteractInfoUI.Hide();
+        Worker.CreatureState = Define.CreatureState.Interact;
+        Worker.CreaturePose = Define.CreaturePose.Stand;
+
+        PlayInteractAnimation();
+        Rpc_AddWorker();
+        
+        if (creature is Crew)
+        {
+            InterruptWork();
+            WorkComplete();
+        }
+        else
+        {
+            Worker.IngameUI.WorkProgressBarUI.Show(InteractDescription, CurrentWorkAmount, TotalWorkAmount);
+            StartCoroutine(ProgressWork());
+        }
+        
+        return true;
+    }
+
+    protected override void WorkComplete()
+    {
+        switch (Worker)
+        {
+            case Crew:
+                Rpc_WorkComplete();
+                break;
+            case Alien:
+                Rpc_AlienWorkComplete();
+                break;
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    protected override void Rpc_WorkComplete()
+    {
         IsOpened = !IsOpened;
         NetworkAnim.Animator.SetBool("OpenParameter", IsOpened);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    protected override void Rpc_AlienWorkComplete()
+    private void Rpc_AlienWorkComplete()
     {
-        base.Rpc_CrewWorkComplete();
-
         gameObject.SetActive(false);
         //Managers.NetworkMng.Runner.Despawn(gameObject.GetComponent<NetworkObject>());
     }
 
-    public override void PlayInteractAnimation()
+    protected override void PlayInteractAnimation()
     {
-        if (!IsOpened)
+        if (IsOpened) return;
+
+        switch (Worker)
         {
-            if (MyWorker.CreatureType == Define.CreatureType.Crew)
-                ((Crew)MyWorker).CrewAnimController.PlayOpenDoor();
-            else
-                ((Alien)MyWorker).AlienAnimController.PlayCrashDoor();
+            case Crew crew:
+                crew.CrewAnimController.PlayOpenDoor();
+                break;
+            case Alien alien:
+                alien.AlienAnimController.PlayCrashDoor();
+                break;
         }
     }
 }

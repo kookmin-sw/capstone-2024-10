@@ -1,23 +1,52 @@
+using Fusion;
+
 public class Computer : BaseWorkStation
 {
-    public Crew MyCrew => (Crew)MyWorker;
+    public override string InteractDescription => "Use computer";
 
     protected override void Init()
     {
         base.Init();
 
-        InteractDescription = "USE COMPUTER";
-
-        CanUseAgain = false;
-        CanRememberWork = true;
-        CanCollaborate = true;
+        _canRememberWork = true;
         IsCompleted = false;
 
-        TotalWorkAmount = 100f;
+        TotalWorkAmount = 50f;
+    }
+    public override bool TryShowInfoUI(Creature creature, out bool isInteractable)
+    {
+        isInteractable = false;
+        if (creature.CreatureType == Define.CreatureType.Alien)
+            return false;
+
+        if (IsCompleted)
+        {
+            creature.IngameUI.ErrorTextUI.Show("This computer has already been completely used");
+            return true;
+        }
+
+        if (creature.CreatureState == Define.CreatureState.Interact)
+            return false;
+
+        creature.IngameUI.InteractInfoUI.Show(InteractDescription);
+        isInteractable = true;
+        return true;
     }
 
-    public override void PlayInteractAnimation()
+    protected override bool IsInteractable(Creature creature)
     {
-        MyCrew.CrewAnimController.PlayKeypadUse();
+        return true;
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    protected override void Rpc_WorkComplete()
+    {
+        if (IsCompleted) return;
+        IsCompleted = true;
+    }
+
+    protected override void PlayInteractAnimation()
+    {
+        CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 }

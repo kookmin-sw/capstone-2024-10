@@ -1,19 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
-public class UI_InteractInfo : UI_Base
+public class UI_ErrorText : UI_Base
 {
-    enum Images
-    {
-        Keycode_bg
-    }
-
     enum Texts
     {
-        Keycode_text,
         Description_text
     }
 
@@ -22,8 +16,8 @@ public class UI_InteractInfo : UI_Base
         if (base.Init() == false)
             return false;
 
-        Bind<Image>(typeof(Images));
         Bind<TMP_Text>(typeof(Texts));
+        gameObject.SetActive(false);
         return true;
     }
 
@@ -32,8 +26,7 @@ public class UI_InteractInfo : UI_Base
         GetText(Texts.Description_text).text = description;
         gameObject.SetActive(true);
     }
- 
+
 
     public void Hide() => gameObject.SetActive(false);
 }
-

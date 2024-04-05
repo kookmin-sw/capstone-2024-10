@@ -1,52 +1,48 @@
 using Fusion;
 using UnityEngine;
 
-public abstract class BaseItemObject : BaseInteractable
+public abstract class BaseItemObject : NetworkBehaviour, IInteractable
 {
-    public int DataId { get; protected set; }
-
-    public override void Spawned()
+    public abstract int DataId { get;}
+    public string InteractDescription => $"Get {Managers.ObjectMng.Items[DataId].ItemData.Name}";
+    
+    public bool TryShowInfoUI(Creature creature, out bool isInteractable)
     {
-        Init();
-    }
+        isInteractable = false;
+        if (creature is not Crew crew) return false;
 
-    protected abstract void Init();
+        if (!crew.Inventory.CheckCanGetItem())
+        {
+            creature.IngameUI.ErrorTextUI.Show("Inventory is full!");
+            return true;
+        }
 
-    public override bool IsInteractable(Creature creature, bool isDoInteract)
-    {
-        if (creature.CreatureType == Define.CreatureType.Alien)
-            return false;
-
-        creature.IngameUI.InteractInfoUI.Show(InteractDescription.ToString());
-
-        if (!(creature.CreatureState == Define.CreatureState.Idle || creature.CreatureState == Define.CreatureState.Move))
-            return false;
-
-        if (!((Crew)creature).Inventory.CheckCanGetItem())
-            return false;
-
-        if (isDoInteract)
-            Interact(creature);
-
+        creature.IngameUI.InteractInfoUI.Show(InteractDescription);
+        isInteractable = true;
         return true;
     }
 
-    public override void Interact(Creature creature)
+    public bool Interact(Creature creature)
     {
-        PlayInteractAnimation();
-        Rpc_InteractComplete();
+        Crew crew = creature as Crew;
 
-        ((Crew)creature).Inventory.GetItem(DataId);
+        Rpc_DisableItem();
+        Rpc_DespawnItem();
+
+        crew.Inventory.GetItem(DataId);
+        return true;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    public virtual void Rpc_InteractComplete()
+    private void Rpc_DisableItem()
     {
         gameObject.SetActive(false);
     }
-
-    public override void PlayInteractAnimation()
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    private void Rpc_DespawnItem()
     {
-
+        Runner.Despawn(gameObject.GetComponent<NetworkObject>());
     }
+
+
 }
