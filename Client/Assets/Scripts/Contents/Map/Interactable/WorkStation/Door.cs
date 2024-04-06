@@ -19,12 +19,13 @@ public class Door : BaseWorkStation
         TotalWorkAmount = 5f; // only for alien crashing door
     }
 
-    public override bool TryShowInfoUI(Creature creature, out bool isInteractable)   
+    public override bool TryShowInfoUI(Creature creature, out bool isInteractable)
     {
         isInteractable = false;
         if (creature.CreatureState == Define.CreatureState.Interact)
             return false;
 
+        creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Show(InteractDescription);
 
         isInteractable = true;
@@ -51,7 +52,7 @@ public class Door : BaseWorkStation
 
         PlayInteractAnimation();
         Rpc_AddWorker();
-        
+
         if (creature is Crew)
         {
             InterruptWork();
@@ -62,7 +63,7 @@ public class Door : BaseWorkStation
             Worker.IngameUI.WorkProgressBarUI.Show(InteractDescription, CurrentWorkAmount, TotalWorkAmount);
             StartCoroutine(ProgressWork());
         }
-        
+
         return true;
     }
 

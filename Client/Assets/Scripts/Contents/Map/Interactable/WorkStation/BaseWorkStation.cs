@@ -54,7 +54,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
             if (Worker.CreatureState != Define.CreatureState.Interact)
                 InterruptWork();
 
-            Rpc_UpdateWorkAmount(Time.deltaTime, Worker.CreatureData.WorkSpeed);
+            Rpc_UpdateWorkAmount(Time.deltaTime, Worker.BaseStat.WorkSpeed);
             Worker.IngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
             yield return null;
         }
@@ -92,7 +92,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     protected void Rpc_RemoveWorker()
     {
         WorkerCount--;
-        
+
         if (!_canRememberWork && WorkerCount <= 0)
             CurrentWorkAmount = 0f;
     }

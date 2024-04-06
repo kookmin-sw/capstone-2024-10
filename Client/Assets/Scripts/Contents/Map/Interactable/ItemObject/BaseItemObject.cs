@@ -4,8 +4,8 @@ using UnityEngine;
 public abstract class BaseItemObject : NetworkBehaviour, IInteractable
 {
     public abstract int DataId { get;}
-    public string InteractDescription => $"Get {Managers.ObjectMng.Items[DataId].ItemData.Name}";
-    
+    public string InteractDescription => $"Get Item";
+
     public bool TryShowInfoUI(Creature creature, out bool isInteractable)
     {
         isInteractable = false;

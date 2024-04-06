@@ -22,18 +22,21 @@ public class BatteryCharger : BaseWorkStation
         if (creature.CreatureState == Define.CreatureState.Interact)
             return false;
 
-        if (!((Crew)creature).Inventory.HasItem(Define.ITEM_Battery_ID))
+        if (!(((Crew)creature).Inventory.CurrentItem is Battery))
         {
-            creature.IngameUI.ErrorTextUI.Show("You don't have any battery");
+            creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Show("You don't hold battery");
             return true;
         }
 
         if (Managers.MapMng.MapSystem.BatteryCollectFinished)
         {
+            creature.IngameUI.InteractInfoUI.Hide();
             creature.IngameUI.ErrorTextUI.Show("All batteries are already charged");
             return true;
         }
 
+        creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Show(InteractDescription);
         isInteractable = true;
         return true;
@@ -48,7 +51,7 @@ public class BatteryCharger : BaseWorkStation
 
     protected override void WorkComplete()
     {
-        CrewWorker.Inventory.RemoveItem(Define.ITEM_Battery_ID);
+        CrewWorker.Inventory.RemoveItem();
 
         base.WorkComplete();
     }

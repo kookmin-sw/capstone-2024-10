@@ -9,8 +9,6 @@ public class ObjectManager
 	public Dictionary<NetworkId, Crew> Crews { get; protected set; }
     public Dictionary<NetworkId, Alien> Aliens { get; protected set; }
 
-    public Dictionary<int, BaseItem> Items { get; protected set; }
-
     public Creature MyCreature { get; set; }
     public Transform CrewRoot => GetRootTransform("@Crews");
     public Transform AlienRoot => GetRootTransform("@Aliens");
@@ -19,9 +17,6 @@ public class ObjectManager
     {
 	    Crews = new Dictionary<NetworkId, Crew>();
 	    Aliens = new Dictionary<NetworkId, Alien>();
-        Items = new Dictionary<int, BaseItem>();
-
-        BindItems();
     }
 
     public Transform GetRootTransform(string name)
@@ -32,28 +27,6 @@ public class ObjectManager
 
 	    return root.transform;
     }
-
-    #region Bind
-
-    public void BindItems()
-    {
-        foreach (var itemData in Managers.DataMng.ItemDataDict)
-        {
-            Type itemType = Type.GetType(itemData.Value.Name);
-            if (itemType == null)
-            {
-                Debug.LogError("Failed to BindAction: " + itemData.Value.Name);
-                return;
-            }
-
-            BaseItem item = (BaseItem)(Activator.CreateInstance(itemType));
-            item.SetInfo(itemData.Key);
-
-            Items[itemData.Key] = item;
-        }
-    }
-
-    #endregion
 
     #region Creature
 

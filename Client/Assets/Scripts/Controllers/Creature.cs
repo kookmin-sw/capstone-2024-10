@@ -9,12 +9,17 @@ public abstract class Creature : NetworkBehaviour
     public const bool IsFirstPersonView = true;
     #region Field
 
-    public bool IsSpawned { get; protected set; } = false;
-    public UI_Ingame IngameUI { get; set; }
+    public bool IsSpawned { get; protected set; }
 
-    public GameObject Head { get; protected set; }
-    public CreatureCamera CreatureCamera { get; protected set; }
-    public WatchingCamera WatchingCamera { get; protected set; }
+    public int DataId { get; set; }
+    public CreatureData CreatureData { get; protected set; }
+    [Networked] public Define.CreatureType CreatureType { get; set; }
+
+    public Define.CreatureState CreatureState { get; set; }
+    public Define.CreaturePose CreaturePose { get; set; }
+
+    public Vector3 Direction { get; set; }
+    public Vector3 Velocity { get; set; }
 
     public Transform Transform { get; protected set; }
     public CapsuleCollider Collider { get; protected set; }
@@ -24,15 +29,11 @@ public abstract class Creature : NetworkBehaviour
     public BaseStat BaseStat { get; protected set; }
     public BaseAnimController BaseAnimController { get; protected set; }
 
-    [Networked] public int DataId { get; set; }
-    public CreatureData CreatureData { get; protected set; }
-    [Networked] public Define.CreatureType CreatureType { get; set; }
+    public UI_Ingame IngameUI { get; set; }
 
-    [Networked] public Define.CreatureState CreatureState { get; set; }
-    [Networked] public Define.CreaturePose CreaturePose { get; set; }
-
-    [Networked] public Vector3 Direction { get; set; }
-    [Networked] public Vector3 Velocity { get; set; }
+    public GameObject Head { get; protected set; }
+    public CreatureCamera CreatureCamera { get; protected set; }
+    public WatchingCamera WatchingCamera { get; protected set; }
 
     #endregion
 
@@ -131,41 +132,6 @@ public abstract class Creature : NetworkBehaviour
         }
     }
 
-    #region Update
-
-    protected void UpdateByState()
-    {
-        switch (CreatureState)
-        {
-            case Define.CreatureState.Idle:
-                UpdateIdle();
-                break;
-            case Define.CreatureState.Move:
-                UpdateMove();
-                break;
-            case Define.CreatureState.Interact:
-                UpdateInteract();
-                break;
-            case Define.CreatureState.Use:
-                UpdateUse();
-                break;
-            case Define.CreatureState.Dead:
-                UpdateDead();
-                break;
-        }
-    }
-
-    protected abstract void UpdateIdle();
-
-    protected abstract void UpdateMove();
-
-    protected abstract void UpdateInteract();
-    protected abstract void UpdateUse();
-
-    protected virtual void UpdateDead() { }
-
-    #endregion
-
     protected bool CheckInteractable(bool tryInteract)
     {
         if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || IngameUI == null || CreatureState == Define.CreatureState.Interact)
@@ -202,4 +168,39 @@ public abstract class Creature : NetworkBehaviour
             CreaturePose = Define.CreaturePose.Stand;
         });
     }
+
+    #region Update
+
+    protected void UpdateByState()
+    {
+        switch (CreatureState)
+        {
+            case Define.CreatureState.Idle:
+                UpdateIdle();
+                break;
+            case Define.CreatureState.Move:
+                UpdateMove();
+                break;
+            case Define.CreatureState.Interact:
+                UpdateInteract();
+                break;
+            case Define.CreatureState.Use:
+                UpdateUse();
+                break;
+            case Define.CreatureState.Dead:
+                UpdateDead();
+                break;
+        }
+    }
+
+    protected abstract void UpdateIdle();
+
+    protected abstract void UpdateMove();
+
+    protected abstract void UpdateInteract();
+    protected abstract void UpdateUse();
+
+    protected virtual void UpdateDead() { }
+
+    #endregion
 }

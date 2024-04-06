@@ -1,15 +1,17 @@
+using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 using Fusion;
-using UnityEditor;
 using UnityEngine;
 
 public class Inventory: NetworkBehaviour
 {
     public Crew Owner { get; protected set; }
 
+    public Dictionary<int, BaseItem> ItemDict { get; protected set; }
     public List<int> ItemInventory { get; protected set; }
-    [Networked] public int CurrentItemIdx { get; set; }
-    public BaseItem CurrentItem => Managers.ObjectMng.Items[ItemInventory[CurrentItemIdx]];
+    public int CurrentItemIdx { get; set; }
+    public BaseItem CurrentItem => ItemDict[ItemInventory[CurrentItemIdx]];
 
     public override void Spawned()
     {
@@ -20,6 +22,29 @@ public class Inventory: NetworkBehaviour
     {
         Owner = gameObject.GetComponent<Crew>();
 
+        ItemDict = new Dictionary<int, BaseItem>
+        {
+            [-1] = null
+        };
+
+        foreach (var itemData in Managers.DataMng.ItemDataDict)
+        {
+            Type itemType = Type.GetType(itemData.Value.Name);
+            if (itemType == null)
+            {
+                Debug.LogError("Failed to BindAction: " + itemData.Value.Name);
+                return;
+            }
+
+            BaseItem item = (BaseItem)(Activator.CreateInstance(itemType));
+            item.SetInfo(itemData.Key, Owner);
+
+            ItemDict[itemData.Key] = item;
+        }
+    }
+
+    public void SetInfo()
+    {
         ItemInventory = new List<int>(Define.MAX_ITEM_NUM);
         for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
         {
@@ -46,6 +71,7 @@ public class Inventory: NetworkBehaviour
         {
             ItemInventory[CurrentItemIdx] = itemId;
             Owner.CrewIngameUI.UI_Inventory.Show(CurrentItemIdx, itemId);
+            Rpc_ShowItem(itemId);
             return;
         }
 
@@ -60,31 +86,14 @@ public class Inventory: NetworkBehaviour
         }
     }
 
-    public bool HasItem(int itemId)
+    public void RemoveItem()
     {
-        for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
-        {
-            if (ItemInventory[i] == itemId) return true;
-        }
+        if (ItemInventory[CurrentItemIdx] == -1)
+            return;
 
-        return false;
-    }
-
-    public void RemoveItem(int itemId)
-    {
-        if (!HasItem(itemId))
-        {
-            Debug.LogWarning($"No such item in inventory: {Managers.ObjectMng.Items[itemId]}");
-        }
-        for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
-        {
-            if (ItemInventory[i] == itemId)
-            {
-                ItemInventory[i] = -1;
-                Owner.CrewIngameUI.UI_Inventory.Hide(i);
-                break;
-            }
-        }
+        Rpc_HideItem(ItemInventory[CurrentItemIdx]);
+        Owner.CrewIngameUI.UI_Inventory.Hide(CurrentItemIdx);
+        ItemInventory[CurrentItemIdx] = -1;
     }
 
     public bool CheckAndUseItem()
@@ -95,9 +104,9 @@ public class Inventory: NetworkBehaviour
         if (!CurrentItem.CheckAndUseItem(Owner))
             return false;
 
-        ItemInventory[CurrentItemIdx] = -1;
-
+        Rpc_HideItem(ItemInventory[CurrentItemIdx]);
         Owner.CrewIngameUI.UI_Inventory.Hide(CurrentItemIdx);
+        ItemInventory[CurrentItemIdx] = -1;
         return true;
     }
 
@@ -108,7 +117,26 @@ public class Inventory: NetworkBehaviour
 
     public void ChangeItem(int idx)
     {
+        if (CurrentItem != null)
+            Rpc_HideItem(ItemInventory[CurrentItemIdx]);
+
         CurrentItemIdx = idx;
-        Owner.CrewIngameUI.UI_Inventory.Highlight(CurrentItemIdx);
+
+        if (CurrentItem != null)
+            Rpc_ShowItem(ItemInventory[idx]);
+
+        Owner.CrewIngameUI.UI_Inventory.Highlight(idx);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void Rpc_ShowItem(int itemId)
+    {
+        ItemDict[itemId].ItemGameObject.SetActive(true);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void Rpc_HideItem(int itemId)
+    {
+        ItemDict[itemId].ItemGameObject.SetActive(false);
     }
 }

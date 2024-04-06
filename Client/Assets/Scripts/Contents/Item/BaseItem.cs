@@ -1,5 +1,6 @@
 ﻿using Data;
 using Fusion;
+using UnityEngine;
 
 public abstract class BaseItem
 {
@@ -7,14 +8,19 @@ public abstract class BaseItem
     public ItemData ItemData { get; protected set; }
     public Define.ItemType ItemType { get; set; }
 
-    public virtual void SetInfo(int templateId)
+    public Crew Owner { get; protected set; }
+
+    public GameObject ItemGameObject { get; protected set; }
+
+    public virtual void SetInfo(int templateId, Crew owner)
     {
         DataId = templateId;
         ItemData = Managers.DataMng.ItemDataDict[templateId];
+        Owner = owner;
     }
 
     public abstract bool CheckAndUseItem(Crew crew);
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    protected abstract void Rpc_Use();
+    protected virtual void Rpc_Use() { }
 }
