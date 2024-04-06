@@ -38,16 +38,7 @@ public abstract class BaseSkill : NetworkBehaviour
         Owner.CreaturePose = Define.CreaturePose.Stand;
     }
 
-    public void ReadySkill()
-    {
-        Owner.IngameUI.WorkProgressBarUI.Show(SkillDescription.ToString(), CurrentSkillAmount, TotalSkillAmount);
-        Owner.CreatureState = Define.CreatureState.Use;
-        Owner.CreaturePose = Define.CreaturePose.Stand;
-
-        Owner.AlienAnimController.PlayReadyRoar();
-
-        StartCoroutine(CoReadySkill());
-    }
+    public virtual void ReadySkill() { }
 
     protected virtual IEnumerator CoReadySkill()
     {
