@@ -103,7 +103,7 @@ public class Crew : Creature
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
             Inventory.ChangeItem(Mathf.Clamp(Inventory.CurrentItemIdx - 1, 0, 3));
-            
+
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
             Inventory.ChangeItem(Mathf.Clamp(Inventory.CurrentItemIdx + 1, 0, 3));
 
@@ -150,7 +150,7 @@ public class Crew : Creature
             CrewStat.OnStaminaChanged(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
 
         if (CreatureState == Define.CreatureState.Idle)
-            CrewStat.OnSpiritChanged(Define.PASIVE_RECOVER_SPIRIT * Runner.DeltaTime);
+            CrewStat.OnSanityChanged(Define.PASIVE_RECOVER_SANITY * Runner.DeltaTime);
     }
 
     protected override void UpdateIdle()
@@ -239,9 +239,9 @@ public class Crew : Creature
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void Rpc_OnSpiritDamaged(int value)
+    public void Rpc_OnSanityDamaged(int value)
     {
-        CrewStat.OnSpiritChanged(-value);
+        CrewStat.OnSanityChanged(-value);
     }
 
     public void OnDead()

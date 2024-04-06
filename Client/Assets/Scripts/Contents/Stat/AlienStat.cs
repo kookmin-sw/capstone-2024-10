@@ -6,13 +6,13 @@ public class AlienStat: BaseStat
     AlienData AlienData => CreatureData as AlienData;
 
     public int AttackDamage { get; set; }
-    public int RoarSpiritDamage { get; set; }
+    public int RoarSanityDamage { get; set; }
 
     public override void SetStat(CreatureData creatureData)
     {
         base.SetStat(creatureData);
 
         AttackDamage = AlienData.AttackDamage;
-        RoarSpiritDamage = AlienData.RoarSpiritDamage;
+        RoarSanityDamage = AlienData.RoarSanityDamage;
     }
 }

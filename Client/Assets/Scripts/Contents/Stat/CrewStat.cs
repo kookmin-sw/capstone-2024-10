@@ -10,8 +10,8 @@ public class CrewStat : BaseStat
     public int MaxHp { get; set; }
     public float Stamina { get; set; }
     public float MaxStamina { get; set; }
-    public float Spirit { get; set; }
-    public float MaxSpirit { get; set; }
+    public float Sanity { get; set; }
+    public float MaxSanity { get; set; }
     public float SitSpeed { get; set; }
 
     public bool IsRunnable { get; set; }
@@ -24,8 +24,8 @@ public class CrewStat : BaseStat
         MaxHp = CrewData.MaxHp;
         Stamina = CrewData.MaxStamina;
         MaxStamina = CrewData.MaxStamina;
-        Spirit = CrewData.MaxSpirit;
-        MaxSpirit = CrewData.MaxSpirit;
+        Sanity = CrewData.MaxSanity;
+        MaxSanity = CrewData.MaxSanity;
         SitSpeed = CrewData.SitSpeed;
         IsRunnable = true;
     }
@@ -47,23 +47,23 @@ public class CrewStat : BaseStat
             IsRunnable = false;
     }
 
-    public void OnSpiritChanged(float value)
+    public void OnSanityChanged(float value)
     {
-        Spirit = Mathf.Clamp(Spirit + value, 0, MaxSpirit);
+        Sanity = Mathf.Clamp(Sanity + value, 0, MaxSanity);
 
-        if (Spirit >= 70)
+        if (Sanity >= 70)
         {
             WalkSpeed = CrewData.WalkSpeed;
             RunSpeed = CrewData.RunSpeed;
             SitSpeed = CrewData.SitSpeed;
         }
-        else if (Spirit < 70)
+        else if (Sanity < 70)
         {
             WalkSpeed = CrewData.WalkSpeed * 0.9f;
             RunSpeed = CrewData.RunSpeed * 0.9f;
             SitSpeed = CrewData.SitSpeed * 0.9f;
         }
-        else if (Spirit < 30)
+        else if (Sanity < 30)
         {
             WalkSpeed = CrewData.WalkSpeed * 0.7f;
             RunSpeed = CrewData.RunSpeed * 0.7f;

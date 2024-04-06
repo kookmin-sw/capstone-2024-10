@@ -25,7 +25,7 @@ namespace Data
     {
         public int MaxHp;
         public float MaxStamina;
-        public float MaxSpirit;
+        public float MaxSanity;
         public float SitSpeed;
     }
 
@@ -53,7 +53,7 @@ namespace Data
     public class AlienData : CreatureData
     {
         public int AttackDamage;
-        [FormerlySerializedAs("RoarSiritDamage")] public int RoarSpiritDamage;
+        public int RoarSanityDamage;
     }
 
     [Serializable]
