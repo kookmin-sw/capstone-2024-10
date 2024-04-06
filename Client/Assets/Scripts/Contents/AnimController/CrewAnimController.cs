@@ -71,8 +71,9 @@ public class CrewAnimController : BaseAnimController
         SetBool("OpenDoor", true);
     }
 
-    public void PlayUseItem()
+    public void PlayChargeBattery()
     {
+        SetBool("ChargeBattery", true);
     }
 
     public void PlayDamaged()
@@ -91,6 +92,7 @@ public class CrewAnimController : BaseAnimController
     {
         SetBool("KeypadUse", false);
         SetBool("OpenDoor", false);
+        SetBool("ChargeBattery", false);
         SetBool("Damaged", false);
     }
 }

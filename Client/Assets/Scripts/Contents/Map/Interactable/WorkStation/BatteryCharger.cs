@@ -8,7 +8,7 @@ public class BatteryCharger : BaseWorkStation
     protected override void Init()
     {
         base.Init();
-        
+
         _canRememberWork = false;
         IsCompleted = false;
 
@@ -62,7 +62,7 @@ public class BatteryCharger : BaseWorkStation
     }
     protected override void PlayInteractAnimation()
     {
-        CrewWorker.CrewAnimController.PlayKeypadUse();
+        CrewWorker.CrewAnimController.PlayChargeBattery();
     }
 }
 

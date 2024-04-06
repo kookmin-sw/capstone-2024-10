@@ -38,7 +38,7 @@ public class Roar : BaseSkill
             foreach (Collider col in hitColliders)
             {
                 if (col != null && col.gameObject.TryGetComponent(out Crew crew))
-                    crew.Rpc_OnSpiritDamaged(Owner.AlienStat.RoarSpiritDamage);
+                    crew.Rpc_OnSanityDamaged(Owner.AlienStat.RoarSanityDamage);
             }
         }
 
