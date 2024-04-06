@@ -14,7 +14,7 @@ public class Player : NetworkBehaviour
 
     [Networked]
     public PlayerRef PlayerRef { get; set; }
-    public Action OnPlayerNameUpdate { get; set; }
+    public Action<string> OnPlayerNameUpdate { get; set; }
 
     public Creature Creature { get; set; }
     [Networked]
@@ -26,26 +26,18 @@ public class Player : NetworkBehaviour
             return;
 
         PlayerRef = Runner.LocalPlayer;
-        PlayerName = Managers.NetworkMng.PlayerName;
         Managers.GameMng.Player = this;
-    }
-
-    private void Update()
-    {
-        if (HasStateAuthority && Runner.IsSharedModeMasterClient)
-        {
-            PlayerName = "Master";
-        }
+        PlayerName = Managers.NetworkMng.PlayerName;
     }
 
     private IEnumerator Start()
     {
         yield return new WaitUntil(() => isActiveAndEnabled);
 
-        yield return new WaitUntil(() => Object != null && Object.IsValid);
+        yield return new WaitUntil(() => Runner.IsRunning);
 
         Define.SceneType sceneType = Managers.SceneMng.CurrentScene.SceneType;
-        if (sceneType != Define.SceneType.GameScene || sceneType != Define.SceneType.ReadyScene)
+        if (sceneType != Define.SceneType.GameScene && sceneType != Define.SceneType.ReadyScene)
             yield break;
 
         var creature = GetComponent<Creature>();
@@ -62,8 +54,11 @@ public class Player : NetworkBehaviour
                 }
             }
         }
+    }
 
-        OnPlayerNameUpdate?.Invoke();
+    private void Update()
+    {
+        OnPlayerNameUpdate?.Invoke((Managers.NetworkMng.Runner.IsSharedModeMasterClient ? " Master " : "") + PlayerName.Value);
     }
 
     public void GetReady()

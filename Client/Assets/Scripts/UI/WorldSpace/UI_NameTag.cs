@@ -43,7 +43,7 @@ public class UI_NameTag : UI_Base
         transform.localRotation = Quaternion.Euler(0, 0, 0);
 
         Player = transform.parent.GetComponent<Player>();
-        Player.OnPlayerNameUpdate += () => Nickname.text = Player.PlayerName.Value;
+        Player.OnPlayerNameUpdate += (name) => Nickname.text = name;
 
         return true;
     }
