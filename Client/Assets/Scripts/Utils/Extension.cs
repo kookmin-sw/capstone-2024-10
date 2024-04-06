@@ -46,6 +46,12 @@ public static class Extension
         return taggedGameObjects;
     }
 
+    public static bool IsSceneType(this BaseScene scene, int sceneIndex)
+    {
+        int idx = (int)scene.SceneType;
+        return (idx | sceneIndex) == sceneIndex;
+    }
+
     // SimulationBehaviour를 Runner에 할당
     // Runner.Spawn 등 Runner를 사용하는 데 필요함
     public static void RegisterRunner(this SimulationBehaviour sb)

@@ -12,7 +12,7 @@ public class GameScene : BaseScene
         Managers.MapMng.Init();
     }
 
-    public IEnumerator OnSceneLoaded()
+    public override IEnumerator OnSceneLoaded()
     {
         MapSystem mapSystem = null;
         while (mapSystem == null)

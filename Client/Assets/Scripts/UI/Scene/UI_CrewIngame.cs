@@ -8,6 +8,8 @@ public class UI_CrewIngame : UI_Ingame
 {
     public UI_CrewObjective ObjectiveUI { get; private set; }
     public UI_Inventory UI_Inventory { get; private set; }
+    public UI_CrewHP UI_CrewHP { get; private set; }
+    public UI_CrewStamina UI_CrewStamina { get; private set; }
 
     private Crew Crew {
         get => Creature as Crew;
@@ -31,7 +33,9 @@ public class UI_CrewIngame : UI_Ingame
 
         ObjectiveUI = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewObjective) as UI_CrewObjective;
         UI_Inventory = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_Inventory) as UI_Inventory;
-
+        UI_CrewHP = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewHP) as UI_CrewHP;
+        UI_CrewStamina = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewStamina) as UI_CrewStamina;
+        
         return true;
     }
 

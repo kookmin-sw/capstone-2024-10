@@ -57,9 +57,9 @@ public class Crew : Creature
 
         IsSpawned = true;
 
-        if (HasStateAuthority && Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.GameScene)
+        if (HasStateAuthority && Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene | (int)Define.SceneType.ReadyScene))
         {
-            StartCoroutine(((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded());
+            StartCoroutine(Managers.SceneMng.CurrentScene.OnSceneLoaded());
         }
     }
 

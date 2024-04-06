@@ -10,7 +10,7 @@ using System;
 
 public class UI_Lobby : UI_Base
 {
-    #region UI 목록들
+    #region Enums
 
     public enum Buttons
     {
@@ -26,10 +26,13 @@ public class UI_Lobby : UI_Base
 
     #endregion
 
-    public UI_LobbyController UIMenuController { get; private set; }
+    private ILobbyController _controller;
 
     public override bool Init()
     {
+        if (_init == true)
+            return true;
+
         if (base.Init() == false)
             return false;
 
@@ -63,19 +66,19 @@ public class UI_Lobby : UI_Base
                 {
                     session = session
                 };
-                StartCoroutine(entry.SetInfo(this, args));
+                StartCoroutine(entry.SetInfo(_controller, args));
             }
         }
     }
 
-    public void SetInfo(UI_LobbyController controller)
+    public void SetInfo(ILobbyController controller)
     {
-        UIMenuController = controller;
+        _controller = controller;
         foreach (int i in Enum.GetValues(typeof(Buttons)))
         {
             BindEvent(GetButton(i).gameObject, (e) => {
                 if (GetButton(i).interactable)
-                    UIMenuController?.PlayHover();
+                    _controller?.PlayHover();
             }, Define.UIEvent.PointerEnter);
         }
     }
@@ -95,8 +98,9 @@ public class UI_Lobby : UI_Base
 
     void CreateGame()
     {
+        _controller.ExitMenu();
+        _controller.ShowLoadingMenu();
         Managers.NetworkMng.CreateSession();
-        Destroy(gameObject);
     }
 
     void EnterGame()

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class ReadyScene : BaseScene
@@ -13,6 +14,19 @@ public class ReadyScene : BaseScene
 
         Managers.UIMng.ShowPopupUI<UI_StartGame>(parent: Managers.UIMng.Root.transform);
         StartCoroutine(Managers.GameMng.TryStartGame());
+    }
+
+    public override IEnumerator OnSceneLoaded()
+    {
+        UI_CrewIngame ingameUI = Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
+        yield return new WaitUntil(() => ingameUI.Init());
+
+        ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
+        Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
+        ingameUI.UI_CrewHP.gameObject.SetActive(false);
+        ingameUI.UI_CrewStamina.gameObject.SetActive(false);
+        ingameUI.ObjectiveUI.gameObject.SetActive(false);
+        ingameUI.UI_Inventory.gameObject.SetActive(false);
     }
 
     // 씬이 바뀔 때 정리해야 하는 목록
