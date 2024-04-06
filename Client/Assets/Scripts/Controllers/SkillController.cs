@@ -20,7 +20,7 @@ public class SkillController: NetworkBehaviour
 
     public bool CheckAndUseSkill(int skillIdx)
     {
-        if (Skills[skillIdx] == null)
+        if (!Skills.ContainsKey(skillIdx))
         {
             Debug.Log("Failed to CheckAndUseSkill");
             return false;

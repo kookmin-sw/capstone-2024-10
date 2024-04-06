@@ -7,7 +7,7 @@ public class BasicAttack : BaseSkill
         base.Init();
 
         SkillDescription = "BASIC ATTACK";
-        SkillTime = 1.5f;
+        SkillTime = 1.1f;
         CoolTime = 2f;
         TotalSkillAmount = -1f;
         AttackRange = 1.5f;

@@ -7,7 +7,7 @@ public class Roar : BaseSkill
         base.Init();
 
         SkillDescription = "ROAR";
-        SkillTime = 2f;
+        SkillTime = 2.1f;
         CoolTime = 4f;
         TotalSkillAmount = 3f;
         AttackRange = 3f;
@@ -21,6 +21,17 @@ public class Roar : BaseSkill
         Owner.CurrentSkillRange = AttackRange;
         ReadySkill();
         return true;
+    }
+
+    public override void ReadySkill()
+    {
+        Owner.IngameUI.WorkProgressBarUI.Show(SkillDescription, CurrentSkillAmount, TotalSkillAmount);
+        Owner.CreatureState = Define.CreatureState.Use;
+        Owner.CreaturePose = Define.CreaturePose.Stand;
+
+        Owner.AlienAnimController.PlayReadyRoar();
+
+        StartCoroutine(CoReadySkill());
     }
 
     public override void UseSkill()

@@ -59,9 +59,21 @@ public class AlienAnimController : BaseAnimController
     {
         SetBool("ReadyRoar", true);
     }
+
     public void PlayRoar()
     {
         SetBool("Roar", true);
+        SetBool("ReadyRoar", false);
+    }
+
+    public void PlayReadyCursedHowl()
+    {
+        SetBool("ReadyRoar", true);
+    }
+
+    public void PlayCursedHowl()
+    {
+        SetBool("CursedHowl", true);
         SetBool("ReadyRoar", false);
     }
 
@@ -71,7 +83,8 @@ public class AlienAnimController : BaseAnimController
     {
         SetBool("BasicAttack", false);
         SetBool("CrashDoor", false);
-        SetBool("Roar", false);
         SetBool("ReadyRoar", false);
+        SetBool("Roar", false);
+        SetBool("CursedHowl", false);
     }
 }
