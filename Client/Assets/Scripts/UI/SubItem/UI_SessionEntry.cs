@@ -33,8 +33,8 @@ public class UI_SessionEntry : UI_Base
     }
     #endregion
 
-    UI_Base _parent;
-    SessionInfo _session;
+    private ILobbyController _controller;
+    private SessionInfo _session;
 
     public override bool Init()
     {
@@ -54,10 +54,10 @@ public class UI_SessionEntry : UI_Base
         return true;
     }
 
-    public IEnumerator SetInfo(UI_Lobby parent, SessionEntryArgs args)
+    public IEnumerator SetInfo(ILobbyController controller, SessionEntryArgs args)
     {
         yield return null;
-        _parent = parent;
+        _controller = controller;
         _session = args.session;
         GetText((int)Texts.RoomName).text = _session.Name;
         GetText((int)Texts.PlayerCount).text = _session.PlayerCount + "/" + _session.MaxPlayers;
@@ -73,7 +73,8 @@ public class UI_SessionEntry : UI_Base
 
     private void JoinSession()
     {
+        _controller.ExitMenu();
+        _controller.ShowLoadingMenu();
         Managers.NetworkMng.ConnectToSession(GetText((int)Texts.RoomName).text);
-        _parent.gameObject.SetActive(false);
     }
 }

@@ -38,8 +38,6 @@ public class ObjectManager
 
         Crew crew = no.GetComponent<Crew>();
         crew.SetInfo(crewDataId);
-        Player player = no.GetComponent<Player>();
-        player.PlayerRef = Managers.NetworkMng.Runner.LocalPlayer;
 
         return no;
     }
@@ -52,8 +50,6 @@ public class ObjectManager
 
         Alien alien = no.GetComponent<Alien>();
         alien.SetInfo(alienDataId);
-        Player player = no.GetComponent<Player>();
-        player.PlayerRef = Managers.NetworkMng.Runner.LocalPlayer;
 
         return no;
     }

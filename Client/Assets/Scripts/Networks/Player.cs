@@ -25,6 +25,7 @@ public class Player : NetworkBehaviour
         if (!HasStateAuthority)
             return;
 
+        PlayerRef = Runner.LocalPlayer;
         PlayerName = Managers.NetworkMng.PlayerName;
         Managers.GameMng.Player = this;
     }
@@ -41,18 +42,26 @@ public class Player : NetworkBehaviour
     {
         yield return new WaitUntil(() => isActiveAndEnabled);
 
-        var creature = GetComponent<Creature>();
-        // if (creature.CreatureType == Define.CreatureType.Crew)
-        // {
-        //     var ui = Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
-        //
-        //     if (PlayerRef == Runner.LocalPlayer)
-        //     {
-        //         ui.gameObject.SetActive(false);
-        //     }
-        // }
-
         yield return new WaitUntil(() => Object != null && Object.IsValid);
+
+        Define.SceneType sceneType = Managers.SceneMng.CurrentScene.SceneType;
+        if (sceneType != Define.SceneType.GameScene || sceneType != Define.SceneType.ReadyScene)
+            yield break;
+
+        var creature = GetComponent<Creature>();
+
+        if (Managers.ObjectMng.MyCreature.CreatureType == Define.CreatureType.Crew)
+        {
+            if (creature.CreatureType == Define.CreatureType.Crew)
+            {
+                var ui = Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
+
+                if (PlayerRef == Runner.LocalPlayer)
+                {
+                    ui.gameObject.SetActive(false);
+                }
+            }
+        }
 
         OnPlayerNameUpdate?.Invoke();
     }

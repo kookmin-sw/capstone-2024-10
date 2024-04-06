@@ -41,7 +41,7 @@ public class UI_StartGame : UI_Popup
         {
             SimulateButtonClick(GetButton((int)Buttons.ReadyGame));
         }
-        else if (Input.GetButton("Cancel"))
+        else if (Input.GetButtonDown("Cancel"))
         {
             SimulateButtonClick(GetButton((int)Buttons.ExitGame));
         }

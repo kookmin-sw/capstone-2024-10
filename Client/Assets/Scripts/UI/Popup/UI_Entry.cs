@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class UI_Entry : UI_Popup
 {
-    #region UI 목록들
+    #region Enums
     public enum Buttons
     {
         Submit,
@@ -45,6 +45,6 @@ public class UI_Entry : UI_Popup
     {
         string name = GetObject((int)GameObjects.NickName).GetComponent<TMP_InputField>().text;
         Managers.NetworkMng.ConnectToLobby(name);
-        Managers.UIMng.ClosePopupUI(this);
+        ClosePopupUI();
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UI_LobbyController : UI_Base
+public class UI_LobbyController : UI_Base, ILobbyController
 {
     #region Enums
     enum GameObjects
@@ -33,10 +33,6 @@ public class UI_LobbyController : UI_Base
         LineCombat,
         LineGeneral,
         KeyConfirmation,
-        // LoadingScreen
-        Loading,
-        ProgressBar,
-        TextPrompt,
     }
 
     enum Buttons
@@ -104,6 +100,12 @@ public class UI_LobbyController : UI_Base
         SensitivityYSlider,
         SmoothingSlider,
     }
+
+    enum SubItems
+    {
+        UI_Loading,
+        UI_Lobby,
+    }
     #endregion
 
     #region Fields
@@ -163,14 +165,11 @@ public class UI_LobbyController : UI_Base
     public GameObject lineGeneral;
     public GameObject KeyConfirmation;
 
-    [Header("LOADING SCREEN")]
-    [Tooltip("If this is true, the loaded scene won't load until receiving user input")]
-    public bool waitForInput = true;
-    public GameObject loadingMenu;
-    [Tooltip("The loading bar Slider UI element in the Loading Screen")]
-    public Slider loadingBar;
-    public TMP_Text loadPromptText;
-    public KeyCode userPromptKey;
+    [Header("LOADING")]
+    public UI_Loading loadingMenu;
+
+    [Header("LOBBY")]
+    public UI_Lobby lobbyMenu;
 
     private Animator CameraObject;
     #endregion
@@ -181,6 +180,8 @@ public class UI_LobbyController : UI_Base
 
         Bind<GameObject>(typeof(GameObjects));
         Bind<Button>(typeof(Buttons));
+        Bind<UI_Base>(typeof(SubItems));
+        DontDestroyOnLoad(gameObject);
 
         CameraObject = Camera.main.GetComponent<Animator>();
         mainMenu = gameObject;
@@ -210,10 +211,12 @@ public class UI_LobbyController : UI_Base
         lineGeneral = GetObject((int)GameObjects.LineGeneral);
         KeyConfirmation = GetObject((int)GameObjects.KeyConfirmation);
 
-        loadingMenu = GetObject((int)GameObjects.Loading);
-        loadingBar = GetObject((int)GameObjects.ProgressBar).GetComponent<Slider>();
-        loadPromptText = GetObject((int)GameObjects.TextPrompt).GetComponent<TMP_Text>();
-        userPromptKey = KeyCode.Space;
+        loadingMenu = Get<UI_Base>(SubItems.UI_Loading) as UI_Loading;
+        loadingMenu.Init();
+        loadingMenu.SetInfo(this);
+        lobbyMenu = Get<UI_Base>(SubItems.UI_Lobby) as UI_Lobby;
+        lobbyMenu.Init();
+        lobbyMenu.SetInfo(this);
 
         foreach (int i in Enum.GetValues(typeof(Buttons)))
         {
@@ -244,16 +247,12 @@ public class UI_LobbyController : UI_Base
         GetButton((int)Buttons.KeyBindings_Btn).onClick.AddListener(KeyBindingsPanel);
         GetButton((int)Buttons.Btn_Return).onClick.AddListener(ReturnMenu);
 
-        var lobby = mainCanvas.AddComponent<UI_Lobby>();
-        lobby.Init();
-        lobby.SetInfo(this);
 
         playMenu.SetActive(false);
         exitMenu.SetActive(false);
         extrasMenu.SetActive(false);
         firstMenu.SetActive(true);
         mainMenu.SetActive(true);
-        loadingMenu.SetActive(false);
 
         PanelVideo.SetActive(false);
         PanelControls.SetActive(false);
@@ -296,6 +295,28 @@ public class UI_LobbyController : UI_Base
         }
     }
 
+    public void ExitMenu()
+    {
+        playMenu.SetActive(false);
+        exitMenu.SetActive(false);
+        extrasMenu.SetActive(false);
+        firstMenu.SetActive(false);
+        loadingMenu.gameObject.SetActive(false);
+        PanelVideo.SetActive(false);
+        PanelControls.SetActive(false);
+        PanelGame.SetActive(false);
+        PanelKeyBindings.SetActive(false);
+        KeyConfirmation.SetActive(false);
+        lineControls.SetActive(false);
+        lineKeyBindings.SetActive(false);
+        lineVideo.SetActive(false);
+    }
+
+    public void DestroyMenu()
+    {
+        Destroy(gameObject);
+    }
+
     public void PlayCampaign()
     {
         exitMenu.SetActive(false);
@@ -319,12 +340,10 @@ public class UI_LobbyController : UI_Base
         mainMenu.SetActive(true);
     }
 
-    public void LoadScene(string scene)
+    public void ShowLoadingMenu()
     {
-        if (scene != "")
-        {
-            StartCoroutine(LoadAsynchronously(scene));
-        }
+        loadingMenu.gameObject.SetActive(true);
+        StartCoroutine(loadingMenu.LoadAsynchronously());
     }
 
     public void DisablePlayCampaign()
@@ -461,37 +480,5 @@ public class UI_LobbyController : UI_Base
 #else
 				Application.Quit();
 #endif
-    }
-
-    // Load Bar synching animation
-    IEnumerator LoadAsynchronously(string sceneName)
-    { // scene name is just the name of the current scene being loaded
-        AsyncOperation operation = SceneManager.LoadSceneAsync(sceneName);
-        operation.allowSceneActivation = false;
-        mainCanvas.SetActive(false);
-        loadingMenu.SetActive(true);
-
-        while (!operation.isDone)
-        {
-            float progress = Mathf.Clamp01(operation.progress / .95f);
-            loadingBar.value = progress;
-
-            if (operation.progress >= 0.9f && waitForInput)
-            {
-                loadPromptText.text = "Press " + userPromptKey.ToString().ToUpper() + " to continue";
-                loadingBar.value = 1;
-
-                if (Input.GetKeyDown(userPromptKey))
-                {
-                    operation.allowSceneActivation = true;
-                }
-            }
-            else if (operation.progress >= 0.9f && !waitForInput)
-            {
-                operation.allowSceneActivation = true;
-            }
-
-            yield return null;
-        }
     }
 }
