@@ -13,7 +13,7 @@ public abstract class Alien : Creature
 
     public UI_AlienIngame AlienIngameUI => IngameUI as UI_AlienIngame;
 
-    public float CurrentSkillRange;
+    public float CurrentSkillRange { get; set; }
 
     #endregion
 
@@ -104,6 +104,23 @@ public abstract class Alien : Creature
         }
     }
 
+    protected bool CheckAndUseSkill(int skillIdx)
+    {
+        if (!HasStateAuthority)
+            return false;
+
+        return SkillController.CheckAndUseSkill(skillIdx);
+    }
+
+    public void OnDrawGizmos()
+    {
+        if (!IsSpawned)
+            return;
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere( Head.transform.position + CreatureCamera.transform.forward * CurrentSkillRange, CurrentSkillRange);
+    }
+
     #region Update
 
     protected override void UpdateIdle()
@@ -160,21 +177,4 @@ public abstract class Alien : Creature
     }
 
     #endregion
-
-    protected bool CheckAndUseSkill(int skillIdx)
-    {
-        if (!HasStateAuthority)
-            return false;
-
-        return SkillController.CheckAndUseSkill(skillIdx);
-    }
-
-    public void OnDrawGizmos()
-    {
-        if (!IsSpawned)
-            return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere( Head.transform.position + CreatureCamera.transform.forward * CurrentSkillRange, CurrentSkillRange);
-    }
 }

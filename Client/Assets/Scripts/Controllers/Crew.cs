@@ -13,6 +13,9 @@ public class Crew : Creature
 
     public UI_CrewIngame CrewIngameUI => IngameUI as UI_CrewIngame;
 
+    public GameObject RightHand { get; protected set; }
+    public GameObject LeftHand { get; protected set; }
+
     #endregion
 
     protected override void Init()
@@ -22,6 +25,10 @@ public class Crew : Creature
         Managers.ObjectMng.Crews[NetworkObject.Id] = this;
 
         Inventory = gameObject.GetComponent<Inventory>();
+
+        Head = Util.FindChild(gameObject, "head.x", true);
+        RightHand = Util.FindChild(gameObject, "c_middle1.r", true);
+        LeftHand = Util.FindChild(gameObject, "c_middle1.l", true);
     }
 
     public override void SetInfo(int templateID)
@@ -30,12 +37,10 @@ public class Crew : Creature
 
         base.SetInfo(templateID);
 
-        Head = Util.FindChild(gameObject, "head.x", true);
         Head.transform.localScale = Vector3.zero;
 
         if (IsFirstPersonView)
         {
-
             CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", Util.FindChild(gameObject, "neck.x", true).transform).GetComponent<CreatureCamera>();
             CreatureCamera.transform.localPosition = new Vector3(0f, 0.2f, 0f);
             CreatureCamera.SetInfo(this);
@@ -48,6 +53,7 @@ public class Crew : Creature
         }
 
         CrewStat.SetStat(CrewData);
+        Inventory.SetInfo();
 
         IsSpawned = true;
 
@@ -73,13 +79,6 @@ public class Crew : Creature
 
         CheckInteractable(false);
 
-        // TODO - Test Code
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Rpc_OnDamaged(1);
-            return;
-        }
-
         if (CreatureState == Define.CreatureState.Interact)
         {
             if (Input.GetKeyDown(KeyCode.F))
@@ -91,7 +90,10 @@ public class Crew : Creature
             if (CheckInteractable(true))
                 return;
 
-        //inventory
+        if (Input.GetMouseButtonDown(0))
+            if (CheckAndUseItem())
+                return;
+
         if (Input.GetKeyDown(KeyCode.Alpha1))
             Inventory.ChangeItem(0);
         if (Input.GetKeyDown(KeyCode.Alpha2))
@@ -106,10 +108,6 @@ public class Crew : Creature
 
         if (Input.GetAxis("Mouse ScrollWheel") < 0)
             Inventory.ChangeItem(Mathf.Clamp(Inventory.CurrentItemIdx + 1, 0, 3));
-
-        // if (Input.GetMouseButtonDown(0))
-        //     if (CheckAndUseItem())
-        //         return;
 
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -138,6 +136,20 @@ public class Crew : Creature
                 CreaturePose = Define.CreaturePose.Stand;
         }
 
+    }
+
+    protected bool CheckAndUseItem()
+    {
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+            return false;
+
+        if (Inventory.CurrentItem == null)
+        {
+            Debug.Log("No Item");
+            return false;
+        }
+
+        return Inventory.CheckAndUseItem();
     }
 
     #region Update
@@ -252,18 +264,4 @@ public class Crew : Creature
     }
 
     #endregion
-
-    protected bool CheckAndUseItem()
-    {
-        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead)
-            return false;
-
-        if (Inventory.CurrentItem == null)
-        {
-            Debug.Log("No Item");
-            return false;
-        }
-
-        return Inventory.CheckAndUseItem();
-    }
 }

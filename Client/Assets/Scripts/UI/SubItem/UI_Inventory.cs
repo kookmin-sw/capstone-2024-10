@@ -14,7 +14,7 @@ public class UI_Inventory : UI_Base
         InventoryBox1,
         InventoryBox2,
         InventoryBox3,
-        
+
     }
 
     public enum GameObjects
@@ -44,6 +44,8 @@ public class UI_Inventory : UI_Base
         ItemList[1].SetActive(false);
         ItemList[2].SetActive(false);
         ItemList[3].SetActive(false);
+
+        Highlight(0);
 
         return true;
     }
@@ -87,6 +89,6 @@ public class UI_Inventory : UI_Base
                 GetImage(Images.InventoryBox3).color = Color.yellow;
                 break;
         }
-        
+
     }
 }

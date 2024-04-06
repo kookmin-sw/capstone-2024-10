@@ -21,6 +21,7 @@ public class Computer : BaseWorkStation
 
         if (IsCompleted)
         {
+            creature.IngameUI.InteractInfoUI.Hide();
             creature.IngameUI.ErrorTextUI.Show("This computer has already been completely used");
             return true;
         }
@@ -28,6 +29,7 @@ public class Computer : BaseWorkStation
         if (creature.CreatureState == Define.CreatureState.Interact)
             return false;
 
+        creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Show(InteractDescription);
         isInteractable = true;
         return true;
