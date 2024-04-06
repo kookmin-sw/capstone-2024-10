@@ -10,14 +10,10 @@ public class LobbyScene : BaseScene
 
         SceneType = Define.SceneType.LobbyScene;
 
-        // Managers.UIMng.ShowSceneUI<UI_Lobby>();
-
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
         string nickname = Managers.NetworkMng.PlayerName;
-        Managers.NetworkMng.ConnectToLobby(nickname);
-        /*
         if (string.IsNullOrEmpty(nickname))
         {
             Managers.UIMng.ShowPopupUI<UI_Entry>();
@@ -26,7 +22,6 @@ public class LobbyScene : BaseScene
         {
             Managers.NetworkMng.ConnectToLobby(nickname);
         }
-        */
     }
 
     public override void Clear()

@@ -13,8 +13,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
     public NetworkRunner Runner { get; private set; }
     [SerializeField]
-    private string _playerName;
-    public string PlayerName { get => _playerName; private set { _playerName = value; } }
+    public string PlayerName;
     public List<SessionInfo> Sessions = new List<SessionInfo>();
     public Action OnSessionUpdated;
     public bool IsMaster { get => Runner.IsSharedModeMasterClient; }

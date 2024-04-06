@@ -55,9 +55,9 @@ public abstract class Alien : Creature
         CurrentSkillRange = 1.5f;
         IsSpawned = true;
 
-        if (Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.GameScene)
+        if (Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene))
         {
-            StartCoroutine(((Managers.SceneMng.CurrentScene) as GameScene).OnSceneLoaded());
+            StartCoroutine(Managers.SceneMng.CurrentScene.OnSceneLoaded());
         }
     }
 
