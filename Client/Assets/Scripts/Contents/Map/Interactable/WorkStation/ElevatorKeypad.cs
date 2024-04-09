@@ -26,7 +26,7 @@ public class ElevatorKeypad : BaseWorkStation
             return false;
         }
 
-        if (!Managers.MapMng.MapSystem.IsGeneratorRestored)
+        if (!Managers.MapMng.PlanSystem.IsGeneratorRestored)
         {
             creature.IngameUI.ErrorTextUI.Show("You cannot use this now");
         }

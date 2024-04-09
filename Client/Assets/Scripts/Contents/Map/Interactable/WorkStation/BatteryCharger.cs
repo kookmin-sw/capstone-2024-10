@@ -29,7 +29,7 @@ public class BatteryCharger : BaseWorkStation
             return true;
         }
 
-        if (Managers.MapMng.MapSystem.IsBatteryChargeFinished)
+        if (Managers.MapMng.PlanSystem.IsBatteryChargeFinished)
         {
             creature.IngameUI.InteractInfoUI.Hide();
             creature.IngameUI.ErrorTextUI.Show("All batteries are charged already");
@@ -60,7 +60,7 @@ public class BatteryCharger : BaseWorkStation
     protected override void Rpc_WorkComplete()
     {
         CurrentWorkAmount = 0;
-        Managers.MapMng.MapSystem.BatteryChargeCount++;
+        Managers.MapMng.PlanSystem.BatteryChargeCount++;
     }
     protected override void PlayInteractAnimation()
     {

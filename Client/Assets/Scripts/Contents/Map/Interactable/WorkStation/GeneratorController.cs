@@ -19,14 +19,14 @@ public class GeneratorController : BaseWorkStation
         if (creature.CreatureType == Define.CreatureType.Alien)
             return false;
 
-        if (Managers.MapMng.MapSystem.IsGeneratorRestored)
+        if (Managers.MapMng.PlanSystem.IsGeneratorRestored)
         {
             creature.IngameUI.InteractInfoUI.Hide();
             creature.IngameUI.ErrorTextUI.Show("The generator has already been restored");
             return true;
         }
 
-        if (!Managers.MapMng.MapSystem.IsBatteryChargeFinished)
+        if (!Managers.MapMng.PlanSystem.IsBatteryChargeFinished)
         {
             creature.IngameUI.InteractInfoUI.Hide();
             creature.IngameUI.ErrorTextUI.Show("You cannot use this now");
@@ -52,7 +52,7 @@ public class GeneratorController : BaseWorkStation
     {
         if (IsCompleted) return;
         IsCompleted = true;
-        Managers.MapMng.MapSystem.IsGeneratorRestored = true;
+        Managers.MapMng.PlanSystem.IsGeneratorRestored = true;
     }
 
     protected override void PlayInteractAnimation()

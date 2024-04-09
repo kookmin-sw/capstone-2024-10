@@ -66,9 +66,9 @@ public class UI_CrewObjective : UI_Base
             _textLock = true;
             yield return _colorTweener.WaitForCompletion();
             yield return new WaitForSeconds(1f);
+            _objectiveText.fontStyle = FontStyles.Strikethrough;
 
             yield return _objectiveText.DOColor(Color.gray, 1f).WaitForCompletion();
-            _objectiveText.fontStyle = FontStyles.Strikethrough;
 
             yield return new WaitForSeconds(1f);
 
