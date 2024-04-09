@@ -6,6 +6,7 @@ public class Stalker : Alien
 
         SkillController.Skills[0] = gameObject.GetComponent<BasicAttack>();
         SkillController.Skills[1] = gameObject.GetComponent<Roar>();
+        SkillController.Skills[2] = gameObject.GetComponent<LeapAttack>();
         SkillController.Skills[3] = gameObject.GetComponent<CursedHowl>();
     }
 }

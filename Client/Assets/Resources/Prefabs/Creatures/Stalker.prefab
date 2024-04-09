@@ -1041,6 +1041,7 @@ GameObject:
   - component: {fileID: 6361414726338469051}
   - component: {fileID: -4598067215046518199}
   - component: {fileID: 1910566033739555847}
+  - component: {fileID: 8114384917890620963}
   m_Layer: 7
   m_Name: Stalker
   m_TagString: Untagged
@@ -1163,6 +1164,7 @@ MonoBehaviour:
   - {fileID: 6361414726338469051}
   - {fileID: -4598067215046518199}
   - {fileID: 1910566033739555847}
+  - {fileID: 8114384917890620963}
 --- !u!114 &8848567419615919483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1179,7 +1181,7 @@ MonoBehaviour:
   TotalWords: 4
   ApplyTiming: 2
   SyncSettings: 79
-  StateHashes: 000000005775fad1d53ab6540077695bdedc2838d60d65cf5b3f1ae1
+  StateHashes: 000000005775fad1d53ab6540077695bdedc2838d60d65cf5b3f1ae1ba3676e238793a6700677f7b822833fe1636ac3c0b316b7b3bc588839e816f3c
   TriggerHashes: 00000000
 --- !u!114 &6976675480461094696
 MonoBehaviour:
@@ -1245,13 +1247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 430d34e7eabc46ba86caccfe28e7476b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _DataId: 0
   _CreatureType: 0
-  _CreatureState: 0
-  _CreaturePose: 0
-  _Direction: {x: 0, y: 0, z: 0}
-  _Velocity: {x: 0, y: 0, z: 0}
-  CurrentSkillRange: 0
 --- !u!114 &4476358356948161216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1329,6 +1325,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8351ace36e714fffac612c2255b76fc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8114384917890620963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8694943018831287373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44a80b8a998f99044998e1ce1fd00de0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8694943018831287375
