@@ -1,17 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UI_CrewObjective : UI_Base
 {
-    
+    enum GameObjects
+    {
+        PlanA,
+        PlanB,
+        PlanC
+    }
+
     enum Texts
     {
-        Title_text,
-        CollectBattery_text,
-        Escape_text,
+        PlanA_Objective_Text,
+        PlanB_Objective_Text,
+        PlanC_Objective_Text,
     }
 
     public override bool Init()
@@ -20,26 +27,28 @@ public class UI_CrewObjective : UI_Base
             return false;
 
         Bind<TMP_Text>(typeof(Texts));
-        GetText(Texts.Escape_text).gameObject.SetActive(false);
+        Bind<GameObject>(typeof(GameObjects));
+        GetObject(GameObjects.PlanC).SetActive(false);
         return true;
     }
 
-    public void UpdateUI(int count)
+    public void UpdateBatteryCount(int count)
     {
-        GetText(Texts.CollectBattery_text).text = $"1. Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})";
+        GetText(Texts.PlanA_Objective_Text).text = $"a. Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})";
         if (count >= Define.BATTERY_COLLECT_GOAL)
         {
-            OnBatteryCollectComplete();
+            GetText(Texts.PlanA_Objective_Text).text =
+                $"a. Collect and charge the batteries ({Define.BATTERY_COLLECT_GOAL}/{Define.BATTERY_COLLECT_GOAL})";
+            GetText(Texts.PlanA_Objective_Text).DOColor(Color.green, 0.3f).OnComplete((() =>
+            {
+                GetText(Texts.PlanA_Objective_Text).text = "b. Restore the backup generator (0/1)";
+            }));
         }
     }
 
-    private void OnBatteryCollectComplete()
+    public void OnGeneratorRestored()
     {
-        GetText(Texts.CollectBattery_text).text =
-            $"1. Collect and charge the batteries ({Define.BATTERY_COLLECT_GOAL}/{Define.BATTERY_COLLECT_GOAL})";
-        GetText(Texts.CollectBattery_text).fontStyle = FontStyles.Strikethrough;
-        GetText(Texts.CollectBattery_text).color = Color.gray;
-        GetText(Texts.Escape_text).gameObject.SetActive(true);
+        
     }
 }
 

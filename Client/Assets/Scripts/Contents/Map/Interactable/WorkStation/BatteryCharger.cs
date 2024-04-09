@@ -25,14 +25,14 @@ public class BatteryCharger : BaseWorkStation
         if (!(((Crew)creature).Inventory.CurrentItem is Battery))
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Show("You don't hold battery");
+            creature.IngameUI.ErrorTextUI.Show("You should have a battery on your hand");
             return true;
         }
 
-        if (Managers.MapMng.MapSystem.BatteryCollectFinished)
+        if (Managers.MapMng.MapSystem.IsBatteryChargeFinished)
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Show("All batteries are already charged");
+            creature.IngameUI.ErrorTextUI.Show("All batteries are charged already");
             return true;
         }
 
@@ -60,7 +60,7 @@ public class BatteryCharger : BaseWorkStation
     protected override void Rpc_WorkComplete()
     {
         CurrentWorkAmount = 0;
-        Managers.MapMng.MapSystem.BatteryCollectCount++;
+        Managers.MapMng.MapSystem.BatteryChargeCount++;
     }
     protected override void PlayInteractAnimation()
     {

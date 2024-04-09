@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.7474368, g: 0.576345, b: 0.6460982, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5767,7 +5767,7 @@ MonoBehaviour:
   PlayerPrefab:
   - {fileID: 7920281149799720858, guid: 29a9a66ff70ef064aab2dd74f627c7c9, type: 3}
   - {fileID: 8694943018831287373, guid: 8699e629035530341baf2cfaa50ba60a, type: 3}
-  PrefabNum: 1
+  PrefabNum: 0
   PlayerSpawnPosition: {x: -6, y: 0, z: 10}
 --- !u!114 &631919794
 MonoBehaviour:
@@ -6204,11 +6204,20 @@ PrefabInstance:
       value: 143253881
       objectReference: {fileID: 0}
     - target: {fileID: 5728729387097700069, guid: fea750ca11e6ba249b98f8ae77885de2, type: 3}
+      propertyPath: Flags
+      value: 262145
+      objectReference: {fileID: 0}
+    - target: {fileID: 5728729387097700069, guid: fea750ca11e6ba249b98f8ae77885de2, type: 3}
       propertyPath: SortKey
       value: 2888454276
       objectReference: {fileID: 0}
+    - target: {fileID: 5728729387097700069, guid: fea750ca11e6ba249b98f8ae77885de2, type: 3}
+      propertyPath: NestedObjects.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7418624060249631507, guid: fea750ca11e6ba249b98f8ae77885de2, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fea750ca11e6ba249b98f8ae77885de2, type: 3}

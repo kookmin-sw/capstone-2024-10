@@ -10,6 +10,8 @@ public class ObjectManager
     public Dictionary<NetworkId, Alien> Aliens { get; protected set; }
 
     public Creature MyCreature { get; set; }
+    public Crew MyCrew => MyCreature as Crew;
+    public Alien MyAlien => MyCreature as Alien;
     public Transform CrewRoot => GetRootTransform("@Crews");
     public Transform AlienRoot => GetRootTransform("@Aliens");
 

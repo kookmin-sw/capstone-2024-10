@@ -46,6 +46,6 @@ public class UI_CrewIngame : UI_Ingame
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewHP) as UI_CrewHP).Crew = Crew;
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewStamina) as UI_CrewStamina).Crew = Crew;
 
-        ObjectiveUI.UpdateUI(0);
+        ObjectiveUI.UpdateBatteryCount(0);
     }
 }
