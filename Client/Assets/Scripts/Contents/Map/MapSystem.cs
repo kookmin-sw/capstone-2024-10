@@ -8,14 +8,15 @@ using Random = UnityEngine.Random;
 
 public class MapSystem : NetworkBehaviour
 {
+    public Dictionary<Define.SectorName, Sector> Sectors { get; set; } = new();
+
     [Header("Item Spawn")]
     [SerializeField] private int _totalItemCount;
     [SerializeField] private List<ItemSpawnData> _itemSpawnDatas;
 
-    public Dictionary<Define.SectorName, Sector> Sectors { get; set; } = new();
-
-    [Networked, OnChangedRender(nameof(OnBatteryCollect))] public int BatteryCollectCount { get; set; }
-    public bool BatteryCollectFinished { get; set; }
+    [Networked, OnChangedRender(nameof(OnBatteryCharge))] public int BatteryChargeCount { get; set; }
+    public bool IsBatteryChargeFinished { get; private set; }
+    [Networked, OnChangedRender(nameof(OnGeneratorRestored))] public NetworkBool IsGeneratorRestored { get; set; }
     
     public void Init()
     {
@@ -135,13 +136,22 @@ public class MapSystem : NetworkBehaviour
         }
     }
 
-    private void OnBatteryCollect()
+    private void OnBatteryCharge()
     {
-        (Managers.ObjectMng.MyCreature.IngameUI as UI_CrewIngame).ObjectiveUI.UpdateUI(BatteryCollectCount);
+        if (Managers.ObjectMng.MyCreature is Alien) return;
 
-        if (BatteryCollectCount == Define.BATTERY_COLLECT_GOAL)
+        Managers.ObjectMng.MyCrew.CrewIngameUI.ObjectiveUI.UpdateBatteryCount(BatteryChargeCount);
+
+        if (BatteryChargeCount == Define.BATTERY_COLLECT_GOAL)
         {
-            BatteryCollectFinished = true;
+            IsBatteryChargeFinished = true;
         }
+    }
+
+    private void OnGeneratorRestored()
+    {
+        if (Managers.ObjectMng.MyCreature is Alien) return;
+
+        Managers.ObjectMng.MyCrew.CrewIngameUI.ObjectiveUI.OnGeneratorRestored();
     }
 }
