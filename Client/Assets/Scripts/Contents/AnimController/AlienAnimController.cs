@@ -77,6 +77,17 @@ public class AlienAnimController : BaseAnimController
         SetBool("ReadyRoar", false);
     }
 
+    public void PlayReadyLeapAttack()
+    {
+        SetBool("ReadyRoar", true);
+    }
+
+    public void PlayLeapAttack()
+    {
+        SetBool("LeapAttack", true);
+        SetBool("ReadyRoar", false);
+    }
+
     #endregion
 
     protected override void SetParameterFalse()
@@ -86,5 +97,6 @@ public class AlienAnimController : BaseAnimController
         SetBool("ReadyRoar", false);
         SetBool("Roar", false);
         SetBool("CursedHowl", false);
+        SetBool("LeapAttack", false);
     }
 }
