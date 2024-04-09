@@ -138,6 +138,8 @@ public class MapSystem : NetworkBehaviour
 
     private void OnBatteryCharge()
     {
+        if (Managers.ObjectMng.MyCreature is Alien) return;
+
         Managers.ObjectMng.MyCrew.CrewIngameUI.ObjectiveUI.UpdateBatteryCount(BatteryChargeCount);
 
         if (BatteryChargeCount == Define.BATTERY_COLLECT_GOAL)
@@ -148,6 +150,8 @@ public class MapSystem : NetworkBehaviour
 
     private void OnGeneratorRestored()
     {
+        if (Managers.ObjectMng.MyCreature is Alien) return;
+
         Managers.ObjectMng.MyCrew.CrewIngameUI.ObjectiveUI.OnGeneratorRestored();
     }
 }
