@@ -15,8 +15,8 @@ public class MapSystem : NetworkBehaviour
     [SerializeField] private List<ItemSpawnData> _itemSpawnDatas;
 
     [Networked, OnChangedRender(nameof(OnBatteryCharge))] public int BatteryChargeCount { get; set; }
-    public bool IsBatteryChargeFinished { get; set; }
-    [Networked, OnChangedRender(nameof(OnGeneratorRestored))] public bool IsGeneratorRestored { get; set; }
+    public bool IsBatteryChargeFinished { get; private set; }
+    [Networked, OnChangedRender(nameof(OnGeneratorRestored))] public NetworkBool IsGeneratorRestored { get; set; }
     
     public void Init()
     {
