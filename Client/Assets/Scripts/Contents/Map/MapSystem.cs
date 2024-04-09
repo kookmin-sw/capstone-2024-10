@@ -13,10 +13,6 @@ public class MapSystem : NetworkBehaviour
     [Header("Item Spawn")]
     [SerializeField] private int _totalItemCount;
     [SerializeField] private List<ItemSpawnData> _itemSpawnDatas;
-
-    [Networked, OnChangedRender(nameof(OnBatteryCharge))] public int BatteryChargeCount { get; set; }
-    public bool IsBatteryChargeFinished { get; private set; }
-    [Networked, OnChangedRender(nameof(OnGeneratorRestored))] public NetworkBool IsGeneratorRestored { get; set; }
     
     public void Init()
     {
@@ -134,24 +130,5 @@ public class MapSystem : NetworkBehaviour
             Debug.LogWarning($"{data.Prefab.name}: Could not select sector!");
             return false;
         }
-    }
-
-    private void OnBatteryCharge()
-    {
-        if (Managers.ObjectMng.MyCreature is Alien) return;
-
-        Managers.ObjectMng.MyCrew.CrewIngameUI.ObjectiveUI.UpdateBatteryCount(BatteryChargeCount);
-
-        if (BatteryChargeCount == Define.BATTERY_COLLECT_GOAL)
-        {
-            IsBatteryChargeFinished = true;
-        }
-    }
-
-    private void OnGeneratorRestored()
-    {
-        if (Managers.ObjectMng.MyCreature is Alien) return;
-
-        Managers.ObjectMng.MyCrew.CrewIngameUI.ObjectiveUI.OnGeneratorRestored();
     }
 }

@@ -15,12 +15,16 @@ public class GameScene : BaseScene
     public override IEnumerator OnSceneLoaded()
     {
         MapSystem mapSystem = null;
-        while (mapSystem == null)
+        PlanSystem planSystem = null;
+        while (mapSystem == null || planSystem == null)
         {
             mapSystem = FindObjectOfType<MapSystem>();
+            planSystem = FindObjectOfType<PlanSystem>();
             yield return new WaitForSeconds(0.5f);
         }
         mapSystem.Init();
+        planSystem.Init();
+
 
         UI_Ingame ingameUI = Managers.ObjectMng.MyCreature is Crew ? Managers.UIMng.ShowSceneUI<UI_CrewIngame>() : Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
         yield return new WaitUntil(() => ingameUI.Init());
