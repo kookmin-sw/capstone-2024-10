@@ -110,9 +110,17 @@ public class Inventory: NetworkBehaviour
         return true;
     }
 
-    public void DropItem()
+    public bool DropItem()
     {
+        if (ItemInventory[CurrentItemIdx] == -1)
+            return false;
 
+        RemoveItem();
+        NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Map/Item/Tri_Prism_blue");
+        NetworkObject no = Runner.Spawn(prefab, Owner.Transform.position);
+        //no.transform.SetParent(gameObject.transform);
+
+        return true;
     }
 
     public void ChangeItem(int idx)
