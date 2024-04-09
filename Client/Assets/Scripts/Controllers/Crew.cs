@@ -90,6 +90,10 @@ public class Crew : Creature
             if (CheckInteractable(true))
                 return;
 
+        if (Input.GetKeyDown(KeyCode.G))
+            if (Inventory.DropItem())
+                return;
+
         if (Input.GetMouseButtonDown(0))
             if (CheckAndUseItem())
                 return;
