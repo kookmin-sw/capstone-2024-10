@@ -65,28 +65,28 @@ public class UI_Inventory : UI_Base
         switch (idx)
         {
             case 0:
-                GetImage(Images.InventoryBox0).color = Color.yellow;
-                GetImage(Images.InventoryBox1).color = Color.white;
-                GetImage(Images.InventoryBox2).color = Color.white;
-                GetImage(Images.InventoryBox3).color = Color.white;
+                GetImage(Images.InventoryBox0).transform.DOScale(new Vector3(1.2f,1.2f), 0.5f);
+                GetImage(Images.InventoryBox1).transform.DOScale(new Vector3(1f, 1f), 0.5f);
+                GetImage(Images.InventoryBox2).transform.DOScale(new Vector3(1f, 1f), 0.5f);
+                GetImage(Images.InventoryBox3).transform.DOScale(new Vector3(1f, 1f), 0.5f);
                 break;
             case 1:
-                GetImage(Images.InventoryBox0).color = Color.white;
-                GetImage(Images.InventoryBox1).color = Color.yellow;
-                GetImage(Images.InventoryBox2).color = Color.white;
-                GetImage(Images.InventoryBox3).color = Color.white;
+                GetImage(Images.InventoryBox0).transform.DOScale(new Vector3(1f, 1f), 0.5f);
+                GetImage(Images.InventoryBox1).transform.DOScale(new Vector3(1.2f, 1.2f), 0.5f);
+                GetImage(Images.InventoryBox2).transform.DOScale(new Vector3(1f, 1f), 0.5f);
+                GetImage(Images.InventoryBox3).transform.DOScale(new Vector3(1f, 1f), 0.5f);
                 break;
             case 2:
-                GetImage(Images.InventoryBox0).color = Color.white;
-                GetImage(Images.InventoryBox1).color = Color.white;
-                GetImage(Images.InventoryBox2).color = Color.yellow;
-                GetImage(Images.InventoryBox3).color = Color.white;
+                GetImage(Images.InventoryBox0).transform.DOScale(new Vector3(1f, 1f), 0.5f);
+                GetImage(Images.InventoryBox1).transform.DOScale(new Vector3(1f, 1f), 0.5f);
+                GetImage(Images.InventoryBox2).transform.DOScale(new Vector3(1.2f, 1.2f), 0.5f);
+                GetImage(Images.InventoryBox3).transform.DOScale(new Vector3(1f, 1f), 0.5f);
                 break;
             case 3:
-                GetImage(Images.InventoryBox0).color = Color.white;
-                GetImage(Images.InventoryBox1).color = Color.white;
-                GetImage(Images.InventoryBox2).color = Color.white;
-                GetImage(Images.InventoryBox3).color = Color.yellow;
+                GetImage(Images.InventoryBox0).transform.DOScale(new Vector3(1f, 1f), 0.5f);
+                GetImage(Images.InventoryBox1).transform.DOScale(new Vector3(1f, 1f), 0.5f);
+                GetImage(Images.InventoryBox2).transform.DOScale(new Vector3(1f, 1f), 0.5f);
+                GetImage(Images.InventoryBox3).transform.DOScale(new Vector3(1.2f, 1.2f), 0.5f);
                 break;
         }
 
