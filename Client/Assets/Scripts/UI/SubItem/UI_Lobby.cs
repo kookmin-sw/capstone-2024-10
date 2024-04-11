@@ -44,7 +44,9 @@ public class UI_Lobby : UI_Base
         GetButton((int)Buttons.Btn_RefreshSession).onClick.AddListener(Refresh);
 
         GetButton((int)Buttons.Btn_CreateGame).interactable = false;
+        GetButton((int)Buttons.Btn_QuickStart).interactable = false;
         Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Btn_CreateGame).interactable = true;
+        Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Btn_QuickStart).interactable = true;
         RefreshSessionLIst();
 
         return true;
@@ -105,6 +107,8 @@ public class UI_Lobby : UI_Base
 
     void EnterGame()
     {
-
+        _controller.ExitMenu();
+        _controller.ShowLoadingMenu();
+        Managers.NetworkMng.ConnectToAnySession();
     }
 }

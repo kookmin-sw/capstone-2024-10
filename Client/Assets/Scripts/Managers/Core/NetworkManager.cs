@@ -63,6 +63,19 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         ConnectToSession(randomSessionName);
     }
 
+    public void ConnectToAnySession()
+    {
+        if (Sessions.Count == 0)
+        {
+            CreateSession();
+            return;
+        }
+        int  count = Sessions.Count;
+        int rand = UnityEngine.Random.Range(0, count);
+        string sessionName = Sessions[rand].Name;
+        ConnectToSession(sessionName);
+    }
+
     public async void ConnectToSession(string sessionName)
     {
         // Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
