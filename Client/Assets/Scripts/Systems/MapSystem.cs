@@ -72,7 +72,7 @@ public class MapSystem : NetworkBehaviour
 
             int cnt = 0;
 
-            while (cnt < data.GlobalMinCount)
+            while (cnt < data.GlobalMinCount && totalCount < _totalItemCount)
             {
                 if(!TrySpawnItem(data)) return;
                 cnt++;
