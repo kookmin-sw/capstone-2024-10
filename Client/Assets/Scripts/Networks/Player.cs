@@ -11,6 +11,8 @@ using UnityEngine.UIElements;
 public class Player : NetworkBehaviour
 {
     [Networked] public NetworkString<_32> PlayerName { get; set; }
+    [Networked]
+    NetworkBool IsMaster { get; set; }
 
     [Networked]
     public PlayerRef PlayerRef { get; set; }
@@ -58,7 +60,12 @@ public class Player : NetworkBehaviour
 
     private void Update()
     {
-        OnPlayerNameUpdate?.Invoke((Managers.NetworkMng.Runner.IsSharedModeMasterClient ? " Master " : "") + PlayerName.Value);
+        OnPlayerNameUpdate?.Invoke((IsMaster ? " Master " : "") + PlayerName.Value);
+
+        if (HasStateAuthority)
+        {
+            IsMaster = Runner.IsSharedModeMasterClient;
+        }
     }
 
     public void GetReady()
