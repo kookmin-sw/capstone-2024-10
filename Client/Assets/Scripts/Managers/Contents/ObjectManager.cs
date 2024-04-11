@@ -56,6 +56,15 @@ public class ObjectManager
         return no;
     }
 
+    public NetworkObject SpawnItemObject(int itemDataId, Vector3 spawnPosition)
+    {
+        string className = Managers.DataMng.ItemDataDict[itemDataId].Name;
+        NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.ITEM_OBJECT_PATH}/{className}");
+        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
+
+        return no;
+    }
+
     public void Despawn(NetworkObject no)
     {
         Creature creature = no.GetComponent<Creature>();

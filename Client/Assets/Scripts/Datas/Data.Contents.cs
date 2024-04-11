@@ -79,6 +79,7 @@ namespace Data
     {
         public int DataId;
         public string Name;
+        public float Value;
     }
 
     [Serializable]

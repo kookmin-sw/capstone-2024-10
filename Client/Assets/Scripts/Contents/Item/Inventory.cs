@@ -10,6 +10,7 @@ public class Inventory: NetworkBehaviour
 
     public Dictionary<int, BaseItem> ItemDict { get; protected set; }
     public List<int> ItemInventory { get; protected set; }
+
     public int CurrentItemIdx { get; set; }
     public BaseItem CurrentItem => ItemDict[ItemInventory[CurrentItemIdx]];
 
@@ -86,14 +87,18 @@ public class Inventory: NetworkBehaviour
         }
     }
 
-    public void RemoveItem()
+    public int RemoveItem()
     {
         if (ItemInventory[CurrentItemIdx] == -1)
-            return;
+            return -1;
 
         Rpc_HideItem(ItemInventory[CurrentItemIdx]);
         Owner.CrewIngameUI.UI_Inventory.Hide(CurrentItemIdx);
+
+        int itemId = CurrentItem.DataId;
         ItemInventory[CurrentItemIdx] = -1;
+
+        return itemId;
     }
 
     public bool CheckAndUseItem()
@@ -101,12 +106,10 @@ public class Inventory: NetworkBehaviour
         if (ItemInventory[CurrentItemIdx] == -1)
             return false;
 
-        if (!CurrentItem.CheckAndUseItem(Owner))
+        if (!CurrentItem.CheckAndUseItem())
             return false;
 
-        Rpc_HideItem(ItemInventory[CurrentItemIdx]);
-        Owner.CrewIngameUI.UI_Inventory.Hide(CurrentItemIdx);
-        ItemInventory[CurrentItemIdx] = -1;
+        RemoveItem();
         return true;
     }
 
@@ -115,9 +118,7 @@ public class Inventory: NetworkBehaviour
         if (ItemInventory[CurrentItemIdx] == -1)
             return false;
 
-        RemoveItem();
-        NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Map/Item/Tri_Prism_blue");
-        NetworkObject no = Runner.Spawn(prefab, Owner.Transform.position);
+        NetworkObject no = Managers.ObjectMng.SpawnItemObject(RemoveItem(), Owner.Transform.position);
         //no.transform.SetParent(gameObject.transform);
 
         return true;

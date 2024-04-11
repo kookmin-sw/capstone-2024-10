@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.74808294, g: 0.5768371, b: 0.6464873, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5777,7 +5777,7 @@ MonoBehaviour:
   PlayerPrefab:
   - {fileID: 7920281149799720858, guid: 29a9a66ff70ef064aab2dd74f627c7c9, type: 3}
   - {fileID: 8694943018831287373, guid: 8699e629035530341baf2cfaa50ba60a, type: 3}
-  PrefabNum: 1
+  PrefabNum: 0
   PlayerSpawnPosition: {x: -6, y: 0, z: 10}
 --- !u!114 &631919794
 MonoBehaviour:
@@ -13973,6 +13973,34 @@ PrefabInstance:
     - target: {fileID: 14220058542274128, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[0].Prefab
+      value: 
+      objectReference: {fileID: 2456343074442511123, guid: 651267bc0bc8c0a4fbf95c442517d389, type: 3}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[1].Prefab
+      value: 
+      objectReference: {fileID: 1557910113621458, guid: 1da23a86a41a6df44a1a2e2d6df7c0fd, type: 3}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[2].Prefab
+      value: 
+      objectReference: {fileID: 1508137380435870, guid: ed8bd64b3cf5df641a678f5513f3fc6c, type: 3}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[2].GlobalMaxCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[2].GlobalMinCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[2].MaxCountPerSector
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3213453872573541556, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: SortKey
