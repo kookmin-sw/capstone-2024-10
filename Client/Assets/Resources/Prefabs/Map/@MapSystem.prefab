@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 14220058542274128}
   - component: {fileID: 3213453872573541556}
   - component: {fileID: 1501787418130949391}
+  - component: {fileID: 8575483182416784577}
   m_Layer: 0
   m_Name: '@MapSystem'
   m_TagString: Untagged
@@ -51,6 +52,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 1501787418130949391}
+  - {fileID: 8575483182416784577}
 --- !u!114 &1501787418130949391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73,4 +75,18 @@ MonoBehaviour:
     GlobalMinCount: 1
     GlobalMaxCount: 4
     MaxCountPerSector: 2
-  _BatteryCollectCount: 0
+--- !u!114 &8575483182416784577
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6805510342841796365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c160b5c6947d1e34ea6fe249fb97cea6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _BatteryChargeCount: 0
+  _IsGeneratorRestored:
+    _value: 0
