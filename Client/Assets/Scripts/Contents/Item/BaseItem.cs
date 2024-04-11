@@ -17,10 +17,15 @@ public abstract class BaseItem
         DataId = templateId;
         ItemData = Managers.DataMng.ItemDataDict[templateId];
         Owner = owner;
+
+        string className = Managers.DataMng.ItemDataDict[templateId].Name;
+        ItemGameObject = Managers.ResourceMng.Instantiate($"{Define.ITEM_PATH}/{className}", Owner.LeftHand.transform);
     }
 
-    public abstract bool CheckAndUseItem(Crew crew);
+    public abstract bool CheckAndUseItem();
+
+    protected virtual void UseItem() { }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    protected virtual void Rpc_Use() { }
+    protected virtual void Rpc_UseItem() { }
 }

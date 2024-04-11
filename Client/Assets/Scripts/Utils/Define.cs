@@ -116,18 +116,20 @@ public static class Define
     #region DataId
 
     public const int CREW_CREWA_ID = 101000;
-    public const int CREW_CREWB_ID = 101001;
 
     public const int ALIEN_STALKER_ID = 102000;
 
     public const int ITEM_Battery_ID = 201000;
-    public const int ITEM_Medicine_ID = 202000;
+    public const int ITEM_Bondage_ID = 202000;
+    public const int ITEM_Morphine_ID = 202001;
 
     #endregion
 
     #region Path
 
     public const string CREATURE_PATH = "Prefabs/Creatures";
+    public const string ITEM_OBJECT_PATH = "Prefabs/Map/ItemObjects";
+    public const string ITEM_PATH = "Items";
 
     #endregion
 
