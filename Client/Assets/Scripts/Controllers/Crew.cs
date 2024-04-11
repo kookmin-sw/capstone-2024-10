@@ -306,7 +306,7 @@ public class Crew : Creature
     }
     private void StopEffectMusic()
     {
-        if (CreatureState == Define.CreatureState.Idle)
+        if (CreatureState == Define.CreatureState.Idle || CreatureState == Define.CreatureState.Interact)
         {
             AudioSource.Stop();
         }
