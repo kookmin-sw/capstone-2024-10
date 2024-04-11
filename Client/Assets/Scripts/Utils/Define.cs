@@ -130,6 +130,8 @@ public static class Define
     public const string CREATURE_PATH = "Prefabs/Creatures";
     public const string ITEM_OBJECT_PATH = "Prefabs/Map/ItemObjects";
     public const string ITEM_PATH = "Items";
+    public const string Bgm_PATH = "Music/Bgm";
+    public const string Effect_PATH = "Music/Clicks";
 
     #endregion
 

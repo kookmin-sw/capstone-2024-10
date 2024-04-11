@@ -66,5 +66,10 @@ public class BatteryCharger : BaseWorkStation
     {
         CrewWorker.CrewAnimController.PlayChargeBattery();
     }
+
+    protected override void PlayEffectMusic()
+    {
+        
+    }
 }
 

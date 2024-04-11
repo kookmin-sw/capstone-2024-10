@@ -1,5 +1,6 @@
 using Fusion;
 
+
 public class Computer : BaseWorkStation
 {
     public override string InteractDescription => "Use computer";
@@ -51,4 +52,11 @@ public class Computer : BaseWorkStation
     {
         CrewWorker.CrewAnimController.PlayKeypadUse();
     }
+
+    protected override void PlayEffectMusic()
+    {
+        Managers.SoundMng.Play("Music/Clicks/Typing_Keyboard", Define.SoundType.Effect, 0.5f, true);
+    }
+
+    
 }

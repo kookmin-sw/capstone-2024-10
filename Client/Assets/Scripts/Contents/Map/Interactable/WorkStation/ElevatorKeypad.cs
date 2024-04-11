@@ -59,4 +59,9 @@ public class ElevatorKeypad : BaseWorkStation
     {
         CrewWorker.CrewAnimController.PlayKeypadUse();
     }
+
+    protected override void PlayEffectMusic()
+    {
+        
+    }
 }

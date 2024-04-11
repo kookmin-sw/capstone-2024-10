@@ -32,6 +32,7 @@ public class ReadyScene : BaseScene
     // 씬이 바뀔 때 정리해야 하는 목록
     public override void Clear()
     {
+        Managers.SoundMng.Clear();
     }
 
     private void OnApplicationQuit()

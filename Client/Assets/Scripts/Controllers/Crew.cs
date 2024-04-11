@@ -16,6 +16,7 @@ public class Crew : Creature
     public GameObject RightHand { get; protected set; }
     public GameObject LeftHand { get; protected set; }
 
+    public AudioSource AudioSource { get; protected set; }
     #endregion
 
     protected override void Init()
@@ -25,6 +26,7 @@ public class Crew : Creature
         Managers.ObjectMng.Crews[NetworkObject.Id] = this;
 
         Inventory = gameObject.GetComponent<Inventory>();
+        AudioSource = gameObject.GetComponent<AudioSource>();
 
         Head = Util.FindChild(gameObject, "head.x", true);
         RightHand = Util.FindChild(gameObject, "c_middle1.r", true);
@@ -68,6 +70,8 @@ public class Crew : Creature
         base.FixedUpdateNetwork();
 
         UpdateStamina();
+        PlayEffectMusic();
+        StopEffectMusic();
     }
 
     protected override void HandleInput()
@@ -268,4 +272,44 @@ public class Crew : Creature
     }
 
     #endregion
+
+    private void PlayEffectMusic()
+    {
+        if (CreatureState == Define.CreatureState.Move)
+        {
+            if (AudioSource.isPlaying == false)
+            {
+                AudioSource.volume = 0.5f;
+                AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Walk");
+                AudioSource.Play();
+            }
+            else
+            {
+                if (CreaturePose == Define.CreaturePose.Stand)
+                {
+                    AudioSource.pitch = 1f;
+                    AudioSource.volume = 0.5f;
+                }
+                if (CreaturePose == Define.CreaturePose.Sit)
+                {
+                    AudioSource.volume = 0.3f;
+                    AudioSource.pitch = 1f;
+                }
+                if (CreaturePose == Define.CreaturePose.Run)
+                {
+                    AudioSource.pitch = 2f;
+                    AudioSource.volume = 1f;
+                }
+                return;
+            }
+        }
+    }
+    private void StopEffectMusic()
+    {
+        if (CreatureState == Define.CreatureState.Idle)
+        {
+            AudioSource.Stop();
+        }
+    }
+
 }
