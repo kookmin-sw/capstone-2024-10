@@ -5063,7 +5063,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7395382358586211616}
   - component: {fileID: 9068755759678369339}
-  - component: {fileID: 9165858220502731465}
   - component: {fileID: 2937278171442536397}
   - component: {fileID: -6517211277596413631}
   - component: {fileID: 3299225919478658973}
@@ -5123,29 +5122,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!136 &9165858220502731465
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7920281149799720858}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.25
-  m_Height: 1.85
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!54 &2937278171442536397
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5213,7 +5189,7 @@ MonoBehaviour:
   TotalWords: 5
   ApplyTiming: 2
   SyncSettings: 79
-  StateHashes: 000000005775fad1d53ab6546918b6d32ab685d02afa8626a8b5caa326c31e36e4b1df9473a11ec450111d6242f0ae2fcfc2d1012cd143fb0f61405d461a4faaf6ebf0f4
+  StateHashes: 000000005775fad1d53ab6546918b6d32ab685d01ae6174d48bc686426c31e36e4b1df94b2ed7d60709fbcc277967513f3b5a3fc82d2bc13691134eec9ac5f0cd33d65e6
   TriggerHashes: 00000000
 --- !u!114 &5850708474315694979
 MonoBehaviour:

@@ -79,13 +79,13 @@ public class AlienAnimController : BaseAnimController
 
     public void PlayReadyLeapAttack()
     {
-        SetBool("ReadyRoar", true);
+        SetBool("ReadyLeapAttack", true);
     }
 
     public void PlayLeapAttack()
     {
         SetBool("LeapAttack", true);
-        SetBool("ReadyRoar", false);
+        SetBool("ReadyLeapAttack", false);
     }
 
     #endregion
@@ -98,5 +98,7 @@ public class AlienAnimController : BaseAnimController
         SetBool("Roar", false);
         SetBool("CursedHowl", false);
         SetBool("LeapAttack", false);
+        SetBool("ReadyRoar", false);
+        SetBool("ReadyLeapAttack", false);
     }
 }

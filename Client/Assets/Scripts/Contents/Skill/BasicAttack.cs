@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class BasicAttack : BaseSkill
@@ -7,9 +8,9 @@ public class BasicAttack : BaseSkill
         base.Init();
 
         SkillDescription = "BASIC ATTACK";
-        SkillTime = 1.1f;
         CoolTime = 2f;
-        TotalSkillAmount = -1f;
+        TotalSkillAmount = 1.2f;
+        TotalReadySkillAmount = -1f;
         AttackRange = 1.5f;
     }
 
@@ -29,20 +30,29 @@ public class BasicAttack : BaseSkill
 
         Owner.AlienAnimController.PlayBasicAttack();
 
-        Vector3 attackPosition = Owner.transform.position + Owner.CreatureCamera.transform.forward * AttackRange;
+        StartCoroutine(ProgressSkill());
+    }
 
-        Collider[] hitColliders = new Collider[4];
-        int hitNum = Physics.OverlapSphereNonAlloc(attackPosition, AttackRange, hitColliders, LayerMask.GetMask("Crew"));
-        if (hitNum > 0)
+    protected override IEnumerator ProgressSkill()
+    {
+        while (CurrentSkillAmount < TotalSkillAmount)
         {
-            foreach (Collider col in hitColliders)
+            Vector3 attackPosition = Owner.transform.position + ForwardDirection * AttackRange;
+            Collider[] hitColliders = new Collider[3];
+
+            if (!IsHit && Physics.OverlapSphereNonAlloc(attackPosition, AttackRange, hitColliders, LayerMask.GetMask("Crew")) > 0)
             {
-                if (col != null && col.gameObject.TryGetComponent(out Crew crew))
+                if (hitColliders[0].gameObject.TryGetComponent(out Crew crew))
+                {
+                    IsHit = true;
                     crew.Rpc_OnDamaged(Owner.AlienStat.AttackDamage);
+                }
             }
+
+            UpdateWorkAmount(Time.deltaTime);
+            yield return null;
         }
 
         SkillInterrupt();
-        Owner.ReturnToIdle(SkillTime);
     }
 }
