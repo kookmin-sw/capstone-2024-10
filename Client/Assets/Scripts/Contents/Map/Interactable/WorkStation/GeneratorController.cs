@@ -59,4 +59,9 @@ public class GeneratorController : BaseWorkStation
     {
         CrewWorker.CrewAnimController.PlayKeypadUse();
     }
+
+    protected override void PlayEffectMusic()
+    {
+        
+    }
 }

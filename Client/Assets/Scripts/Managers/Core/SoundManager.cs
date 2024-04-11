@@ -56,17 +56,17 @@ public class SoundManager
     /// <param name="path">음원의 이름</param>
     /// <param name="type">음원의 타입</param>
     /// <param name="pitch"></param>
-    public void Play(string path, Define.SoundType type = Define.SoundType.Effect, float pitch = 1.0f)
+    public void Play(string path, Define.SoundType type = Define.SoundType.Effect, float pitch = 1.0f, bool isLoop = false)
     {
         AudioClip audioClip = GetOrAddAudioClip(path, type);
-        Play(audioClip, type, pitch);
+        Play(audioClip, type, pitch, isLoop);
     }
 
     /// <summary>
     /// 호출하려면 음원파일을 로드하고 사용해야 한다.
     /// 음원 타입에 따라 어떤식으로 재생될지에 대한 방식이 지정되어 있다.
     /// </summary>
-    public void Play(AudioClip audioClip, Define.SoundType type = Define.SoundType.Effect, float pitch = 1.0f)
+    public void Play(AudioClip audioClip, Define.SoundType type = Define.SoundType.Effect, float pitch = 1.0f, bool isLoop = false)
     {
         if (audioClip == null)
             return;
@@ -92,14 +92,27 @@ public class SoundManager
                 return;
             //audioSource.pitch = pitch;
             audioSource.volume = pitch;
-            audioSource.PlayOneShot(audioClip);
+            audioSource.loop = isLoop;
+            audioSource.clip = audioClip;
+            audioSource.Play();
+            //audioSource.PlayOneShot(audioClip);
         }
     }
+    /// <summary>
+    /// 반복하고 있던 효과음을 중지시킨다.
+    /// </summary>
+    public void Stop()
+    {
+        AudioSource audioSource = _audioSources[(int)Define.SoundType.Effect];
+        if (audioSource == null)
+            return;
+        audioSource.Stop();
 
+    }
     /// <summary>
     /// 음원의 이름을 줬을 때, 음원을 딕셔너리에 저장하고 음원 파일을 가져오는 함수
     /// </summary>
-    AudioClip GetOrAddAudioClip(string path, Define.SoundType type = Define.SoundType.Effect)
+    public AudioClip GetOrAddAudioClip(string path, Define.SoundType type = Define.SoundType.Effect)
     {
         //if (path.Contains("Sounds/") == false)
         //  path = $"Sounds/{path}";

@@ -29,6 +29,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     public abstract bool TryShowInfoUI(Creature creature, out bool isInteractable);
     protected abstract bool IsInteractable(Creature creature);
     protected abstract void PlayInteractAnimation();
+    protected abstract void PlayEffectMusic();
     public virtual bool Interact(Creature creature)
     {
         if (!IsInteractable(creature)) return false;
@@ -41,7 +42,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 
         PlayInteractAnimation();
         Rpc_AddWorker();
-
+        PlayEffectMusic();
         StartCoroutine(ProgressWork());
         return true;
     }
@@ -67,7 +68,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     protected void InterruptWork()
     {
         StopAllCoroutines();
-
+        Managers.SoundMng.Stop();
         Worker.IngameUI.WorkProgressBarUI.Hide();
         Worker.CreatureState = Define.CreatureState.Idle;
         Worker.CreaturePose = Define.CreaturePose.Stand;

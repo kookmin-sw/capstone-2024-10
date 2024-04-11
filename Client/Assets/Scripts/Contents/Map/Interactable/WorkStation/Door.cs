@@ -57,6 +57,7 @@ public class Door : BaseWorkStation
         {
             InterruptWork();
             WorkComplete();
+            PlayEffectMusic();
         }
         else
         {
@@ -85,6 +86,7 @@ public class Door : BaseWorkStation
     {
         IsOpened = !IsOpened;
         NetworkAnim.Animator.SetBool("OpenParameter", IsOpened);
+
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -106,6 +108,18 @@ public class Door : BaseWorkStation
             case Alien alien:
                 alien.AlienAnimController.PlayCrashDoor();
                 break;
+        }
+    }
+
+    protected override void PlayEffectMusic()
+    {
+        if (IsOpened)
+        {
+            Managers.SoundMng.Play("Music/Clicks/Door_open", Define.SoundType.Effect, 1f);
+        }
+        else
+        {
+            Managers.SoundMng.Play("Music/Clicks/Door_close", Define.SoundType.Effect, 0.8f);
         }
     }
 }
