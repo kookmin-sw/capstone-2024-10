@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class Roar : BaseSkill
 {
@@ -7,31 +8,21 @@ public class Roar : BaseSkill
         base.Init();
 
         SkillDescription = "ROAR";
-        SkillTime = 2.1f;
         CoolTime = 4f;
-        TotalSkillAmount = 3f;
+        TotalSkillAmount = 2.1f;
+        TotalReadySkillAmount = 1f;
         AttackRange = 3f;
-    }
-
-    public override bool CheckAndUseSkill()
-    {
-        if (!Ready)
-            return false;
-
-        Owner.CurrentSkillRange = AttackRange;
-        ReadySkill();
-        return true;
     }
 
     public override void ReadySkill()
     {
-        Owner.IngameUI.WorkProgressBarUI.Show(SkillDescription, CurrentSkillAmount, TotalSkillAmount);
+        Owner.IngameUI.WorkProgressBarUI.Show(SkillDescription, CurrentReadySkillAmount, TotalReadySkillAmount);
         Owner.CreatureState = Define.CreatureState.Use;
         Owner.CreaturePose = Define.CreaturePose.Stand;
 
         Owner.AlienAnimController.PlayReadyRoar();
 
-        StartCoroutine(CoReadySkill());
+        StartCoroutine(ReadySkillProgress());
     }
 
     public override void UseSkill()
@@ -40,20 +31,30 @@ public class Roar : BaseSkill
 
         Owner.AlienAnimController.PlayRoar();
 
-        Vector3 attackPosition = Owner.transform.position + Owner.CreatureCamera.transform.forward * AttackRange;
+        StartCoroutine(ProgressSkill());
+    }
 
-        Collider[] hitColliders = new Collider[4];
-        int hitNum = Physics.OverlapSphereNonAlloc(attackPosition, AttackRange, hitColliders, LayerMask.GetMask("Crew"));
-        if (hitNum > 0)
+    protected override IEnumerator ProgressSkill()
+    {
+
+        while (CurrentSkillAmount < TotalSkillAmount)
         {
-            foreach (Collider col in hitColliders)
+            Vector3 attackPosition = Owner.transform.position + ForwardDirection * AttackRange;
+            Collider[] hitColliders = new Collider[3];
+
+            if (!IsHit && Physics.OverlapSphereNonAlloc(attackPosition, AttackRange, hitColliders, LayerMask.GetMask("Crew")) > 0)
             {
-                if (col != null && col.gameObject.TryGetComponent(out Crew crew))
+                if (hitColliders[0].gameObject.TryGetComponent(out Crew crew))
+                {
+                    IsHit = true;
                     crew.Rpc_OnSanityDamaged(Owner.AlienStat.RoarSanityDamage);
+                }
             }
+
+            UpdateWorkAmount(Time.deltaTime);
+            yield return null;
         }
 
         SkillInterrupt();
-        Owner.ReturnToIdle(SkillTime);
     }
 }

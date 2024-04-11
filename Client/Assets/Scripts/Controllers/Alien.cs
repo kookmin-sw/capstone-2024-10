@@ -118,7 +118,7 @@ public abstract class Alien : Creature
             return;
 
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere( Head.transform.position + CreatureCamera.transform.forward * CurrentSkillRange, CurrentSkillRange);
+        Gizmos.DrawWireSphere( Head.transform.position + transform.forward * CurrentSkillRange, CurrentSkillRange);
     }
 
     #region Update

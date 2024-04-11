@@ -1,33 +1,28 @@
-﻿public class CursedHowl : BaseSkill
+﻿using System.Collections;
+using UnityEngine;
+
+public class CursedHowl : BaseSkill
 {
     protected override void Init()
     {
         base.Init();
 
         SkillDescription = "CURSED HOWL";
-        SkillTime = 2.1f;
         CoolTime = 4f;
-        TotalSkillAmount = 3f;
-    }
-
-    public override bool CheckAndUseSkill()
-    {
-        if (!Ready)
-            return false;
-
-        ReadySkill();
-        return true;
+        TotalSkillAmount = 2.2f;
+        TotalReadySkillAmount = 1f;
+        AttackRange = 0f;
     }
 
     public override void ReadySkill()
     {
-        Owner.IngameUI.WorkProgressBarUI.Show(SkillDescription, CurrentSkillAmount, TotalSkillAmount);
+        Owner.IngameUI.WorkProgressBarUI.Show(SkillDescription, CurrentReadySkillAmount, TotalReadySkillAmount);
         Owner.CreatureState = Define.CreatureState.Use;
         Owner.CreaturePose = Define.CreaturePose.Stand;
 
         Owner.AlienAnimController.PlayReadyCursedHowl();
 
-        StartCoroutine(CoReadySkill());
+        StartCoroutine(ReadySkillProgress());
     }
 
     public override void UseSkill()
@@ -36,9 +31,19 @@
 
         Owner.AlienAnimController.PlayCursedHowl();
 
-        // TODO - 전역 효과 구현
+        StartCoroutine(ProgressSkill());
+    }
+
+    protected override IEnumerator ProgressSkill()
+    {
+        while (CurrentSkillAmount < TotalSkillAmount)
+        {
+            // TODO
+
+            UpdateWorkAmount(Time.deltaTime);
+            yield return null;
+        }
 
         SkillInterrupt();
-        Owner.ReturnToIdle(SkillTime);
     }
 }
