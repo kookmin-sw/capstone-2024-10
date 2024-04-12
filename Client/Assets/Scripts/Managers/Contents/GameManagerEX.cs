@@ -32,6 +32,8 @@ public class GameManagerEX
         }
     }
 
+    public Dictionary<string, SessionProperty> SessionProperty { get; protected set; }
+
     public void Init()
     {
         SAVEDATA_PATH = Path.Combine(Application.persistentDataPath, "/SaveData.json");
@@ -83,7 +85,11 @@ public class GameManagerEX
             }
 
             yield return new WaitForSeconds(1.0f);
-
+            SessionInfo info = Managers.NetworkMng.Runner.SessionInfo;
+            info.IsVisible = false;
+            SessionProperty = new (info.Properties);
+            SessionProperty["GameStart"] = true;
+            info.UpdateCustomProperties(SessionProperty);
             StartGame();
         }
     }
