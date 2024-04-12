@@ -15,7 +15,7 @@ public class LeapAttack : BaseSkill
         SkillDescription = "LEAP ATTACK";
         CoolTime = 4f;
         TotalSkillAmount = 2f;
-        TotalReadySkillAmount = 2f;
+        TotalReadySkillAmount = 1f;
         AttackRange = 1.5f;
 
         IsMoving = false;
