@@ -40,7 +40,7 @@ public abstract class Alien : Creature
         {
 
             CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", Util.FindChild(gameObject, "Anglerox_ Neck", true).transform).GetComponent<CreatureCamera>();
-            CreatureCamera.transform.localPosition = new Vector3(-0.15f, 0.5f, 0f);
+            CreatureCamera.transform.localPosition = new Vector3(0.02f, 0.5f, 0f);
             CreatureCamera.SetInfo(this);
         }
         else
