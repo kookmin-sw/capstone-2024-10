@@ -1,57 +1,68 @@
-using Fusion;
+﻿using Fusion;
+using UnityEngine;
 
-
-public class Computer : BaseWorkStation
+public class ItemKit : BaseWorkStation
 {
-    public override string InteractDescription => "USE COMPUTER";
+    [Header("Item")]
+    [SerializeField] private int _itemId;
+
+    public override string InteractDescription => "OPEN ITEM KIT";
+
+    public GameObject Cover { get; protected set; }
 
     protected override void Init()
     {
         base.Init();
 
-        CanRememberWork = true;
+        Cover = Util.FindChild(gameObject, "Cover", true);
+
+        CanRememberWork = false;
         IsCompleted = false;
 
-        TotalWorkAmount = 50f;
+        TotalWorkAmount = 21f;
     }
     public override bool CheckInteractable(Creature creature)
     {
+        creature.IngameUI.ErrorTextUI.Hide();
+
         if (creature is not Crew crew)
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Hide();
             return false;
         }
 
         if (creature.CreatureState == Define.CreatureState.Interact)
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Hide();
             return false;
         }
 
         if (IsCompleted)
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Show("COMPLETED");
             return false;
         }
 
-        creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Show(InteractDescription);
         return true;
     }
 
-    protected override bool IsInteractable(Creature creature)
+    protected override void WorkComplete()
     {
-        return true;
+        // NetworkObject no = Managers.ObjectMng.SpawnItemObject(_itemId, transform.position);
+        // no.transform.SetParent(gameObject.transform);
+
+        Rpc_WorkComplete();
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     protected override void Rpc_WorkComplete()
     {
-        if (IsCompleted) return;
+        if (IsCompleted)
+            return;
         IsCompleted = true;
+
+        Cover.SetActive(false);
     }
 
     protected override void PlayInteractAnimation()
@@ -63,6 +74,4 @@ public class Computer : BaseWorkStation
     {
         Managers.SoundMng.Play("Music/Clicks/Typing_Keyboard", Define.SoundType.Effect, 0.5f, true);
     }
-
-
 }

@@ -145,13 +145,12 @@ public abstract class Creature : NetworkBehaviour
         {
             if (rayHit.transform.gameObject.TryGetComponent(out IInteractable interactable))
             {
-                if (!interactable.TryShowInfoUI(this, out bool isInteractable))
+                if (interactable.CheckInteractable(this) && tryInteract)
                 {
-                    IngameUI.InteractInfoUI.Hide();
-                    IngameUI.ErrorTextUI.Hide();
+                    return interactable.Interact(this);
                 }
 
-                return tryInteract && isInteractable && interactable.Interact(this);
+                return false;
             }
         }
 

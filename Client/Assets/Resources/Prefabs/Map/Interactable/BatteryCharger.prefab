@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3364864359537357495}
   - component: {fileID: 3690806273880013435}
   - component: {fileID: 2448866105969019076}
+  - component: {fileID: 1711502208092622240}
   m_Layer: 11
   m_Name: Base
   m_TagString: Untagged
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c112dd6d62fb2604f92c970b5bf66350, type: 2}
+  - {fileID: 2100000, guid: 8816779b989c9ae4a905f2d4ae0f3060, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -107,6 +108,18 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -2376846653350502569, guid: 04d79a650e19b8a4e8e4eae04a5bbf8a, type: 3}
+--- !u!114 &1711502208092622240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4605375618894036222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6f761c8b53645c6a3a0f637a602eb8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5115746516234326036
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,7 +181,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c112dd6d62fb2604f92c970b5bf66350, type: 2}
+  - {fileID: 2100000, guid: 8816779b989c9ae4a905f2d4ae0f3060, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -251,7 +264,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c112dd6d62fb2604f92c970b5bf66350, type: 2}
+  - {fileID: 2100000, guid: 8816779b989c9ae4a905f2d4ae0f3060, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -283,9 +296,9 @@ GameObject:
   m_Component:
   - component: {fileID: 7845480124674955033}
   - component: {fileID: 4514186648823335926}
-  - component: {fileID: -2906440232542514067}
+  - component: {fileID: -4405768996692219966}
   m_Layer: 11
-  m_Name: Power_Device_white
+  m_Name: BatteryCharger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -329,7 +342,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-2906440232542514067
+--- !u!114 &-4405768996692219966
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -341,11 +354,12 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 2346739478
+  SortKey: 2440145322
   ObjectInterest: 1
   Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 1711502208092622240}
 --- !u!1 &9048701772966562858
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,7 +423,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c112dd6d62fb2604f92c970b5bf66350, type: 2}
+  - {fileID: 2100000, guid: 8816779b989c9ae4a905f2d4ae0f3060, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

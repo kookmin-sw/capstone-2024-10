@@ -3,47 +3,50 @@ using UnityEngine;
 
 public class ElevatorKeypad : BaseWorkStation
 {
+    public override string InteractDescription => "ACTIVATE ELEVATOR";
+
     [SerializeField] private GameObject _elevatorDoor;
-    public override string InteractDescription => "Activate the elevator";
 
     protected override void Init()
     {
         base.Init();
 
-        _canRememberWork = true;
+        CanRememberWork = true;
         IsCompleted = false;
 
         TotalWorkAmount = 50f;
     }
-    public override bool TryShowInfoUI(Creature creature, out bool isInteractable)
+    public override bool CheckInteractable(Creature creature)
     {
-        isInteractable = false;
-        if (creature.CreatureType == Define.CreatureType.Alien)
+        if (creature is not Crew crew)
+        {
+            creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Hide();
             return false;
+        }
+
+        if (creature.CreatureState == Define.CreatureState.Interact)
+        {
+            creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Hide();
+            return false;
+        }
 
         if (IsCompleted)
         {
+            creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Show("COMPLETED");
             return false;
         }
 
         if (!Managers.MapMng.PlanSystem.IsGeneratorRestored)
         {
-            creature.IngameUI.ErrorTextUI.Show("You cannot use this now");
+            creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Show("CAN NOT USE NOW");
         }
-
-        if (creature.CreatureState == Define.CreatureState.Interact)
-            return false;
 
         creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Show(InteractDescription);
-        isInteractable = true;
-        return true;
-    }
-
-    protected override bool IsInteractable(Creature creature)
-    {
-        if (WorkerCount > 0) return false;
-
         return true;
     }
 
@@ -62,6 +65,6 @@ public class ElevatorKeypad : BaseWorkStation
 
     protected override void PlayEffectMusic()
     {
-        
+
     }
 }
