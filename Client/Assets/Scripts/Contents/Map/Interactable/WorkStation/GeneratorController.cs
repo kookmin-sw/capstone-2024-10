@@ -2,43 +2,49 @@ using Fusion;
 
 public class GeneratorController : BaseWorkStation
 {
-    public override string InteractDescription => "Restore generator";
+    public override string InteractDescription => "RESTORE GENERATOR";
 
     protected override void Init()
     {
         base.Init();
 
-        _canRememberWork = true;
+        CanRememberWork = true;
         IsCompleted = false;
 
         TotalWorkAmount = 50f;
     }
-    public override bool TryShowInfoUI(Creature creature, out bool isInteractable)
+    public override bool CheckInteractable(Creature creature)
     {
-        isInteractable = false;
-        if (creature.CreatureType == Define.CreatureType.Alien)
+        if (creature is not Crew crew)
+        {
+            creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Hide();
             return false;
+        }
+
+        if (creature.CreatureState == Define.CreatureState.Interact)
+        {
+            creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Hide();
+            return false;
+        }
 
         if (Managers.MapMng.PlanSystem.IsGeneratorRestored)
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Show("The generator has already been restored");
+            creature.IngameUI.ErrorTextUI.Show("COMPLETED");
             return true;
         }
 
         if (!Managers.MapMng.PlanSystem.IsBatteryChargeFinished)
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Show("You cannot use this now");
+            creature.IngameUI.ErrorTextUI.Show("CAN NOT USE NOW");
             return true;
         }
 
-        if (creature.CreatureState == Define.CreatureState.Interact)
-            return false;
-
         creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Show(InteractDescription);
-        isInteractable = true;
         return true;
     }
 
@@ -62,6 +68,6 @@ public class GeneratorController : BaseWorkStation
 
     protected override void PlayEffectMusic()
     {
-        
+
     }
 }

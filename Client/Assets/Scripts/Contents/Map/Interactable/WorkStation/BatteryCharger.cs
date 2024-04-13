@@ -2,50 +2,49 @@ using Fusion;
 
 public class BatteryCharger : BaseWorkStation
 {
-    public override string InteractDescription => "Charge battery";
+    public override string InteractDescription => "CHARGE BATTERY";
 
     protected override void Init()
     {
         base.Init();
 
-        _canRememberWork = false;
+        CanRememberWork = false;
         IsCompleted = false;
 
         TotalWorkAmount = 10f;
     }
-    public override bool TryShowInfoUI(Creature creature, out bool isInteractable)
+    public override bool CheckInteractable(Creature creature)
     {
-        isInteractable = false;
-        if (creature.CreatureType == Define.CreatureType.Alien)
-            return false;
-
-        if (creature.CreatureState == Define.CreatureState.Interact)
-            return false;
-
-        if (!(((Crew)creature).Inventory.CurrentItem is Battery))
+        if (creature is not Crew crew)
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Show("You should have a battery on your hand");
-            return true;
+            creature.IngameUI.ErrorTextUI.Hide();
+            return false;
+        }
+
+        if (creature.CreatureState == Define.CreatureState.Interact)
+        {
+            creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Hide();
+            return false;
         }
 
         if (Managers.MapMng.PlanSystem.IsBatteryChargeFinished)
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Show("All batteries are charged already");
+            creature.IngameUI.ErrorTextUI.Show("CHARGE FINISHED");
+            return true;
+        }
+
+        if (!(crew.Inventory.CurrentItem is Battery))
+        {
+            creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Show("NO BATTERY ON YOUR HAND");
             return true;
         }
 
         creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Show(InteractDescription);
-        isInteractable = true;
-        return true;
-    }
-
-    protected override bool IsInteractable(Creature creature)
-    {
-        if (WorkerCount > 0) return false;
-
         return true;
     }
 
@@ -69,7 +68,7 @@ public class BatteryCharger : BaseWorkStation
 
     protected override void PlayEffectMusic()
     {
-        
+
     }
 }
 

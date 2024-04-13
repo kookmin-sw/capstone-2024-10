@@ -4,21 +4,32 @@ using UnityEngine;
 public abstract class BaseItemObject : NetworkBehaviour, IInteractable
 {
     public abstract int DataId { get;}
-    public string InteractDescription => $"Get Item";
+    public string InteractDescription => $"GET ITEM";
 
-    public bool TryShowInfoUI(Creature creature, out bool isInteractable)
+    public bool CheckInteractable(Creature creature)
     {
-        isInteractable = false;
-        if (creature is not Crew crew) return false;
+        creature.IngameUI.ErrorTextUI.Hide();
+
+        if (creature is not Crew crew)
+        {
+            creature.IngameUI.InteractInfoUI.Hide();
+            return false;
+        }
+
+        if (creature.CreatureState == Define.CreatureState.Interact)
+        {
+            creature.IngameUI.InteractInfoUI.Hide();
+            return false;
+        }
 
         if (!crew.Inventory.CheckCanGetItem())
         {
-            creature.IngameUI.ErrorTextUI.Show("Inventory is full!");
+            creature.IngameUI.InteractInfoUI.Hide();
             return true;
         }
 
+        creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Show(InteractDescription);
-        isInteractable = true;
         return true;
     }
 
@@ -43,6 +54,4 @@ public abstract class BaseItemObject : NetworkBehaviour, IInteractable
     {
         Runner.Despawn(gameObject.GetComponent<NetworkObject>());
     }
-
-
 }

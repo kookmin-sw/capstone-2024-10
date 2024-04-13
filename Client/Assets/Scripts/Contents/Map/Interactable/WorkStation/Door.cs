@@ -1,11 +1,11 @@
 using Fusion;
-using UnityEngine;
 
 public class Door : BaseWorkStation
 {
     [Networked] private NetworkBool IsOpened { get; set; }
+    public override string InteractDescription => IsOpened ? "CLOSE DOOR" : "OPEN DOOR";
+
     public NetworkMecanimAnimator NetworkAnim { get; protected set; }
-    public override string InteractDescription => IsOpened ? "Close Door" : "Open Door";
 
     protected override void Init()
     {
@@ -14,30 +14,28 @@ public class Door : BaseWorkStation
         NetworkAnim = transform.GetComponent<NetworkMecanimAnimator>();
 
         IsOpened = false;
-        _canRememberWork = false;
+        CanRememberWork = false;
 
         TotalWorkAmount = 5f; // only for alien crashing door
     }
 
-    public override bool TryShowInfoUI(Creature creature, out bool isInteractable)
+    public override bool CheckInteractable(Creature creature)
     {
-        isInteractable = false;
-        if (creature.CreatureState == Define.CreatureState.Interact)
-            return false;
-
         creature.IngameUI.ErrorTextUI.Hide();
+
+        if (creature is Alien && IsOpened)
+        {
+            creature.IngameUI.InteractInfoUI.Hide();
+            return false;
+        }
+
+        if (creature.CreatureState == Define.CreatureState.Interact)
+        {
+            creature.IngameUI.InteractInfoUI.Hide();
+            return false;
+        }
+
         creature.IngameUI.InteractInfoUI.Show(InteractDescription);
-
-        isInteractable = true;
-        return true;
-    }
-
-    protected override bool IsInteractable(Creature creature)
-    {
-        if (WorkerCount > 0) return false;
-
-        if (creature is Alien && IsOpened) return false;
-
         return true;
     }
 
@@ -86,7 +84,6 @@ public class Door : BaseWorkStation
     {
         IsOpened = !IsOpened;
         NetworkAnim.Animator.SetBool("OpenParameter", IsOpened);
-
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

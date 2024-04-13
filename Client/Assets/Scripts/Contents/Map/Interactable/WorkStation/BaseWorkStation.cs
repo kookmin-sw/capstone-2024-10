@@ -5,14 +5,18 @@ using UnityEngine;
 public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 {
     #region Field
+
     [Networked] protected float CurrentWorkAmount { get; set; }
     [Networked] protected float TotalWorkAmount { get; set; }
-    [Networked] protected NetworkBool IsCompleted { get; set; }
     [Networked] protected int WorkerCount { get; set; }
+    [Networked] protected NetworkBool IsCompleted { get; set; }
+
+    public bool CanRememberWork { get; protected set; }
     public abstract string InteractDescription { get; }
+
     protected Creature Worker { get; set; }
     protected Crew CrewWorker => Worker as Crew;
-    protected bool _canRememberWork;
+
     #endregion
 
     public override void Spawned()
@@ -26,13 +30,20 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         IsCompleted = false;
     }
 
-    public abstract bool TryShowInfoUI(Creature creature, out bool isInteractable);
-    protected abstract bool IsInteractable(Creature creature);
-    protected abstract void PlayInteractAnimation();
-    protected abstract void PlayEffectMusic();
+    public abstract bool CheckInteractable(Creature creature);
+
+    protected virtual bool IsInteractable(Creature creature)
+    {
+        if (WorkerCount > 0)
+            return false;
+
+        return true;
+    }
+
     public virtual bool Interact(Creature creature)
     {
-        if (!IsInteractable(creature)) return false;
+        if (!IsInteractable(creature))
+            return false;
 
         Worker = creature;
         Worker.IngameUI.InteractInfoUI.Hide();
@@ -44,6 +55,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         Rpc_AddWorker();
         PlayEffectMusic();
         StartCoroutine(ProgressWork());
+
         return true;
     }
 
@@ -94,7 +106,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     {
         WorkerCount--;
 
-        if (!_canRememberWork && WorkerCount <= 0)
+        if (!CanRememberWork && WorkerCount <= 0)
             CurrentWorkAmount = 0f;
     }
 
@@ -104,4 +116,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         CurrentWorkAmount = Mathf.Clamp(CurrentWorkAmount + deltaTime * workSpeed, 0, TotalWorkAmount);
     }
 
+    protected abstract void PlayInteractAnimation();
+
+    protected abstract void PlayEffectMusic();
 }
