@@ -10,8 +10,6 @@ public class ReadyScene : BaseScene
 
         SceneType = Define.SceneType.ReadyScene;
 
-        Managers.MapMng.Init();
-
         Managers.UIMng.ShowPopupUI<UI_StartGame>(parent: Managers.UIMng.Root.transform);
         StartCoroutine(Managers.GameMng.TryStartGame());
     }
