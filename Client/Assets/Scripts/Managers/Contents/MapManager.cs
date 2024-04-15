@@ -6,9 +6,5 @@ public class MapManager
 {
     public MapSystem MapSystem { get; set; }
     public PlanSystem PlanSystem { get; set; }
-
-    public void Init()
-    {
-
-    }
+    public RenderingSystem RenderingSystem { get; set; }
 }

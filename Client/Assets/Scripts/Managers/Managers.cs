@@ -13,7 +13,7 @@ public class Managers : MonoBehaviour
     private GameManagerEX _gameMng = new GameManagerEX();
     private ObjectManager _objectMng = new ObjectManager();
 
-    public static GameManagerEX GameMng { get { return Instance._gameMng; } }
+    public static GameManagerEX GameMng => Instance._gameMng;
     public static ObjectManager ObjectMng => Instance._objectMng;
     #endregion
 

@@ -46,6 +46,12 @@ public static class Define
 
     #region State
 
+    public enum PlayerState
+    {
+        None,
+        Ready,
+    }
+
     public enum CreatureState
     {
         Idle,
@@ -146,13 +152,5 @@ public static class Define
     public const float PASIVE_RECOVER_SANITY = 0.5f;
 
     public const int BATTERY_COLLECT_GOAL = 3;
-    #endregion
-
-    #region PlayerState
-    public enum PlayerState
-    {
-        None,
-        Ready,
-    }
     #endregion
 }

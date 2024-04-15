@@ -8,8 +8,6 @@ public class GameScene : BaseScene
     {
         base.Init();
         SceneType = Define.SceneType.GameScene;
-
-        Managers.MapMng.Init();
     }
 
     public override IEnumerator OnSceneLoaded()
