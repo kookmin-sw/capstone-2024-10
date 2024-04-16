@@ -10,16 +10,16 @@ public class CaptureItem : MonoBehaviour
     public RenderTexture rt;
     public Image image;
     public GameObject item;
-    public BatteryObject itemId;
+    public int idx;
 
     private void Start()
     {
         Camera = Camera.main;
+        idx = 0;
     }
 
     public void Create()
     {
-        itemId = item.GetComponent<BatteryObject>();
         StartCoroutine(CaptureImage());
     }
 
@@ -34,10 +34,10 @@ public class CaptureItem : MonoBehaviour
         yield return null;
 
         var data = texture.EncodeToPNG();
-        string name = itemId.DataId.ToString();
+        string name = idx.ToString();
         string extention = ".png";
         string path = $"Assets/Resources/Images/";
-
+        idx++;
         Debug.Log(path);
 
         if (!Directory.Exists(path))

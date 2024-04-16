@@ -1,13 +1,15 @@
 using Fusion;
+using UnityEngine;
 
 public class BatteryCharger : BaseWorkStation
 {
     public override string InteractDescription => "CHARGE BATTERY";
-
+    public AudioSource AudioSource { get; protected set; }
     protected override void Init()
     {
         base.Init();
 
+        AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = false;
         IsCompleted = false;
 
@@ -51,7 +53,6 @@ public class BatteryCharger : BaseWorkStation
     protected override void WorkComplete()
     {
         CrewWorker.Inventory.RemoveItem();
-
         base.WorkComplete();
     }
 
@@ -66,9 +67,14 @@ public class BatteryCharger : BaseWorkStation
         CrewWorker.CrewAnimController.PlayChargeBattery();
     }
 
-    protected override void PlayEffectMusic()
-    {
 
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    protected override void Rpc_PlayEffectMusic(Creature creature)
+    {
+        AudioSource.volume = 1f;
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/BatteryCharger");
+        AudioSource.Play();
+        //Managers.SoundMng.Play("Music/Clicks/BatteryCharger", Define.SoundType.Effect, 1f);
     }
 }
 

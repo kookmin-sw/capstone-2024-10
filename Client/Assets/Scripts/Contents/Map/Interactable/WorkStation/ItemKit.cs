@@ -1,4 +1,4 @@
-﻿using Fusion;
+using Fusion;
 using UnityEngine;
 
 public class ItemKit : BaseWorkStation
@@ -7,7 +7,7 @@ public class ItemKit : BaseWorkStation
     [SerializeField] private int _itemId;
 
     public override string InteractDescription => "OPEN ITEM KIT";
-
+    public AudioSource AudioSource { get; protected set; }
     public GameObject Cover { get; protected set; }
 
     protected override void Init()
@@ -15,7 +15,7 @@ public class ItemKit : BaseWorkStation
         base.Init();
 
         Cover = Util.FindChild(gameObject, "Cover", true);
-
+        AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = false;
         IsCompleted = false;
 
@@ -67,11 +67,16 @@ public class ItemKit : BaseWorkStation
 
     protected override void PlayInteractAnimation()
     {
-        CrewWorker.CrewAnimController.PlayKeypadUse();
+        CrewWorker.CrewAnimController.PlayOpenBox();
     }
 
-    protected override void PlayEffectMusic()
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    protected override void Rpc_PlayEffectMusic(Creature creature)
     {
-        Managers.SoundMng.Play("Music/Clicks/Typing_Keyboard", Define.SoundType.Effect, 0.5f, true);
+        AudioSource.volume = 1f;
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/ItemBox");
+        AudioSource.loop = true;
+        AudioSource.Play();
+        //Managers.SoundMng.Play("Music/Clicks/ItemBox", Define.SoundType.Effect, 1f, true);
     }
 }

@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using UnityEngine;
 
@@ -29,7 +30,7 @@ public class BasicAttack : BaseSkill
         base.UseSkill();
 
         Owner.AlienAnimController.PlayBasicAttack();
-
+        Rpc_PlayEffectMusic();
         StartCoroutine(ProgressSkill());
     }
 
@@ -54,5 +55,14 @@ public class BasicAttack : BaseSkill
         }
 
         SkillInterrupt();
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_PlayEffectMusic()
+    {
+        Owner.AudioSource_1.volume = 1f;
+        Owner.AudioSource_1.pitch = 1f;
+        Owner.AudioSource_1.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Monster_Attack1");
+        Owner.AudioSource_1.Play();
     }
 }

@@ -1,8 +1,10 @@
-﻿using System.Collections;
+using Fusion;
+using System.Collections;
 using UnityEngine;
 
 public class Roar : BaseSkill
 {
+
     protected override void Init()
     {
         base.Init();
@@ -21,7 +23,7 @@ public class Roar : BaseSkill
         Owner.CreaturePose = Define.CreaturePose.Stand;
 
         Owner.AlienAnimController.PlayReadyRoar();
-
+        Rpc_PlayEffectMusic();
         StartCoroutine(ReadySkillProgress());
     }
 
@@ -57,4 +59,15 @@ public class Roar : BaseSkill
 
         SkillInterrupt();
     }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_PlayEffectMusic()
+    {
+        Owner.AudioSource_1.volume = 1f;
+        Owner.AudioSource_1.pitch = 1f;
+        Owner.AudioSource_1.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Monster_Roaring");
+        Owner.AudioSource_1.Play();
+    }
+
+
 }
