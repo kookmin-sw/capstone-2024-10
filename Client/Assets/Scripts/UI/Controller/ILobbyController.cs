@@ -1,3 +1,4 @@
+using Fusion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,4 +14,12 @@ public interface ILobbyController
     public void ExitMenu();
 
     public void DestroyMenu();
+
+    void OpenRoomCreate();
+
+    void CloseRoomCreate();
+
+    void CloseRoomJoin();
+
+    void OpenRoomJoin(string sessionName, string password);
 }

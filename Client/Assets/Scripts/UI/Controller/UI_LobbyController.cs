@@ -109,59 +109,36 @@ public class UI_LobbyController : UI_Base, ILobbyController
     #endregion
 
     #region Fields
-    // campaign button sub menu
     [Header("MENUS")]
-    [Tooltip("The Menu for when the MAIN menu buttons")]
     public GameObject mainMenu;
-    [Tooltip("THe first list of buttons")]
     public GameObject firstMenu;
-    [Tooltip("The Menu for when the PLAY button is clicked")]
     public GameObject playMenu;
-    [Tooltip("The Menu for when the EXIT button is clicked")]
     public GameObject exitMenu;
-    [Tooltip("Optional 4th Menu")]
     public GameObject extrasMenu;
 
-    public enum Theme { custom1, custom2, custom3 };
     [Header("THEME SETTINGS")]
     public Theme theme;
+    public enum Theme { custom1, custom2, custom3 };
     private int themeIndex;
     public SlimUI.ModernMenu.ThemedUIData themeController;
 
     [Header("PANELS")]
-    [Tooltip("The UI Panel parenting all sub menus")]
     public GameObject mainCanvas;
-    [Tooltip("The UI Panel that holds the CONTROLS window tab")]
     public GameObject PanelControls;
-    [Tooltip("The UI Panel that holds the VIDEO window tab")]
     public GameObject PanelVideo;
-    [Tooltip("The UI Panel that holds the GAME window tab")]
     public GameObject PanelGame;
-    [Tooltip("The UI Panel that holds the KEY BINDINGS window tab")]
     public GameObject PanelKeyBindings;
-    [Tooltip("The UI Sub-Panel under KEY BINDINGS for MOVEMENT")]
     public GameObject PanelMovement;
-    [Tooltip("The UI Sub-Panel under KEY BINDINGS for COMBAT")]
     public GameObject PanelCombat;
-    [Tooltip("The UI Sub-Panel under KEY BINDINGS for GENERAL")]
     public GameObject PanelGeneral;
 
-
-    // highlights in settings screen
     [Header("SETTINGS SCREEN")]
-    [Tooltip("Highlight Image for when GAME Tab is selected in Settings")]
     public GameObject lineGame;
-    [Tooltip("Highlight Image for when VIDEO Tab is selected in Settings")]
     public GameObject lineVideo;
-    [Tooltip("Highlight Image for when CONTROLS Tab is selected in Settings")]
     public GameObject lineControls;
-    [Tooltip("Highlight Image for when KEY BINDINGS Tab is selected in Settings")]
     public GameObject lineKeyBindings;
-    [Tooltip("Highlight Image for when MOVEMENT Sub-Tab is selected in KEY BINDINGS")]
     public GameObject lineMovement;
-    [Tooltip("Highlight Image for when COMBAT Sub-Tab is selected in KEY BINDINGS")]
     public GameObject lineCombat;
-    [Tooltip("Highlight Image for when GENERAL Sub-Tab is selected in KEY BINDINGS")]
     public GameObject lineGeneral;
     public GameObject KeyConfirmation;
 
@@ -170,7 +147,6 @@ public class UI_LobbyController : UI_Base, ILobbyController
 
     [Header("LOBBY")]
     public UI_Lobby lobbyMenu;
-
     private Animator CameraObject;
     #endregion
 
@@ -183,6 +159,7 @@ public class UI_LobbyController : UI_Base, ILobbyController
         Bind<UI_Base>(typeof(SubItems));
         DontDestroyOnLoad(gameObject);
 
+        #region Base
         CameraObject = Camera.main.GetComponent<Animator>();
         mainMenu = gameObject;
         firstMenu = GetObject((int)GameObjects.MAIN);
@@ -211,18 +188,6 @@ public class UI_LobbyController : UI_Base, ILobbyController
         lineGeneral = GetObject((int)GameObjects.LineGeneral);
         KeyConfirmation = GetObject((int)GameObjects.KeyConfirmation);
 
-        loadingMenu = Get<UI_Base>(SubItems.UI_Loading) as UI_Loading;
-        loadingMenu.Init();
-        loadingMenu.SetInfo(this);
-        lobbyMenu = Get<UI_Base>(SubItems.UI_Lobby) as UI_Lobby;
-        lobbyMenu.Init();
-        lobbyMenu.SetInfo(this);
-
-        foreach (int i in Enum.GetValues(typeof(Buttons)))
-        {
-            BindEvent(GetButton(i).gameObject, (e) => PlayHover(), Define.UIEvent.PointerEnter);
-        }
-
         GetButton((int)Buttons.Btn_PlayCampaign).onClick.AddListener(PlayCampaign);
         GetButton((int)Buttons.Btn_Settings).onClick.AddListener(Position2);
         GetButton((int)Buttons.Btn_Settings).onClick.AddListener(ReturnMenu);
@@ -240,13 +205,24 @@ public class UI_LobbyController : UI_Base, ILobbyController
         GetButton((int)Buttons.KeyBindings_Btn).onClick.AddListener(KeyBindingsPanel);
         GetButton((int)Buttons.Movement_Btn).onClick.AddListener(MovementPanel);
 
-
-
         GetButton((int)Buttons.Btn_Video).onClick.AddListener(VideoPanel);
         GetButton((int)Buttons.Btn_Controls).onClick.AddListener(ControlsPanel);
         GetButton((int)Buttons.KeyBindings_Btn).onClick.AddListener(KeyBindingsPanel);
         GetButton((int)Buttons.Btn_Return).onClick.AddListener(ReturnMenu);
+        #endregion
 
+        loadingMenu = Get<UI_Base>(SubItems.UI_Loading) as UI_Loading;
+        loadingMenu.Init();
+        loadingMenu.SetInfo(this);
+
+        lobbyMenu = Get<UI_Base>(SubItems.UI_Lobby) as UI_Lobby;
+        lobbyMenu.Init();
+        lobbyMenu.SetInfo(this);
+
+        foreach (int i in Enum.GetValues(typeof(Buttons)))
+        {
+            BindEvent(GetButton(i).gameObject, (e) => PlayHover(), Define.UIEvent.PointerEnter);
+        }
 
         playMenu.SetActive(false);
         exitMenu.SetActive(false);
@@ -256,9 +232,9 @@ public class UI_LobbyController : UI_Base, ILobbyController
 
         PanelVideo.SetActive(false);
         PanelControls.SetActive(false);
-        PanelGame.SetActive(true);
         PanelKeyBindings.SetActive(false);
         KeyConfirmation.SetActive(false);
+        PanelGame.SetActive(true);
 
         lineControls.SetActive(false);
         lineKeyBindings.SetActive(false);
@@ -270,6 +246,67 @@ public class UI_LobbyController : UI_Base, ILobbyController
     }
     #endregion
 
+    #region Interface
+    public void ShowLoadingMenu()
+    {
+        loadingMenu.gameObject.SetActive(true);
+        StartCoroutine(loadingMenu.LoadAsynchronously());
+    }
+
+    public void PlayHover()
+    {
+        Managers.SoundMng.Play("Music/Clicks/SFX_Click_Mechanical", Define.SoundType.Effect, 0.1f);
+    }
+
+    public void DestroyMenu()
+    {
+        Destroy(gameObject);
+    }
+
+    public void ExitMenu()
+    {
+        playMenu.SetActive(false);
+        exitMenu.SetActive(false);
+        extrasMenu.SetActive(false);
+        firstMenu.SetActive(false);
+        loadingMenu.gameObject.SetActive(false);
+        PanelVideo.SetActive(false);
+        PanelControls.SetActive(false);
+        PanelGame.SetActive(false);
+        PanelKeyBindings.SetActive(false);
+        KeyConfirmation.SetActive(false);
+        lineControls.SetActive(false);
+        lineKeyBindings.SetActive(false);
+        lineVideo.SetActive(false);
+    }
+
+    public void OpenRoomCreate()
+    {
+        lobbyMenu.RoomCreate.gameObject.SetActive(true);
+        lobbyMenu.RoomList.SetActive(false);
+    }
+
+    public void CloseRoomCreate()
+    {
+        lobbyMenu.RoomCreate.gameObject.SetActive(false);
+        lobbyMenu.RoomList.SetActive(true);
+    }
+
+    public void OpenRoomJoin(string sessionName, string password)
+    {
+        lobbyMenu.RoomJoin.SetInfo(this, sessionName, password);
+        lobbyMenu.RoomJoin.gameObject.SetActive(true);
+        lobbyMenu.RoomList.SetActive(false);
+    }
+
+    public void CloseRoomJoin()
+    {
+        lobbyMenu.RoomJoin.gameObject.SetActive(false);
+        lobbyMenu.RoomList.SetActive(true);
+    }
+    #endregion
+
+    #region Other
     void SetThemeColors()
     {
         switch (theme)
@@ -295,29 +332,8 @@ public class UI_LobbyController : UI_Base, ILobbyController
         }
     }
 
-    public void ExitMenu()
-    {
-        playMenu.SetActive(false);
-        exitMenu.SetActive(false);
-        extrasMenu.SetActive(false);
-        firstMenu.SetActive(false);
-        loadingMenu.gameObject.SetActive(false);
-        PanelVideo.SetActive(false);
-        PanelControls.SetActive(false);
-        PanelGame.SetActive(false);
-        PanelKeyBindings.SetActive(false);
-        KeyConfirmation.SetActive(false);
-        lineControls.SetActive(false);
-        lineKeyBindings.SetActive(false);
-        lineVideo.SetActive(false);
-    }
-
-    public void DestroyMenu()
-    {
-        Destroy(gameObject);
-    }
-
     public void PlayCampaign()
+
     {
         exitMenu.SetActive(false);
         if (extrasMenu) extrasMenu.SetActive(false);
@@ -340,12 +356,7 @@ public class UI_LobbyController : UI_Base, ILobbyController
         mainMenu.SetActive(true);
     }
 
-    public void ShowLoadingMenu()
-    {
-        loadingMenu.gameObject.SetActive(true);
-        StartCoroutine(loadingMenu.LoadAsynchronously());
-    }
-
+ 
     public void DisablePlayCampaign()
     {
         playMenu.SetActive(false);
@@ -435,11 +446,6 @@ public class UI_LobbyController : UI_Base, ILobbyController
         lineGeneral.SetActive(true);
     }
 
-    public void PlayHover()
-    {
-        Managers.SoundMng.Play("Music/Clicks/SFX_Click_Mechanical", Define.SoundType.Effect, 0.1f);
-    }
-
     public void PlaySFXHover()
     {
         Managers.SoundMng.Play("Music/Clicks/SFX_Click_Punch");
@@ -481,4 +487,5 @@ public class UI_LobbyController : UI_Base, ILobbyController
 				Application.Quit();
 #endif
     }
+    #endregion
 }

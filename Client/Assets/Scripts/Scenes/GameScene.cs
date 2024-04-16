@@ -10,7 +10,7 @@ public class GameScene : BaseScene
         SceneType = Define.SceneType.GameScene;
     }
 
-    public override IEnumerator OnSceneLoaded()
+    public override IEnumerator OnPlayerSpawn()
     {
         MapSystem mapSystem = null;
         PlanSystem planSystem = null;

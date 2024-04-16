@@ -88,7 +88,6 @@ public class GameManagerEX
             SessionInfo info = Managers.NetworkMng.Runner.SessionInfo;
             info.IsVisible = false;
             SessionProperty = new (info.Properties);
-            SessionProperty["GameStart"] = true;
             info.UpdateCustomProperties(SessionProperty);
             StartGame();
         }
