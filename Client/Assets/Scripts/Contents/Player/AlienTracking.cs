@@ -17,7 +17,7 @@ public class AlienTracking : NetworkBehaviour
     [Rpc(RpcSources.All, RpcTargets.All)]
     private void Rpc_PlayEffectMusic()
     {
-        AudioSource.volume = 0.2f;
+        AudioSource.volume = 1f;
         AudioSource.pitch = 1f;
         AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Bgm/검은 숲의 추격자");
         AudioSource.loop = true;
