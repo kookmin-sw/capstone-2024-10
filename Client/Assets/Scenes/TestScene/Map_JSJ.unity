@@ -38,7 +38,8 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.12792245, g: 0.15848371, b: 0.20975578, a: 1}
+  m_IndirectSpecularColor: {r: 0.74808294, g: 0.5768371, b: 0.6464854, a: 1}
+
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -8561,6 +8562,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1343902041442310, guid: 31d875d333a7ffa4ab3bf54dee03bf61, type: 3}
     - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[2].Prefab
+      value: 
+      objectReference: {fileID: 1508137380435870, guid: ed8bd64b3cf5df641a678f5513f3fc6c, type: 3}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[3].Prefab
+      value: 
+      objectReference: {fileID: 1557910113621458, guid: 1da23a86a41a6df44a1a2e2d6df7c0fd, type: 3}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: _itemSpawnDatas.Array.data[0].GlobalMaxCount
       value: 4
       objectReference: {fileID: 0}
@@ -8577,11 +8586,23 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[3].GlobalMaxCount
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[3].GlobalMinCount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: _itemSpawnDatas.Array.data[0].MaxCountPerSector
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: _itemSpawnDatas.Array.data[1].MaxCountPerSector
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[3].MaxCountPerSector
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3213453872573541556, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
