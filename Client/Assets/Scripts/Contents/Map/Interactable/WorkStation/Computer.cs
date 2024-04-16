@@ -1,14 +1,15 @@
 using Fusion;
-
+using UnityEngine;
 
 public class Computer : BaseWorkStation
 {
     public override string InteractDescription => "USE COMPUTER";
-
+    public AudioSource AudioSource { get; protected set; }
     protected override void Init()
     {
         base.Init();
 
+        AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;
         IsCompleted = false;
 
@@ -59,10 +60,14 @@ public class Computer : BaseWorkStation
         CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 
-    protected override void PlayEffectMusic()
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    protected override void Rpc_PlayEffectMusic(Creature creature)
     {
-        Managers.SoundMng.Play("Music/Clicks/Typing_Keyboard", Define.SoundType.Effect, 0.5f, true);
+        AudioSource.volume = 1f;
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Typing_Keyboard");
+        AudioSource.loop = true;
+        AudioSource.Play();
+        //Managers.SoundMng.Play("Music/Clicks/Typing_Keyboard", Define.SoundType.Effect, 1f, true);
     }
-
 
 }

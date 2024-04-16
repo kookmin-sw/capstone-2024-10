@@ -29,6 +29,7 @@ public class GameScene : BaseScene
 
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
+        Managers.SoundMng.Clear();
     }
 
     // 씬이 바뀔 때 정리해야 하는 목록

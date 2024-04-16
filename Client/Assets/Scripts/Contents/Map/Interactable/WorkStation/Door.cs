@@ -1,4 +1,5 @@
 using Fusion;
+using UnityEngine;
 
 public class Door : BaseWorkStation
 {
@@ -7,11 +8,13 @@ public class Door : BaseWorkStation
 
     public NetworkMecanimAnimator NetworkAnim { get; protected set; }
 
+    public AudioSource AudioSource { get; protected set; }
     protected override void Init()
     {
         base.Init();
 
         NetworkAnim = transform.GetComponent<NetworkMecanimAnimator>();
+        AudioSource = gameObject.GetComponent<AudioSource>();
 
         IsOpened = false;
         CanRememberWork = false;
@@ -55,14 +58,13 @@ public class Door : BaseWorkStation
         {
             InterruptWork();
             WorkComplete();
-            PlayEffectMusic();
         }
         else
         {
             Worker.IngameUI.WorkProgressBarUI.Show(InteractDescription, CurrentWorkAmount, TotalWorkAmount);
             StartCoroutine(ProgressWork());
         }
-
+        Rpc_PlayEffectMusic(Worker);
         return true;
     }
 
@@ -108,15 +110,30 @@ public class Door : BaseWorkStation
         }
     }
 
-    protected override void PlayEffectMusic()
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    protected override void Rpc_PlayEffectMusic(Creature creature)
     {
-        if (IsOpened)
+        if (creature is Crew)
         {
-            Managers.SoundMng.Play("Music/Clicks/Door_open", Define.SoundType.Effect, 1f);
+            if (IsOpened)
+            {
+                AudioSource.volume = 1f;
+                AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Door_open");
+                AudioSource.Play();
+            }
+            else
+            {
+                AudioSource.volume = 1f;
+                AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Door_close");
+                AudioSource.Play();
+            }
         }
         else
         {
-            Managers.SoundMng.Play("Music/Clicks/Door_close", Define.SoundType.Effect, 0.8f);
+            AudioSource.volume = 1f;
+            AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Monster_attack1");
+            AudioSource.Play();
         }
+            
     }
 }

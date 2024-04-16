@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Data;
+using Fusion;
 
 public abstract class Alien : Creature
 {
@@ -10,10 +11,10 @@ public abstract class Alien : Creature
     public AlienStat AlienStat => (AlienStat)BaseStat;
     public AlienAnimController AlienAnimController => (AlienAnimController)BaseAnimController;
     public SkillController SkillController { get; protected set; }
-
     public UI_AlienIngame AlienIngameUI => IngameUI as UI_AlienIngame;
-
     public float CurrentSkillRange { get; set; }
+
+    public AudioSource AudioSource_1 { get; set; }
 
     #endregion
 
@@ -22,9 +23,10 @@ public abstract class Alien : Creature
         base.Init();
 
         Managers.ObjectMng.Aliens[NetworkObject.Id] = this;
-
         SkillController = gameObject.GetComponent<SkillController>();
         SkillController.Skills = new Dictionary<int, BaseSkill>(Define.MAX_SKILL_NUM);
+
+        AudioSource_1 = gameObject.GetComponent<AudioSource>();
     }
 
     public override void SetInfo(int templateID)
@@ -59,6 +61,14 @@ public abstract class Alien : Creature
         {
             StartCoroutine(Managers.SceneMng.CurrentScene.OnSceneLoaded());
         }
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        base.FixedUpdateNetwork();
+
+        PlayEffectMusic();
+        StopEffectMusic();
     }
 
     protected override void HandleInput()
@@ -177,4 +187,39 @@ public abstract class Alien : Creature
     }
 
     #endregion
+
+    private void PlayEffectMusic()
+    {
+        if (CreatureState == Define.CreatureState.Move)
+        {
+            if (AudioSource_1.isPlaying == false)
+            {
+                AudioSource_1.volume = 1f;
+                AudioSource_1.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Monster_Walk");
+                AudioSource_1.Play();
+            }
+            else
+            {
+                if (CreaturePose == Define.CreaturePose.Stand)
+                {
+                    AudioSource_1.pitch = 1f;
+                    AudioSource_1.volume = 1f;
+                }
+                if (CreaturePose == Define.CreaturePose.Run)
+                {
+                    AudioSource_1.pitch = 2f;
+                    AudioSource_1.volume = 1f;
+                }
+                return;
+            }
+        }
+    }
+
+    private void StopEffectMusic()
+    {
+        if (CreatureState == Define.CreatureState.Idle || CreatureState == Define.CreatureState.Interact)
+        {
+            AudioSource_1.Stop();
+        }
+    }
 }

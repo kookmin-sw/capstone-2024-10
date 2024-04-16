@@ -6,11 +6,12 @@ public class ElevatorKeypad : BaseWorkStation
     public override string InteractDescription => "ACTIVATE ELEVATOR";
 
     [SerializeField] private GameObject _elevatorDoor;
-
+    public AudioSource AudioSource { get; protected set; }
     protected override void Init()
     {
         base.Init();
 
+        AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;
         IsCompleted = false;
 
@@ -63,8 +64,14 @@ public class ElevatorKeypad : BaseWorkStation
         CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 
-    protected override void PlayEffectMusic()
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    protected override void Rpc_PlayEffectMusic(Creature creature)
     {
+        AudioSource.volume = 1f;
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Typing_Keyboard");
+        AudioSource.loop = true;
+        AudioSource.Play();
 
+        //Managers.SoundMng.Play("Music/Clicks/Typing_Keyboard", Define.SoundType.Effect, 1f, true);
     }
 }

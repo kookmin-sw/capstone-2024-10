@@ -1,13 +1,14 @@
 using Fusion;
+using UnityEngine;
 
 public class GeneratorController : BaseWorkStation
 {
     public override string InteractDescription => "RESTORE GENERATOR";
-
+    public AudioSource AudioSource { get; protected set; }
     protected override void Init()
     {
         base.Init();
-
+        AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;
         IsCompleted = false;
 
@@ -66,8 +67,13 @@ public class GeneratorController : BaseWorkStation
         CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 
-    protected override void PlayEffectMusic()
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    protected override void Rpc_PlayEffectMusic(Creature creature)
     {
+        AudioSource.volume = 1f;
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/GeneratorController");
+        AudioSource.Play();
 
+        //Managers.SoundMng.Play("Music/Clicks/GeneratorController", Define.SoundType.Effect, 1f);
     }
 }
