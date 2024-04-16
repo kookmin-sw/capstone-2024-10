@@ -24,7 +24,7 @@ public abstract class BaseScene : MonoBehaviour
         if (obj == null)
             Managers.ResourceMng.Instantiate("UI/EventSystem").name = "@EventSystem";
     }
-    public virtual IEnumerator OnSceneLoaded()
+    public virtual IEnumerator OnPlayerSpawn()
     {
         yield return null;
     }

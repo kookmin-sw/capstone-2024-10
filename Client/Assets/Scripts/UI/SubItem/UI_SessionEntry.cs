@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Fusion;
+using Unity.VisualScripting;
 
 public class SessionEntryArgs
 {
@@ -30,6 +31,7 @@ public class UI_SessionEntry : UI_Base
 
     public enum GameObjects
     {
+        LockIcon,
     }
     #endregion
 
@@ -48,6 +50,7 @@ public class UI_SessionEntry : UI_Base
 
         transform.localScale = Vector3.one;
         transform.localPosition = Vector3.zero;
+        GetObject(GameObjects.LockIcon).gameObject.SetActive(false);
 
         GetButton((int)Buttons.JoinButton).onClick.AddListener(JoinSession);
 
@@ -59,6 +62,11 @@ public class UI_SessionEntry : UI_Base
         yield return null;
         _controller = controller;
         _session = args.session;
+        if (_session.Properties.TryGetValue("password", out SessionProperty password) && password != "")
+        {
+            GetObject(GameObjects.LockIcon).gameObject.SetActive(true);
+        }
+
         GetText((int)Texts.RoomName).text = _session.Name;
         GetText((int)Texts.PlayerCount).text = _session.PlayerCount + "/" + _session.MaxPlayers;
         if (_session.IsOpen == false || _session.PlayerCount >= _session.MaxPlayers)
@@ -73,8 +81,15 @@ public class UI_SessionEntry : UI_Base
 
     private void JoinSession()
     {
-        _controller.ExitMenu();
-        _controller.ShowLoadingMenu();
-        Managers.NetworkMng.ConnectToSession(GetText((int)Texts.RoomName).text);
+        if (_session.Properties.TryGetValue("password", out SessionProperty password))
+        {
+            _controller.OpenRoomJoin(GetText((int)Texts.RoomName).text, password);
+        }
+        else
+        {
+            _controller.ExitMenu();
+            _controller.ShowLoadingMenu();
+            Managers.NetworkMng.ConnectToSession(GetText((int)Texts.RoomName).text, null);
+        }
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using WebSocketSharp;
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -56,41 +57,65 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Runner.JoinSessionLobby(SessionLobby.Shared);
     }
 
-    public void CreateSession()
+    public void CreateSession(string name, string password)
     {
-        int randomInt = UnityEngine.Random.Range(1000, 9999);
-        string randomSessionName = "Room-" + randomInt.ToString();
-        ConnectToSession(randomSessionName);
+        if (name.IsNullOrEmpty())
+        {
+            int randomInt = UnityEngine.Random.Range(1000, 9999);
+            name = "Room-" + randomInt.ToString();
+        }
+
+        ConnectToSession(name, password);
     }
 
     public void ConnectToAnySession()
     {
-        if (Sessions.Count == 0)
+        // 비밀번호가 없는 세션만 찾아서 입장
+        List<SessionInfo> enterable = new List<SessionInfo>();
+        foreach (var session in Sessions)
         {
-            CreateSession();
+            if (!session.Properties.ContainsKey("password"))
+            {
+                enterable.Add(session);
+            }
+        }
+
+        if (enterable.Count == 0)
+        {
+            CreateSession(null, null);
             return;
         }
-        int  count = Sessions.Count;
+
+        int  count = enterable.Count;
         int rand = UnityEngine.Random.Range(0, count);
-        string sessionName = Sessions[rand].Name;
-        ConnectToSession(sessionName);
+        string sessionName = enterable[rand].Name;
+        ConnectToSession(sessionName, null);
     }
 
-    public async void ConnectToSession(string sessionName)
+    public async void ConnectToSession(string sessionName, string password)
     {
-        // Managers.SceneMng.LoadScene(Define.SceneType.GameScene);
         NetworkSceneInfo scene = new NetworkSceneInfo();
         scene.AddSceneRef(Managers.SceneMng.GetSceneRef(Define.SceneType.ReadyScene));
         Managers.SceneMng.Clear();
 
-        await Runner.StartGame(new StartGameArgs()
+        StartGameArgs startGameArgs = new StartGameArgs()
         {
             GameMode = GameMode.Shared,
             SessionName = sessionName,
             PlayerCount = Define.PLAYER_COUNT,
             SceneManager = Managers.Instance.gameObject.AddComponent<LevelManager>(),
             Scene = scene
-        });
+        };
+
+        if (!password.IsNullOrEmpty())
+        {
+            startGameArgs.SessionProperties = new Dictionary<string, SessionProperty>()
+            {
+                {"password", password}
+            };
+        }
+
+        await Runner.StartGame(startGameArgs);
     }
 
     #region CallBack
@@ -152,7 +177,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     }
 
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (player == runner.LocalPlayer)
         {

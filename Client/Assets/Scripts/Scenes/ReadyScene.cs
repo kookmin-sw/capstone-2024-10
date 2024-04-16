@@ -14,7 +14,7 @@ public class ReadyScene : BaseScene
         StartCoroutine(Managers.GameMng.TryStartGame());
     }
 
-    public override IEnumerator OnSceneLoaded()
+    public override IEnumerator OnPlayerSpawn()
     {
         UI_CrewIngame ingameUI = Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
         yield return new WaitUntil(() => ingameUI.Init());
@@ -30,6 +30,7 @@ public class ReadyScene : BaseScene
     // 씬이 바뀔 때 정리해야 하는 목록
     public override void Clear()
     {
+        StopAllCoroutines();
         Managers.SoundMng.Clear();
     }
 

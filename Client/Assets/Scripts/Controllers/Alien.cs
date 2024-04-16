@@ -59,7 +59,7 @@ public abstract class Alien : Creature
 
         if (Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene))
         {
-            StartCoroutine(Managers.SceneMng.CurrentScene.OnSceneLoaded());
+            StartCoroutine(Managers.SceneMng.CurrentScene.OnPlayerSpawn());
         }
     }
 
