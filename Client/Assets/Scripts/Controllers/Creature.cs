@@ -6,7 +6,6 @@ using Data;
 
 public abstract class Creature : NetworkBehaviour
 {
-    public const bool IsFirstPersonView = true;
     #region Field
 
     public bool IsSpawned { get; protected set; }
@@ -119,17 +118,9 @@ public abstract class Creature : NetworkBehaviour
         if (CreatureCamera == null)
             return;
 
-        if (IsFirstPersonView)
-        {
-            Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
-            Direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
-            Velocity = cameraRotationY * Direction * (BaseStat.Speed * Runner.DeltaTime);
-        }
-        else
-        {
-            Quaternion cameraRotationY = Quaternion.Euler(0, WatchingCamera.transform.rotation.eulerAngles.y, 0);
-            Velocity = cameraRotationY * new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * (BaseStat.Speed * Runner.DeltaTime);
-        }
+        Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
+        Direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+        Velocity = cameraRotationY * Direction * (BaseStat.Speed * Runner.DeltaTime);
     }
 
     protected bool CheckInteractable(bool tryInteract)
