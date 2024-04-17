@@ -35,14 +35,14 @@ public class BatteryCharger : BaseWorkStation
         {
             creature.IngameUI.InteractInfoUI.Hide();
             creature.IngameUI.ErrorTextUI.Show("CHARGE FINISHED");
-            return true;
+            return false;
         }
 
         if (!(crew.Inventory.CurrentItem is Battery))
         {
             creature.IngameUI.InteractInfoUI.Hide();
             creature.IngameUI.ErrorTextUI.Show("NO BATTERY ON YOUR HAND");
-            return true;
+            return false;
         }
 
         creature.IngameUI.ErrorTextUI.Hide();
@@ -56,17 +56,17 @@ public class BatteryCharger : BaseWorkStation
         base.WorkComplete();
     }
 
+    protected override void PlayInteractAnimation()
+    {
+        CrewWorker.CrewAnimController.PlayChargeBattery();
+    }
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     protected override void Rpc_WorkComplete()
     {
         CurrentWorkAmount = 0;
         Managers.MapMng.PlanSystem.BatteryChargeCount++;
     }
-    protected override void PlayInteractAnimation()
-    {
-        CrewWorker.CrewAnimController.PlayChargeBattery();
-    }
-
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlayEffectMusic(Creature creature)

@@ -30,6 +30,8 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         IsCompleted = false;
     }
 
+    #region Interact
+
     public abstract bool CheckInteractable(Creature creature);
 
     protected virtual bool IsInteractable(Creature creature)
@@ -94,6 +96,18 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         Rpc_StopEffectMusic();
     }
 
+    protected abstract void PlayInteractAnimation();
+
+    #endregion
+
+    #region Rpc
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    private void Rpc_UpdateWorkAmount(float deltaTime, float workSpeed)
+    {
+        CurrentWorkAmount = Mathf.Clamp(CurrentWorkAmount + deltaTime * workSpeed, 0, TotalWorkAmount);
+    }
+
     protected abstract void Rpc_WorkComplete();
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -111,14 +125,6 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
             CurrentWorkAmount = 0f;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    private void Rpc_UpdateWorkAmount(float deltaTime, float workSpeed)
-    {
-        CurrentWorkAmount = Mathf.Clamp(CurrentWorkAmount + deltaTime * workSpeed, 0, TotalWorkAmount);
-    }
-
-    protected abstract void PlayInteractAnimation();
-
     protected abstract void Rpc_PlayEffectMusic(Creature creature);
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -126,4 +132,6 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     {
         gameObject.GetComponent<AudioSource>().Stop();
     }
+
+    #endregion
 }

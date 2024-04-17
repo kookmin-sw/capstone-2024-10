@@ -55,6 +55,11 @@ public class ItemKit : BaseWorkStation
         Rpc_WorkComplete();
     }
 
+    protected override void PlayInteractAnimation()
+    {
+        CrewWorker.CrewAnimController.PlayOpenBox();
+    }
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     protected override void Rpc_WorkComplete()
     {
@@ -63,11 +68,6 @@ public class ItemKit : BaseWorkStation
         IsCompleted = true;
 
         Cover.SetActive(false);
-    }
-
-    protected override void PlayInteractAnimation()
-    {
-        CrewWorker.CrewAnimController.PlayOpenBox();
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

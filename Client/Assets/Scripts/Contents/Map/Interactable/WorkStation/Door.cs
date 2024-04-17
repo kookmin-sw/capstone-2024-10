@@ -81,20 +81,6 @@ public class Door : BaseWorkStation
         }
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    protected override void Rpc_WorkComplete()
-    {
-        IsOpened = !IsOpened;
-        NetworkAnim.Animator.SetBool("OpenParameter", IsOpened);
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    private void Rpc_AlienWorkComplete()
-    {
-        gameObject.SetActive(false);
-        //Managers.NetworkMng.Runner.Despawn(gameObject.GetComponent<NetworkObject>());
-    }
-
     protected override void PlayInteractAnimation()
     {
         if (IsOpened) return;
@@ -108,6 +94,20 @@ public class Door : BaseWorkStation
                 alien.AlienAnimController.PlayCrashDoor();
                 break;
         }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    protected override void Rpc_WorkComplete()
+    {
+        IsOpened = !IsOpened;
+        NetworkAnim.Animator.SetBool("OpenParameter", IsOpened);
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_AlienWorkComplete()
+    {
+        gameObject.SetActive(false);
+        //Managers.NetworkMng.Runner.Despawn(gameObject.GetComponent<NetworkObject>());
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -134,6 +134,6 @@ public class Door : BaseWorkStation
             AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Monster_attack1");
             AudioSource.Play();
         }
-            
+
     }
 }
