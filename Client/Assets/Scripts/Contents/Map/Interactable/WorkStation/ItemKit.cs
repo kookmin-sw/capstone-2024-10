@@ -19,8 +19,9 @@ public class ItemKit : BaseWorkStation
         CanRememberWork = false;
         IsCompleted = false;
 
-        TotalWorkAmount = 21f;
+        TotalWorkAmount = 15f;
     }
+
     public override bool CheckInteractable(Creature creature)
     {
         creature.IngameUI.ErrorTextUI.Hide();

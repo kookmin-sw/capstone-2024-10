@@ -159,6 +159,10 @@ public abstract class Creature : NetworkBehaviour
         });
     }
 
+    protected abstract void PlayEffectMusic();
+
+    protected abstract void StopEffectMusic();
+
     #region Update
 
     protected void UpdateByState()
@@ -171,26 +175,12 @@ public abstract class Creature : NetworkBehaviour
             case Define.CreatureState.Move:
                 UpdateMove();
                 break;
-            case Define.CreatureState.Interact:
-                UpdateInteract();
-                break;
-            case Define.CreatureState.Use:
-                UpdateUse();
-                break;
-            case Define.CreatureState.Dead:
-                UpdateDead();
-                break;
         }
     }
 
     protected abstract void UpdateIdle();
 
     protected abstract void UpdateMove();
-
-    protected abstract void UpdateInteract();
-    protected abstract void UpdateUse();
-
-    protected virtual void UpdateDead() { }
 
     #endregion
 }

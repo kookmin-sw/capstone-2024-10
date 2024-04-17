@@ -8,22 +8,16 @@ public class LeapAttack : BaseSkill
 
     public bool IsMoving { get; protected set; }
 
-    protected override void Init()
+    public override void SetInfo(int templateId)
     {
-        base.Init();
-
-        SkillDescription = "LEAP ATTACK";
-        CoolTime = 4f;
-        TotalSkillAmount = 2f;
-        TotalReadySkillAmount = 1f;
-        AttackRange = 1.5f;
+        base.SetInfo(templateId);
 
         IsMoving = false;
     }
 
     public override void ReadySkill()
     {
-        Owner.IngameUI.WorkProgressBarUI.Show(SkillDescription, CurrentReadySkillAmount, TotalReadySkillAmount);
+        Owner.IngameUI.WorkProgressBarUI.Show(SkillData.Name, CurrentReadySkillAmount, SkillData.TotalReadySkillAmount);
         Owner.CreatureState = Define.CreatureState.Use;
         Owner.CreaturePose = Define.CreaturePose.Stand;
 
@@ -45,20 +39,21 @@ public class LeapAttack : BaseSkill
     {
         IsMoving = true;
 
-        while (CurrentSkillAmount < TotalSkillAmount)
+        while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
-            if (CurrentSkillAmount < TotalSkillAmount - 0.5f)
+            if (CurrentSkillAmount < SkillData.TotalSkillAmount - 0.5f)
             {
-                Vector3 attackPosition = Owner.transform.position + ForwardDirection * AttackRange;
+                Vector3 attackPosition = Owner.transform.position + ForwardDirection * SkillData.Range;
                 Collider[] hitColliders = new Collider[3];
 
-                if (!IsHit && Physics.OverlapSphereNonAlloc(attackPosition, AttackRange, hitColliders, LayerMask.GetMask("Crew")) > 0)
+                if (!IsHit && Physics.OverlapSphereNonAlloc(attackPosition, SkillData.Range, hitColliders, LayerMask.GetMask("Crew")) > 0)
                 {
                     if (hitColliders[0].gameObject.TryGetComponent(out Crew crew))
                     {
                         IsHit = true;
                         IsMoving = false;
-                        crew.Rpc_OnDamaged(Owner.AlienStat.AttackDamage);
+                        crew.Rpc_OnDamaged(SkillData.Damage);
+                        crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
                     }
                 }
             }

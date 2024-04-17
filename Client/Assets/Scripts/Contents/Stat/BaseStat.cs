@@ -17,7 +17,7 @@ public abstract class BaseStat : NetworkBehaviour
         Init();
     }
 
-    protected virtual void Init()
+    protected void Init()
     {
         Creature = gameObject.GetComponent<Creature>();
     }

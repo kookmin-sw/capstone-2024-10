@@ -63,7 +63,9 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 
     protected IEnumerator ProgressWork()
     {
-        Worker.IngameUI.InteractInfoUI.Show("Cancel interaction");
+        Worker.IngameUI.InteractInfoUI.Show("CANCEL INTERACTION");
+
+        while (CurrentWorkAmount < TotalWorkAmount)
         while (CurrentWorkAmount < TotalWorkAmount)
         {
             if (Worker.CreatureState != Define.CreatureState.Interact)
@@ -73,6 +75,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
             Worker.IngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
             yield return null;
         }
+
         Worker.IngameUI.InteractInfoUI.Hide();
 
         InterruptWork();
@@ -83,8 +86,8 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     {
         StopAllCoroutines();
         Worker.IngameUI.WorkProgressBarUI.Hide();
-        Worker.CreatureState = Define.CreatureState.Idle;
-        Worker.CreaturePose = Define.CreaturePose.Stand;
+        Worker.ReturnToIdle(0f);
+
         Rpc_StopEffectMusic();
         gameObject.GetComponent<AudioSource>().Stop();
         Rpc_RemoveWorker();

@@ -129,6 +129,11 @@ public static class Define
     public const int ITEM_Bondage_ID = 202000;
     public const int ITEM_Morphine_ID = 202001;
 
+    public const int SKILL_BASIC_ATTACK_ID = 301000;
+    public const int SKILL_ROAR_ID = 301001;
+    public const int SKILL_CURSED_HOWL_ID = 301002;
+    public const int SKILL_LEAP_ATTACK_ID = 301003;
+
     #endregion
 
     #region Path
@@ -148,8 +153,10 @@ public static class Define
     public const int MAX_SKILL_NUM = 4;
 
     public const float PASIVE_RECOVER_STAMINA = 5f;
+    public const float DAMAGED_RECOVER_STAMINA = 30f;
     public const float RUN_USE_STAMINA = 10f;
-    public const float PASIVE_RECOVER_SANITY = 0.5f;
+    public const float PASIVE_REDUCE_SANITY = 0.1f;
+    public const float SIT_RECOVER_SANITY = 0.5f;
 
     public const int BATTERY_COLLECT_GOAL = 3;
     #endregion

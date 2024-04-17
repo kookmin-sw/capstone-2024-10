@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using DG.Tweening;
+using UnityEngine;
 
 public class Morphine : BaseItem
 {
@@ -22,10 +23,9 @@ public class Morphine : BaseItem
 
     protected override void UseItem()
     {
-        Owner.CrewStat.OnSanityChanged(ItemData.Value);
-    }
-
-    protected override void Rpc_UseItem()
-    {
+        DOVirtual.Float(0, 0, 5, value =>
+        {
+            Owner.CrewStat.OnSanityChanged(ItemData.Value * Time.deltaTime);
+        });
     }
 }

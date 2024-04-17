@@ -1,4 +1,5 @@
 using System.Collections;
+using Data;
 using DG.Tweening;
 using Fusion;
 using UnityEngine;
@@ -8,13 +9,11 @@ public abstract class BaseSkill : NetworkBehaviour
 {
     #region Field
 
-    public string SkillDescription { get; set; }
-    public float CoolTime { get; protected set; }
-    public float TotalSkillAmount { get; protected set; }
-    public float TotalReadySkillAmount { get; protected set; }
+    public int DataId { get; protected set; }
+    public SkillData SkillData { get; protected set; }
+
     public float CurrentSkillAmount { get; protected set; }
     public float CurrentReadySkillAmount { get; protected set; }
-    public float AttackRange { get; protected set; }
     public bool Ready { get; protected set; }
     public bool IsHit { get; protected set; }
 
@@ -28,9 +27,15 @@ public abstract class BaseSkill : NetworkBehaviour
         Init();
     }
 
-    protected virtual void Init()
+    protected void Init()
     {
         Owner = gameObject.GetComponent<Alien>();
+    }
+
+    public virtual void SetInfo(int templateId)
+    {
+        DataId = templateId;
+        SkillData = Managers.DataMng.SkillDataDict[templateId];
 
         CurrentSkillAmount = 0f;
         CurrentReadySkillAmount = 0f;
@@ -43,7 +48,9 @@ public abstract class BaseSkill : NetworkBehaviour
         if (!Ready)
             return false;
 
-        Owner.CurrentSkillRange = AttackRange;
+        if (SkillData.Range > 0f)
+            Owner.CurrentSkillRange = SkillData.Range;
+
         ReadySkill();
         return true;
     }
@@ -60,13 +67,13 @@ public abstract class BaseSkill : NetworkBehaviour
 
     protected void UpdateWorkAmount(float deltaTime)
     {
-        CurrentSkillAmount = Mathf.Clamp(CurrentSkillAmount + deltaTime, 0, TotalSkillAmount);
+        CurrentSkillAmount = Mathf.Clamp(CurrentSkillAmount + deltaTime, 0, SkillData.TotalSkillAmount);
     }
 
     protected void Cooldown()
     {
         Ready = false;
-        DOVirtual.DelayedCall(CoolTime, () => { Ready = true; });
+        DOVirtual.DelayedCall(SkillData.CoolTime, () => { Ready = true; });
     }
 
     public void SkillInterrupt()
@@ -85,12 +92,12 @@ public abstract class BaseSkill : NetworkBehaviour
 
     protected IEnumerator ReadySkillProgress()
     {
-        while (CurrentReadySkillAmount < TotalReadySkillAmount)
+        while (CurrentReadySkillAmount < SkillData.TotalReadySkillAmount)
         {
             // if (Owner.CreatureState != Define.CreatureState.Use)
             //     SkillInterrupt();
 
-            CurrentReadySkillAmount = Mathf.Clamp(CurrentReadySkillAmount + Time.deltaTime * Owner.CreatureData.WorkSpeed, 0, TotalReadySkillAmount);
+            CurrentReadySkillAmount = Mathf.Clamp(CurrentReadySkillAmount + Time.deltaTime * Owner.CreatureData.WorkSpeed, 0, SkillData.TotalReadySkillAmount);
             Owner.IngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentReadySkillAmount;
 
             yield return null;

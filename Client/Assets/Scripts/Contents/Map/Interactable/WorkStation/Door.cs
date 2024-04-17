@@ -19,7 +19,7 @@ public class Door : BaseWorkStation
         IsOpened = false;
         CanRememberWork = false;
 
-        TotalWorkAmount = 5f; // only for alien crashing door
+        TotalWorkAmount = 15f; // only for alien crashing door
     }
 
     public override bool CheckInteractable(Creature creature)
