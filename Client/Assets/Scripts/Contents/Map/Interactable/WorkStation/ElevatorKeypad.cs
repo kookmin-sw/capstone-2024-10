@@ -15,7 +15,7 @@ public class ElevatorKeypad : BaseWorkStation
         CanRememberWork = true;
         IsCompleted = false;
 
-        TotalWorkAmount = 50f;
+        TotalWorkAmount = 60f;
     }
     public override bool CheckInteractable(Creature creature)
     {

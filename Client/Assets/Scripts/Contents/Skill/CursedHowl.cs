@@ -3,20 +3,9 @@ using UnityEngine;
 
 public class CursedHowl : BaseSkill
 {
-    protected override void Init()
-    {
-        base.Init();
-
-        SkillDescription = "CURSED HOWL";
-        CoolTime = 4f;
-        TotalSkillAmount = 2.2f;
-        TotalReadySkillAmount = 1f;
-        AttackRange = 0f;
-    }
-
     public override void ReadySkill()
     {
-        Owner.IngameUI.WorkProgressBarUI.Show(SkillDescription, CurrentReadySkillAmount, TotalReadySkillAmount);
+        Owner.IngameUI.WorkProgressBarUI.Show(SkillData.Name, CurrentReadySkillAmount, SkillData.TotalReadySkillAmount);
         Owner.CreatureState = Define.CreatureState.Use;
         Owner.CreaturePose = Define.CreaturePose.Stand;
 
@@ -36,7 +25,7 @@ public class CursedHowl : BaseSkill
 
     protected override IEnumerator ProgressSkill()
     {
-        while (CurrentSkillAmount < TotalSkillAmount)
+        while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
             // TODO
 

@@ -4,21 +4,9 @@ using UnityEngine;
 
 public class Roar : BaseSkill
 {
-
-    protected override void Init()
-    {
-        base.Init();
-
-        SkillDescription = "ROAR";
-        CoolTime = 4f;
-        TotalSkillAmount = 2.1f;
-        TotalReadySkillAmount = 1f;
-        AttackRange = 3f;
-    }
-
     public override void ReadySkill()
     {
-        Owner.IngameUI.WorkProgressBarUI.Show(SkillDescription, CurrentReadySkillAmount, TotalReadySkillAmount);
+        Owner.IngameUI.WorkProgressBarUI.Show(SkillData.Name, CurrentReadySkillAmount, SkillData.TotalReadySkillAmount);
         Owner.CreatureState = Define.CreatureState.Use;
         Owner.CreaturePose = Define.CreaturePose.Stand;
 
@@ -39,17 +27,17 @@ public class Roar : BaseSkill
     protected override IEnumerator ProgressSkill()
     {
 
-        while (CurrentSkillAmount < TotalSkillAmount)
+        while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
-            Vector3 attackPosition = Owner.transform.position + ForwardDirection * AttackRange;
+            Vector3 attackPosition = Owner.transform.position + ForwardDirection * SkillData.Range;
             Collider[] hitColliders = new Collider[3];
 
-            if (!IsHit && Physics.OverlapSphereNonAlloc(attackPosition, AttackRange, hitColliders, LayerMask.GetMask("Crew")) > 0)
+            if (!IsHit && Physics.OverlapSphereNonAlloc(attackPosition, SkillData.Range, hitColliders, LayerMask.GetMask("Crew")) > 0)
             {
                 if (hitColliders[0].gameObject.TryGetComponent(out Crew crew))
                 {
                     IsHit = true;
-                    crew.Rpc_OnSanityDamaged(Owner.AlienStat.RoarSanityDamage);
+                    crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
                 }
             }
 

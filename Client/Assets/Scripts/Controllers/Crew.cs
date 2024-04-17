@@ -60,7 +60,7 @@ public class Crew : Creature
     {
         base.FixedUpdateNetwork();
 
-        UpdateStamina();
+        UpdateStaminaAndSanity();
         PlayEffectMusic();
         StopEffectMusic();
     }
@@ -151,17 +151,58 @@ public class Crew : Creature
         return Inventory.CheckAndUseItem();
     }
 
+    protected override void PlayEffectMusic()
+    {
+        if (CreatureState == Define.CreatureState.Move)
+        {
+            if (AudioSource.isPlaying == false)
+            {
+                AudioSource.volume = 0.5f;
+                AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Walk");
+                AudioSource.Play();
+            }
+            else
+            {
+                if (CreaturePose == Define.CreaturePose.Stand)
+                {
+                    AudioSource.pitch = 1f;
+                    AudioSource.volume = 0.5f;
+                }
+                if (CreaturePose == Define.CreaturePose.Sit)
+                {
+                    AudioSource.volume = 0.3f;
+                    AudioSource.pitch = 1f;
+                }
+                if (CreaturePose == Define.CreaturePose.Run)
+                {
+                    AudioSource.pitch = 2f;
+                    AudioSource.volume = 1f;
+                }
+                return;
+            }
+        }
+    }
+    protected override void StopEffectMusic()
+    {
+        if (CreatureState == Define.CreatureState.Idle || CreatureState == Define.CreatureState.Interact)
+        {
+            AudioSource.Stop();
+        }
+    }
+
     #region Update
 
-    protected void UpdateStamina()
+    protected void UpdateStaminaAndSanity()
     {
         if (CreaturePose == Define.CreaturePose.Run && CreatureState == Define.CreatureState.Move)
             CrewStat.OnStaminaChanged(-Define.RUN_USE_STAMINA * Runner.DeltaTime);
         else
             CrewStat.OnStaminaChanged(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
 
-        if (CreatureState == Define.CreatureState.Idle)
-            CrewStat.OnSanityChanged(Define.PASIVE_RECOVER_SANITY * Runner.DeltaTime);
+        if (CreatureState == Define.CreatureState.Idle && CreaturePose == Define.CreaturePose.Sit)
+            CrewStat.OnSanityChanged(Define.SIT_RECOVER_SANITY * Runner.DeltaTime);
+        else
+            CrewStat.OnSanityChanged(-Define.PASIVE_REDUCE_SANITY * Runner.DeltaTime);
     }
 
     protected override void UpdateIdle()
@@ -200,21 +241,6 @@ public class Crew : Creature
         KCC.Move(Velocity, 0f);
     }
 
-    protected override void UpdateInteract()
-    {
-
-    }
-
-    protected override void UpdateUse()
-    {
-
-    }
-
-    protected override void UpdateDead()
-    {
-
-    }
-
     #endregion
 
     #region Event
@@ -230,13 +256,15 @@ public class Crew : Creature
             return;
         }
 
+        CrewStat.OnStaminaChanged(Define.DAMAGED_RECOVER_STAMINA);
+
         CreatureState = Define.CreatureState.Damaged;
         CrewAnimController.PlayDamaged();
-        ReturnToIdle(1f);
+        ReturnToIdle(0.5f);
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void Rpc_OnSanityDamaged(int value)
+    public void Rpc_OnSanityDamaged(float value)
     {
         CrewStat.OnSanityChanged(-value);
     }
@@ -249,44 +277,4 @@ public class Crew : Creature
     }
 
     #endregion
-
-    private void PlayEffectMusic()
-    {
-        if (CreatureState == Define.CreatureState.Move)
-        {
-            if (AudioSource.isPlaying == false)
-            {
-                AudioSource.volume = 0.5f;
-                AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Walk");
-                AudioSource.Play();
-            }
-            else
-            {
-                if (CreaturePose == Define.CreaturePose.Stand)
-                {
-                    AudioSource.pitch = 1f;
-                    AudioSource.volume = 0.5f;
-                }
-                if (CreaturePose == Define.CreaturePose.Sit)
-                {
-                    AudioSource.volume = 0.3f;
-                    AudioSource.pitch = 1f;
-                }
-                if (CreaturePose == Define.CreaturePose.Run)
-                {
-                    AudioSource.pitch = 2f;
-                    AudioSource.volume = 1f;
-                }
-                return;
-            }
-        }
-    }
-    private void StopEffectMusic()
-    {
-        if (CreatureState == Define.CreatureState.Idle || CreatureState == Define.CreatureState.Interact)
-        {
-            AudioSource.Stop();
-        }
-    }
-
 }

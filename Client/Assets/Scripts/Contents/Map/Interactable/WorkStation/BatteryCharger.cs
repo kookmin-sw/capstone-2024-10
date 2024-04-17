@@ -5,6 +5,7 @@ public class BatteryCharger : BaseWorkStation
 {
     public override string InteractDescription => "CHARGE BATTERY";
     public AudioSource AudioSource { get; protected set; }
+
     protected override void Init()
     {
         base.Init();
@@ -13,8 +14,9 @@ public class BatteryCharger : BaseWorkStation
         CanRememberWork = false;
         IsCompleted = false;
 
-        TotalWorkAmount = 10f;
+        TotalWorkAmount = 15f;
     }
+
     public override bool CheckInteractable(Creature creature)
     {
         if (creature is not Crew crew)

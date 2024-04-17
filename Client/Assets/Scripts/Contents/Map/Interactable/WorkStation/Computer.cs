@@ -5,6 +5,7 @@ public class Computer : BaseWorkStation
 {
     public override string InteractDescription => "USE COMPUTER";
     public AudioSource AudioSource { get; protected set; }
+
     protected override void Init()
     {
         base.Init();
@@ -13,8 +14,9 @@ public class Computer : BaseWorkStation
         CanRememberWork = true;
         IsCompleted = false;
 
-        TotalWorkAmount = 50f;
+        TotalWorkAmount = 150f;
     }
+
     public override bool CheckInteractable(Creature creature)
     {
         if (creature is not Crew crew)

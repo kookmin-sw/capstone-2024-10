@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class CrewStat : BaseStat
 {
-    public Crew Crew => Creature as Crew;
     CrewData CrewData => CreatureData as CrewData;
 
     public int Hp { get; set; }

@@ -19,6 +19,7 @@ public class DataTransformer : EditorWindow
 		ParseExcelDataToJson<CrewDataLoader, CrewData>("CrewData");
 		ParseExcelDataToJson<AlienDataLoader, AlienData>("AlienData");
 		ParseExcelDataToJson<ItemDataLoader, ItemData>("ItemData");
+		ParseExcelDataToJson<SkillDataLoader, SkillData>("SkillData");
 
 		Debug.Log("DataTransformer Completed");
 	}

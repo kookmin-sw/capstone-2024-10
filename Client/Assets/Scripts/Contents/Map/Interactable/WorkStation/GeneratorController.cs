@@ -5,6 +5,7 @@ public class GeneratorController : BaseWorkStation
 {
     public override string InteractDescription => "RESTORE GENERATOR";
     public AudioSource AudioSource { get; protected set; }
+
     protected override void Init()
     {
         base.Init();
@@ -12,8 +13,9 @@ public class GeneratorController : BaseWorkStation
         CanRememberWork = true;
         IsCompleted = false;
 
-        TotalWorkAmount = 50f;
+        TotalWorkAmount = 150f;
     }
+
     public override bool CheckInteractable(Creature creature)
     {
         if (creature is not Crew crew)

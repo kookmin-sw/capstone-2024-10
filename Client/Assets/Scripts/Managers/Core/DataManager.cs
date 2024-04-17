@@ -13,12 +13,14 @@ public class DataManager
     public Dictionary<int, Data.CrewData> CrewDataDict { get; private set; }
     public Dictionary<int, Data.AlienData> AlienDataDict { get; private set; }
     public Dictionary<int, Data.ItemData> ItemDataDict { get; private set; }
+    public Dictionary<int, Data.SkillData> SkillDataDict { get; private set; }
 
     public void Init()
     {
         CrewDataDict = LoadJson<Data.CrewDataLoader, int, Data.CrewData>("JsonData/CrewData").MakeDict();
         AlienDataDict = LoadJson<Data.AlienDataLoader, int, Data.AlienData>("JsonData/AlienData").MakeDict();
         ItemDataDict = LoadJson<Data.ItemDataLoader, int, Data.ItemData>("JsonData/ItemData").MakeDict();
+        SkillDataDict = LoadJson<Data.SkillDataLoader, int, Data.SkillData>("JsonData/SkillData").MakeDict();
     }
 
     // path 위치의 Json 파일을 TextAsset 타입으로 로드
