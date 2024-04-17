@@ -48,16 +48,16 @@ public class Computer : BaseWorkStation
         return true;
     }
 
+    protected override void PlayInteractAnimation()
+    {
+        CrewWorker.CrewAnimController.PlayKeypadUse();
+    }
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     protected override void Rpc_WorkComplete()
     {
         if (IsCompleted) return;
         IsCompleted = true;
-    }
-
-    protected override void PlayInteractAnimation()
-    {
-        CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

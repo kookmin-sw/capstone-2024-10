@@ -44,11 +44,17 @@ public class ElevatorKeypad : BaseWorkStation
         {
             creature.IngameUI.InteractInfoUI.Hide();
             creature.IngameUI.ErrorTextUI.Show("CAN NOT USE NOW");
+            return false;
         }
 
         creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Show(InteractDescription);
         return true;
+    }
+
+    protected override void PlayInteractAnimation()
+    {
+        CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -57,11 +63,6 @@ public class ElevatorKeypad : BaseWorkStation
         if (IsCompleted) return;
         IsCompleted = true;
         _elevatorDoor.GetComponent<NetworkMecanimAnimator>().Animator.SetBool("OpenParameter", true);
-    }
-
-    protected override void PlayInteractAnimation()
-    {
-        CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

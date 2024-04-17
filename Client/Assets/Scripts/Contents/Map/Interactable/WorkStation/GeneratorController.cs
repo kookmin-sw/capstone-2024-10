@@ -34,14 +34,14 @@ public class GeneratorController : BaseWorkStation
         {
             creature.IngameUI.InteractInfoUI.Hide();
             creature.IngameUI.ErrorTextUI.Show("COMPLETED");
-            return true;
+            return false;
         }
 
         if (!Managers.MapMng.PlanSystem.IsBatteryChargeFinished)
         {
             creature.IngameUI.InteractInfoUI.Hide();
             creature.IngameUI.ErrorTextUI.Show("CAN NOT USE NOW");
-            return true;
+            return false;
         }
 
         creature.IngameUI.ErrorTextUI.Hide();
@@ -54,17 +54,17 @@ public class GeneratorController : BaseWorkStation
         return true;
     }
 
+    protected override void PlayInteractAnimation()
+    {
+        CrewWorker.CrewAnimController.PlayKeypadUse();
+    }
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     protected override void Rpc_WorkComplete()
     {
         if (IsCompleted) return;
         IsCompleted = true;
         Managers.MapMng.PlanSystem.IsGeneratorRestored = true;
-    }
-
-    protected override void PlayInteractAnimation()
-    {
-        CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

@@ -41,18 +41,9 @@ public class Crew : Creature
 
         Head.transform.localScale = Vector3.zero;
 
-        if (IsFirstPersonView)
-        {
-            CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", Util.FindChild(gameObject, "neck.x", true).transform).GetComponent<CreatureCamera>();
-            CreatureCamera.transform.localPosition = new Vector3(0f, 0.2f, 0f);
-            CreatureCamera.SetInfo(this);
-        }
-        else
-        {
-            WatchingCamera = Managers.ResourceMng.Instantiate("Cameras/WatchingCamera", gameObject.transform).GetComponent<WatchingCamera>();
-            WatchingCamera.enabled = true;
-            WatchingCamera.Creature = this;
-        }
+        CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", Util.FindChild(gameObject, "neck.x", true).transform).GetComponent<CreatureCamera>();
+        CreatureCamera.transform.localPosition = new Vector3(0f, 0.2f, 0f);
+        CreatureCamera.SetInfo(this);
 
         CrewStat.SetStat(CrewData);
         Inventory.SetInfo();
@@ -186,10 +177,7 @@ public class Crew : Creature
                 break;
         }
 
-        if (IsFirstPersonView)
-        {
-            KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
-        }
+        KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
     }
 
     protected override void UpdateMove()
@@ -207,18 +195,7 @@ public class Crew : Creature
                 break;
         }
 
-        if (IsFirstPersonView)
-        {
-            KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
-        }
-        else
-        {
-            if (Velocity != Vector3.zero)
-            {
-                Quaternion newRotation = Quaternion.LookRotation(Velocity);
-                KCC.SetLookRotation(newRotation);
-            }
-        }
+        KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
 
         KCC.Move(Velocity, 0f);
     }
