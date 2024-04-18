@@ -14,7 +14,7 @@ public abstract class Alien : Creature
     public UI_AlienIngame AlienIngameUI => IngameUI as UI_AlienIngame;
     public float CurrentSkillRange { get; set; }
 
-    public AudioSource AudioSource_1 { get; set; }
+    public AudioSource AudioSource { get; set; }
 
     #endregion
 
@@ -26,7 +26,7 @@ public abstract class Alien : Creature
         SkillController = gameObject.GetComponent<SkillController>();
         SkillController.Skills = new Dictionary<int, BaseSkill>(Define.MAX_SKILL_NUM);
 
-        AudioSource_1 = gameObject.GetComponent<AudioSource>();
+        AudioSource = gameObject.GetComponent<AudioSource>();
     }
 
     public override void SetInfo(int templateID)
@@ -57,7 +57,7 @@ public abstract class Alien : Creature
     {
         base.FixedUpdateNetwork();
 
-        PlayEffectMusic();
+        CheckEffectMusic();
         StopEffectMusic();
     }
 
@@ -112,40 +112,81 @@ public abstract class Alien : Creature
         return SkillController.CheckAndUseSkill(skillIdx);
     }
 
-    protected override void PlayEffectMusic()
+    #region music
+    protected override void CheckEffectMusic()
     {
         if (CreatureState == Define.CreatureState.Move)
         {
-            if (AudioSource_1.isPlaying == false)
+            if (AudioSource.isPlaying == false)
             {
-                AudioSource_1.volume = 1f;
-                AudioSource_1.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Monster_Walk");
-                AudioSource_1.Play();
+                Rpc_PlayEffectMusic();
             }
             else
             {
                 if (CreaturePose == Define.CreaturePose.Stand)
                 {
-                    AudioSource_1.pitch = 1f;
-                    AudioSource_1.volume = 1f;
+                    if (AudioSource.pitch == 1.0f)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        Rpc_ChageMusicPitch(1.0f);
+                        return;
+                    }
                 }
                 if (CreaturePose == Define.CreaturePose.Run)
                 {
-                    AudioSource_1.pitch = 2f;
-                    AudioSource_1.volume = 1f;
+                    if (AudioSource.pitch == 2.0f)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        Rpc_ChageMusicPitch(2.0f);
+                        return;
+                    }
                 }
                 return;
             }
         }
     }
-
     protected override void StopEffectMusic()
     {
         if (CreatureState == Define.CreatureState.Idle || CreatureState == Define.CreatureState.Interact)
         {
-            AudioSource_1.Stop();
+            if (AudioSource.isPlaying == true)
+            {
+                Rpc_StopEffectMusic();
+            }
+            else
+            {
+                return;
+            }
+
         }
     }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_PlayEffectMusic()
+    {
+        AudioSource.volume = 1f;
+        AudioSource.spatialBlend = 1.0f;
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Monster_Walk");
+        AudioSource.loop = true;
+        AudioSource.Play();
+    }
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_StopEffectMusic()
+    {
+        AudioSource.Stop();
+    }
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_ChageMusicPitch(float value)
+    {
+        AudioSource.pitch = value;
+    }
+    #endregion
 
     public void OnDrawGizmos()
     {

@@ -159,7 +159,7 @@ public abstract class Creature : NetworkBehaviour
         });
     }
 
-    protected abstract void PlayEffectMusic();
+    protected abstract void CheckEffectMusic();
 
     protected abstract void StopEffectMusic();
 
