@@ -32,8 +32,11 @@ public class CrewStat : BaseStat
         SitSpeed = CrewData.SitSpeed;
         IsRunnable = true;
 
-        OnSanityChanged += Managers.MapMng.RenderingSystem.SetChromaticAberration;
-        OnSanityChanged += Managers.MapMng.RenderingSystem.SetVignette;
+        if (Managers.MapMng.RenderingSystem)
+        {
+            OnSanityChanged += Managers.MapMng.RenderingSystem.SetChromaticAberration;
+            OnSanityChanged += Managers.MapMng.RenderingSystem.SetVignette;
+        }
     }
 
     #region Event
@@ -69,7 +72,7 @@ public class CrewStat : BaseStat
         RunSpeed = CrewData.RunSpeed * ratio;
         SitSpeed = CrewData.SitSpeed * ratio;
 
-        OnSanityChanged.Invoke(Sanity);
+        OnSanityChanged?.Invoke(Sanity);
     }
 
     #endregion

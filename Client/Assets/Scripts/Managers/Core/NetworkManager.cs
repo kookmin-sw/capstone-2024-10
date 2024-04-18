@@ -42,8 +42,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public Stage CurrentStage { get; private set; } = 0;
 
     public string DefaultRoomName;
-    public int LastCreatedClientIndex { get; internal set; }
-    public GameObject[] PlayerPrefab;
+    public Define.CreatureType Creature;
     public int PrefabNum;
     public Vector3 PlayerSpawnPosition;
 
@@ -234,17 +233,43 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         OnSessionUpdated?.Invoke();
     }
 
+
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    {
+        if (player == runner.LocalPlayer)
+        {
+            NetworkObject playerObject = Creature == Define.CreatureType.Crew ?
+                Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, PlayerSpawnPosition) :
+                Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, PlayerSpawnPosition);
+
+            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
+
+            if (Runner.IsSharedModeMasterClient)
+            {
+                NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
+                NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
+
+                PlayerSystem = no.GetComponent<PlayerSystem>();
+            }
+        }
+    }
+
     public void OnConnectedToServer(NetworkRunner runner)
     {
         Debug.Log("OnConnectedToServer");
     }
 
-    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
+    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
-
+        Debug.Log("OnPlayerLeft");
     }
 
-    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
+    public void OnSceneLoadDone(NetworkRunner runner)
+    {
+        Debug.Log("OnSceneLoadDone");
+    }
+    
+    public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
     {
 
     }
@@ -284,37 +309,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     }
 
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
-    {
-        if (player == runner.LocalPlayer)
-        {
-            NetworkObject playerObject = Runner.Spawn(PlayerPrefab[PrefabNum], PlayerSpawnPosition, Quaternion.identity);
-            Creature creature = playerObject.GetComponent<Creature>();
-            if (creature is Crew)
-            {
-                creature.GetComponent<Crew>().SetInfo(Define.CREW_CREWA_ID);
-            }
-            else
-            {
-                creature.GetComponent<Alien>().SetInfo(Define.ALIEN_STALKER_ID);
-            }
-            runner.SetPlayerObject(runner.LocalPlayer, playerObject);
-
-            if (Runner.IsSharedModeMasterClient)
-            {
-                NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
-                NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
-
-                PlayerSystem = no.GetComponent<PlayerSystem>();
-            }
-        }
-    }
-
-    public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
-    {
-        Debug.Log("OnPlayerLeft");
-    }
-
     public void OnReliableDataProgress(NetworkRunner runner, PlayerRef player, ReliableKey key, float progress)
     {
 
@@ -325,10 +319,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     }
 
-    public void OnSceneLoadDone(NetworkRunner runner)
-    {
-        Debug.Log("OnSceneLoadDone");
-    }
 
     public void OnSceneLoadStart(NetworkRunner runner)
     {
@@ -342,6 +332,11 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     }
 
     public void OnUserSimulationMessage(NetworkRunner runner, SimulationMessagePtr message)
+    {
+
+    }
+
+    public void OnConnectRequest(NetworkRunner runner, NetworkRunnerCallbackArgs.ConnectRequest request, byte[] token)
     {
 
     }
