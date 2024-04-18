@@ -87,12 +87,12 @@ public class Crew : Creature
         }
         if (Input.GetKeyDown(KeyCode.O))
         {
-            CrewStat.ChangeSanity(10f);
+            CrewStat.ChangeSanity(-10f);
             return;
         }
         if (Input.GetKeyDown(KeyCode.P))
         {
-            CrewStat.ChangeSanity(-10f);
+            CrewStat.ChangeSanity(10f);
             return;
         }
         /////////////////////////////////
