@@ -22,6 +22,6 @@ public class Bandage : BaseItem
 
     protected override void UseItem()
     {
-        Owner.CrewStat.OnHpChanged((int)ItemData.Value);
+        Owner.CrewStat.ChangeHp((int)ItemData.Value);
     }
 }

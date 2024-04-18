@@ -1,3 +1,4 @@
+using System;
 using Data;
 using UnityEngine;
 
@@ -15,6 +16,9 @@ public class CrewStat : BaseStat
 
     public bool IsRunnable { get; set; }
 
+    public Action<int> OnHpChanged;
+    public Action<float> OnSanityChanged;
+
     public override void SetStat(CreatureData creatureData)
     {
         base.SetStat(creatureData);
@@ -27,16 +31,19 @@ public class CrewStat : BaseStat
         MaxSanity = CrewData.MaxSanity;
         SitSpeed = CrewData.SitSpeed;
         IsRunnable = true;
+
+        OnSanityChanged += Managers.MapMng.RenderingSystem.SetChromaticAberration;
+        OnSanityChanged += Managers.MapMng.RenderingSystem.SetVignette;
     }
 
     #region Event
 
-    public void OnHpChanged(int value)
+    public void ChangeHp(int value)
     {
         Hp = Mathf.Clamp(Hp + value, 0, MaxHp);
     }
 
-    public void OnStaminaChanged(float value)
+    public void ChangeStamina(float value)
     {
         Stamina = Mathf.Clamp(Stamina + value, 0, MaxStamina);
 
@@ -46,28 +53,23 @@ public class CrewStat : BaseStat
             IsRunnable = false;
     }
 
-    public void OnSanityChanged(float value)
+    public void ChangeSanity(float value)
     {
         Sanity = Mathf.Clamp(Sanity + value, 0, MaxSanity);
 
+        float ratio = 1f;
         if (Sanity >= 70)
-        {
-            WalkSpeed = CrewData.WalkSpeed;
-            RunSpeed = CrewData.RunSpeed;
-            SitSpeed = CrewData.SitSpeed;
-        }
+            ratio = 1f;
         else if (Sanity < 70)
-        {
-            WalkSpeed = CrewData.WalkSpeed * 0.9f;
-            RunSpeed = CrewData.RunSpeed * 0.9f;
-            SitSpeed = CrewData.SitSpeed * 0.9f;
-        }
+            ratio = 0.9f;
         else if (Sanity < 30)
-        {
-            WalkSpeed = CrewData.WalkSpeed * 0.7f;
-            RunSpeed = CrewData.RunSpeed * 0.7f;
-            SitSpeed = CrewData.SitSpeed * 0.7f;
-        }
+            ratio = 0.7f;
+
+        WalkSpeed = CrewData.WalkSpeed * ratio;
+        RunSpeed = CrewData.RunSpeed * ratio;
+        SitSpeed = CrewData.SitSpeed * ratio;
+
+        OnSanityChanged.Invoke(Sanity);
     }
 
     #endregion
