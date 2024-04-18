@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f077503be6ae942a1e1245dbd53ea9, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   quality:
     m_OverrideState: 1
     m_Value: 1
@@ -576,10 +576,10 @@ MonoBehaviour:
     m_Value: 0.15
   intensity:
     m_OverrideState: 1
-    m_Value: 0.255
+    m_Value: 0.1
   scatter:
     m_OverrideState: 1
-    m_Value: 0.06
+    m_Value: 0.8
   tint:
     m_OverrideState: 0
     m_Value: {r: 1, g: 1, b: 1, a: 1}
@@ -936,7 +936,7 @@ MonoBehaviour:
     m_Value: 100
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 30
+    m_Value: 10
   enableVolumetricFog:
     m_OverrideState: 1
     m_Value: 1
@@ -1184,16 +1184,16 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: {r: 0.122641504, g: 0.122641504, b: 0.122641504, a: 1}
   center:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0
   smoothness:
-    m_OverrideState: 0
-    m_Value: 0.2
+    m_OverrideState: 1
+    m_Value: 1
   roundness:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 1
   rounded:
     m_OverrideState: 0
@@ -1216,7 +1216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b8bcdf71d7fafa419fca1ed162f5fc9, type: 3}
   m_Name: ColorAdjustments
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   postExposure:
     m_OverrideState: 1
     m_Value: 0
@@ -1465,18 +1465,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 598e2d32e2c7b0c418e030c3236d663a, type: 3}
   m_Name: ChromaticAberration
   m_EditorClassIdentifier: 
-  active: 0
+  active: 1
   quality:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 2
   spectralLut:
     m_OverrideState: 1
     m_Value: {fileID: 0}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.144
+    m_Value: 0
   m_MaxSamples:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 12
 --- !u!114 &7330108882250637582
 MonoBehaviour:

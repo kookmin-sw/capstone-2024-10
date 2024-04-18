@@ -17,6 +17,7 @@ public class Crew : Creature
     public GameObject LeftHand { get; protected set; }
 
     public AudioSource AudioSource { get; protected set; }
+
     #endregion
 
     protected override void Init()
@@ -72,7 +73,29 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead || CreatureState == Define.CreatureState.Use)
             return;
 
-        CheckInteractable(false);
+        /////////////////////////////////
+        // TODO - TEST CODE
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            Rpc_OnDamaged(1);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            CrewStat.ChangeHp(1);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            CrewStat.ChangeSanity(10f);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            CrewStat.ChangeSanity(-10f);
+            return;
+        }
+        /////////////////////////////////
 
         if (CreatureState == Define.CreatureState.Interact)
         {
@@ -82,8 +105,14 @@ public class Crew : Creature
         }
 
         if (Input.GetKeyDown(KeyCode.F))
+        {
             if (CheckInteractable(true))
                 return;
+        }
+        else
+        {
+            CheckInteractable(false);
+        }
 
         if (Input.GetKeyDown(KeyCode.G))
             if (Inventory.DropItem())
@@ -182,6 +211,7 @@ public class Crew : Creature
             }
         }
     }
+
     protected override void StopEffectMusic()
     {
         if (CreatureState == Define.CreatureState.Idle || CreatureState == Define.CreatureState.Interact)
@@ -195,14 +225,14 @@ public class Crew : Creature
     protected void UpdateStaminaAndSanity()
     {
         if (CreaturePose == Define.CreaturePose.Run && CreatureState == Define.CreatureState.Move)
-            CrewStat.OnStaminaChanged(-Define.RUN_USE_STAMINA * Runner.DeltaTime);
+            CrewStat.ChangeStamina(-Define.RUN_USE_STAMINA * Runner.DeltaTime);
         else
-            CrewStat.OnStaminaChanged(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
+            CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
 
         if (CreatureState == Define.CreatureState.Idle && CreaturePose == Define.CreaturePose.Sit)
-            CrewStat.OnSanityChanged(Define.SIT_RECOVER_SANITY * Runner.DeltaTime);
+            CrewStat.ChangeSanity(Define.SIT_RECOVER_SANITY * Runner.DeltaTime);
         else
-            CrewStat.OnSanityChanged(-Define.PASIVE_REDUCE_SANITY * Runner.DeltaTime);
+            CrewStat.ChangeSanity(-Define.PASIVE_REDUCE_SANITY * Runner.DeltaTime);
     }
 
     protected override void UpdateIdle()
@@ -248,7 +278,7 @@ public class Crew : Creature
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void Rpc_OnDamaged(int value)
     {
-        CrewStat.OnHpChanged(-value);
+        CrewStat.ChangeHp(-value);
 
         if (CrewStat.Hp <= 0)
         {
@@ -256,7 +286,7 @@ public class Crew : Creature
             return;
         }
 
-        CrewStat.OnStaminaChanged(Define.DAMAGED_RECOVER_STAMINA);
+        CrewStat.ChangeStamina(Define.DAMAGED_RECOVER_STAMINA);
 
         CreatureState = Define.CreatureState.Damaged;
         CrewAnimController.PlayDamaged();
@@ -266,7 +296,7 @@ public class Crew : Creature
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void Rpc_OnSanityDamaged(float value)
     {
-        CrewStat.OnSanityChanged(-value);
+        CrewStat.ChangeSanity(-value);
     }
 
     public void OnDead()

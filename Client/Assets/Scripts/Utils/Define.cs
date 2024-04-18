@@ -155,7 +155,7 @@ public static class Define
     public const float PASIVE_RECOVER_STAMINA = 5f;
     public const float DAMAGED_RECOVER_STAMINA = 30f;
     public const float RUN_USE_STAMINA = 10f;
-    public const float PASIVE_REDUCE_SANITY = 0.1f;
+    public const float PASIVE_REDUCE_SANITY = 1f;
     public const float SIT_RECOVER_SANITY = 0.5f;
 
     public const int BATTERY_COLLECT_GOAL = 3;

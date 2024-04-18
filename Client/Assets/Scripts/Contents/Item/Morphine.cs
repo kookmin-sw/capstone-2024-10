@@ -25,7 +25,7 @@ public class Morphine : BaseItem
     {
         DOVirtual.Float(0, 0, 5, value =>
         {
-            Owner.CrewStat.OnSanityChanged(ItemData.Value * Time.deltaTime);
+            Owner.CrewStat.ChangeSanity(ItemData.Value * Time.deltaTime);
         });
     }
 }
