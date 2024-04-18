@@ -9,6 +9,7 @@ using System.Linq;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using WebSocketSharp;
+using UnityEditor;
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -30,6 +31,21 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     }
 
     public PlayerSystem PlayerSystem { get; set; }
+    public enum Stage
+    {
+        Disconnected,
+        StartingUp,
+        ConnectingClient,
+        AllConnected,
+    }
+
+    public Stage CurrentStage { get; private set; } = 0;
+
+    public string DefaultRoomName;
+    public int LastCreatedClientIndex { get; internal set; }
+    public GameObject[] PlayerPrefab;
+    public int PrefabNum;
+    public Vector3 PlayerSpawnPosition;
 
     public void Init()
     {
@@ -118,6 +134,97 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         await Runner.StartGame(startGameArgs);
     }
 
+    private bool TryGetSceneRef(out SceneRef sceneRef)
+    {
+        var activeScene = SceneManager.GetActiveScene();
+        if (activeScene.buildIndex < 0 || activeScene.buildIndex >= SceneManager.sceneCountInBuildSettings)
+        {
+            sceneRef = default;
+            return false;
+        }
+        else
+        {
+            sceneRef = SceneRef.FromIndex(activeScene.buildIndex);
+            return true;
+        }
+    }
+
+    public void StartSharedClient()
+    {
+        if (TryGetSceneRef(out var sceneRef))
+        {
+            StartCoroutine(StartWithClient(GameMode.Shared, sceneRef));
+        }
+    }
+
+    protected IEnumerator StartWithClient(GameMode serverMode, SceneRef sceneRef)
+    {
+        if (CurrentStage != Stage.Disconnected)
+        {
+            yield break;
+        }
+
+        CurrentStage = Stage.StartingUp;
+
+        yield return StartClient(serverMode, sceneRef);
+    }
+
+    protected IEnumerator StartClient(GameMode serverMode, SceneRef sceneRef = default)
+    {
+        CurrentStage = Stage.ConnectingClient;
+
+        var clientTask = InitializeNetworkRunner(Runner, serverMode, NetAddress.Any(), sceneRef, null);
+
+        while (clientTask.IsCompleted == false)
+        {
+            yield return new WaitForSeconds(1f);
+        }
+
+        if (clientTask.IsFaulted)
+        {
+            Debug.LogWarning(clientTask.Exception);
+        }
+
+        Runner.SessionInfo.IsVisible = false;
+
+        CurrentStage = Stage.AllConnected;
+    }
+
+    protected Task InitializeNetworkRunner(NetworkRunner runner, GameMode gameMode, NetAddress address, SceneRef scene, Action<NetworkRunner> onGameStarted,
+      INetworkRunnerUpdater updater = null)
+    {
+        var sceneManager = runner.GetComponent<INetworkSceneManager>();
+        if (sceneManager == null)
+        {
+            sceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>();
+        }
+
+        var objectProvider = runner.GetComponent<INetworkObjectProvider>();
+        if (objectProvider == null)
+        {
+            objectProvider = runner.gameObject.AddComponent<NetworkObjectProviderDefault>();
+        }
+
+        var sceneInfo = new NetworkSceneInfo();
+        if (scene.IsValid)
+        {
+            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+        }
+
+        return runner.StartGame(new StartGameArgs
+        {
+            GameMode = gameMode,
+            Address = address,
+            Scene = sceneInfo,
+            SessionName = DefaultRoomName,
+            OnGameStarted = onGameStarted,
+            SceneManager = sceneManager,
+            Updater = updater,
+            ObjectProvider = objectProvider,
+        });
+    }
+
+
     #region CallBack
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
@@ -177,24 +284,27 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     }
 
-    public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (player == runner.LocalPlayer)
         {
-            Vector3 position = Vector3.zero;
-            GameObject spawnPoint = GameObject.FindWithTag("Respawn");
-            if (spawnPoint != null)
+            NetworkObject playerObject = Runner.Spawn(PlayerPrefab[PrefabNum], PlayerSpawnPosition, Quaternion.identity);
+            Creature creature = playerObject.GetComponent<Creature>();
+            if (creature is Crew)
             {
-                position = spawnPoint.transform.position;
+                creature.GetComponent<Crew>().SetInfo(Define.CREW_CREWA_ID);
             }
-
-            NetworkObject playerObject = Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, position);
+            else
+            {
+                creature.GetComponent<Alien>().SetInfo(Define.ALIEN_STALKER_ID);
+            }
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
-            
+
             if (Runner.IsSharedModeMasterClient)
             {
                 NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
                 NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
+
                 PlayerSystem = no.GetComponent<PlayerSystem>();
             }
         }

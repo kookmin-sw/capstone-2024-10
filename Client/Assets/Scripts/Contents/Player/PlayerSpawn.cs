@@ -20,11 +20,6 @@ public class PlayerSpawn : SimulationBehaviour, IPlayerJoined
             {
                 creature.GetComponent<Alien>().SetInfo(Define.ALIEN_STALKER_ID);
             }
-
-            // if (PrefabNum == 0)
-            //     Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, PlayerSpawnPosition);
-            // else if (PrefabNum == 1)
-            //     Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, PlayerSpawnPosition);
         }
     }
 }
