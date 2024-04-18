@@ -81,6 +81,9 @@ public class Crew : Creature
             return;
         }
 
+        if (Input.GetKeyDown(KeyCode.R))
+            Rpc_OnDamaged(1);
+
         if (Input.GetKeyDown(KeyCode.F))
             if (CheckInteractable(true))
                 return;
@@ -253,7 +256,17 @@ public class Crew : Creature
         if (CrewStat.Hp <= 0)
         {
             OnDead();
+            UI_DamageScreen.DamageEffects.ScreenDamageEffect(1f);
             return;
+        }
+
+        if (CrewStat.Hp == 1)
+        {
+            UI_DamageScreen.DamageEffects.ScreenDamageEffect(0.5f);
+        }
+        else
+        {
+            UI_DamageScreen.DamageEffects.ScreenDamageEffect(0.3f);
         }
 
         CrewStat.OnStaminaChanged(Define.DAMAGED_RECOVER_STAMINA);
