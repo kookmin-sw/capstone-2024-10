@@ -32,6 +32,8 @@ public class CrewStat : BaseStat
         SitSpeed = CrewData.SitSpeed;
         IsRunnable = true;
 
+        OnHpChanged += Managers.MapMng.RenderingSystem.DamageEffect;
+
         OnSanityChanged += Managers.MapMng.RenderingSystem.SetChromaticAberration;
         OnSanityChanged += Managers.MapMng.RenderingSystem.SetVignette;
     }
@@ -41,6 +43,11 @@ public class CrewStat : BaseStat
     public void ChangeHp(int value)
     {
         Hp = Mathf.Clamp(Hp + value, 0, MaxHp);
+
+        if (value < 0)
+        {
+            OnHpChanged.Invoke(Hp);
+        }
     }
 
     public void ChangeStamina(float value)
