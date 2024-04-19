@@ -17,6 +17,7 @@ public class Crew : Creature
     public GameObject LeftHand { get; protected set; }
 
     public AudioSource AudioSource { get; protected set; }
+    public CrewStateMusic EffectMusic { get; protected set; }
 
     #endregion
 
@@ -28,6 +29,7 @@ public class Crew : Creature
 
         Inventory = gameObject.GetComponent<Inventory>();
         AudioSource = gameObject.GetComponent<AudioSource>();
+        EffectMusic = transform.Find("effectmusic").gameObject.GetComponent<CrewStateMusic>();
 
         Head = Util.FindChild(gameObject, "head.x", true);
         RightHand = Util.FindChild(gameObject, "c_middle1.r", true);
@@ -62,8 +64,10 @@ public class Crew : Creature
         base.FixedUpdateNetwork();
 
         UpdateStaminaAndSanity();
-        PlayEffectMusic();
+        CheckHpMusic();
+        CheckEffectMusic();
         StopEffectMusic();
+
     }
 
     protected override void HandleInput()
@@ -180,45 +184,107 @@ public class Crew : Creature
         return Inventory.CheckAndUseItem();
     }
 
-    protected override void PlayEffectMusic()
+    #region music
+    private void CheckHpMusic()
+    {
+        if (CrewStat.Hp <= 2)
+        {
+            EffectMusic.CheckHurtMusic();
+        }
+        else
+        {
+            EffectMusic.StopHurtMusic();
+        }
+    }
+
+    protected override void CheckEffectMusic()
     {
         if (CreatureState == Define.CreatureState.Move)
         {
             if (AudioSource.isPlaying == false)
             {
-                AudioSource.volume = 0.5f;
-                AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Walk");
-                AudioSource.Play();
+                Rpc_PlayWalkEffectMusic();
             }
             else
             {
                 if (CreaturePose == Define.CreaturePose.Stand)
                 {
-                    AudioSource.pitch = 1f;
-                    AudioSource.volume = 0.5f;
-                }
-                if (CreaturePose == Define.CreaturePose.Sit)
-                {
-                    AudioSource.volume = 0.3f;
-                    AudioSource.pitch = 1f;
+                    if (AudioSource.pitch == 1.0f)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        Rpc_ChageMusicPitch(1.0f);
+                        Rpc_ChageMusicVolume(0.5f);
+                        return;
+                    }
                 }
                 if (CreaturePose == Define.CreaturePose.Run)
                 {
-                    AudioSource.pitch = 2f;
-                    AudioSource.volume = 1f;
+                    if (AudioSource.pitch == 2.0f)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        Rpc_ChageMusicPitch(2.0f);
+                        Rpc_ChageMusicVolume(1.0f);
+                        return;
+                    }
                 }
                 return;
             }
         }
     }
-
     protected override void StopEffectMusic()
     {
-        if (CreatureState == Define.CreatureState.Idle || CreatureState == Define.CreatureState.Interact)
+        if (CreatureState == Define.CreatureState.Idle || CreatureState == Define.CreatureState.Interact || CreaturePose == Define.CreaturePose.Sit)
         {
-            AudioSource.Stop();
+            if (AudioSource.isPlaying == true)
+            {
+                Rpc_StopEffectMusic();
+            }
+            else
+            {
+                return;
+            }
+            
         }
     }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_PlayWalkEffectMusic()
+    {
+        AudioSource.volume = 0.5f;
+        AudioSource.spatialBlend = 1.0f;
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Walk");
+        AudioSource.loop = true;
+        AudioSource.Play();
+    }
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_PlayHitEffectMusic()
+    {
+        AudioSource.volume = 1f;
+        AudioSource.spatialBlend = 1.0f;
+        AudioSource.PlayOneShot(Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Hit"));
+    }
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_StopEffectMusic()
+    {
+        AudioSource.Stop();
+    }
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_ChageMusicPitch(float value)
+    {
+        AudioSource.pitch = value;
+    }
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_ChageMusicVolume(float value)
+    {
+        AudioSource.volume = value;
+    }
+    #endregion
 
     #region Update
 
@@ -286,6 +352,7 @@ public class Crew : Creature
             return;
         }
 
+        Rpc_PlayHitEffectMusic();
         CrewStat.ChangeStamina(Define.DAMAGED_RECOVER_STAMINA);
 
         CreatureState = Define.CreatureState.Damaged;
@@ -302,7 +369,7 @@ public class Crew : Creature
     public void OnDead()
     {
         CreatureState = Define.CreatureState.Dead;
-
+        EffectMusic.Rpc_StopEffectMusic();
         CrewAnimController.PlayDead();
     }
 

@@ -19,6 +19,7 @@ public class AlienTracking : NetworkBehaviour
     {
         AudioSource.volume = 1f;
         AudioSource.pitch = 1f;
+        AudioSource.spatialBlend = 1.0f;
         AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Bgm/검은 숲의 추격자");
         AudioSource.loop = true;
         AudioSource.Play();

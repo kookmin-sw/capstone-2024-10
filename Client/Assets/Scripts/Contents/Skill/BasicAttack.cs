@@ -52,9 +52,9 @@ public class BasicAttack : BaseSkill
     [Rpc(RpcSources.All, RpcTargets.All)]
     private void Rpc_PlayEffectMusic()
     {
-        Owner.AudioSource_1.volume = 1f;
-        Owner.AudioSource_1.pitch = 1f;
-        Owner.AudioSource_1.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Monster_Attack1");
-        Owner.AudioSource_1.Play();
+        Owner.AudioSource.volume = 1f;
+        Owner.AudioSource.pitch = 1f;
+        Owner.AudioSource.spatialBlend = 1.0f;
+        Owner.AudioSource.PlayOneShot(Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Monster_Attack1"));
     }
 }
