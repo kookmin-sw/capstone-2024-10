@@ -1,9 +1,5 @@
-using Fusion;
-using Fusion.Addons.SimpleKCC;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-//using Cinemachine;
 
 public class UI_DamageScreen : UI_Base
 {
@@ -31,10 +27,10 @@ public class UI_DamageScreen : UI_Base
         {
             StopCoroutine(screenDamageTask);
         }
-        screenDamageTask = StartCoroutine(screenDamage(intensity));
+        screenDamageTask = StartCoroutine(ScreenDamage(intensity));
     }
 
-    private IEnumerator screenDamage(float intensity)
+    private IEnumerator ScreenDamage(float intensity)
     {
         // Camera shake
         //Vector3 velocity = new Vector3(0, -0.5f, -1);
