@@ -352,15 +352,6 @@ public class Crew : Creature
             return;
         }
 
-		if (CrewStat.Hp == 1)
-        {
-            UI_DamageScreen.DamageEffects.ScreenDamageEffect(0.5f);
-        }
-        else
-        {
-            UI_DamageScreen.DamageEffects.ScreenDamageEffect(0.3f);
-        }
-
         Rpc_PlayHitEffectMusic();
         CrewStat.ChangeStamina(Define.DAMAGED_RECOVER_STAMINA);
 
