@@ -118,7 +118,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             GameMode = GameMode.Shared,
             SessionName = sessionName,
             PlayerCount = Define.PLAYER_COUNT,
-            SceneManager = Managers.Instance.gameObject.AddComponent<LevelManager>(),
+            SceneManager = Managers.Instance.gameObject.AddComponent<NetworkSceneManagerEx>(),
             Scene = scene
         };
 
@@ -239,7 +239,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         if (player == runner.LocalPlayer)
         {
             NetworkObject playerObject = Creature == Define.CreatureType.Crew ?
-                Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, PlayerSpawnPosition) :
+                Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, PlayerSpawnPosition, false) :
                 Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, PlayerSpawnPosition);
 
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
@@ -268,7 +268,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         Debug.Log("OnSceneLoadDone");
     }
-    
+
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
     {
 
@@ -322,7 +322,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnSceneLoadStart(NetworkRunner runner)
     {
-            
+
 
     }
 

@@ -26,15 +26,19 @@ public class Sector : NetworkBehaviour
             .ToList();
     }
 
-    public bool SpawnItem(GameObject item)
+    public bool SpawnItem(GameObject go)
     {
         if(_itemSpawnPoints.Count == 0) return false;
 
         // 스폰 포인트 랜덤 선택
         Transform spawnPoint = _itemSpawnPoints[Random.Range(0, _itemSpawnPoints.Count)];
 
-        NetworkObject no = Runner.Spawn(item, spawnPoint.position);
+        NetworkObject no = Managers.NetworkMng.Runner.Spawn(go, spawnPoint.position);
         no.transform.SetParent(gameObject.transform);
+
+        BaseItemObject item = no.GetComponent<BaseItemObject>();
+        if (item != null)
+            item.Rpc_SetInfo();
 
         // 한 번 선택된 스폰포인트는 더이상 선택되지 않음
         _itemSpawnPoints.Remove(spawnPoint);

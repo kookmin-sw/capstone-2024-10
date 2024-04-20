@@ -218,16 +218,16 @@ public abstract class Alien : Creature
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                BaseStat.Speed = AlienData.WalkSpeed;
+                AlienStat.Speed = AlienStat.WalkSpeed;
                 break;
             case Define.CreaturePose.Run:
-                BaseStat.Speed = AlienData.RunSpeed;
+                AlienStat.Speed = AlienStat.RunSpeed;
                 break;
         }
 
         KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
 
-        KCC.Move(Velocity, 0f);
+        KCC.Move(Velocity * (AlienStat.Speed * Runner.DeltaTime), 0f);
     }
 
     #endregion

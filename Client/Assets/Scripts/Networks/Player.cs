@@ -28,7 +28,7 @@ public class Player : NetworkBehaviour
             return;
 
         PlayerRef = Runner.LocalPlayer;
-        Managers.GameMng.Player = this;
+        Managers.StartMng.Player = this;
         PlayerName = Managers.NetworkMng.PlayerName;
     }
 
@@ -89,7 +89,7 @@ public class Player : NetworkBehaviour
 
         NetworkObject no = isAlien
             ? Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPos)
-            : Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPos);
+            : Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPos, true);
         runner.SetPlayerObject(player, no);
     }
 }

@@ -120,7 +120,7 @@ public abstract class Creature : NetworkBehaviour
 
         Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
         Direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
-        Velocity = cameraRotationY * Direction * (BaseStat.Speed * Runner.DeltaTime);
+        Velocity = (cameraRotationY * Direction).normalized;
     }
 
     protected bool CheckInteractable(bool tryInteract)

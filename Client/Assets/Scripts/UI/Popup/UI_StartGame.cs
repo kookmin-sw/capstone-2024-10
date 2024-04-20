@@ -62,24 +62,24 @@ public class UI_StartGame : UI_Popup
 
     public void ReadyGame()
     {
-        if (Managers.GameMng.Player == null)
+        if (Managers.StartMng.Player == null)
         {
             Debug.Log("Player is null");
             return;
         }
 
-        Managers.GameMng.Player.GetReady();
+        Managers.StartMng.Player.GetReady();
     }
 
     public void ExitGame()
     {
-        if (Managers.GameMng.Player == null)
+        if (Managers.StartMng.Player == null)
         {
             Debug.Log("Player is null");
             return;
         }
 
-        Managers.GameMng.Player.ExitGame();
+        Managers.StartMng.Player.ExitGame();
     }
 
     public void SetInfo(int count)

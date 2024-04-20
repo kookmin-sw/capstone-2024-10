@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class ReadyScene : BaseScene
 {
-    // 씬이 초기에 생성될 때 수행될 목록
     protected override void Init()
     {
         base.Init();
@@ -11,7 +10,7 @@ public class ReadyScene : BaseScene
         SceneType = Define.SceneType.ReadyScene;
 
         Managers.UIMng.ShowPopupUI<UI_StartGame>(parent: Managers.UIMng.Root.transform);
-        StartCoroutine(Managers.GameMng.TryStartGame());
+        StartCoroutine(Managers.StartMng.TryStartGame());
     }
 
     public override IEnumerator OnPlayerSpawn()
@@ -27,7 +26,6 @@ public class ReadyScene : BaseScene
         ingameUI.UI_Inventory.gameObject.SetActive(false);
     }
 
-    // 씬이 바뀔 때 정리해야 하는 목록
     public override void Clear()
     {
         StopAllCoroutines();
