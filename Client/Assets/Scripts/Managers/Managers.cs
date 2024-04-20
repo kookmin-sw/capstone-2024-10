@@ -10,10 +10,10 @@ public class Managers : MonoBehaviour
     public static Managers Instance { get { Init(); return s_instance; } }
 
     #region Contents
-    private GameManagerEX _gameMng = new GameManagerEX();
+    private StartManager _startMng = new StartManager();
     private ObjectManager _objectMng = new ObjectManager();
 
-    public static GameManagerEX GameMng => Instance._gameMng;
+    public static StartManager StartMng => Instance._startMng;
     public static ObjectManager ObjectMng => Instance._objectMng;
     #endregion
 
@@ -24,7 +24,7 @@ public class Managers : MonoBehaviour
     private SceneManagerEx _sceneMng = new SceneManagerEx();
     private SoundManager _soundMng = new SoundManager();
     private UIManager _uiMng = new UIManager();
-    private MapManager _mapMng = new MapManager();
+    private GameManager _gameMng = new GameManager();
     private NetworkManager _networkMng;
 
     public static DataManager DataMng => Instance._dataMng;
@@ -34,7 +34,7 @@ public class Managers : MonoBehaviour
     public static SoundManager SoundMng => Instance._soundMng;
     public static UIManager UIMng => Instance._uiMng;
     public static NetworkManager NetworkMng => Instance._networkMng;
-    public static MapManager MapMng => Instance._mapMng;
+    public static GameManager GameMng => Instance._gameMng;
     #endregion
 
     public static void Init()
@@ -65,7 +65,7 @@ public class Managers : MonoBehaviour
 
     public static void Clear()
     {
-        GameMng.Clear();
+        StartMng.Clear();
         SoundMng.Clear();
         InputMng.Clear();
         SceneMng.Clear();

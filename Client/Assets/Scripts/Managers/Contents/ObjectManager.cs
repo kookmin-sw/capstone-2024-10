@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Data;
 using Fusion;
 using UnityEngine;
@@ -31,14 +30,14 @@ public class ObjectManager
 
     #region Creature
 
-    public NetworkObject SpawnCrew(int crewDataId, Vector3 spawnPosition)
+    public NetworkObject SpawnCrew(int crewDataId, Vector3 spawnPosition, bool isGameScene)
     {
         string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");
         NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
 
         Crew crew = no.GetComponent<Crew>();
-        crew.SetInfo(crewDataId);
+        crew.SetInfo(crewDataId, isGameScene);
 
         return no;
     }
@@ -61,8 +60,13 @@ public class ObjectManager
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.ITEM_OBJECT_PATH}/{className}");
         NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
 
+        BaseItemObject item = no.GetComponent<BaseItemObject>();
+        item.Rpc_SetInfo();
+        //item.SetInfo(itemDataId);
+
         return no;
     }
+
 
     public void Despawn(NetworkObject no)
     {

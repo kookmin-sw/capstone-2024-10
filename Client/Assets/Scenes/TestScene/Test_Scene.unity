@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.7475763, g: 0.5764442, b: 0.64617735, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4293,7 +4293,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerName: Player
   DefaultRoomName: TestScene
-  Creature: 1
+  Creature: 2
   PrefabNum: 0
   PlayerSpawnPosition: {x: -6, y: 0, z: 10}
 --- !u!114 &999382491
@@ -9066,62 +9066,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[0].Prefab
-      value: 
-      objectReference: {fileID: 2456343074442511123, guid: 651267bc0bc8c0a4fbf95c442517d389, type: 3}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[1].Prefab
-      value: 
-      objectReference: {fileID: 1343902041442310, guid: 31d875d333a7ffa4ab3bf54dee03bf61, type: 3}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[2].Prefab
-      value: 
-      objectReference: {fileID: 1508137380435870, guid: ed8bd64b3cf5df641a678f5513f3fc6c, type: 3}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[3].Prefab
-      value: 
-      objectReference: {fileID: 1557910113621458, guid: 1da23a86a41a6df44a1a2e2d6df7c0fd, type: 3}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[0].GlobalMaxCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[0].GlobalMinCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[1].GlobalMaxCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[1].GlobalMinCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[3].GlobalMaxCount
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[3].GlobalMinCount
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[0].MaxCountPerSector
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[1].MaxCountPerSector
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
-      propertyPath: _itemSpawnDatas.Array.data[3].MaxCountPerSector
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 3213453872573541556, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: SortKey
       value: 2371717177
@@ -9143,6 +9087,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2249637550655474385, guid: 6fdb3aaf5497e1547918aafa36904b69, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2967276871118287689, guid: 6fdb3aaf5497e1547918aafa36904b69, type: 3}
       propertyPath: SortKey
       value: 2616563508

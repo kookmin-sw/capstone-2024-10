@@ -6,6 +6,8 @@ public class Crew : Creature
 {
     #region Field
 
+    public bool IsGameScene { get; set; }
+
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
     public CrewAnimController CrewAnimController => (CrewAnimController)BaseAnimController;
@@ -36,8 +38,10 @@ public class Crew : Creature
         LeftHand = Util.FindChild(gameObject, "c_middle1.l", true);
     }
 
-    public override void SetInfo(int templateID)
+    public void SetInfo(int templateID, bool isReadyScene)
     {
+        IsGameScene = isReadyScene;
+
         CreatureType = Define.CreatureType.Crew;
 
         base.SetInfo(templateID);
@@ -63,11 +67,10 @@ public class Crew : Creature
     {
         base.FixedUpdateNetwork();
 
-        UpdateStaminaAndSanity();
+        UpdateStat();
         CheckHpMusic();
         CheckEffectMusic();
         StopEffectMusic();
-
     }
 
     protected override void HandleInput()
@@ -79,6 +82,10 @@ public class Crew : Creature
 
         /////////////////////////////////
         // TODO - TEST CODE
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            IsGameScene = true;
+        }
         if (Input.GetKeyDown(KeyCode.U))
         {
             Rpc_OnDamaged(1);
@@ -249,7 +256,7 @@ public class Crew : Creature
             {
                 return;
             }
-            
+
         }
     }
 
@@ -288,15 +295,21 @@ public class Crew : Creature
 
     #region Update
 
-    protected void UpdateStaminaAndSanity()
+    protected void UpdateStat()
     {
-        if (CreaturePose == Define.CreaturePose.Run && CreatureState == Define.CreatureState.Move)
+        if (!IsGameScene)
+            return;
+
+        if (CreatureState == Define.CreatureState.Move && CreaturePose == Define.CreaturePose.Run)
             CrewStat.ChangeStamina(-Define.RUN_USE_STAMINA * Runner.DeltaTime);
         else
             CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
 
         if (CreatureState == Define.CreatureState.Idle && CreaturePose == Define.CreaturePose.Sit)
+        {
+            CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
             CrewStat.ChangeSanity(Define.SIT_RECOVER_SANITY * Runner.DeltaTime);
+        }
         else
             CrewStat.ChangeSanity(-Define.PASIVE_REDUCE_SANITY * Runner.DeltaTime);
     }
@@ -322,19 +335,19 @@ public class Crew : Creature
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                BaseStat.Speed = CrewData.WalkSpeed;
+                CrewStat.Speed = CrewStat.WalkSpeed;
                 break;
             case Define.CreaturePose.Sit:
-                BaseStat.Speed = CrewData.SitSpeed;
+                CrewStat.Speed = CrewStat.SitSpeed;
                 break;
             case Define.CreaturePose.Run:
-                BaseStat.Speed = CrewData.RunSpeed;
+                CrewStat.Speed = CrewStat.RunSpeed;
                 break;
         }
 
         KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
 
-        KCC.Move(Velocity, 0f);
+        KCC.Move(Velocity * (CrewStat.Speed * Runner.DeltaTime), 0f);
     }
 
     #endregion
