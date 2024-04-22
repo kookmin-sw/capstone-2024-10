@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class BatteryCharger : BaseWorkStation
 {
-    public override string InteractDescription => "Charge Battery";
     public AudioSource AudioSource { get; protected set; }
 
     protected override void Init()
     {
         base.Init();
 
+        Description = "Charge Battery";
+        CrewActionType = Define.CrewActionType.ChargeBattery;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = false;
         IsCompleted = false;
@@ -48,7 +49,7 @@ public class BatteryCharger : BaseWorkStation
         }
 
         creature.IngameUI.ErrorTextUI.Hide();
-        creature.IngameUI.InteractInfoUI.Show(InteractDescription);
+        creature.IngameUI.InteractInfoUI.Show(Description);
         return true;
     }
 
@@ -56,11 +57,6 @@ public class BatteryCharger : BaseWorkStation
     {
         CrewWorker.Inventory.RemoveItem();
         base.WorkComplete();
-    }
-
-    protected override void PlayInteractAnimation()
-    {
-        CrewWorker.CrewAnimController.PlayChargeBattery();
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -71,12 +67,12 @@ public class BatteryCharger : BaseWorkStation
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    protected override void Rpc_PlayEffectMusic(Creature creature)
+    protected override void Rpc_PlaySound()
     {
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/BatteryCharger");
         AudioSource.volume = 1f;
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/BatteryCharger");
+        AudioSource.loop = false;
         AudioSource.Play();
-        //Managers.SoundMng.Play("Music/Clicks/BatteryCharger", Define.SoundType.Effect, 1f);
     }
 }
 

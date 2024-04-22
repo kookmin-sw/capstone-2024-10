@@ -10,6 +10,8 @@ public abstract class BaseSkill : NetworkBehaviour
 
     public int DataId { get; protected set; }
     public SkillData SkillData { get; protected set; }
+    public Define.AlienActionType ReadySkillActionType { get; protected set; }
+    public Define.AlienActionType SkillActionType { get; protected set; }
 
     public float CurrentSkillAmount { get; protected set; }
     public float CurrentReadySkillAmount { get; protected set; }
@@ -54,14 +56,25 @@ public abstract class BaseSkill : NetworkBehaviour
         return true;
     }
 
-    public virtual void ReadySkill() { }
+    public void ReadySkill()
+    {
+        Owner.IngameUI.WorkProgressBarUI.Show(SkillData.Name, CurrentReadySkillAmount, SkillData.TotalReadySkillAmount);
+        Owner.CreatureState = Define.CreatureState.Use;
+        Owner.CreaturePose = Define.CreaturePose.Stand;
 
-    public virtual void UseSkill()
+        PlayAnim(true);
+
+        StartCoroutine(ReadySkillProgress());
+    }
+
+    public void UseSkill()
     {
         Cooldown();
 
         Owner.CreatureState = Define.CreatureState.Use;
         Owner.CreaturePose = Define.CreaturePose.Stand;
+
+        StartCoroutine(ProgressSkill());
     }
 
     protected void UpdateWorkAmount()
@@ -87,6 +100,19 @@ public abstract class BaseSkill : NetworkBehaviour
         IsHit = false;
 
         Owner.ReturnToIdle(0);
+    }
+
+    protected void PlayAnim(bool isReady)
+    {
+        if (isReady)
+            Owner.AlienAnimController.PlayAnim(ReadySkillActionType);
+        else
+            Owner.AlienAnimController.PlayAnim(SkillActionType);
+    }
+
+    protected void PlaySound()
+    {
+        Owner.AlienSoundController.PlaySound(SkillActionType);
     }
 
     protected IEnumerator ReadySkillProgress()

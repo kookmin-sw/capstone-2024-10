@@ -7,7 +7,7 @@ public class CrewAnimController : BaseAnimController
 
     #region Update
 
-    protected override void PlayIdle()
+    public override void PlayIdle()
     {
         switch (CreaturePose)
         {
@@ -31,7 +31,7 @@ public class CrewAnimController : BaseAnimController
         SetFloat("Speed", SpeedParameter);
     }
 
-    protected override void PlayMove()
+    public override void PlayMove()
     {
         XParameter = Mathf.Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5);
         ZParameter = Mathf.Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5);
@@ -61,14 +61,43 @@ public class CrewAnimController : BaseAnimController
         SetFloat("Speed", SpeedParameter);
     }
 
+    #endregion
+
+    #region Play
+
+    public void PlayAnim(Define.CrewActionType crewActionType)
+    {
+        switch (crewActionType)
+        {
+            case Define.CrewActionType.KeypadUse:
+                PlayKeypadUse();
+                break;
+            case Define.CrewActionType.OpenItemKit:
+                PlayOpenItemKit();
+                break;
+            case Define.CrewActionType.OpenDoor:
+                PlayOpenDoor();
+                break;
+            case Define.CrewActionType.ChargeBattery:
+                PlayChargeBattery();
+                break;
+            case Define.CrewActionType.Damaged:
+                PlayDamaged();
+                break;
+            case Define.CrewActionType.Dead:
+                PlayDead();
+                break;
+        }
+    }
+
     public void PlayKeypadUse()
     {
         SetBool("KeypadUse", true);
     }
 
-    public void PlayOpenBox()
+    public void PlayOpenItemKit()
     {
-        SetBool("OpenBox", true);
+        SetBool("OpenItemKit", true);
     }
 
     public void PlayOpenDoor()
@@ -96,9 +125,9 @@ public class CrewAnimController : BaseAnimController
     protected override void SetParameterFalse()
     {
         SetBool("KeypadUse", false);
+        SetBool("OpenItemKit", false);
         SetBool("OpenDoor", false);
         SetBool("ChargeBattery", false);
         SetBool("Damaged", false);
-        SetBool("OpenBox", false);
     }
 }

@@ -6,7 +6,6 @@ public abstract class BaseItem
 {
     public int DataId { get; protected set; }
     public ItemData ItemData { get; protected set; }
-    public Define.ItemType ItemType { get; set; }
 
     public Crew Owner { get; protected set; }
 

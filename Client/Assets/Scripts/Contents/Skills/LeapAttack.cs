@@ -12,32 +12,18 @@ public class LeapAttack : BaseSkill
     {
         base.SetInfo(templateId);
 
+        ReadySkillActionType = Define.AlienActionType.ReadyLeapAttack;
+        SkillActionType = Define.AlienActionType.LeapAttack;
+
         IsMoving = false;
-    }
-
-    public override void ReadySkill()
-    {
-        Owner.IngameUI.WorkProgressBarUI.Show(SkillData.Name, CurrentReadySkillAmount, SkillData.TotalReadySkillAmount);
-        Owner.CreatureState = Define.CreatureState.Use;
-        Owner.CreaturePose = Define.CreaturePose.Stand;
-
-        Owner.AlienAnimController.PlayReadyLeapAttack();
-
-        StartCoroutine(ReadySkillProgress());
-    }
-
-    public override void UseSkill()
-    {
-        base.UseSkill();
-
-        Owner.AlienAnimController.PlayLeapAttack();
-
-        StartCoroutine(ProgressSkill());
     }
 
     protected override IEnumerator ProgressSkill()
     {
         IsMoving = true;
+
+        PlayAnim(false);
+        PlaySound();
 
         while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {

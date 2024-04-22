@@ -7,8 +7,8 @@ using UnityEngine.Serialization;
 
 public class Sector : NetworkBehaviour
 {
-    [SerializeField]
-    public Define.SectorName SectorName;
+    [FormerlySerializedAs("SectorName")] [SerializeField]
+    public Define.SectorType sectorType;
 
     [SerializeField]
     private Door[] _doors;

@@ -4,7 +4,7 @@ public class AlienAnimController : BaseAnimController
 {
     #region Update
 
-    protected override void PlayIdle()
+    public override void PlayIdle()
     {
         XParameter = Mathf.Lerp(XParameter, 0, Runner.DeltaTime * 5);
         ZParameter = Mathf.Lerp(ZParameter, 0, Runner.DeltaTime * 5);
@@ -16,7 +16,7 @@ public class AlienAnimController : BaseAnimController
         SetFloat("Speed", SpeedParameter);
     }
 
-    protected override void PlayMove()
+    public override void PlayMove()
     {
         XParameter = Mathf.Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5);
         ZParameter = Mathf.Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5);
@@ -46,15 +46,47 @@ public class AlienAnimController : BaseAnimController
 
     #region Play
 
-    public void PlayBasicAttack()
+    public void PlayAnim(Define.AlienActionType alienActionType)
     {
-        SetBool("BasicAttack", true);
+        switch (alienActionType)
+        {
+            case Define.AlienActionType.CrashDoor:
+                PlayCrashDoor();
+                break;
+            case Define.AlienActionType.BasicAttack:
+                PlayBasicAttack();
+                break;
+            case Define.AlienActionType.ReadyRoar:
+                PlayReadyRoar();
+                break;
+            case Define.AlienActionType.Roar:
+                PlayRoar();
+                break;
+            case Define.AlienActionType.ReadyCursedHowl:
+                PlayReadyCursedHowl();
+                break;
+            case Define.AlienActionType.CursedHowl:
+                PlayCursedHowl();
+                break;
+            case Define.AlienActionType.ReadyLeapAttack:
+                PlayReadyLeapAttack();
+                break;
+            case Define.AlienActionType.LeapAttack:
+                PlayLeapAttack();
+                break;
+        }
     }
 
     public void PlayCrashDoor()
     {
         SetBool("CrashDoor", true);
     }
+
+    public void PlayBasicAttack()
+    {
+        SetBool("BasicAttack", true);
+    }
+
     public void PlayReadyRoar()
     {
         SetBool("ReadyRoar", true);

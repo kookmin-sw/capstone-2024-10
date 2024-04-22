@@ -17,7 +17,7 @@ public abstract class BaseAnimController : NetworkBehaviour
         Init();
     }
 
-    protected void Init()
+    protected virtual void Init()
     {
         NetworkAnim = gameObject.GetComponent<NetworkMecanimAnimator>();
         Creature = gameObject.GetComponent<Creature>();
@@ -25,26 +25,9 @@ public abstract class BaseAnimController : NetworkBehaviour
 
     #region Update
 
-    public void UpdateAnimation()
-    {
-        switch (CreatureState)
-        {
-            case Define.CreatureState.Idle:
-                PlayIdle();
-                break;
-            case Define.CreatureState.Move:
-                PlayMove();
-                break;
-        }
-    }
+    public abstract void PlayIdle();
 
-    protected virtual void PlayIdle()
-    {
-    }
-
-    protected virtual void PlayMove()
-    {
-    }
+    public abstract void PlayMove();
 
     #endregion
 
@@ -65,7 +48,7 @@ public abstract class BaseAnimController : NetworkBehaviour
         NetworkAnim.Animator.SetFloat(parameter, value);
     }
 
-    #endregion
-
     protected abstract void SetParameterFalse();
+
+    #endregion
 }

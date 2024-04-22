@@ -9,14 +9,31 @@ public static class Define
         Alien,
     }
 
-    public enum ItemType
+    public enum CrewActionType
     {
         None,
-        Battery,
-        Medicine,
+        KeypadUse,
+        OpenItemKit,
+        OpenDoor,
+        ChargeBattery,
+        Damaged,
+        Dead,
     }
 
-    public enum SectorName
+    public enum AlienActionType
+    {
+        None,
+        CrashDoor,
+        BasicAttack,
+        ReadyRoar,
+        Roar,
+        ReadyCursedHowl,
+        CursedHowl,
+        ReadyLeapAttack,
+        LeapAttack,
+    }
+
+    public enum SectorType
     {
         F1_HallwayA,
         MainRoom,
@@ -67,14 +84,6 @@ public static class Define
         Stand,
         Sit,
         Run
-    }
-
-    public enum AnimState
-    {
-        Idle,
-        Move,
-        Use,
-        Dead,
     }
 
     #endregion
@@ -141,8 +150,8 @@ public static class Define
     public const string CREATURE_PATH = "Prefabs/Creatures";
     public const string ITEM_OBJECT_PATH = "Prefabs/Map/ItemObjects";
     public const string ITEM_PATH = "Items";
-    public const string Bgm_PATH = "Music/Bgm";
-    public const string Effect_PATH = "Music/Clicks";
+    public const string BGM_PATH = "Sounds/Bgms";
+    public const string EFFECT_PATH = "Sounds/Effects";
 
     #endregion
 

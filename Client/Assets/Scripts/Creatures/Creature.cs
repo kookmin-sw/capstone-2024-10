@@ -14,25 +14,57 @@ public abstract class Creature : NetworkBehaviour
     public CreatureData CreatureData { get; protected set; }
     [Networked] public Define.CreatureType CreatureType { get; set; }
 
-    public Define.CreatureState CreatureState { get; set; }
-    public Define.CreaturePose CreaturePose { get; set; }
+    private Define.CreatureState _creatureState;
+    public Define.CreatureState CreatureState
+    {
+        get => _creatureState;
+        set
+        {
+            if (_creatureState == value || BaseSoundController == null)
+                return;
+
+            _creatureState = value;
+
+            if (value == Define.CreatureState.Move)
+                BaseSoundController.PlayMove();
+            else
+                BaseSoundController.Rpc_StopEffectMusic();
+        }
+    }
+
+    private Define.CreaturePose _creaturePose;
+    public Define.CreaturePose CreaturePose
+    {
+        get => _creaturePose;
+        set
+        {
+            if (_creaturePose == value || BaseSoundController == null)
+                return;
+
+            _creaturePose = value;
+
+            if (CreatureState == Define.CreatureState.Move)
+                BaseSoundController.PlayMove();
+        }
+    }
 
     public Vector3 Direction { get; set; }
     public Vector3 Velocity { get; set; }
 
     public Transform Transform { get; protected set; }
+    public AudioSource AudioSource { get; protected set; }
     public CapsuleCollider Collider { get; protected set; }
     public Rigidbody RigidBody { get; protected set; }
     public NetworkObject NetworkObject { get; protected set; }
     public SimpleKCC KCC { get; protected set; }
     public BaseStat BaseStat { get; protected set; }
     public BaseAnimController BaseAnimController { get; protected set; }
+    public BaseSoundController BaseSoundController { get; protected set; }
 
     public UI_Ingame IngameUI { get; set; }
 
     public GameObject Head { get; protected set; }
     public CreatureCamera CreatureCamera { get; protected set; }
-    public WatchingCamera WatchingCamera { get; protected set; }
 
     #endregion
 
@@ -44,6 +76,7 @@ public abstract class Creature : NetworkBehaviour
     protected virtual void Init()
     {
         Transform = gameObject.GetComponent<Transform>();
+        AudioSource = gameObject.GetComponent<AudioSource>();
         Collider = gameObject.GetComponent<CapsuleCollider>();
         RigidBody = gameObject.GetComponent<Rigidbody>();
         NetworkObject = gameObject.GetComponent<NetworkObject>();
@@ -51,6 +84,7 @@ public abstract class Creature : NetworkBehaviour
 
         BaseStat = gameObject.GetComponent<BaseStat>();
         BaseAnimController = gameObject.GetComponent<BaseAnimController>();
+        BaseSoundController = gameObject.GetComponent<BaseSoundController>();
     }
 
     public virtual void SetInfo(int templateID)
@@ -110,7 +144,7 @@ public abstract class Creature : NetworkBehaviour
             return;
 
         UpdateByState();
-        BaseAnimController.UpdateAnimation();
+        UpdateAnimation();
     }
 
     protected virtual void HandleInput()
@@ -128,7 +162,7 @@ public abstract class Creature : NetworkBehaviour
         if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || IngameUI == null || CreatureState == Define.CreatureState.Interact)
             return false;
 
-        Ray ray = CreatureCamera.GetComponent<Camera>().ViewportPointToRay(Vector3.one * 0.5f);
+        Ray ray = CreatureCamera.Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, CreatureCamera.Camera.nearClipPlane));
 
         Debug.DrawRay(ray.origin, ray.direction * 2f, Color.red);
 
@@ -159,10 +193,6 @@ public abstract class Creature : NetworkBehaviour
         });
     }
 
-    protected abstract void CheckEffectMusic();
-
-    protected abstract void StopEffectMusic();
-
     #region Update
 
     protected void UpdateByState()
@@ -181,6 +211,19 @@ public abstract class Creature : NetworkBehaviour
     protected abstract void UpdateIdle();
 
     protected abstract void UpdateMove();
+
+    protected void UpdateAnimation()
+    {
+        switch (CreatureState)
+        {
+            case Define.CreatureState.Idle:
+                BaseAnimController.PlayIdle();
+                break;
+            case Define.CreatureState.Move:
+                BaseAnimController.PlayMove();
+                break;
+        }
+    }
 
     #endregion
 }

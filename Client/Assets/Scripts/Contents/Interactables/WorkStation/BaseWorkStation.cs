@@ -6,13 +6,16 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 {
     #region Field
 
+    public string Description { get; protected set; }
+    public Define.CrewActionType CrewActionType { get; protected set; }
     [Networked] protected float CurrentWorkAmount { get; set; }
     [Networked] protected float TotalWorkAmount { get; set; }
     [Networked] protected int WorkerCount { get; set; }
     [Networked] protected NetworkBool IsCompleted { get; set; }
 
     public bool CanRememberWork { get; protected set; }
-    public abstract string InteractDescription { get; }
+
+    public AudioSource AudioSource;
 
     protected Creature Worker { get; set; }
     protected Crew CrewWorker => Worker as Crew;
@@ -26,6 +29,8 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 
     protected virtual void Init()
     {
+        AudioSource = GetComponent<AudioSource>();
+
         CurrentWorkAmount = 0f;
         IsCompleted = false;
     }
@@ -51,11 +56,11 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         Worker.IngameUI.InteractInfoUI.Hide();
         Worker.CreatureState = Define.CreatureState.Interact;
         Worker.CreaturePose = Define.CreaturePose.Stand;
-        Worker.IngameUI.WorkProgressBarUI.Show(InteractDescription, CurrentWorkAmount, TotalWorkAmount);
+        Worker.IngameUI.WorkProgressBarUI.Show(Description, CurrentWorkAmount, TotalWorkAmount);
 
-        PlayInteractAnimation();
         Rpc_AddWorker();
-        Rpc_PlayEffectMusic(Worker);
+        PlayAnim();
+        Rpc_PlaySound();
         StartCoroutine(ProgressWork());
 
         return true;
@@ -66,13 +71,11 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         Worker.IngameUI.InteractInfoUI.Show("Cancel Interact");
 
         while (CurrentWorkAmount < TotalWorkAmount)
-        while (CurrentWorkAmount < TotalWorkAmount)
         {
             if (Worker.CreatureState != Define.CreatureState.Interact)
                 InterruptWork();
 
             Rpc_UpdateWorkAmount(Time.deltaTime, Worker.BaseStat.WorkSpeed);
-            //Rpc_UpdateWorkAmount(Runner.DeltaTime, Worker.BaseStat.WorkSpeed);
             Worker.IngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
             yield return null;
         }
@@ -89,18 +92,19 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         Worker.IngameUI.WorkProgressBarUI.Hide();
         Worker.ReturnToIdle(0f);
 
-        Rpc_StopEffectMusic();
-        gameObject.GetComponent<AudioSource>().Stop();
         Rpc_RemoveWorker();
+        Rpc_StopSound();
     }
 
     protected virtual void WorkComplete()
     {
         Rpc_WorkComplete();
-        Rpc_StopEffectMusic();
     }
 
-    protected abstract void PlayInteractAnimation();
+    protected virtual void PlayAnim()
+    {
+        CrewWorker.CrewAnimController.PlayAnim(CrewActionType);
+    }
 
     #endregion
 
@@ -129,12 +133,12 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
             CurrentWorkAmount = 0f;
     }
 
-    protected abstract void Rpc_PlayEffectMusic(Creature creature);
+    protected abstract void Rpc_PlaySound();
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    private void Rpc_StopEffectMusic()
+    [Rpc(RpcSources.All, RpcTargets.All)]
+    private void Rpc_StopSound()
     {
-        gameObject.GetComponent<AudioSource>().Stop();
+        AudioSource.Stop();
     }
 
     #endregion

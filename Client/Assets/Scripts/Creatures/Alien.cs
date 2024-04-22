@@ -1,7 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Data;
-using Fusion;
 
 public abstract class Alien : Creature
 {
@@ -10,11 +10,13 @@ public abstract class Alien : Creature
     public AlienData AlienData => CreatureData as AlienData;
     public AlienStat AlienStat => (AlienStat)BaseStat;
     public AlienAnimController AlienAnimController => (AlienAnimController)BaseAnimController;
+    public AlienSoundController AlienSoundController => (AlienSoundController)BaseSoundController;
     public SkillController SkillController { get; protected set; }
-    public UI_AlienIngame AlienIngameUI => IngameUI as UI_AlienIngame;
-    public float CurrentSkillRange { get; set; }
 
-    public AudioSource AudioSource { get; set; }
+    public UI_AlienIngame AlienIngameUI => IngameUI as UI_AlienIngame;
+
+    public float CurrentSkillRange { get; set; }
+    public bool IsChasing { get; protected set; }
 
     #endregion
 
@@ -45,20 +47,13 @@ public abstract class Alien : Creature
         AlienStat.SetStat(AlienData);
 
         CurrentSkillRange = 1.5f;
+        IsChasing = false;
         IsSpawned = true;
 
         if (Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene))
         {
             StartCoroutine(Managers.SceneMng.CurrentScene.OnPlayerSpawn());
         }
-    }
-
-    public override void FixedUpdateNetwork()
-    {
-        base.FixedUpdateNetwork();
-
-        CheckEffectMusic();
-        StopEffectMusic();
     }
 
     protected override void HandleInput()
@@ -69,6 +64,7 @@ public abstract class Alien : Creature
             return;
 
         CheckInteractable(false);
+        CheckChasing();
 
         if (Input.GetKeyDown(KeyCode.F))
             if (CheckInteractable(true))
@@ -104,89 +100,65 @@ public abstract class Alien : Creature
         }
     }
 
+    protected void CheckChasing()
+    {
+        if (!HasStateAuthority || !IsSpawned)
+            return;
+
+        for (float i = 0f; i <= 1f; i += 0.1f)
+        {
+            Ray ray = CreatureCamera.Camera.ViewportPointToRay(new Vector3(i, 0.5f, CreatureCamera.Camera.nearClipPlane));
+
+            Debug.DrawRay(ray.origin, ray.direction * 8f, Color.green);
+
+            if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 8f, layerMask: LayerMask.GetMask("Crew", "MapObject")))
+            {
+                if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
+                {
+                    if (!IsChasing)
+                    {
+                        IsChasing = true;
+                        Managers.SoundMng.Play($"{Define.BGM_PATH}/검은_숲의_추격자", Define.SoundType.Bgm, 1f, 0.5f);
+                    }
+                    return;
+                }
+            }
+
+            if (IsChasing)
+                StartCoroutine(CheckNotChasing());
+        }
+
+        // if (Physics.BoxCast(Transform.position, new Vector3(3f,3f,3f), Transform.forward, out RaycastHit rayHit, Quaternion.identity, 5f, LayerMask.GetMask("Crew")))
+        // {
+        //     if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
+        //     {
+        //         Debug.Log("CheckChasing Success!");
+        //     }
+        // }
+    }
+
+    protected IEnumerator CheckNotChasing()
+    {
+        StopAllCoroutines();
+
+        float currentChasingTime = 0f;
+        while (currentChasingTime < 10f)
+        {
+            currentChasingTime += Time.deltaTime;
+            yield return null;
+        }
+
+        IsChasing = false;
+        Managers.SoundMng.Stop(Define.SoundType.Bgm);
+    }
+
     protected bool CheckAndUseSkill(int skillIdx)
     {
-        if (!HasStateAuthority)
+        if (!HasStateAuthority || !IsSpawned)
             return false;
 
         return SkillController.CheckAndUseSkill(skillIdx);
     }
-
-    #region music
-    protected override void CheckEffectMusic()
-    {
-        if (CreatureState == Define.CreatureState.Move)
-        {
-            if (AudioSource.isPlaying == false)
-            {
-                Rpc_PlayEffectMusic();
-            }
-            else
-            {
-                if (CreaturePose == Define.CreaturePose.Stand)
-                {
-                    if (AudioSource.pitch == 1.0f)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        Rpc_ChageMusicPitch(1.0f);
-                        return;
-                    }
-                }
-                if (CreaturePose == Define.CreaturePose.Run)
-                {
-                    if (AudioSource.pitch == 2.0f)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        Rpc_ChageMusicPitch(2.0f);
-                        return;
-                    }
-                }
-                return;
-            }
-        }
-    }
-    protected override void StopEffectMusic()
-    {
-        if (CreatureState == Define.CreatureState.Idle || CreatureState == Define.CreatureState.Interact)
-        {
-            if (AudioSource.isPlaying == true)
-            {
-                Rpc_StopEffectMusic();
-            }
-            else
-            {
-                return;
-            }
-
-        }
-    }
-
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    private void Rpc_PlayEffectMusic()
-    {
-        AudioSource.volume = 1f;
-        AudioSource.spatialBlend = 1.0f;
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Monster_Walk");
-        AudioSource.loop = true;
-        AudioSource.Play();
-    }
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    private void Rpc_StopEffectMusic()
-    {
-        AudioSource.Stop();
-    }
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    private void Rpc_ChageMusicPitch(float value)
-    {
-        AudioSource.pitch = value;
-    }
-    #endregion
 
     public void OnDrawGizmos()
     {
@@ -195,6 +167,29 @@ public abstract class Alien : Creature
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere( Head.transform.position + transform.forward * CurrentSkillRange, CurrentSkillRange);
+
+        // Vector3 boxCenter = Transform.position; // 예: 컴포넌트가 부착된 객체의 위치
+        // Vector3 boxHalfExtents = new Vector3(3f,3f,3f);
+        // Vector3 direction = Transform.forward; // 예: 객체의 전방 방향
+        // Quaternion orientation = Quaternion.identity; // 상자의 회전, 필요에 따라 조정 가능
+        // float maxDistance = 5f;
+        //
+        // // 상자의 현재 위치를 그립니다.
+        // Gizmos.color = Color.red;
+        // Gizmos.DrawWireCube(boxCenter, boxHalfExtents * 2); // DrawWireCube는 전체 크기를 요구함
+        //
+        // // BoxCast의 결과 경로를 그립니다.
+        // RaycastHit hit;
+        // if (Physics.BoxCast(boxCenter, boxHalfExtents, direction, out hit, orientation, maxDistance, LayerMask.GetMask("Crew")))
+        // {
+        //     Gizmos.color = Color.green; // 충돌 발생 시
+        //     Gizmos.DrawWireCube(boxCenter + direction * hit.distance, boxHalfExtents * 2);
+        // }
+        // else
+        // {
+        //     Gizmos.color = Color.blue; // 충돌 없을 시
+        //     Gizmos.DrawWireCube(boxCenter + direction * maxDistance, boxHalfExtents * 2);
+        // }
     }
 
     #region Update

@@ -1,31 +1,21 @@
-using Fusion;
 using System.Collections;
 using UnityEngine;
 
 public class Roar : BaseSkill
 {
-    public override void ReadySkill()
+    public override void SetInfo(int templateId)
     {
-        Owner.IngameUI.WorkProgressBarUI.Show(SkillData.Name, CurrentReadySkillAmount, SkillData.TotalReadySkillAmount);
-        Owner.CreatureState = Define.CreatureState.Use;
-        Owner.CreaturePose = Define.CreaturePose.Stand;
+        base.SetInfo(templateId);
 
-        Owner.AlienAnimController.PlayReadyRoar();
-        Rpc_PlayEffectMusic();
-        StartCoroutine(ReadySkillProgress());
-    }
-
-    public override void UseSkill()
-    {
-        base.UseSkill();
-
-        Owner.AlienAnimController.PlayRoar();
-
-        StartCoroutine(ProgressSkill());
+        ReadySkillActionType = Define.AlienActionType.ReadyRoar;
+        SkillActionType = Define.AlienActionType.Roar;
     }
 
     protected override IEnumerator ProgressSkill()
     {
+        PlayAnim(false);
+        PlaySound();
+
         while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
             Vector3 attackPosition = Owner.transform.position + ForwardDirection * SkillData.Range;
@@ -46,15 +36,4 @@ public class Roar : BaseSkill
 
         SkillInterrupt();
     }
-
-    [Rpc(RpcSources.All, RpcTargets.All)]
-    private void Rpc_PlayEffectMusic()
-    {
-        Owner.AudioSource.volume = 1f;
-        Owner.AudioSource.pitch = 1f;
-        Owner.AudioSource.spatialBlend = 1.0f;
-        Owner.AudioSource.PlayOneShot(Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Monster_Roaring"));
-    }
-
-
 }

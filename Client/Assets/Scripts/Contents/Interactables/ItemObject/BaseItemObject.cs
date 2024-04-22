@@ -5,14 +5,14 @@ public abstract class BaseItemObject : NetworkBehaviour, IInteractable
 {
     public int DataId { get; protected set; }
     public ItemData ItemData { get; protected set; }
-    public string InteractDescription { get; protected set; }
+    public string Description { get; protected set; }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public virtual void Rpc_SetInfo()
     {
         ItemData = Managers.DataMng.ItemDataDict[DataId];
 
-        InteractDescription = $"Take {ItemData?.Name}";
+        Description = $"Take {ItemData?.Name}";
     }
 
     public bool CheckInteractable(Creature creature)
@@ -38,7 +38,7 @@ public abstract class BaseItemObject : NetworkBehaviour, IInteractable
         }
 
         creature.IngameUI.ErrorTextUI.Hide();
-        creature.IngameUI.InteractInfoUI.Show(InteractDescription);
+        creature.IngameUI.InteractInfoUI.Show(Description);
         return true;
     }
 

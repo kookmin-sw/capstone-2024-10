@@ -9,7 +9,9 @@ public class ReadyScene : BaseScene
 
         SceneType = Define.SceneType.ReadyScene;
 
+        Managers.SoundMng.Stop(Define.SoundType.Bgm);
         Managers.UIMng.ShowPopupUI<UI_StartGame>(parent: Managers.UIMng.Root.transform);
+
         StartCoroutine(Managers.StartMng.TryStartGame());
     }
 

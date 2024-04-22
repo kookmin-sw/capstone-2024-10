@@ -255,7 +255,7 @@ public class UI_LobbyController : UI_Base, ILobbyController
 
     public void PlayHover()
     {
-        Managers.SoundMng.Play("Music/Clicks/SFX_Click_Mechanical", Define.SoundType.Effect, 0.1f);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/UI/Click", Define.SoundType.Effect, 0.1f);
     }
 
     public void DestroyMenu()
@@ -356,7 +356,7 @@ public class UI_LobbyController : UI_Base, ILobbyController
         mainMenu.SetActive(true);
     }
 
- 
+
     public void DisablePlayCampaign()
     {
         playMenu.SetActive(false);
@@ -446,14 +446,9 @@ public class UI_LobbyController : UI_Base, ILobbyController
         lineGeneral.SetActive(true);
     }
 
-    public void PlaySFXHover()
-    {
-        Managers.SoundMng.Play("Music/Clicks/SFX_Click_Punch");
-    }
-
     public void PlaySwoosh()
     {
-        Managers.SoundMng.Play("Music/Clicks/SFX_Click_Whoosh");
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/UI/Click2");
     }
 
     // Are You Sure - Quit Panel Pop Up

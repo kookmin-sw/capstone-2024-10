@@ -3,16 +3,15 @@ using UnityEngine;
 
 public class Computer : BaseWorkStation
 {
-    public override string InteractDescription => "Use Computer";
-    public AudioSource AudioSource { get; protected set; }
-
     protected override void Init()
     {
         base.Init();
 
+        Description = "Use Computer";
+        CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
-        CanRememberWork = true;
         IsCompleted = false;
+        CanRememberWork = true;
 
         TotalWorkAmount = 150f;
     }
@@ -41,18 +40,13 @@ public class Computer : BaseWorkStation
         }
 
         creature.IngameUI.ErrorTextUI.Hide();
-        creature.IngameUI.InteractInfoUI.Show(InteractDescription);
+        creature.IngameUI.InteractInfoUI.Show(Description);
         return true;
     }
 
     protected override bool IsInteractable(Creature creature)
     {
         return true;
-    }
-
-    protected override void PlayInteractAnimation()
-    {
-        CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -63,13 +57,11 @@ public class Computer : BaseWorkStation
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    protected override void Rpc_PlayEffectMusic(Creature creature)
+    protected override void Rpc_PlaySound()
     {
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/KeypadUse");
         AudioSource.volume = 1f;
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Typing_Keyboard");
         AudioSource.loop = true;
         AudioSource.Play();
-        //Managers.SoundMng.Play("Music/Clicks/Typing_Keyboard", Define.SoundType.Effect, 1f, true);
     }
-
 }
