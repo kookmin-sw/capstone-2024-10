@@ -7,7 +7,7 @@ public class AlienSoundController : BaseSoundController
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                Rpc_PlayFootStepSound(1.33f, 0.3f);
+                Rpc_PlayFootStepSound(1.33f, 1f);
                 break;
             case Define.CreaturePose.Run:
                 Rpc_PlayFootStepSound(2f, 1f);

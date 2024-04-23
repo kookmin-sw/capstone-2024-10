@@ -55,6 +55,7 @@ public abstract class Alien : Creature
         }
     }
 
+    #region Update
     protected override void HandleInput()
     {
         base.HandleInput();
@@ -116,24 +117,32 @@ public abstract class Alien : Creature
         if (!HasStateAuthority || !IsSpawned)
             return;
 
-        for (float i = 0f; i <= 1f; i += 0.1f)
+        for (float i = 0.2f; i < 0.9f; i += 0.1f)
         {
-            Ray ray = CreatureCamera.Camera.ViewportPointToRay(new Vector3(i, 0.5f, CreatureCamera.Camera.nearClipPlane));
-
-            Debug.DrawRay(ray.origin, ray.direction * 8f, Color.green);
-
-            if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 8f, layerMask: LayerMask.GetMask("Crew", "MapObject")))
+            for (float j = 0.2f; j < 0.9f; j += 0.1f)
             {
-                if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
+                Ray ray = CreatureCamera.Camera.ViewportPointToRay(
+                    new Vector3(i, j, CreatureCamera.Camera.nearClipPlane));
+
+                if (i < 0.25f || j < 0.25f || i > 0.75f || j > 0.75f)
+                    Debug.DrawRay(ray.origin, ray.direction * 15f, Color.green);
+
+                if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 15f,
+                        layerMask: LayerMask.GetMask("Crew", "MapObject")))
                 {
-                    if (!IsChasing)
+                    if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
                     {
-                        StopAllCoroutines();
-                        IsChasing = true;
-                        if (!Managers.SoundMng.IsPlaying())
-                            Managers.SoundMng.Play($"{Define.BGM_PATH}/검은_숲의_추격자", Define.SoundType.Bgm, 1.1f, 0.8f);
+                        if (!IsChasing)
+                        {
+                            StopAllCoroutines();
+                            IsChasing = true;
+                            if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
+                                Managers.SoundMng.Play($"{Define.BGM_PATH}/The Big Clash", Define.SoundType.Bgm, volume: 1,
+                                    isLoop: true);
+                        }
+
+                        return;
                     }
-                    return;
                 }
             }
         }
@@ -172,8 +181,6 @@ public abstract class Alien : Creature
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere( Head.transform.position + transform.forward * CurrentSkillRange, CurrentSkillRange);
     }
-
-    #region Update
 
     protected override void UpdateIdle()
     {

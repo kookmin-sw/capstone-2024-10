@@ -9,6 +9,8 @@ public class GameScene : BaseScene
         base.Init();
 
         SceneType = Define.SceneType.GameScene;
+
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Sci Fi Ambience 10", Define.SoundType.Environment, volume:0.3f);
     }
 
     public override IEnumerator OnPlayerSpawn()
@@ -30,7 +32,6 @@ public class GameScene : BaseScene
 
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
-        Managers.SoundMng.Clear();
     }
 
     // 씬이 바뀔 때 정리해야 하는 목록

@@ -123,6 +123,16 @@ public abstract class Creature : NetworkBehaviour
         gameObject.name = $"{CreatureData.DataId}_{CreatureData.Name}";
     }
 
+    public void ReturnToIdle(float time)
+    {
+        DOVirtual.DelayedCall(time, () =>
+        {
+            CreatureState = Define.CreatureState.Idle;
+            CreaturePose = Define.CreaturePose.Stand;
+        });
+    }
+
+    #region Update
     private void Update()
     {
         if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
@@ -184,17 +194,6 @@ public abstract class Creature : NetworkBehaviour
         IngameUI.ErrorTextUI.Hide();
         return false;
     }
-
-    public void ReturnToIdle(float time)
-    {
-        DOVirtual.DelayedCall(time, () =>
-        {
-            CreatureState = Define.CreatureState.Idle;
-            CreaturePose = Define.CreaturePose.Stand;
-        });
-    }
-
-    #region Update
 
     protected void UpdateByState()
     {

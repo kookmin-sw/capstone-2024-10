@@ -13,7 +13,7 @@ public class LobbyScene : BaseScene
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Black_Magic", Define.SoundType.Bgm, 0.4f);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Black Magic", Define.SoundType.Environment, 0.4f);
 
         string nickname = Managers.NetworkMng.PlayerName;
         if (string.IsNullOrEmpty(nickname))

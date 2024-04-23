@@ -62,7 +62,7 @@ public class RenderingSystem : NetworkBehaviour
 
     public void SetVignette(float sanity)
     {
-        Vignette.intensity.value = (100f - sanity) * 0.01f * 0.7f;
+        Vignette.intensity.value = 0.2f + (100f - sanity) * 0.01f * 0.55f;
     }
 
     #endregion
