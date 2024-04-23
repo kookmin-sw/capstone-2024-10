@@ -15,6 +15,7 @@ public class CrewStat : BaseStat
     public float SitSpeed { get; set; }
 
     public bool IsRunnable { get; set; }
+    public bool Exhausted { get; set; }
 
     public Action<int> OnHpChanged;
     public Action<float> OnSanityChanged;
@@ -67,6 +68,18 @@ public class CrewStat : BaseStat
             IsRunnable = true;
         else if (Stamina <= 0)
             IsRunnable = false;
+
+        if (Stamina < 40 && !Exhausted)
+        {
+            Exhausted = true;
+            Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Exhaust", volume: 1f, isLoop: true);
+        }
+        if (Stamina >= 40)
+        {
+            if (Exhausted)
+                Exhausted = false;
+            Managers.SoundMng.Stop();
+        }
     }
 
     public void ChangeSanity(float value)

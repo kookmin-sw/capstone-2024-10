@@ -36,9 +36,9 @@ public class Crew : Creature
         LeftHand = Util.FindChild(gameObject, "c_middle1.l", true);
     }
 
-    public void SetInfo(int templateID, bool isReadyScene)
+    public void SetInfo(int templateID, bool isGameScene)
     {
-        IsGameScene = isReadyScene;
+        IsGameScene = isGameScene;
 
         CreatureType = Define.CreatureType.Crew;
 
@@ -60,6 +60,8 @@ public class Crew : Creature
             StartCoroutine(Managers.SceneMng.CurrentScene.OnPlayerSpawn());
         }
     }
+
+    #region Update
 
     public override void FixedUpdateNetwork()
     {
@@ -189,8 +191,8 @@ public class Crew : Creature
                 {
                     StopAllCoroutines();
                     IsChasing = true;
-                    if (!Managers.SoundMng.IsPlaying())
-                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, 1.0f, 0.8f);
+                    if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
+                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 1.2f, isLoop:true);
                 }
                 return;
             }
@@ -240,8 +242,6 @@ public class Crew : Creature
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(center, size);
     }
-
-    #region Update
 
     protected void UpdateStat()
     {
