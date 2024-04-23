@@ -16,7 +16,6 @@ public abstract class Alien : Creature
     public UI_AlienIngame AlienIngameUI => IngameUI as UI_AlienIngame;
 
     public float CurrentSkillRange { get; set; }
-    public bool IsChasing { get; protected set; }
 
     #endregion
 
@@ -63,12 +62,24 @@ public abstract class Alien : Creature
         if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
             return;
 
-        CheckInteractable(false);
-        CheckChasing();
+        if (CreatureState == Define.CreatureState.Interact)
+        {
+            if (Input.GetKeyDown(KeyCode.F))
+                CreatureState = Define.CreatureState.Idle;
+            return;
+        }
 
         if (Input.GetKeyDown(KeyCode.F))
+        {
             if (CheckInteractable(true))
                 return;
+        }
+        else
+        {
+            CheckInteractable(false);
+        }
+
+        CheckChasing();
 
         if (Input.GetMouseButtonDown(0))
             if (CheckAndUseSkill(0))
@@ -117,38 +128,31 @@ public abstract class Alien : Creature
                 {
                     if (!IsChasing)
                     {
+                        StopAllCoroutines();
                         IsChasing = true;
-                        Managers.SoundMng.Play($"{Define.BGM_PATH}/검은_숲의_추격자", Define.SoundType.Bgm, 1f, 0.5f);
+                        if (!Managers.SoundMng.IsPlaying())
+                            Managers.SoundMng.Play($"{Define.BGM_PATH}/검은_숲의_추격자", Define.SoundType.Bgm, 1.1f, 0.8f);
                     }
                     return;
                 }
             }
-
-            if (IsChasing)
-                StartCoroutine(CheckNotChasing());
         }
 
-        // if (Physics.BoxCast(Transform.position, new Vector3(3f,3f,3f), Transform.forward, out RaycastHit rayHit, Quaternion.identity, 5f, LayerMask.GetMask("Crew")))
-        // {
-        //     if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
-        //     {
-        //         Debug.Log("CheckChasing Success!");
-        //     }
-        // }
+        if (IsChasing)
+            StartCoroutine(CheckNotChasing());
+
+        IsChasing = false;
     }
 
     protected IEnumerator CheckNotChasing()
     {
-        StopAllCoroutines();
-
         float currentChasingTime = 0f;
-        while (currentChasingTime < 10f)
+        while (currentChasingTime < 8f)
         {
             currentChasingTime += Time.deltaTime;
             yield return null;
         }
 
-        IsChasing = false;
         Managers.SoundMng.Stop(Define.SoundType.Bgm);
     }
 
@@ -167,29 +171,6 @@ public abstract class Alien : Creature
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere( Head.transform.position + transform.forward * CurrentSkillRange, CurrentSkillRange);
-
-        // Vector3 boxCenter = Transform.position; // 예: 컴포넌트가 부착된 객체의 위치
-        // Vector3 boxHalfExtents = new Vector3(3f,3f,3f);
-        // Vector3 direction = Transform.forward; // 예: 객체의 전방 방향
-        // Quaternion orientation = Quaternion.identity; // 상자의 회전, 필요에 따라 조정 가능
-        // float maxDistance = 5f;
-        //
-        // // 상자의 현재 위치를 그립니다.
-        // Gizmos.color = Color.red;
-        // Gizmos.DrawWireCube(boxCenter, boxHalfExtents * 2); // DrawWireCube는 전체 크기를 요구함
-        //
-        // // BoxCast의 결과 경로를 그립니다.
-        // RaycastHit hit;
-        // if (Physics.BoxCast(boxCenter, boxHalfExtents, direction, out hit, orientation, maxDistance, LayerMask.GetMask("Crew")))
-        // {
-        //     Gizmos.color = Color.green; // 충돌 발생 시
-        //     Gizmos.DrawWireCube(boxCenter + direction * hit.distance, boxHalfExtents * 2);
-        // }
-        // else
-        // {
-        //     Gizmos.color = Color.blue; // 충돌 없을 시
-        //     Gizmos.DrawWireCube(boxCenter + direction * maxDistance, boxHalfExtents * 2);
-        // }
     }
 
     #region Update

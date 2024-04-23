@@ -128,7 +128,7 @@ public class Door : BaseWorkStation
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected void Rpc_AlienPlaySound()
     {
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/Door_Open");
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/Door_Crash");
         AudioSource.volume = 1f;
         AudioSource.loop = false;
         AudioSource.Play();

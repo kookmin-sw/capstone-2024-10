@@ -50,6 +50,7 @@ public abstract class Creature : NetworkBehaviour
 
     public Vector3 Direction { get; set; }
     public Vector3 Velocity { get; set; }
+    public bool IsChasing { get; protected set; }
 
     public Transform Transform { get; protected set; }
     public AudioSource AudioSource { get; protected set; }

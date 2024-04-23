@@ -7,7 +7,7 @@ public class CrewSoundController : BaseSoundController
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                Rpc_PlayFootStepSound(1f, 0.3f);
+                Rpc_PlayFootStepSound(1.205f, 0.2f);
                 break;
             case Define.CreaturePose.Sit:
                 Rpc_StopEffectMusic();
@@ -34,7 +34,7 @@ public class CrewSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayFootStepSound(float pitch, float volume)
     {
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Crew/Walk");
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Crew/FootStep");
         AudioSource.pitch = pitch;
         AudioSource.volume = volume;
         AudioSource.spatialBlend = 1.0f;

@@ -30,16 +30,21 @@ public class BasicAttack : BaseSkill
 
         while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
-            Vector3 attackPosition = Owner.transform.position + ForwardDirection * SkillData.Range;
-            Collider[] hitColliders = new Collider[3];
-
-            if (!IsHit && Physics.OverlapSphereNonAlloc(attackPosition, SkillData.Range, hitColliders, LayerMask.GetMask("Crew")) > 0)
+            if (CurrentSkillAmount > 0.3f)
             {
-                if (hitColliders[0].gameObject.TryGetComponent(out Crew crew))
+                Vector3 attackPosition = Owner.transform.position + ForwardDirection * SkillData.Range;
+                Collider[] hitColliders = new Collider[3];
+
+                if (!IsHit && Physics.OverlapSphereNonAlloc(attackPosition, SkillData.Range, hitColliders,
+                        LayerMask.GetMask("Crew")) > 0)
                 {
-                    IsHit = true;
-                    crew.Rpc_OnDamaged(SkillData.Damage);
-                    crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
+                    if (hitColliders[0].gameObject.TryGetComponent(out Crew crew))
+                    {
+                        IsHit = true;
+                        Owner.AlienSoundController.PlaySound(Define.AlienActionType.Hit);
+                        crew.Rpc_OnDamaged(SkillData.Damage);
+                        crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
+                    }
                 }
             }
 

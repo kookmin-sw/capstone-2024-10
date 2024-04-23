@@ -24,6 +24,7 @@ public static class Define
     {
         None,
         CrashDoor,
+        Hit,
         BasicAttack,
         ReadyRoar,
         Roar,

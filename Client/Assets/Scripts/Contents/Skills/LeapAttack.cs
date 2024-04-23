@@ -38,6 +38,7 @@ public class LeapAttack : BaseSkill
                     {
                         IsHit = true;
                         IsMoving = false;
+                        Owner.AlienSoundController.PlaySound(Define.AlienActionType.Hit);
                         crew.Rpc_OnDamaged(SkillData.Damage);
                         crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
                     }

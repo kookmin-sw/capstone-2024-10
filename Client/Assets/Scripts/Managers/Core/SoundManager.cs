@@ -118,4 +118,18 @@ public class SoundManager
 
         return audioClip;
     }
+
+    public bool IsPlaying(Define.SoundType type = Define.SoundType.Effect)
+    {
+        AudioSource audioSource;
+        if (type == Define.SoundType.Bgm)
+            audioSource = _audioSources[(int)Define.SoundType.Bgm];
+        else
+            audioSource = _audioSources[(int)Define.SoundType.Effect];
+
+        if (audioSource == null)
+            return false;
+
+        return audioSource.isPlaying;
+    }
 }
