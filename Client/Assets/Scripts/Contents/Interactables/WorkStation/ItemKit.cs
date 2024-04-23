@@ -6,9 +6,8 @@ public class ItemKit : BaseWorkStation
     [Header("Item")]
     [SerializeField] private int _itemId;
 
-    public override string InteractDescription => "Open";
     public Transform Transform { get; protected set; }
-    public AudioSource AudioSource { get; protected set; }
+
     public GameObject Cover { get; protected set; }
 
     protected override void Init()
@@ -18,6 +17,9 @@ public class ItemKit : BaseWorkStation
         Cover = Util.FindChild(gameObject, "Cover", true);
         Transform = gameObject.GetComponent<Transform>();
         AudioSource = gameObject.GetComponent<AudioSource>();
+
+        Description = "Open";
+        CrewActionType = Define.CrewActionType.OpenItemKit;
         CanRememberWork = false;
         IsCompleted = false;
 
@@ -46,7 +48,7 @@ public class ItemKit : BaseWorkStation
             return false;
         }
 
-        creature.IngameUI.InteractInfoUI.Show(InteractDescription);
+        creature.IngameUI.InteractInfoUI.Show(Description);
         return true;
     }
 
@@ -56,11 +58,6 @@ public class ItemKit : BaseWorkStation
         // no.transform.SetParent(gameObject.transform);
 
         Rpc_WorkComplete();
-    }
-
-    protected override void PlayInteractAnimation()
-    {
-        CrewWorker.CrewAnimController.PlayOpenBox();
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -74,12 +71,11 @@ public class ItemKit : BaseWorkStation
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    protected override void Rpc_PlayEffectMusic(Creature creature)
+    protected override void Rpc_PlaySound()
     {
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/ItemKit");
         AudioSource.volume = 1f;
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/ItemBox");
         AudioSource.loop = true;
         AudioSource.Play();
-        //Managers.SoundMng.Play("Music/Clicks/ItemBox", Define.SoundType.Effect, 1f, true);
     }
 }

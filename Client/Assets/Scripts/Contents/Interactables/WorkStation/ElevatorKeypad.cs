@@ -3,14 +3,14 @@ using UnityEngine;
 
 public class ElevatorKeypad : BaseWorkStation
 {
-    public override string InteractDescription => "Activate Elevator";
-
     [SerializeField] private GameObject _elevatorDoor;
-    public AudioSource AudioSource { get; protected set; }
+
     protected override void Init()
     {
         base.Init();
 
+        Description = "Activate Elevator";
+        CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;
         IsCompleted = false;
@@ -48,13 +48,8 @@ public class ElevatorKeypad : BaseWorkStation
         }
 
         creature.IngameUI.ErrorTextUI.Hide();
-        creature.IngameUI.InteractInfoUI.Show(InteractDescription);
+        creature.IngameUI.InteractInfoUI.Show(Description);
         return true;
-    }
-
-    protected override void PlayInteractAnimation()
-    {
-        CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -66,13 +61,11 @@ public class ElevatorKeypad : BaseWorkStation
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    protected override void Rpc_PlayEffectMusic(Creature creature)
+    protected override void Rpc_PlaySound()
     {
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/KeypadUse");
         AudioSource.volume = 1f;
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/Typing_Keyboard");
         AudioSource.loop = true;
         AudioSource.Play();
-
-        //Managers.SoundMng.Play("Music/Clicks/Typing_Keyboard", Define.SoundType.Effect, 1f, true);
     }
 }

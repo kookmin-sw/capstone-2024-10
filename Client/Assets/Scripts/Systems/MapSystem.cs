@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public class MapSystem : NetworkBehaviour
 {
-    public Dictionary<Define.SectorName, Sector> Sectors { get; set; } = new();
+    public Dictionary<Define.SectorType, Sector> Sectors { get; set; } = new();
 
     [Header("Item Spawn")]
     [SerializeField] private int _totalItemCount;
@@ -28,9 +28,9 @@ public class MapSystem : NetworkBehaviour
         foreach (Sector s in sectors)
         {
             s.Init();
-            if (!Sectors.TryAdd(s.SectorName, s))
+            if (!Sectors.TryAdd(s.sectorType, s))
             {
-                Debug.LogError($"Duplicate sector name detected!: {s.SectorName}");
+                Debug.LogError($"Duplicate sector name detected!: {s.sectorType}");
             }
         }
     }
@@ -41,8 +41,8 @@ public class MapSystem : NetworkBehaviour
 
         int totalCount = 0;
         Dictionary<ItemSpawnData, int> totalItemCount = new();
-        Dictionary<Define.SectorName, Dictionary<ItemSpawnData, int>> itemPerSectorCount = new();
-        List<Define.SectorName> availableSectors = new(Sectors.Keys);
+        Dictionary<Define.SectorType, Dictionary<ItemSpawnData, int>> itemPerSectorCount = new();
+        List<Define.SectorType> availableSectors = new(Sectors.Keys);
         List<ItemSpawnData> itemSpawnData = new(_itemSpawnDatas);
 
         foreach (var key in itemSpawnData)
@@ -90,7 +90,7 @@ public class MapSystem : NetworkBehaviour
 
         bool TrySpawnItem(ItemSpawnData data)
         {
-            if(!TrySelectSector(data, out Define.SectorName selectedSector)) return false;
+            if(!TrySelectSector(data, out Define.SectorType selectedSector)) return false;
             
             while (!Sectors[selectedSector].SpawnItem(data.Prefab))
             {
@@ -110,11 +110,11 @@ public class MapSystem : NetworkBehaviour
             return true;
         }
 
-        bool TrySelectSector(ItemSpawnData data, out Define.SectorName selectedSector)
+        bool TrySelectSector(ItemSpawnData data, out Define.SectorType selectedSector)
         {
-            List<Define.SectorName> availableSectorsCopy = new(availableSectors);
+            List<Define.SectorType> availableSectorsCopy = new(availableSectors);
 
-            selectedSector = Define.SectorName.MainRoom;
+            selectedSector = Define.SectorType.MainRoom;
 
             // Item의 섹터 당 개수 제한을 고려하여 섹터 선택
             while (availableSectorsCopy.Count > 0)

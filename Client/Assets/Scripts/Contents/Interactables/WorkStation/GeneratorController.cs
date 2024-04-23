@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class GeneratorController : BaseWorkStation
 {
-    public override string InteractDescription => "Restore Generator";
-    public AudioSource AudioSource { get; protected set; }
-
     protected override void Init()
     {
         base.Init();
+
+        Description ="Restore Generator";
+        CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;
         IsCompleted = false;
@@ -47,18 +47,13 @@ public class GeneratorController : BaseWorkStation
         }
 
         creature.IngameUI.ErrorTextUI.Hide();
-        creature.IngameUI.InteractInfoUI.Show(InteractDescription);
+        creature.IngameUI.InteractInfoUI.Show(Description);
         return true;
     }
 
     protected override bool IsInteractable(Creature creature)
     {
         return true;
-    }
-
-    protected override void PlayInteractAnimation()
-    {
-        CrewWorker.CrewAnimController.PlayKeypadUse();
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
@@ -70,12 +65,11 @@ public class GeneratorController : BaseWorkStation
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    protected override void Rpc_PlayEffectMusic(Creature creature)
+    protected override void Rpc_PlaySound()
     {
+        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/GeneratorController");
         AudioSource.volume = 1f;
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip("Music/Clicks/GeneratorController");
+        AudioSource.loop = true;
         AudioSource.Play();
-
-        //Managers.SoundMng.Play("Music/Clicks/GeneratorController", Define.SoundType.Effect, 1f);
     }
 }
