@@ -38,7 +38,7 @@ public class Sector : NetworkBehaviour
 
         BaseItemObject item = no.GetComponent<BaseItemObject>();
         if (item != null)
-            item.Rpc_SetInfo();
+            item.Rpc_SetInfo(true);
 
         // 한 번 선택된 스폰포인트는 더이상 선택되지 않음
         _itemSpawnPoints.Remove(spawnPoint);

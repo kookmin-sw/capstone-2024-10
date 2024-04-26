@@ -182,7 +182,7 @@ public class Crew : Creature
             return;
 
         Collider[] hitColliders = new Collider[1];
-        if (Physics.OverlapBoxNonAlloc(CreatureCamera.CameraTransform.position, new Vector3(12f, 1f, 12f),
+        if (Physics.OverlapBoxNonAlloc(CreatureCamera.Transform.position, new Vector3(12f, 1f, 12f),
                 hitColliders, Quaternion.identity, LayerMask.GetMask("Alien")) > 0)
         {
             if (hitColliders[0].gameObject.TryGetComponent(out Alien alien))
@@ -192,7 +192,7 @@ public class Crew : Creature
                     StopAllCoroutines();
                     IsChasing = true;
                     if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
-                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 1.2f, isLoop:true);
+                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 1f, isLoop:true);
                 }
                 return;
             }
@@ -236,7 +236,7 @@ public class Crew : Creature
         if (!IsSpawned)
             return;
 
-        Vector3 center = CreatureCamera.CameraTransform.position;
+        Vector3 center = CreatureCamera.Transform.position;
         Vector3 size = new Vector3(24f, 2f, 24f);
 
         Gizmos.color = Color.red;

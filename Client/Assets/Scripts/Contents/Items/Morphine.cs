@@ -8,7 +8,7 @@ public class Morphine : BaseItem
         base.SetInfo(templateId, owner);
 
         ItemGameObject.transform.localPosition = new Vector3(-0.03f, 0f, -0.03f);
-        ItemGameObject.transform.localEulerAngles = new Vector3(-6f, 290f, 88f);
+        ItemGameObject.transform.localEulerAngles = new Vector3(-6f, -70f, 88f);
         ItemGameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
         ItemGameObject.SetActive(false);
     }

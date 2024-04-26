@@ -3,10 +3,10 @@ using Fusion;
 public class BatteryObject : BaseItemObject
 {
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public override void Rpc_SetInfo()
+    public override void Rpc_SetInfo(NetworkBool canGet)
     {
-        DataId = Define.ITEM_Battery_ID;
+        DataId = Define.ITEM_BATTERY_ID;
 
-        base.Rpc_SetInfo();
+        base.Rpc_SetInfo(canGet);
     }
 }

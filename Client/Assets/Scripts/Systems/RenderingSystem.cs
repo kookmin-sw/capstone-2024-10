@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using DG.Tweening;
 using Fusion;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -11,6 +12,7 @@ public class RenderingSystem : NetworkBehaviour
     public Fog Fog { get; protected set; }
     public ChromaticAberration ChromaticAberration { get; protected set; }
     public ColorAdjustments ColorAdjustments { get; protected set; }
+    public IndirectLightingController IndirectLightingController { get; protected set; }
     public Vignette Vignette { get; protected set; }
 
     public Material DamageMaterial { get; protected set; }
@@ -34,6 +36,8 @@ public class RenderingSystem : NetworkBehaviour
             ChromaticAberration = chromaticAberration;
         if (VolumeProfile.TryGet<ColorAdjustments>(out var colorAdjustments))
             ColorAdjustments = colorAdjustments;
+        if (VolumeProfile.TryGet<IndirectLightingController>(out var indirectLightingController))
+            IndirectLightingController = indirectLightingController;
         if (VolumeProfile.TryGet<Vignette>(out var vignette))
             Vignette = vignette;
 
@@ -41,6 +45,7 @@ public class RenderingSystem : NetworkBehaviour
 
         SetChromaticAberration(100f);
         SetVignette(100f);
+        IndirectLightingController.indirectDiffuseLightingMultiplier.value = 0f;
 
         DamageEffect(3);
     }
@@ -63,6 +68,20 @@ public class RenderingSystem : NetworkBehaviour
     public void SetVignette(float sanity)
     {
         Vignette.intensity.value = 0.2f + (100f - sanity) * 0.01f * 0.55f;
+    }
+
+    public void GetBlind(float time)
+    {
+        IndirectLightingController.indirectDiffuseLightingMultiplier.value = 5000f;
+
+        float temp = 5100f / 2f;
+        DOVirtual.DelayedCall(time, () =>
+        {
+            DOVirtual.Float(0, 0, 2f, value =>
+            {
+                IndirectLightingController.indirectDiffuseLightingMultiplier.value -= temp * Time.deltaTime;
+            });
+        });
     }
 
     #endregion

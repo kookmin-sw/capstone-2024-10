@@ -1,5 +1,6 @@
 using UnityEngine;
 using Fusion;
+using Unity.VisualScripting;
 
 public class CrewAnimController : BaseAnimController
 {
@@ -81,6 +82,9 @@ public class CrewAnimController : BaseAnimController
             case Define.CrewActionType.ChargeBattery:
                 PlayChargeBattery();
                 break;
+            case Define.CrewActionType.Throw:
+                PlayThrow();
+                break;
             case Define.CrewActionType.Damaged:
                 PlayDamaged();
                 break;
@@ -110,6 +114,11 @@ public class CrewAnimController : BaseAnimController
         SetBool("ChargeBattery", true);
     }
 
+    public void PlayThrow()
+    {
+        SetBool("Throw", true);
+    }
+
     public void PlayDamaged()
     {
         SetBool("Damaged", true);
@@ -128,6 +137,7 @@ public class CrewAnimController : BaseAnimController
         SetBool("OpenItemKit", false);
         SetBool("OpenDoor", false);
         SetBool("ChargeBattery", false);
+        SetBool("Throw", false);
         SetBool("Damaged", false);
     }
 }

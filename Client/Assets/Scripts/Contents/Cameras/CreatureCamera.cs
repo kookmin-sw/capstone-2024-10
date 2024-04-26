@@ -5,7 +5,7 @@ public class CreatureCamera : MonoBehaviour
 {
     public Creature Creature { get; set; }
 
-    public Transform CameraTransform { get; protected set; }
+    public Transform Transform { get; protected set; }
     public Camera Camera { get; protected set; }
 
     public float MouseSensitivity { get; protected set; }
@@ -21,7 +21,7 @@ public class CreatureCamera : MonoBehaviour
 
     protected void Init()
     {
-        CameraTransform = transform;
+        Transform = transform;
         Camera = GetComponent<Camera>();
 
         CurrentAngle = 0;
@@ -41,13 +41,13 @@ public class CreatureCamera : MonoBehaviour
         {
             if (Creature.CreatureState == Define.CreatureState.Damaged || Creature.CreatureState == Define.CreatureState.Dead)
             {
-                CameraTransform.forward = Creature.transform.forward;
+                Transform.forward = Creature.transform.forward;
                 return;
             }
 
             if (Creature.CreatureState == Define.CreatureState.Interact || Creature.CreatureState == Define.CreatureState.Use)
             {
-                CameraTransform.forward = LastForward;
+                Transform.forward = LastForward;
                 return;
             }
         }
@@ -66,8 +66,8 @@ public class CreatureCamera : MonoBehaviour
         XRotation = Mathf.Clamp(XRotation, -60f, 60f);  // 상하 회전 범위를 -90도에서 90도로 제한
 
         Quaternion rotation = Quaternion.Euler(XRotation, CurrentAngle, 0);
-        CameraTransform.rotation = rotation; // 카메라 회전 적용
+        Transform.rotation = rotation; // 카메라 회전 적용
 
-        LastForward = CameraTransform.forward;
+        LastForward = Transform.forward;
     }
 }

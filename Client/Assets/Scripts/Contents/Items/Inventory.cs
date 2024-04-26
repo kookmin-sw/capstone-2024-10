@@ -126,7 +126,7 @@ public class Inventory: NetworkBehaviour
             return false;
         }
 
-        NetworkObject no = Managers.ObjectMng.SpawnItemObject(RemoveItem(), Owner.Head.transform.position + Owner.Head.transform.forward);
+        NetworkObject no = Managers.ObjectMng.SpawnItemObject(RemoveItem(), Owner.Head.transform.position + Owner.Head.transform.forward, true);
         //no.transform.SetParent(gameObject.transform);
 
         return true;
