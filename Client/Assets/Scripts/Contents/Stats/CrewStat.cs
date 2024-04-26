@@ -20,6 +20,17 @@ public class CrewStat : BaseStat
     public Action<int> OnHpChanged;
     public Action<float> OnSanityChanged;
 
+    protected override void Init()
+    {
+        if (Managers.GameMng.RenderingSystem)
+        {
+            OnHpChanged += Managers.GameMng.RenderingSystem.DamageEffect;
+
+            OnSanityChanged += Managers.GameMng.RenderingSystem.SetChromaticAberration;
+            OnSanityChanged += Managers.GameMng.RenderingSystem.SetVignette;
+        }
+    }
+
     public override void SetStat(CreatureData creatureData)
     {
         base.SetStat(creatureData);
@@ -32,14 +43,6 @@ public class CrewStat : BaseStat
         MaxSanity = CrewData.MaxSanity;
         SitSpeed = CrewData.SitSpeed;
         IsRunnable = true;
-
-        if (Managers.GameMng.RenderingSystem)
-        {
-        	OnHpChanged += Managers.GameMng.RenderingSystem.DamageEffect;
-
-            OnSanityChanged += Managers.GameMng.RenderingSystem.SetChromaticAberration;
-            OnSanityChanged += Managers.GameMng.RenderingSystem.SetVignette;
-        }
     }
 
     #region Event

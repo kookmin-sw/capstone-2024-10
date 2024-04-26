@@ -17,12 +17,12 @@ public abstract class BaseStat : NetworkBehaviour
         Init();
     }
 
-    protected void Init()
+    protected virtual void Init()
     {
         Creature = gameObject.GetComponent<Creature>();
     }
 
-    public virtual void SetStat(Data.CreatureData creatureData)
+    public virtual void SetStat(CreatureData creatureData)
     {
         CreatureData = creatureData;
 
