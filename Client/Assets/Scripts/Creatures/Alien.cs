@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Data;
+using Fusion;
 
 public abstract class Alien : Creature
 {
@@ -137,8 +138,8 @@ public abstract class Alien : Creature
                             StopAllCoroutines();
                             IsChasing = true;
                             if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
-                                Managers.SoundMng.Play($"{Define.BGM_PATH}/The Big Clash", Define.SoundType.Bgm, volume: 1,
-                                    isLoop: true);
+                                Managers.SoundMng.Play($"{Define.BGM_PATH}/The Big Clash", Define.SoundType.Bgm,
+                                    volume: 1, isLoop: true);
                         }
 
                         return;

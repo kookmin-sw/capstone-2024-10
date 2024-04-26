@@ -15,7 +15,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 
     public bool CanRememberWork { get; protected set; }
 
-    public AudioSource AudioSource;
+    public AudioSource AudioSource { get; protected set; }
 
     protected Creature Worker { get; set; }
     protected Crew CrewWorker => Worker as Crew;

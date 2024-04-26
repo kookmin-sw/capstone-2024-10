@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class BatteryCharger : BaseWorkStation
 {
-    public AudioSource AudioSource { get; protected set; }
-
     protected override void Init()
     {
         base.Init();

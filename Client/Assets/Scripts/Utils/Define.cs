@@ -16,6 +16,7 @@ public static class Define
         OpenItemKit,
         OpenDoor,
         ChargeBattery,
+        Throw,
         Damaged,
         Dead,
     }
@@ -136,9 +137,10 @@ public static class Define
 
     public const int ALIEN_STALKER_ID = 102000;
 
-    public const int ITEM_Battery_ID = 201000;
-    public const int ITEM_Bandage_ID = 202000;
-    public const int ITEM_Morphine_ID = 202001;
+    public const int ITEM_BATTERY_ID = 201000;
+    public const int ITEM_BANDAGE_ID = 202000;
+    public const int ITEM_MORPHINE_ID = 202001;
+    public const int ITEM_FLASHBANG_ID = 203000;
 
     public const int SKILL_BASIC_ATTACK_ID = 301000;
     public const int SKILL_ROAR_ID = 301001;
@@ -150,7 +152,7 @@ public static class Define
     #region Path
 
     public const string CREATURE_PATH = "Prefabs/Creatures";
-    public const string ITEM_OBJECT_PATH = "Prefabs/Map/ItemObjects";
+    public const string ITEM_OBJECT_PATH = "Prefabs/Interactables/ItemObjects";
     public const string ITEM_PATH = "Items";
     public const string BGM_PATH = "Sounds/Bgms";
     public const string EFFECT_PATH = "Sounds/Effects";

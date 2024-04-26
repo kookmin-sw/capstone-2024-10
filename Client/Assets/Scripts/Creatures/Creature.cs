@@ -226,4 +226,10 @@ public abstract class Creature : NetworkBehaviour
     }
 
     #endregion
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void Rpc_OnBlind(float value)
+    {
+        Managers.GameMng.RenderingSystem.GetBlind(value);
+    }
 }
