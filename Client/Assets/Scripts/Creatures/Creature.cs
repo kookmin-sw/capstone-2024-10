@@ -8,7 +8,7 @@ public abstract class Creature : NetworkBehaviour
 {
     #region Field
 
-    public bool IsSpawned { get; protected set; }
+    public bool IsSpawned { get; protected set; } = false;
 
     public int DataId { get; set; }
     public CreatureData CreatureData { get; protected set; }
@@ -50,7 +50,6 @@ public abstract class Creature : NetworkBehaviour
 
     public Vector3 Direction { get; set; }
     public Vector3 Velocity { get; set; }
-    public bool IsChasing { get; protected set; }
 
     public Transform Transform { get; protected set; }
     public AudioSource AudioSource { get; protected set; }
