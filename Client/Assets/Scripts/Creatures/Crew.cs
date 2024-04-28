@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using Data;
 using Fusion;
@@ -70,6 +69,18 @@ public class Crew : Creature
         UpdateStat();
     }
 
+    public void OnDrawGizmos()
+    {
+        if (!IsSpawned)
+            return;
+
+        Vector3 center = CreatureCamera.Transform.position;
+        Vector3 size = new Vector3(50f, 2f, 50f);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireCube(center, size);
+    }
+
     protected override void HandleInput()
     {
         base.HandleInput();
@@ -122,7 +133,7 @@ public class Crew : Creature
             CheckInteractable(false);
         }
 
-        CheckChasing();
+        BaseSoundController.CheckChasing();
 
         if (Input.GetKeyDown(KeyCode.G))
             if (Inventory.DropItem())
@@ -176,47 +187,6 @@ public class Crew : Creature
 
     }
 
-    protected void CheckChasing()
-    {
-        if (!HasStateAuthority || !IsSpawned)
-            return;
-
-        Collider[] hitColliders = new Collider[1];
-        if (Physics.OverlapBoxNonAlloc(CreatureCamera.Transform.position, new Vector3(12f, 1f, 12f),
-                hitColliders, Quaternion.identity, LayerMask.GetMask("Alien")) > 0)
-        {
-            if (hitColliders[0].gameObject.TryGetComponent(out Alien alien))
-            {
-                if (!IsChasing)
-                {
-                    StopAllCoroutines();
-                    IsChasing = true;
-                    if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
-                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 1f, isLoop:true);
-                }
-                return;
-            }
-        }
-
-        if (IsChasing)
-            StartCoroutine(CheckNotChasing());
-
-        IsChasing = false;
-    }
-
-    protected IEnumerator CheckNotChasing()
-    {
-        float currentChasingTime = 0f;
-        while (currentChasingTime < 3f)
-        {
-            currentChasingTime += Time.deltaTime;
-            yield return null;
-        }
-
-        IsChasing = false;
-        Managers.SoundMng.Stop(Define.SoundType.Bgm);
-    }
-
     protected bool CheckAndUseItem()
     {
         if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
@@ -229,18 +199,6 @@ public class Crew : Creature
         }
 
         return Inventory.CheckAndUseItem();
-    }
-
-    public void OnDrawGizmos()
-    {
-        if (!IsSpawned)
-            return;
-
-        Vector3 center = CreatureCamera.Transform.position;
-        Vector3 size = new Vector3(24f, 2f, 24f);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(center, size);
     }
 
     protected void UpdateStat()

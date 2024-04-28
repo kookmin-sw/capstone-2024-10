@@ -8,10 +8,10 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 
     public string Description { get; protected set; }
     public Define.CrewActionType CrewActionType { get; protected set; }
-    [Networked] protected float CurrentWorkAmount { get; set; }
+    [Networked] protected float CurrentWorkAmount { get; set; } = 0f;
     [Networked] protected float TotalWorkAmount { get; set; }
     [Networked] protected int WorkerCount { get; set; }
-    [Networked] protected NetworkBool IsCompleted { get; set; }
+    [Networked] protected NetworkBool IsCompleted { get; set; } = false;
 
     public bool CanRememberWork { get; protected set; }
 
@@ -30,9 +30,6 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     protected virtual void Init()
     {
         AudioSource = GetComponent<AudioSource>();
-
-        CurrentWorkAmount = 0f;
-        IsCompleted = false;
     }
 
     #region Interact

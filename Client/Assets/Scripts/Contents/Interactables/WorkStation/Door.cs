@@ -5,7 +5,7 @@ public class Door : BaseWorkStation
 {
     public new string Description => IsOpened ? "Close" : "Open";
 
-    [Networked] private NetworkBool IsOpened { get; set; }
+    [Networked] private NetworkBool IsOpened { get; set; } = false;
 
     public NetworkMecanimAnimator NetworkAnim { get; protected set; }
 
@@ -18,7 +18,6 @@ public class Door : BaseWorkStation
 
         CrewActionType = Define.CrewActionType.OpenDoor;
         CanRememberWork = false;
-        IsOpened = false;
 
         TotalWorkAmount = 15f; // only for alien crashing door
     }
