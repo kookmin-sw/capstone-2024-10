@@ -57,8 +57,8 @@ public class CrewSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayDeadSound()
     {
-        CreatureAudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Crew/Damaged");
-        CreatureAudioSource.volume = 0.5f;
+        CreatureAudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Crew/Dead");
+        CreatureAudioSource.volume = 1f;
         CreatureAudioSource.pitch = 1f;
         CreatureAudioSource.spatialBlend = 1.0f;
         CreatureAudioSource.loop = false;
