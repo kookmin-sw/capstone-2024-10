@@ -57,12 +57,12 @@ public class CrewSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayDeadSound()
     {
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Crew/Dead");
-        AudioSource.volume = 1f;
-        AudioSource.pitch = 1f;
-        AudioSource.spatialBlend = 1.0f;
-        AudioSource.loop = false;
-        AudioSource.Play();
+        CreatureAudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Crew/Dead");
+        CreatureAudioSource.volume = 1f;
+        CreatureAudioSource.pitch = 1f;
+        CreatureAudioSource.spatialBlend = 1.0f;
+        CreatureAudioSource.loop = false;
+        CreatureAudioSource.Play();
     }
 
     public override void CheckChasing()
