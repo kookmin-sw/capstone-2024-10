@@ -114,6 +114,11 @@ public class Crew : Creature
             CrewStat.ChangeSanity(10f);
             return;
         }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            OnClear();
+            return;
+        }
         /////////////////////////////////
 
         if (CreatureState == Define.CreatureState.Interact)
@@ -290,6 +295,19 @@ public class Crew : Creature
         CreatureState = Define.CreatureState.Dead;
         CrewAnimController.PlayAnim(Define.CrewActionType.Dead);
         CrewSoundController.PlaySound(Define.CrewActionType.Dead);
+        CrewIngameUI.HideUI();
+        Managers.UIMng.ShowPopupUI<UI_GameOver>();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void OnClear()
+    {
+        CrewIngameUI.HideUI();
+        Managers.UIMng.ShowPopupUI<UI_GameClear>();
+        CrewIngameUI.UIGameClear();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     #endregion
