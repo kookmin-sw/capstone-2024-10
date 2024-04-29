@@ -54,10 +54,10 @@ public class CrewSoundController : BaseSoundController
         CreatureAudioSource.Play();
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
     protected void Rpc_PlayDeadSound()
     {
-        CreatureAudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Crew/Dead");
+        CreatureAudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Crew/GameOver");
         CreatureAudioSource.volume = 1f;
         CreatureAudioSource.pitch = 1f;
         CreatureAudioSource.spatialBlend = 1.0f;
@@ -67,9 +67,6 @@ public class CrewSoundController : BaseSoundController
 
     public override void CheckChasing()
     {
-        if (!HasStateAuthority || !Creature.IsSpawned)
-            return;
-
         Collider[] hitColliders = new Collider[1];
         if (Physics.OverlapBoxNonAlloc(CreatureCamera.Transform.position, new Vector3(25f, 1f, 25f),
                 hitColliders, Quaternion.identity, LayerMask.GetMask("Alien")) > 0)

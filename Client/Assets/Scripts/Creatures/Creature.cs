@@ -75,7 +75,7 @@ public abstract class Creature : NetworkBehaviour
 
     protected virtual void Init()
     {
-        Transform = gameObject.GetComponent<Transform>();
+        Transform = transform;
         AudioSource = gameObject.GetComponent<AudioSource>();
         Collider = gameObject.GetComponent<CapsuleCollider>();
         RigidBody = gameObject.GetComponent<Rigidbody>();
@@ -134,37 +134,70 @@ public abstract class Creature : NetworkBehaviour
     #region Update
     private void Update()
     {
-        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
-            return;
-
-        HandleInput();
+        OnUpdate();
     }
 
     private void LateUpdate()
     {
-        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
             return;
 
         CreatureCamera.UpdateCameraAngle();
     }
 
+    protected virtual void OnUpdate()
+    {
+        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+            return;
+
+        HandleInput();
+        BaseSoundController.CheckChasing();
+    }
+
     public override void FixedUpdateNetwork()
     {
-        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead)
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
             return;
 
         UpdateByState();
-        UpdateAnimation();
+        ApplyAnimation();
     }
 
     protected virtual void HandleInput()
     {
-        if (CreatureCamera == null)
-            return;
-
         Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
         Direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
         Velocity = (cameraRotationY * Direction).normalized;
+    }
+
+    protected void UpdateByState()
+    {
+        switch (CreatureState)
+        {
+            case Define.CreatureState.Idle:
+                UpdateIdle();
+                break;
+            case Define.CreatureState.Move:
+                UpdateMove();
+                break;
+        }
+    }
+
+    protected abstract void UpdateIdle();
+
+    protected abstract void UpdateMove();
+
+    protected void ApplyAnimation()
+    {
+        switch (CreatureState)
+        {
+            case Define.CreatureState.Idle:
+                BaseAnimController.PlayIdle();
+                break;
+            case Define.CreatureState.Move:
+                BaseAnimController.PlayMove();
+                break;
+        }
     }
 
     protected bool CheckInteractable(bool tryInteract)
@@ -192,36 +225,6 @@ public abstract class Creature : NetworkBehaviour
         IngameUI.InteractInfoUI.Hide();
         IngameUI.ErrorTextUI.Hide();
         return false;
-    }
-
-    protected void UpdateByState()
-    {
-        switch (CreatureState)
-        {
-            case Define.CreatureState.Idle:
-                UpdateIdle();
-                break;
-            case Define.CreatureState.Move:
-                UpdateMove();
-                break;
-        }
-    }
-
-    protected abstract void UpdateIdle();
-
-    protected abstract void UpdateMove();
-
-    protected void UpdateAnimation()
-    {
-        switch (CreatureState)
-        {
-            case Define.CreatureState.Idle:
-                BaseAnimController.PlayIdle();
-                break;
-            case Define.CreatureState.Move:
-                BaseAnimController.PlayMove();
-                break;
-        }
     }
 
     #endregion

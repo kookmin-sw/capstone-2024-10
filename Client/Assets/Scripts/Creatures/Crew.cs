@@ -62,16 +62,9 @@ public class Crew : Creature
 
     #region Update
 
-    public override void FixedUpdateNetwork()
-    {
-        base.FixedUpdateNetwork();
-
-        UpdateStat();
-    }
-
     public void OnDrawGizmos()
     {
-        if (!IsSpawned)
+        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
             return;
 
         Vector3 center = CreatureCamera.Transform.position;
@@ -79,6 +72,13 @@ public class Crew : Creature
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(center, size);
+    }
+
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        UpdateStat();
     }
 
     protected override void HandleInput()
@@ -192,20 +192,6 @@ public class Crew : Creature
 
     }
 
-    protected bool CheckAndUseItem()
-    {
-        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
-            return false;
-
-        if (Inventory.CurrentItem == null)
-        {
-            Debug.Log("No Item");
-            return false;
-        }
-
-        return Inventory.CheckAndUseItem();
-    }
-
     protected void UpdateStat()
     {
         if (!IsGameScene)
@@ -264,6 +250,20 @@ public class Crew : Creature
         KCC.Move(Velocity * (CrewStat.Speed * Runner.DeltaTime), 0f);
     }
 
+    protected bool CheckAndUseItem()
+    {
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+            return false;
+
+        if (Inventory.CurrentItem == null)
+        {
+            Debug.Log("No Item");
+            return false;
+        }
+
+        return Inventory.CheckAndUseItem();
+    }
+
     #endregion
 
     #region Event
@@ -271,6 +271,9 @@ public class Crew : Creature
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void Rpc_OnDamaged(int value)
     {
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+            return;
+
         CrewStat.ChangeHp(-value);
 
         if (CrewStat.Hp <= 0)
@@ -290,18 +293,24 @@ public class Crew : Creature
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void Rpc_OnSanityDamaged(float value)
     {
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+            return;
+
         CrewStat.ChangeSanity(-value);
     }
 
     public void OnDead()
     {
         CreatureState = Define.CreatureState.Dead;
+
         CrewAnimController.PlayAnim(Define.CrewActionType.Dead);
         CrewSoundController.PlaySound(Define.CrewActionType.Dead);
         CrewIngameUI.HideUI();
         Managers.UIMng.ShowPopupUI<UI_GameOver>();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+
+        Collider.enabled = false;
     }
 
     public void OnClear()

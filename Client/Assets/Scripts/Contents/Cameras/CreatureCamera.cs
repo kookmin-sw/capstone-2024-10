@@ -8,9 +8,9 @@ public class CreatureCamera : MonoBehaviour
     public Transform Transform { get; protected set; }
     public Camera Camera { get; protected set; }
 
-    public float MouseSensitivity { get; protected set; }
-    public float XRotation { get; protected set; } // 카메라의 상하 회전 값
-    public float CurrentAngle { get; protected set; }
+    public float MouseSensitivity { get; protected set; } = 1.5f;
+    public float XRotation { get; protected set; } = 0f; // 카메라의 상하 회전 값
+    public float CurrentAngle { get; protected set; } = 0f;
 
     public Vector3 LastForward { get; protected set; }
 
@@ -23,10 +23,6 @@ public class CreatureCamera : MonoBehaviour
     {
         Transform = transform;
         Camera = GetComponent<Camera>();
-
-        CurrentAngle = 0;
-        MouseSensitivity = 1.5f;
-        XRotation = 0;
     }
 
     public void SetInfo(Creature creature)
@@ -37,15 +33,12 @@ public class CreatureCamera : MonoBehaviour
 
     public void UpdateCameraAngle()
     {
+        if (!Creature.HasStateAuthority || Creature.CreatureState == Define.CreatureState.Dead || !Creature.IsSpawned)
+            return;
+
         try
         {
-            if (Creature.CreatureState == Define.CreatureState.Damaged || Creature.CreatureState == Define.CreatureState.Dead)
-            {
-                Transform.forward = Creature.transform.forward;
-                return;
-            }
-
-            if (Creature.CreatureState == Define.CreatureState.Interact || Creature.CreatureState == Define.CreatureState.Use)
+            if (Creature.CreatureState == Define.CreatureState.Damaged || Creature.CreatureState == Define.CreatureState.Interact || Creature.CreatureState == Define.CreatureState.Use)
             {
                 Transform.forward = LastForward;
                 return;

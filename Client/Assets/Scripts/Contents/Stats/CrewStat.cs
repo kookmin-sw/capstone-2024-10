@@ -18,20 +18,6 @@ public class CrewStat : BaseStat
     public bool Exhausted { get; set; }
     public bool Doped { get; set; }
 
-    public Action<int> OnHpChanged;
-    public Action<float> OnSanityChanged;
-
-    protected override void Init()
-    {
-        if (Managers.GameMng.RenderingSystem)
-        {
-            OnHpChanged += Managers.GameMng.RenderingSystem.DamageEffect;
-
-            OnSanityChanged += Managers.GameMng.RenderingSystem.SetChromaticAberration;
-            OnSanityChanged += Managers.GameMng.RenderingSystem.SetVignette;
-        }
-    }
-
     public override void SetStat(CreatureData creatureData)
     {
         base.SetStat(creatureData);
@@ -57,7 +43,7 @@ public class CrewStat : BaseStat
 
         if (value < 0)
         {
-            OnHpChanged.Invoke(Hp);
+            Managers.GameMng.RenderingSystem.DamageEffect(Hp);
         }
     }
 
@@ -105,7 +91,8 @@ public class CrewStat : BaseStat
         RunSpeed = CrewData.RunSpeed * ratio;
         SitSpeed = CrewData.SitSpeed * ratio;
 
-        OnSanityChanged?.Invoke(Sanity);
+        Managers.GameMng.RenderingSystem.SetChromaticAberration(Sanity);
+        Managers.GameMng.RenderingSystem.SetVignette(Sanity);
     }
 
     #endregion

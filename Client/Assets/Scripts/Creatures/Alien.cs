@@ -59,7 +59,7 @@ public abstract class Alien : Creature
 
     public void OnDrawGizmos()
     {
-        if (!IsSpawned)
+        if (!CreatureCamera || !HasStateAuthority || !IsSpawned)
             return;
 
         Gizmos.color = Color.red;
@@ -72,13 +72,6 @@ public abstract class Alien : Creature
 
         if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
             return;
-
-        if (CreatureState == Define.CreatureState.Interact)
-        {
-            if (Input.GetKeyDown(KeyCode.F))
-                CreatureState = Define.CreatureState.Idle;
-            return;
-        }
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -122,14 +115,6 @@ public abstract class Alien : Creature
         }
     }
 
-    protected bool CheckAndUseSkill(int skillIdx)
-    {
-        if (!HasStateAuthority || !IsSpawned)
-            return false;
-
-        return SkillController.CheckAndUseSkill(skillIdx);
-    }
-
     protected override void UpdateIdle()
     {
         switch (CreaturePose)
@@ -159,6 +144,14 @@ public abstract class Alien : Creature
         KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
 
         KCC.Move(Velocity * (AlienStat.Speed * Runner.DeltaTime), 0f);
+    }
+
+    protected bool CheckAndUseSkill(int skillIdx)
+    {
+        if (!HasStateAuthority || !IsSpawned)
+            return false;
+
+        return SkillController.CheckAndUseSkill(skillIdx);
     }
 
     #endregion
