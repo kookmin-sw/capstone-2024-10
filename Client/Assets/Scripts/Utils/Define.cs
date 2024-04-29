@@ -138,6 +138,8 @@ public static class Define
     public const int ALIEN_STALKER_ID = 102000;
 
     public const int ITEM_BATTERY_ID = 201000;
+    public const int ITEM_USBKEY_ID = 201001;
+    public const int ITEM_CARDKEY_ID = 201002;
     public const int ITEM_BANDAGE_ID = 202000;
     public const int ITEM_MORPHINE_ID = 202001;
     public const int ITEM_ANTIPSYCHOTIC_ID = 202002;

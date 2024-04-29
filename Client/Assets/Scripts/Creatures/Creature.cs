@@ -174,9 +174,9 @@ public abstract class Creature : NetworkBehaviour
 
         Ray ray = CreatureCamera.Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, CreatureCamera.Camera.nearClipPlane));
 
-        Debug.DrawRay(ray.origin, ray.direction * 2f, Color.red);
+        Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red);
 
-        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 2f, layerMask: LayerMask.GetMask("MapObject")))
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 1.5f, layerMask: LayerMask.GetMask("MapObject")))
         {
             if (rayHit.transform.gameObject.TryGetComponent(out IInteractable interactable))
             {
