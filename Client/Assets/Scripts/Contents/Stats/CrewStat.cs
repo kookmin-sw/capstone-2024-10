@@ -16,6 +16,7 @@ public class CrewStat : BaseStat
 
     public bool IsRunnable { get; set; }
     public bool Exhausted { get; set; }
+    public bool Doped { get; set; }
 
     public Action<int> OnHpChanged;
     public Action<float> OnSanityChanged;

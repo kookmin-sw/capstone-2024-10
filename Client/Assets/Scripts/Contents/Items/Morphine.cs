@@ -14,7 +14,7 @@ public class Morphine : BaseItem
     }
     public override bool CheckAndUseItem()
     {
-        if (Owner.CrewStat.Sanity >= Owner.CrewStat.MaxSanity)
+        if (Owner.CrewStat.Doped)
             return false;
 
         UseItem();
@@ -23,9 +23,11 @@ public class Morphine : BaseItem
 
     protected override void UseItem()
     {
-        DOVirtual.Float(0, 0, 5, value =>
+        Owner.CrewStat.Doped = true;
+
+        DOVirtual.DelayedCall(ItemData.Value, () =>
         {
-            Owner.CrewStat.ChangeSanity(ItemData.Value * Time.deltaTime);
+            Owner.CrewStat.Doped = false;
         });
     }
 }

@@ -1,6 +1,7 @@
+using DG.Tweening;
 using UnityEngine;
 
-public class Bandage : BaseItem
+public class Antipsychotic : BaseItem
 {
     public override void SetInfo(int templateId, Crew owner)
     {
@@ -8,12 +9,12 @@ public class Bandage : BaseItem
 
         ItemGameObject.transform.localPosition = new Vector3(0.02f, 0.01f, -0.043f);
         ItemGameObject.transform.localEulerAngles = new Vector3(-9f, -83f, 83f);
-        ItemGameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
+        ItemGameObject.transform.localScale = new Vector3(1.3f, 1.3f, 1.3f);
         ItemGameObject.SetActive(false);
     }
     public override bool CheckAndUseItem()
     {
-        if (Owner.CrewStat.Hp >= Owner.CrewStat.MaxHp)
+        if (Owner.CrewStat.Sanity >= Owner.CrewStat.MaxSanity)
             return false;
 
         UseItem();
@@ -22,6 +23,9 @@ public class Bandage : BaseItem
 
     protected override void UseItem()
     {
-        Owner.CrewStat.ChangeHp((int)ItemData.Value);
+        DOVirtual.Float(0, 0, 5, value =>
+        {
+            Owner.CrewStat.ChangeSanity(ItemData.Value * Time.deltaTime);
+        });
     }
 }

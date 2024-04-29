@@ -207,7 +207,10 @@ public class Crew : Creature
             return;
 
         if (CreatureState == Define.CreatureState.Move && CreaturePose == Define.CreaturePose.Run)
-            CrewStat.ChangeStamina(-Define.RUN_USE_STAMINA * Runner.DeltaTime);
+        {
+            if (!CrewStat.Doped)
+                CrewStat.ChangeStamina(-Define.RUN_USE_STAMINA * Runner.DeltaTime);
+        }
         else
             CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
 
@@ -216,7 +219,7 @@ public class Crew : Creature
             CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
             CrewStat.ChangeSanity(Define.SIT_RECOVER_SANITY * Runner.DeltaTime);
         }
-        else
+        else if (CrewSoundController.IsChasing)
             CrewStat.ChangeSanity(-Define.PASIVE_REDUCE_SANITY * Runner.DeltaTime);
     }
 
