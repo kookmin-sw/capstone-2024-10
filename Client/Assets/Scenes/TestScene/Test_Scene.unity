@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.747763, g: 0.57657677, b: 0.6462794, a: 1}
+  m_IndirectSpecularColor: {r: 0.7480791, g: 0.5768371, b: 0.64648443, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -9348,16 +9348,32 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[0].Prefab
+      value: 
+      objectReference: {fileID: 2456343074442511123, guid: 651267bc0bc8c0a4fbf95c442517d389, type: 3}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: _itemSpawnDatas.Array.data[1].Prefab
       value: 
-      objectReference: {fileID: 1343902041442310, guid: f4237d496f5a44b4d8deae31d2d43666, type: 3}
+      objectReference: {fileID: 1120575333297816, guid: fc6ba6d4456b270499f734fb7ea40a86, type: 3}
     - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: _itemSpawnDatas.Array.data[2].Prefab
       value: 
-      objectReference: {fileID: 1120575333297816, guid: e33450eb92498084b835521234b119fc, type: 3}
+      objectReference: {fileID: 1120575333297816, guid: f021f29582a5fa84cb725ffb8c90dd4e, type: 3}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[0].GlobalMaxCount
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: _itemSpawnDatas.Array.data[0].GlobalMinCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[1].GlobalMaxCount
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: _itemSpawnDatas.Array.data[1].GlobalMinCount
@@ -9366,6 +9382,14 @@ PrefabInstance:
     - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: _itemSpawnDatas.Array.data[2].GlobalMinCount
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[0].MaxCountPerSector
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1501787418130949391, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
+      propertyPath: _itemSpawnDatas.Array.data[1].MaxCountPerSector
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3213453872573541556, guid: 6d8fe5216f97dfb4685557dfcf8e213d, type: 3}
       propertyPath: SortKey

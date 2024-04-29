@@ -7,7 +7,7 @@ public abstract class BaseItemObject : NetworkBehaviour, IInteractable
     public ItemData ItemData { get; protected set; }
     public string Description { get; protected set; }
 
-    [Networked] public NetworkBool CanGet { get; protected set; }
+    [Networked] public NetworkBool CanGet { get; set; }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public virtual void Rpc_SetInfo(NetworkBool canGet)

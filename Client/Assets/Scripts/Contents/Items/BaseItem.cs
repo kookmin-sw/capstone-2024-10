@@ -24,7 +24,4 @@ public abstract class BaseItem
     public abstract bool CheckAndUseItem();
 
     protected virtual void UseItem() { }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    protected virtual void Rpc_UseItem() { }
 }
