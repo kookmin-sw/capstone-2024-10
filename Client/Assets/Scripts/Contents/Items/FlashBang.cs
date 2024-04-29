@@ -8,9 +8,10 @@ public class FlashBang : BaseItem
     {
         base.SetInfo(templateId, owner);
 
-        ItemGameObject.transform.localPosition = new Vector3(-0.03f, 0f, -0.03f);
-        ItemGameObject.transform.localEulerAngles = new Vector3(-6f, 20f, 88f);
-        ItemGameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+        ItemGameObject.transform.localPosition = new Vector3(0.02f, 0.01f, -0.043f);
+        ItemGameObject.transform.localEulerAngles = new Vector3(-9f, 7f, 83f);
+        ItemGameObject.transform.localScale = new Vector3(1.2f, 1.2f, 1.2f);
+
         ItemGameObject.SetActive(false);
     }
     public override bool CheckAndUseItem()

@@ -140,6 +140,7 @@ public static class Define
     public const int ITEM_BATTERY_ID = 201000;
     public const int ITEM_BANDAGE_ID = 202000;
     public const int ITEM_MORPHINE_ID = 202001;
+    public const int ITEM_ANTIPSYCHOTIC_ID = 202002;
     public const int ITEM_FLASHBANG_ID = 203000;
 
     public const int SKILL_BASIC_ATTACK_ID = 301000;
@@ -165,12 +166,13 @@ public static class Define
     public const int MAX_ITEM_NUM = 4;
     public const int MAX_SKILL_NUM = 4;
 
-    public const float PASIVE_RECOVER_STAMINA = 2.5f;
+    public const float PASIVE_RECOVER_STAMINA = 1.5f;
     public const float DAMAGED_RECOVER_STAMINA = 30f;
-    public const float RUN_USE_STAMINA = 10f;
+    public const float RUN_USE_STAMINA = 5f;
     public const float PASIVE_REDUCE_SANITY = 1f;
-    public const float SIT_RECOVER_SANITY = 0.5f;
+    public const float SIT_RECOVER_SANITY = 1f;
 
     public const int BATTERY_COLLECT_GOAL = 3;
+
     #endregion
 }
