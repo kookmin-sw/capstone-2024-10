@@ -318,6 +318,7 @@ public class Crew : Creature
         CrewIngameUI.HideUI();
         Managers.UIMng.ShowPopupUI<UI_GameClear>();
         CrewIngameUI.UIGameClear();
+        CrewSoundController.PlayGameClear();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }

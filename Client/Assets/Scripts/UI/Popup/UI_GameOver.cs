@@ -18,6 +18,10 @@ public class UI_GameOver : UI_Popup
         Text2
     }
 
+    private CanvasGroup CanvasGroup;
+    private Coroutine FadeCor;
+    private float accumTime = 0f;
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -28,7 +32,32 @@ public class UI_GameOver : UI_Popup
 
         GetButton((int)Buttons.Quit).onClick.AddListener(ExitGame);
 
+        CanvasGroup = GetComponent<CanvasGroup>();
+        StartFadeIn();
         return true;
+    }
+
+    public void StartFadeIn()
+    {
+        if (FadeCor != null)
+        {
+            StopAllCoroutines();
+            FadeCor = null;
+        }
+        FadeCor = StartCoroutine(FadeIn());
+    }
+
+    private IEnumerator FadeIn()
+    {
+        yield return new WaitForSeconds(0.2f);
+        accumTime = 0f;
+        while (accumTime < 1f)
+        {
+            CanvasGroup.alpha = Mathf.Lerp(0f, 1f, accumTime / 1f);
+            yield return 0;
+            accumTime += Time.deltaTime;
+        }
+        CanvasGroup.alpha = 1f;
     }
 
     public void ExitGame()

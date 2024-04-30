@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_GameClear : UI_Popup
+public class UI_Kill : UI_Popup
 {
     enum Buttons
     {
