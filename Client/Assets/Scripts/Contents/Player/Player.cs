@@ -36,7 +36,7 @@ public class Player : NetworkBehaviour
     {
         yield return new WaitUntil(() => isActiveAndEnabled);
 
-        yield return new WaitUntil(() => Runner.IsRunning);
+        yield return new WaitUntil(() => Object != null && Object.IsValid);
 
         Define.SceneType sceneType = Managers.SceneMng.CurrentScene.SceneType;
         if (sceneType != Define.SceneType.GameScene && sceneType != Define.SceneType.ReadyScene)
