@@ -63,9 +63,6 @@ public class ElevatorKeypad : BaseWorkStation
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/KeypadUse");
-        AudioSource.volume = 1f;
-        AudioSource.loop = true;
-        AudioSource.Play();
+        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/KeypadUse", 1f, 1f, isLoop: true);
     }
 }

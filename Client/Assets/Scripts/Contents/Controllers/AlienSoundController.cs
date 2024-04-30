@@ -44,72 +44,50 @@ public class AlienSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayFootStepSound(float pitch, float volume)
     {
-        CreatureAudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Alien/FootStep_Alien");
-        CreatureAudioSource.pitch = pitch;
-        CreatureAudioSource.volume = volume;
         CreatureAudioSource.spatialBlend = 1.0f;
-        CreatureAudioSource.loop = true;
-        CreatureAudioSource.Play();
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/FootStep_Alien", pitch, volume, isLoop: true);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayCrashDoor()
     {
-        CreatureAudioSource.pitch = 1f;
-        CreatureAudioSource.volume = 1f;
         CreatureAudioSource.spatialBlend = 1.0f;
-        CreatureAudioSource.loop = false;
-        CreatureAudioSource.PlayOneShot(Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Alien/CrashDoor"));
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/CrashDoor", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayBasicAttack()
     {
-        CreatureAudioSource.pitch = 1f;
-        CreatureAudioSource.volume = 1f;
         CreatureAudioSource.spatialBlend = 1.0f;
-        CreatureAudioSource.loop = false;
-        CreatureAudioSource.PlayOneShot(Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Alien/Attack"));
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayRoar()
     {
-        CreatureAudioSource.pitch = 1.3f;
-        CreatureAudioSource.volume = 1f;
         CreatureAudioSource.spatialBlend = 1.0f;
-        CreatureAudioSource.loop = false;
-        CreatureAudioSource.PlayOneShot(Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Alien/Roar"));
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Roar", pitch: 1.3f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayCursedHowl()
     {
-        CreatureAudioSource.pitch = 1f;
-        CreatureAudioSource.volume = 1f;
         CreatureAudioSource.spatialBlend = 1.0f;
-        CreatureAudioSource.loop = false;
-        CreatureAudioSource.PlayOneShot(Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Alien/CursedHowl"));
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/CursedHowl", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayLeapAttack()
     {
-        CreatureAudioSource.pitch = 1f;
-        CreatureAudioSource.volume = 1f;
         CreatureAudioSource.spatialBlend = 1.0f;
-        CreatureAudioSource.loop = false;
-        CreatureAudioSource.PlayOneShot(Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Alien/Attack"));
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayHit()
     {
-        CreatureAudioSource.pitch = 1f;
-        CreatureAudioSource.volume = 1f;
         CreatureAudioSource.spatialBlend = 1.0f;
-        CreatureAudioSource.loop = false;
-        CreatureAudioSource.PlayOneShot(Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Alien/Attack_Hit"));
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack_Hit", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     public override void CheckChasing()

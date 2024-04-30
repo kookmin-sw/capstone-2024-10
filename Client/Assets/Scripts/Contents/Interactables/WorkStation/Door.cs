@@ -114,22 +114,13 @@ public class Door : BaseWorkStation
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
-        if (IsOpened)
-            AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/Door_Close");
-        else
-            AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/Door_Open");
-
-        AudioSource.volume = 1f;
-        AudioSource.loop = false;
-        AudioSource.Play();
+        string soundPath = IsOpened ? "Door_Close" : "Door_Open";
+        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/{soundPath}", 1f, 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected void Rpc_AlienPlaySound()
     {
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/Door_Crash");
-        AudioSource.volume = 1f;
-        AudioSource.loop = false;
-        AudioSource.Play();
+        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/Door_Crash", 1f, 1f, isLoop: false);
     }
 }
