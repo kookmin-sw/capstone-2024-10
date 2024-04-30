@@ -101,6 +101,21 @@ public abstract class Alien : Creature
             if (CheckAndUseSkill(3))
                 return;
 
+        /////////////////////////////////
+        // TODO - TEST CODE
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            OnAllKill();
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            OnClear();
+            return;
+        }
+        ////////////////
+
+
         if (Velocity == Vector3.zero)
             CreatureState = Define.CreatureState.Idle;
         else
@@ -152,6 +167,30 @@ public abstract class Alien : Creature
             return false;
 
         return SkillController.CheckAndUseSkill(skillIdx);
+    }
+
+    #endregion
+
+    #region Event
+
+    public void OnAllKill()
+    {
+        Managers.UIMng.ShowPopupUI<UI_AllKill>();
+        AlienIngameUI.UIGameClear();
+        AlienSoundController.PlayGameClear();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        Collider.enabled = false;
+    }
+
+    public void OnClear()
+    {
+        Managers.UIMng.ShowPopupUI<UI_Kill>();
+        AlienIngameUI.UIGameClear();
+        AlienSoundController.PlayGameClear();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     #endregion

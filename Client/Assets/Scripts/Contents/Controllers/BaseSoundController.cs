@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using Fusion;
 using UnityEngine;
 
@@ -58,6 +58,15 @@ public abstract class BaseSoundController : NetworkBehaviour
         }
 
         Managers.SoundMng.Stop(Define.SoundType.Bgm);
+    }
+
+    #endregion
+
+    #region GameClear
+
+    public void PlayGameClear()
+    {
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 1f);
     }
 
     #endregion
