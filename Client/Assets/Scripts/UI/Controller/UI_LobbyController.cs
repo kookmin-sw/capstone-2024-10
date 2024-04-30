@@ -255,7 +255,7 @@ public class UI_LobbyController : UI_Base, ILobbyController
 
     public void PlayHover()
     {
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/UI/Click", Define.SoundType.Effect, 0.1f);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/UI/Click", Define.SoundType.Effect, volume : 0.5f);
     }
 
     public void DestroyMenu()
