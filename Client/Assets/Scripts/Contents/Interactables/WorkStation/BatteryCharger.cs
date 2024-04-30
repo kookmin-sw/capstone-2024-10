@@ -67,10 +67,7 @@ public class BatteryCharger : BaseWorkStation
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
-        AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/BatteryCharger");
-        AudioSource.volume = 1f;
-        AudioSource.loop = false;
-        AudioSource.Play();
+        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/BatteryCharger", 1f, 1f, isLoop: false);
     }
 }
 

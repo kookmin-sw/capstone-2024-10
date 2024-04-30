@@ -1,9 +1,11 @@
+using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SoundManager
 {
     public static AudioSource[] _audioSources = new AudioSource[(int)Define.SoundType.MaxCount];
+    public float[] _audioVolume = new float[(int)Define.SoundType.MaxCount];
     public Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
 
     public void Init()
@@ -25,6 +27,8 @@ public class SoundManager
             _audioSources[(int)Define.SoundType.Bgm].loop = true;
             _audioSources[(int)Define.SoundType.Environment].loop = true;
         }
+
+        UpdateVolume();
     }
 
     public void Clear()
@@ -49,15 +53,23 @@ public class SoundManager
             return;
 
         AudioSource audioSource = null;
+        float audioVolume = 1.0f;
         if (type == Define.SoundType.Effect)
         {
             audioSource = _audioSources[(int)Define.SoundType.Effect];
+            audioVolume = _audioVolume[(int)Define.SoundType.Effect];
             audioSource.loop = isLoop;
         }
         else if (type == Define.SoundType.Bgm)
+        {
             audioSource = _audioSources[(int)Define.SoundType.Bgm];
+            audioVolume = _audioVolume[(int)Define.SoundType.Bgm];
+        }
         else
+        {
             audioSource = _audioSources[(int)Define.SoundType.Environment];
+            audioVolume = _audioVolume[(int)Define.SoundType.Environment];
+        }
 
         if (audioSource == null)
             return;
@@ -66,8 +78,27 @@ public class SoundManager
             audioSource.Stop();
 
         audioSource.pitch = pitch;
-        audioSource.volume = volume;
+        audioSource.volume = volume * audioVolume;
         audioSource.clip = audioClip;
+        audioSource.Play();
+    }
+
+    public void PlayObjectAudio(AudioSource audioSource, string path, float pitch = 1.0f, float volume = 1.0f, bool isLoop = false)
+    {
+        if (audioSource == null)
+            return;
+
+        if (audioSource.isPlaying)
+            audioSource.Stop();
+
+        audioSource.pitch = pitch;
+        audioSource.volume = volume * _audioVolume[(int)Define.SoundType.Environment];
+        audioSource.clip = Managers.SoundMng.GetOrAddAudioClip(path);
+
+        if (audioSource.clip == null)
+            return;
+
+        audioSource.loop = isLoop;
         audioSource.Play();
     }
 
@@ -133,5 +164,15 @@ public class SoundManager
             return false;
 
         return audioSource.isPlaying;
+    }
+
+    public void UpdateVolume()
+    {
+        // TODO: 종류 별로 볼륨을 다르게 설정할 수 있도록 수정
+        for (int i = 0; i < _audioVolume.Length; i++)
+        {
+            _audioVolume[i] = PlayerPrefs.GetFloat("MusicVolume", 1f);
+            _audioSources[i].volume = _audioVolume[i];
+        }
     }
 }

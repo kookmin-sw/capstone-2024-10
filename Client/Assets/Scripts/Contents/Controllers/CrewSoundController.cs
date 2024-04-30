@@ -35,34 +35,22 @@ public class CrewSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayFootStepSound(float pitch, float volume)
     {
-        CreatureAudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Crew/FootStep");
-        CreatureAudioSource.pitch = pitch;
-        CreatureAudioSource.volume = volume;
         CreatureAudioSource.spatialBlend = 1.0f;
-        CreatureAudioSource.loop = true;
-        CreatureAudioSource.Play();
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/FootStep", pitch, volume, isLoop: true);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayDamagedSound()
     {
-        CreatureAudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Crew/Damaged");
-        CreatureAudioSource.volume = 0.5f;
-        CreatureAudioSource.pitch = 1f;
-        CreatureAudioSource.spatialBlend = 1.0f;
         CreatureAudioSource.loop = false;
-        CreatureAudioSource.Play();
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Damaged", pitch: 1f, volume: 0.5f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
     protected void Rpc_PlayDeadSound()
     {
-        CreatureAudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Crew/GameOver");
-        CreatureAudioSource.volume = 1f;
-        CreatureAudioSource.pitch = 1f;
         CreatureAudioSource.spatialBlend = 1.0f;
-        CreatureAudioSource.loop = false;
-        CreatureAudioSource.Play();
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/GameOver", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     public override void CheckChasing()
