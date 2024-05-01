@@ -77,7 +77,7 @@ public class RenderingSystem : NetworkBehaviour
         float temp = 5100f / 2f;
         DOVirtual.DelayedCall(time, () =>
         {
-            DOVirtual.Float(0, 0, 2f, value =>
+            DOVirtual.Float(0, 0, 3f, value =>
             {
                 IndirectLightingController.indirectDiffuseLightingMultiplier.value -= temp * Time.deltaTime;
             });

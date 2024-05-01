@@ -41,7 +41,7 @@ public abstract class Alien : Creature
         Head.transform.localScale = Vector3.zero;
 
         CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", Util.FindChild(gameObject, "Anglerox_ Neck", true).transform).GetComponent<CreatureCamera>();
-        CreatureCamera.transform.localPosition = new Vector3(0.02f, 0.5f, 0f);
+        CreatureCamera.transform.localPosition = new Vector3(0.1f, 0.6f, 0f);
         CreatureCamera.SetInfo(this);
 
         AlienStat.SetStat(AlienData);
@@ -70,8 +70,17 @@ public abstract class Alien : Creature
     {
         base.HandleInput();
 
-        if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
+        if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
             return;
+
+        /////////////////////////////////
+        // TODO - TEST CODE
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Rpc_OnBlind(2f);
+            return;
+        }
+        /////////////////////////////////
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -172,6 +181,17 @@ public abstract class Alien : Creature
     #endregion
 
     #region Event
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public override void Rpc_OnBlind(float value)
+    {
+        base.Rpc_OnBlind(value);
+
+        CreatureState = Define.CreatureState.Damaged;
+        AlienAnimController.PlayAnim(Define.AlienActionType.Damaged);
+        AlienSoundController.PlaySound(Define.AlienActionType.Damaged);
+        ReturnToIdle(value);
+    }
 
     public void OnAllKill()
     {

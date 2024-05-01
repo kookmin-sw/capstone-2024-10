@@ -29,10 +29,9 @@ public class LeapAttack : BaseSkill
         {
             if (CurrentSkillAmount < SkillData.TotalSkillAmount - 0.5f)
             {
-                Vector3 attackPosition = Owner.transform.position + ForwardDirection * SkillData.Range;
                 Collider[] hitColliders = new Collider[3];
 
-                if (!IsHit && Physics.OverlapSphereNonAlloc(attackPosition, SkillData.Range, hitColliders, LayerMask.GetMask("Crew")) > 0)
+                if (!IsHit && Physics.OverlapSphereNonAlloc(AttackPosition, SkillData.Range, hitColliders, LayerMask.GetMask("Crew")) > 0)
                 {
                     if (hitColliders[0].gameObject.TryGetComponent(out Crew crew))
                     {

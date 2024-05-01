@@ -202,12 +202,12 @@ public abstract class Creature : NetworkBehaviour
 
     protected bool CheckInteractable(bool tryInteract)
     {
-        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || IngameUI == null || CreatureState == Define.CreatureState.Interact)
+        if (IngameUI == null || CreatureState == Define.CreatureState.Interact)
             return false;
 
         Ray ray = CreatureCamera.Camera.ViewportPointToRay(new Vector3(0.5f, 0.5f, CreatureCamera.Camera.nearClipPlane));
 
-        Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red);
+        //Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red);
 
         if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 1.5f, layerMask: LayerMask.GetMask("MapObject")))
         {
@@ -230,8 +230,11 @@ public abstract class Creature : NetworkBehaviour
     #endregion
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void Rpc_OnBlind(float value)
+    public virtual void Rpc_OnBlind(float value)
     {
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+            return;
+
         Managers.GameMng.RenderingSystem.GetBlind(value);
     }
 }
