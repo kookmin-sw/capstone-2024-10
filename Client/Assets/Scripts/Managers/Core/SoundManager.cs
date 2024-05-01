@@ -172,6 +172,7 @@ public class SoundManager
         for (int i = 0; i < _audioVolume.Length; i++)
         {
             _audioVolume[i] = PlayerPrefs.GetFloat("MusicVolume", 1f);
+            _audioVolume[i] = 1f; // TODO - Test code
             _audioSources[i].volume = _audioVolume[i];
         }
     }
