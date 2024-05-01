@@ -17,7 +17,15 @@ public class RenderingSystem : NetworkBehaviour
 
     public Material DamageMaterial { get; protected set; }
 
-    public float DamageEffectSpeed { get; protected set; } = 1.5f;
+    private Tweener _setChromaticAberrationTweener;
+    private Tweener _setColorAdjustmentsTweener;
+    private Tweener _setVignetteTweener;
+    private Tweener _getBlindTweener;
+    private Color _erosionColor = new Color(255.0f / 255.0f, 76.0f / 255.0f, 76.0f / 255.0f);
+    private Color _erosionColor2 = new Color(76.0f / 255.0f, 76.0f / 255.0f, 255.0f / 255.0f);
+    private Color _defaultColor = new Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
+    private float _damageEffectSpeed = 1.5f;
+
 
     public override void Spawned()
     {
@@ -43,8 +51,9 @@ public class RenderingSystem : NetworkBehaviour
 
         DamageMaterial = Managers.ResourceMng.Load<Material>("Material/DamageMaterial");
 
-        SetChromaticAberration(100f);
-        SetVignette(100f);
+        ChromaticAberration.intensity.value = 0f;
+        ColorAdjustments.colorFilter.value = _defaultColor;
+        Vignette.intensity.value = 0.2f;
         IndirectLightingController.indirectDiffuseLightingMultiplier.value = 0f;
 
         DamageEffect(3);
@@ -55,31 +64,50 @@ public class RenderingSystem : NetworkBehaviour
     public void SetChromaticAberration(float sanity)
     {
         ChromaticAberration.intensity.value = (100f - sanity) * 0.01f;
+
+        _setChromaticAberrationTweener.Kill();
+        _setChromaticAberrationTweener = DOVirtual.Float(ChromaticAberration.intensity.value,
+            (100f - sanity) * 0.01f, 1f, value =>
+            {
+                ChromaticAberration.intensity.value = value;
+            });
     }
 
-    public void SetColorAdjustments(bool value)
+    public void SetColorAdjustments(bool isErosion)
     {
-        if (value)
-            ColorAdjustments.colorFilter.value = new Color(76f, 76f, 255f);
-        else
-            ColorAdjustments.colorFilter.value = new Color(255f, 255f, 255f);
+        Color color = _defaultColor;
+
+        if (isErosion)
+            color = _erosionColor;
+
+        _setColorAdjustmentsTweener.Kill();
+        _setColorAdjustmentsTweener = DOVirtual.Color(ColorAdjustments.colorFilter.value, color, 2f, value =>
+        {
+            ColorAdjustments.colorFilter.value = value;
+        });
     }
 
     public void SetVignette(float sanity)
     {
-        Vignette.intensity.value = 0.2f + (100f - sanity) * 0.01f * 0.55f;
+        _setVignetteTweener.Kill();
+        _setVignetteTweener = DOVirtual.Float(Vignette.intensity.value,
+            0.2f + (100f - sanity) * 0.01f * 0.55f, 1f, value =>
+        {
+            Vignette.intensity.value = value;
+        });
     }
 
-    public void GetBlind(float time)
+    public void GetBlind(float blindTime, float backTime)
     {
+        _getBlindTweener.Kill();
         IndirectLightingController.indirectDiffuseLightingMultiplier.value = 5000f;
 
-        float temp = 5100f / 2f;
-        DOVirtual.DelayedCall(time, () =>
+        DOVirtual.DelayedCall(blindTime, () =>
         {
-            DOVirtual.Float(0, 0, 3f, value =>
+            _getBlindTweener.Kill();
+            _getBlindTweener = DOVirtual.Float(IndirectLightingController.indirectDiffuseLightingMultiplier.value, 0, backTime, value =>
             {
-                IndirectLightingController.indirectDiffuseLightingMultiplier.value -= temp * Time.deltaTime;
+                IndirectLightingController.indirectDiffuseLightingMultiplier.value = value;
             });
         });
     }
@@ -108,7 +136,7 @@ public class RenderingSystem : NetworkBehaviour
         float targetRadius = Mathf.Lerp(1.2f, -1f, Mathf.InverseLerp(0, 1, intensity));
         //float targetRadius = Remap(intensity, 0, 1, 1.2f, -1f);
         float curRadius = 1; // No damage
-        for (float t = 0; curRadius != targetRadius; t += Time.deltaTime * DamageEffectSpeed)
+        for (float t = 0; curRadius != targetRadius; t += Time.deltaTime * _damageEffectSpeed)
         {
             curRadius = Mathf.Lerp(1, targetRadius, t);
             DamageMaterial.SetFloat("_Vignette_radius", curRadius);
@@ -117,7 +145,7 @@ public class RenderingSystem : NetworkBehaviour
 
         if (intensity < 1)
         {
-            for (float t = 0; curRadius < 1; t += Time.deltaTime * DamageEffectSpeed)
+            for (float t = 0; curRadius < 1; t += Time.deltaTime * _damageEffectSpeed)
             {
                 curRadius = Mathf.Lerp(targetRadius, 1, t);
                 DamageMaterial.SetFloat("_Vignette_radius", curRadius);
@@ -129,11 +157,6 @@ public class RenderingSystem : NetworkBehaviour
         //Vector3 velocity = new Vector3(0, -0.5f, -1);
         //velocity.Normalize();
         //impulseSource.GenerateImpulse(velocity * intensity * 0.4f);
-    }
-
-    private float Remap(float value, float fromMin, float fromMax, float toMin, float toMax)
-    {
-        return Mathf.Lerp(toMin, toMax, Mathf.InverseLerp(fromMin, fromMax, value));
     }
 
     #endregion

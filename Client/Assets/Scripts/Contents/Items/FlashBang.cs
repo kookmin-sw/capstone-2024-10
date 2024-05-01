@@ -51,7 +51,7 @@ public class FlashBang : BaseItem
         {
             foreach (var hitCollider in hitColliders)
                 if (hitCollider.gameObject.TryGetComponent(out Creature creature))
-                    creature.Rpc_OnBlind(ItemData.Value);
+                    creature.Rpc_OnBlind(ItemData.Value, 3f);
         }
     }
 }

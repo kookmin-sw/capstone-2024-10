@@ -77,7 +77,7 @@ public abstract class Alien : Creature
         // TODO - TEST CODE
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Rpc_OnBlind(2f);
+            Rpc_OnBlind(2f, 3f);
             return;
         }
         /////////////////////////////////
@@ -183,14 +183,14 @@ public abstract class Alien : Creature
     #region Event
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public override void Rpc_OnBlind(float value)
+    public override void Rpc_OnBlind(float blindTime, float backTime)
     {
-        base.Rpc_OnBlind(value);
+        base.Rpc_OnBlind(blindTime, backTime);
 
         CreatureState = Define.CreatureState.Damaged;
         AlienAnimController.PlayAnim(Define.AlienActionType.Damaged);
         AlienSoundController.PlaySound(Define.AlienActionType.Damaged);
-        ReturnToIdle(value);
+        ReturnToIdle(blindTime);
     }
 
     public void OnAllKill()
