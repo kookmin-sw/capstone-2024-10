@@ -55,7 +55,7 @@ public class AlienSoundController : BaseSoundController
     protected void Rpc_PlayDamaged()
     {
         CreatureAudioSource.spatialBlend = 1.0f;
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/CrashDoor", pitch: 1f, volume: 1f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Damaged_Alien", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
