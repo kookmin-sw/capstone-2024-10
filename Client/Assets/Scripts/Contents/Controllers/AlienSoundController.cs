@@ -20,6 +20,9 @@ public class AlienSoundController : BaseSoundController
     {
         switch (alienActionType)
         {
+            case Define.AlienActionType.Damaged:
+                Rpc_PlayDamaged();
+                break;
             case Define.AlienActionType.CrashDoor:
                 Rpc_PlayCrashDoor();
                 break;
@@ -46,6 +49,13 @@ public class AlienSoundController : BaseSoundController
     {
         CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/FootStep_Alien", pitch, volume, isLoop: true);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    protected void Rpc_PlayDamaged()
+    {
+        CreatureAudioSource.spatialBlend = 1.0f;
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Damaged_Alien", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -102,8 +112,8 @@ public class AlienSoundController : BaseSoundController
                 Ray ray = CreatureCamera.Camera.ViewportPointToRay(
                     new Vector3(i, j, CreatureCamera.Camera.nearClipPlane));
 
-                if (i < 0.25f || j < 0.25f || i > 0.75f || j > 0.75f)
-                    Debug.DrawRay(ray.origin, ray.direction * 15f, Color.green);
+                // if (i < 0.25f || j < 0.25f || i > 0.75f || j > 0.75f)
+                //     Debug.DrawRay(ray.origin, ray.direction * 15f, Color.green);
 
                 if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 15f,
                         layerMask: LayerMask.GetMask("Crew", "MapObject")))

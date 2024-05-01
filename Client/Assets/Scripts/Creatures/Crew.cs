@@ -94,6 +94,11 @@ public class Crew : Creature
         {
             IsGameScene = true;
         }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Rpc_OnBlind(2f);
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.U))
         {
             Rpc_OnDamaged(1);
@@ -301,15 +306,22 @@ public class Crew : Creature
 
     public void OnDead()
     {
+        Rpc_OnDead();
+
         CreatureState = Define.CreatureState.Dead;
 
         CrewAnimController.PlayAnim(Define.CrewActionType.Dead);
         CrewSoundController.PlaySound(Define.CrewActionType.Dead);
+
         CrewIngameUI.HideUI();
         Managers.UIMng.ShowPopupUI<UI_GameOver>();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
 
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void Rpc_OnDead()
+    {
         Collider.enabled = false;
     }
 

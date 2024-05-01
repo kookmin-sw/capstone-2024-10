@@ -12,18 +12,19 @@ public static class Define
     public enum CrewActionType
     {
         None,
+        Damaged,
+        Dead,
         KeypadUse,
         OpenItemKit,
         OpenDoor,
         ChargeBattery,
         Throw,
-        Damaged,
-        Dead,
     }
 
     public enum AlienActionType
     {
         None,
+        Damaged,
         CrashDoor,
         Hit,
         BasicAttack,

@@ -20,6 +20,7 @@ public abstract class BaseSkill : NetworkBehaviour
 
     public Alien Owner { get; protected set; }
     public Vector3 ForwardDirection => Owner.Transform.forward;
+    public Vector3 AttackPosition => Owner.Head.transform.position + ForwardDirection * SkillData.Range;
 
     #endregion
 
