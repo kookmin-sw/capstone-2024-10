@@ -90,15 +90,6 @@ public class Crew : Creature
 
         /////////////////////////////////
         // TODO - TEST CODE
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            IsGameScene = true;
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Rpc_OnBlind(2f);
-            return;
-        }
         if (Input.GetKeyDown(KeyCode.U))
         {
             Rpc_OnDamaged(1);
@@ -118,6 +109,25 @@ public class Crew : Creature
         {
             CrewStat.ChangeSanity(10f);
             return;
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Rpc_OnBlind(2f, 3f);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Managers.GameMng.RenderingSystem.SetColorAdjustments(true);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Managers.GameMng.RenderingSystem.SetColorAdjustments(false);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            IsGameScene = true;
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {

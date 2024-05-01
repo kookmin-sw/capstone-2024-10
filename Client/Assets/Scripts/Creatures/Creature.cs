@@ -230,11 +230,11 @@ public abstract class Creature : NetworkBehaviour
     #endregion
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public virtual void Rpc_OnBlind(float value)
+    public virtual void Rpc_OnBlind(float blindTime, float backTime)
     {
         if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
             return;
 
-        Managers.GameMng.RenderingSystem.GetBlind(value);
+        Managers.GameMng.RenderingSystem.GetBlind(blindTime, backTime);
     }
 }

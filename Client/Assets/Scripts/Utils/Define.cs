@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public static class Define
 {
     #region Type
@@ -63,6 +65,7 @@ public static class Define
         Effect,
         MaxCount,
     }
+
     #endregion
 
     #region State
