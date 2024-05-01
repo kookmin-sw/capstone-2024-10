@@ -38,6 +38,8 @@ public class Player : NetworkBehaviour
 
         yield return new WaitUntil(() => Object != null && Object.IsValid);
 
+        yield return new WaitUntil(() => Runner && Runner.IsRunning);
+
         Define.SceneType sceneType = Managers.SceneMng.CurrentScene.SceneType;
         if (sceneType != Define.SceneType.GameScene && sceneType != Define.SceneType.ReadyScene)
             yield break;
