@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Entry : UI_Popup
+public class UI_Entry : UI_Panel
 {
     #region Enums
     public enum Buttons
@@ -45,6 +45,6 @@ public class UI_Entry : UI_Popup
     {
         string name = GetObject((int)GameObjects.NickName).GetComponent<TMP_InputField>().text;
         Managers.NetworkMng.ConnectToLobby(name);
-        ClosePopupUI();
+        Destroy(gameObject);
     }
 }

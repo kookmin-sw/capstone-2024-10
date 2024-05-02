@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using WebSocketSharp;
 
-public class UI_RoomCreate : UI_Base
+public class UI_CreateRoom : UI_Popup
 {
     #region Enums
     enum Buttons
@@ -22,7 +22,6 @@ public class UI_RoomCreate : UI_Base
     #endregion
 
     #region Fields
-    private ILobbyController _controller;
     public TMP_InputField RoomName { get; private set; }
     public TMP_InputField Password { get; private set; }
     public TMP_Text RoomNamePlaceholder { get; private set; }
@@ -34,6 +33,8 @@ public class UI_RoomCreate : UI_Base
         if (base.Init() == false)
             return false;
 
+        transform.localPosition = new Vector3(47, 227, 0);
+
         Bind<Button>(typeof(Buttons));
         Bind<TMP_InputField>(typeof(InputFields));
         RoomName = Get<TMP_InputField>((int)InputFields.RoomName);
@@ -41,20 +42,22 @@ public class UI_RoomCreate : UI_Base
         RoomNamePlaceholder = Util.FindChild<TMP_Text>(RoomName.gameObject, "Placeholder", true);
         Get<Button>((int)Buttons.Btn_Yes).onClick.AddListener(() =>
         {
-            _controller.CloseRoomCreate();
+            ClosePopupUI();
             CreateGame();
         });
         Get<Button>((int)Buttons.Btn_No).onClick.AddListener(() =>
         {
-            _controller.CloseRoomCreate();
+            ClosePopupUI();
+            var popup = Managers.UIMng.ShowPopupUI<UI_SessionList>(parent: transform.parent);
+            popup.Init();
+            popup.RefreshSessionLIst();
         });
 
         return true;
     }
 
-    public void SetInfo(ILobbyController controller)
+    public void SetInfo()
     {
-        _controller = controller;
         int randomInt = Random.Range(1000, 9999);
         RoomNamePlaceholder.text = "Room-" + randomInt.ToString();
         Password.text = "";
@@ -62,8 +65,8 @@ public class UI_RoomCreate : UI_Base
 
     public void CreateGame()
     {
-        _controller.ExitMenu();
-        _controller.ShowLoadingMenu();
+        Managers.UIMng.Clear();
+        Managers.UIMng.ShowPanelUI<UI_Loading>(parent: Camera.main.transform);
         string name = RoomName.text.IsNullOrEmpty() ? RoomNamePlaceholder.text : RoomName.text;
         Managers.NetworkMng.CreateSession(name, Password.text);
     }

@@ -168,6 +168,10 @@ public abstract class UI_Base : MonoBehaviour
                 evt.OnExitHandler -= action;
                 evt.OnExitHandler += action;
                 break;
+            case Define.UIEvent.Drag:
+                evt.OnDragHandler -= action;
+                evt.OnDragHandler += action;
+                break;
         }
     }
 }

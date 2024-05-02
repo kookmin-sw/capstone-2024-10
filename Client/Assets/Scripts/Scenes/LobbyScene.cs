@@ -18,7 +18,7 @@ public class LobbyScene : BaseScene
         string nickname = Managers.NetworkMng.PlayerName;
         if (string.IsNullOrEmpty(nickname))
         {
-            Managers.UIMng.ShowPopupUI<UI_Entry>();
+            Managers.UIMng.ShowPanelUI<UI_Entry>();
         }
         else
         {
@@ -28,6 +28,7 @@ public class LobbyScene : BaseScene
 
     public override void Clear()
     {
+        FindObjectOfType<UI_LobbyController>().DestroyMenu();
     }
 
     private void OnApplicationQuit()

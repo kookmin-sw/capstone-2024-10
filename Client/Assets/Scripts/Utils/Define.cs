@@ -123,6 +123,7 @@ public static class Define
         Click,
         PointerEnter,
         PointerExit,
+        Drag,
     }
 
     public enum MouseEvent
