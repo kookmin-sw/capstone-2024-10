@@ -55,15 +55,14 @@ public class Inventory: NetworkBehaviour
         CurrentItemIdx = 0;
     }
 
-    public bool CheckCanGetItem()
+    public bool IsFull()
     {
         for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
         {
             if (ItemInventory[i] == -1)
-                return true;
+                return false;
         }
-
-        return false;
+        return true;
     }
 
     public void GetItem(int itemId)

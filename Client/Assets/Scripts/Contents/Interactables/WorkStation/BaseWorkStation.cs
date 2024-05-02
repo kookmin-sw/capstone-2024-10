@@ -1,24 +1,23 @@
 using System.Collections;
+using DG.Tweening;
 using Fusion;
 using UnityEngine;
 
 public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 {
     #region Field
-
-    public string Description { get; protected set; }
-    public Define.CrewActionType CrewActionType { get; protected set; }
-    [Networked] protected float CurrentWorkAmount { get; set; } = 0f;
-    [Networked] protected float TotalWorkAmount { get; set; }
-    [Networked] protected int WorkerCount { get; set; }
-    [Networked] protected NetworkBool IsCompleted { get; set; } = false;
-
-    public bool CanRememberWork { get; protected set; }
-
-    public AudioSource AudioSource { get; protected set; }
-
+    protected AudioSource AudioSource { get; set; }
     protected Creature Worker { get; set; }
     protected Crew CrewWorker => Worker as Crew;
+    protected Define.CrewActionType CrewActionType { get; set; }
+
+    [Networked] protected float CurrentWorkAmount { get; set; } = 0f;
+    [Networked] protected float TotalWorkAmount { get; set; }
+    protected bool CanRememberWork { get; set; }
+    protected string Description { get; set; }
+
+    [Networked] protected int WorkerCount { get; set; }
+    [Networked] protected NetworkBool IsCompleted { get; set; } = false;
 
     #endregion
 
@@ -34,21 +33,20 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 
     #region Interact
 
-    public abstract bool CheckInteractable(Creature creature);
-
-    protected virtual bool IsInteractable(Creature creature)
+    public virtual bool IsInteractable(Creature creature)
     {
-        if (WorkerCount > 0)
-            return false;
+        creature.IngameUI.ErrorTextUI.Hide();
+        creature.IngameUI.InteractInfoUI.Hide();
+
+        if (Worker != null) return false;
+
+        if (creature.CreatureState == Define.CreatureState.Interact) return false;
 
         return true;
     }
-
+    
     public virtual bool Interact(Creature creature)
     {
-        if (!IsInteractable(creature))
-            return false;
-
         Worker = creature;
         Worker.IngameUI.InteractInfoUI.Hide();
         Worker.CreatureState = Define.CreatureState.Interact;
@@ -65,12 +63,15 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 
     protected IEnumerator ProgressWork()
     {
-        Worker.IngameUI.InteractInfoUI.Show("Cancel Interact");
+        Worker.IngameUI.InteractInfoUI.Show("Cancel");
 
         while (CurrentWorkAmount < TotalWorkAmount)
         {
             if (Worker.CreatureState != Define.CreatureState.Interact)
+            {
                 InterruptWork();
+                yield break;
+            }
 
             Rpc_UpdateWorkAmount(Time.deltaTime, Worker.BaseStat.WorkSpeed);
             Worker.IngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
@@ -91,6 +92,8 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 
         Rpc_RemoveWorker();
         Rpc_StopSound();
+
+        DOVirtual.DelayedCall(0.5f, () => { Worker = null; });
     }
 
     protected virtual void WorkComplete()

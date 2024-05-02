@@ -54,14 +54,14 @@ public class ObjectManager
         return no;
     }
 
-    public NetworkObject SpawnItemObject(int itemDataId, Vector3 spawnPosition, bool canGet)
+    public NetworkObject SpawnItemObject(int itemDataId, Vector3 spawnPosition, bool isGettable)
     {
         string className = Managers.DataMng.ItemDataDict[itemDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.ITEM_OBJECT_PATH}/{className}");
         NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
 
         BaseItemObject item = no.GetComponent<BaseItemObject>();
-        item.Rpc_SetInfo(canGet);
+        item.Rpc_SetInfo(isGettable);
         //item.SetInfo(itemDataId);
 
         return no;
