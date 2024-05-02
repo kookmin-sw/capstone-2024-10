@@ -383,7 +383,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 0
+    m_Type: 1
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
@@ -424,7 +424,7 @@ Light:
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
+  m_UseViewFrustumForShadowCasterCull: 0
   m_ShadowRadius: 1
   m_ShadowAngle: 0
 --- !u!114 &3206442259897811720
@@ -499,7 +499,7 @@ MonoBehaviour:
   m_LightAngle: 1
   m_MaxDepthBias: 0.001
   m_ShadowResolution:
-    m_Override: 512
+    m_Override: 256
     m_UseOverride: 1
     m_Level: 0
   m_ShadowDimmer: 1
@@ -514,7 +514,7 @@ MonoBehaviour:
   m_PenumbraTint: 0
   m_NormalBias: 0.75
   m_SlopeBias: 0.5
-  m_ShadowUpdateMode: 0
+  m_ShadowUpdateMode: 1
   m_AlwaysDrawDynamicShadows: 0
   m_UpdateShadowOnLightMovement: 0
   m_CachedShadowTranslationThreshold: 0.01
@@ -614,7 +614,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8439055540179413124, guid: f3aef8f5912e9594b9854274008f925e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.7563086
+      value: 3.75
       objectReference: {fileID: 0}
     - target: {fileID: 8439055540179413124, guid: f3aef8f5912e9594b9854274008f925e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1415,6 +1415,10 @@ PrefabInstance:
     - target: {fileID: 4125484680955778051, guid: 731da25401f1afa4a934149f653cdba6, type: 3}
       propertyPath: m_Name
       value: Wall_111_Table_2x4x6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4125484681651437384, guid: 731da25401f1afa4a934149f653cdba6, type: 3}
+      propertyPath: m_LODs.Array.data[0].screenRelativeHeight
+      value: 0.43521166
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2773,12 +2777,16 @@ PrefabInstance:
       value: Fan
       objectReference: {fileID: 0}
     - target: {fileID: 4199916329550996, guid: 86b80002c35e25340ba30284fd29dfcc, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4199916329550996, guid: 86b80002c35e25340ba30284fd29dfcc, type: 3}
       propertyPath: m_LocalPosition.x
       value: -7.7299995
       objectReference: {fileID: 0}
     - target: {fileID: 4199916329550996, guid: 86b80002c35e25340ba30284fd29dfcc, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3.4320002
+      value: 3.614
       objectReference: {fileID: 0}
     - target: {fileID: 4199916329550996, guid: 86b80002c35e25340ba30284fd29dfcc, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3244,7 +3252,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4403227958647314, guid: 5d25e0506da69a7439597dcbf0679992, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.737999
+      value: 1.872
       objectReference: {fileID: 0}
     - target: {fileID: 4403227958647314, guid: 5d25e0506da69a7439597dcbf0679992, type: 3}
       propertyPath: m_LocalPosition.y
