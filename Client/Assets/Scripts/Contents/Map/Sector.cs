@@ -5,25 +5,22 @@ using Fusion;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class Sector : NetworkBehaviour
+public class Sector : MonoBehaviour
 {
-    [FormerlySerializedAs("SectorName")] [SerializeField]
-    public Define.SectorType sectorType;
-
     [SerializeField]
-    private Door[] _doors;
-    private BaseWorkStation[] _workStations;
-    private SectorLight _sectorLight;
+    public Define.SectorName sectorName;
 
     private List<Transform> _itemSpawnPoints = new();
-
+    private Transform _itemParent;
 
     public void Init()
     {
-        _workStations = GetComponentsInChildren<BaseWorkStation>();
         _itemSpawnPoints = gameObject.transform.FindObjectsWithTag("ItemSpawnPoint")
             .Select(obj => obj.transform)
             .ToList();
+        _itemParent = GameObject.FindGameObjectWithTag("ItemParent").transform;
+
+        if (_itemParent == null) _itemParent = Managers.GameMng.MapSystem.gameObject.transform;
     }
 
     public bool SpawnItem(GameObject go)
@@ -33,8 +30,9 @@ public class Sector : NetworkBehaviour
         // 스폰 포인트 랜덤 선택
         Transform spawnPoint = _itemSpawnPoints[Random.Range(0, _itemSpawnPoints.Count)];
 
-        NetworkObject no = Managers.NetworkMng.Runner.Spawn(go, spawnPoint.position);
-        no.transform.SetParent(gameObject.transform);
+        NetworkObject no = Managers.NetworkMng.Runner.Spawn(go, spawnPoint.position, spawnPoint.rotation);
+        //no.transform.SetParent(Managers.GameMng.MapSystem.gameObject.transform);
+        no.transform.SetParent(_itemParent);
 
         BaseItemObject item = no.GetComponent<BaseItemObject>();
         if (item != null)

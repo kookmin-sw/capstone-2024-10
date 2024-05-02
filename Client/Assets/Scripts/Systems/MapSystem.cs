@@ -8,7 +8,7 @@ using Random = UnityEngine.Random;
 
 public class MapSystem : NetworkBehaviour
 {
-    public Dictionary<Define.SectorType, Sector> Sectors { get; set; } = new();
+    public Dictionary<Define.SectorName, Sector> Sectors { get; set; } = new();
 
     [Header("Item Spawn")]
     [SerializeField] private int _totalItemCount;
@@ -16,9 +16,9 @@ public class MapSystem : NetworkBehaviour
     
     public void Init()
     {
+        Managers.GameMng.MapSystem = this;
         AssignSector();
         SpawnItems();
-        Managers.GameMng.MapSystem = this;
     }
 
     private void AssignSector()
@@ -28,9 +28,9 @@ public class MapSystem : NetworkBehaviour
         foreach (Sector s in sectors)
         {
             s.Init();
-            if (!Sectors.TryAdd(s.sectorType, s))
+            if (!Sectors.TryAdd(s.sectorName, s))
             {
-                Debug.LogError($"Duplicate sector name detected!: {s.sectorType}");
+                Debug.LogError($"Duplicate sector name detected!: {s.sectorName}");
             }
         }
     }
@@ -41,8 +41,8 @@ public class MapSystem : NetworkBehaviour
 
         int totalCount = 0;
         Dictionary<ItemSpawnData, int> totalItemCount = new();
-        Dictionary<Define.SectorType, Dictionary<ItemSpawnData, int>> itemPerSectorCount = new();
-        List<Define.SectorType> availableSectors = new(Sectors.Keys);
+        Dictionary<Define.SectorName, Dictionary<ItemSpawnData, int>> itemPerSectorCount = new();
+        List<Define.SectorName> availableSectors = new(Sectors.Keys);
         List<ItemSpawnData> itemSpawnData = new(_itemSpawnDatas);
 
         foreach (var key in itemSpawnData)
@@ -61,7 +61,8 @@ public class MapSystem : NetworkBehaviour
         }
 
         // 아이템별 최소 개수 충족시키기
-        foreach (var data in itemSpawnData)
+        List<ItemSpawnData> itemSpawnDataCopy = new(itemSpawnData); // 아이템 생성 중 itemSpawnData리스트에서 요소가 Remove될 수 있기 때문에 foreach문을 위해 Copy된 리스트 사용
+        foreach (var data in itemSpawnDataCopy)
         {
             // 데이터 검증도 동시에 함
             if (!data.Validate())
@@ -72,7 +73,7 @@ public class MapSystem : NetworkBehaviour
 
             int cnt = 0;
 
-            while (cnt < data.GlobalMinCount)
+            while (cnt < data.GlobalMinCount && totalCount < _totalItemCount)
             {
                 if(!TrySpawnItem(data)) return;
                 cnt++;
@@ -90,7 +91,7 @@ public class MapSystem : NetworkBehaviour
 
         bool TrySpawnItem(ItemSpawnData data)
         {
-            if(!TrySelectSector(data, out Define.SectorType selectedSector)) return false;
+            if(!TrySelectSector(data, out Define.SectorName selectedSector)) return false;
             
             while (!Sectors[selectedSector].SpawnItem(data.Prefab))
             {
@@ -110,11 +111,11 @@ public class MapSystem : NetworkBehaviour
             return true;
         }
 
-        bool TrySelectSector(ItemSpawnData data, out Define.SectorType selectedSector)
+        bool TrySelectSector(ItemSpawnData data, out Define.SectorName selectedSector)
         {
-            List<Define.SectorType> availableSectorsCopy = new(availableSectors);
+            List<Define.SectorName> availableSectorsCopy = new(availableSectors);
 
-            selectedSector = Define.SectorType.MainRoom;
+            selectedSector = Define.SectorName.None;
 
             // Item의 섹터 당 개수 제한을 고려하여 섹터 선택
             while (availableSectorsCopy.Count > 0)

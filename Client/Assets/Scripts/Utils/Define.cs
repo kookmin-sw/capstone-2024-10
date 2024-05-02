@@ -38,15 +38,33 @@ public static class Define
         LeapAttack,
     }
 
-    public enum SectorType
+    public enum SectorName
     {
-        F1_HallwayA,
-        MainRoom,
-        OperationRoom,
-        ReactorRoom,
-        TubeRoom,
-        F2_HallwayA,
-        F2_SmallRoom
+        None,
+        F1_Corridor_A,
+        F1_Corridor_B,
+        F1_Corridor_C,
+        F1_Corridor_D,
+        F1_Corridor_E,
+        F2_Corridor_A,
+        F2_Corridor_B,
+        F2_Corridor_C,
+        F2_Corridor_D,
+        F2_Corridor_E,
+        Storage,
+        ContainmentRoom,
+        ContainmentControlRoom,
+        ObservationRoom,
+        SampleRoom,
+        PowerRoom,
+        CargoControlRoom,
+        CentralControlRoom,
+        Oratory,
+        StaffAccommodation,
+        Cafeteria,
+        VisitingRoom,
+        DirectorOffice,
+        DiningFacility,
     }
 
     public enum SceneType
