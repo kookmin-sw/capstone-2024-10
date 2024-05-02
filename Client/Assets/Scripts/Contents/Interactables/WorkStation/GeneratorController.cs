@@ -16,7 +16,7 @@ public class GeneratorController : BaseWorkStation
         TotalWorkAmount = 150f;
     }
 
-    public override bool CheckInteractable(Creature creature)
+    public override bool IsInteractable(Creature creature)
     {
         if (creature is not Crew crew)
         {
@@ -48,11 +48,6 @@ public class GeneratorController : BaseWorkStation
 
         creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Show(Description);
-        return true;
-    }
-
-    protected override bool IsInteractable(Creature creature)
-    {
         return true;
     }
 

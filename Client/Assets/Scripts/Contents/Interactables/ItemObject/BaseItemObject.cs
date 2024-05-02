@@ -3,48 +3,50 @@ using Fusion;
 
 public abstract class BaseItemObject : NetworkBehaviour, IInteractable
 {
-    public int DataId { get; protected set; }
-    public ItemData ItemData { get; protected set; }
-    public string Description { get; protected set; }
+    public abstract int DataId { get; }
+    public ItemData ItemData => Managers.DataMng.ItemDataDict[DataId];
+    public string Description => $"Take {ItemData.Name}";
 
-    [Networked] public NetworkBool CanGet { get; set; }
+    [Networked] public NetworkBool IsGettable { get; set; }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public virtual void Rpc_SetInfo(NetworkBool canGet)
+    public virtual void Rpc_SetInfo(NetworkBool isGettable)
     {
-        ItemData = Managers.DataMng.ItemDataDict[DataId];
+        //ItemData = Managers.DataMng.ItemDataDict[DataId];
 
-        Description = $"Take {ItemData?.Name}";
+        //Description = $"Take {ItemData?.Name}";
 
-        CanGet = canGet;
+        IsGettable = isGettable;
     }
 
-    public bool CheckInteractable(Creature creature)
+    public bool IsInteractable(Creature creature)
     {
-        creature.IngameUI.ErrorTextUI.Hide();
-
-        if (!CanGet)
+        if (!IsGettable)
         {
             creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Hide();
             return false;
         }
 
         if (creature is not Crew crew)
         {
             creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Hide();
             return false;
         }
 
-        if (creature.CreatureState == Define.CreatureState.Interact)
+        if (crew.CreatureState == Define.CreatureState.Interact)
         {
             creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Hide();
             return false;
         }
 
-        if (!crew.Inventory.CheckCanGetItem())
+        if (crew.Inventory.IsFull())
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            return true;
+            creature.IngameUI.ErrorTextUI.Show("Inventory is full!");
+            return false;
         }
 
         creature.IngameUI.ErrorTextUI.Hide();

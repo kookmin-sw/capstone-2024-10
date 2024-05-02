@@ -26,29 +26,28 @@ public class ItemKit : BaseWorkStation
         TotalWorkAmount = 15f;
     }
 
-    public override bool CheckInteractable(Creature creature)
+    public override bool IsInteractable(Creature creature)
     {
-        creature.IngameUI.ErrorTextUI.Hide();
+        if (!base.IsInteractable(creature)) return false;
 
-        if (creature is not Crew crew)
+        if (creature is not Crew)
         {
-            creature.IngameUI.InteractInfoUI.Hide();
-            return false;
-        }
-
-        if (creature.CreatureState == Define.CreatureState.Interact)
-        {
-            creature.IngameUI.InteractInfoUI.Hide();
             return false;
         }
 
         if (IsCompleted)
         {
-            creature.IngameUI.InteractInfoUI.Hide();
+            return false;
+        }
+
+        if (WorkerCount > 0 && Worker == null)
+        {
+            creature.IngameUI.ErrorTextUI.Show("Another player is interacting");
             return false;
         }
 
         creature.IngameUI.InteractInfoUI.Show(Description);
+
         return true;
     }
 

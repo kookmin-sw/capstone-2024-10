@@ -3,14 +3,13 @@ using UnityEngine;
 
 public class FlashBangObject : BaseItemObject
 {
+    public override int DataId => Define.ITEM_FLASHBANG_ID;
     public AudioSource AudioSource { get; protected set; }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public override void Rpc_SetInfo(NetworkBool canGet)
+    public override void Rpc_SetInfo(NetworkBool isGettable)
     {
-        DataId = Define.ITEM_FLASHBANG_ID;
-
-        base.Rpc_SetInfo(canGet);
+        base.Rpc_SetInfo(isGettable);
 
         AudioSource = GetComponent<AudioSource>();
     }

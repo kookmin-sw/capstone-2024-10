@@ -2,11 +2,13 @@ using Fusion;
 
 public class BatteryObject : BaseItemObject
 {
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public override void Rpc_SetInfo(NetworkBool canGet)
-    {
-        DataId = Define.ITEM_BATTERY_ID;
+    public override int DataId => Define.ITEM_BATTERY_ID;
 
-        base.Rpc_SetInfo(canGet);
-    }
+    //[Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    //public override void Rpc_SetInfo(NetworkBool isGettable)
+    //{
+    //    //DataId = Define.ITEM_BATTERY_ID;
+
+    //    base.Rpc_SetInfo(isGettable);
+    //}
 }

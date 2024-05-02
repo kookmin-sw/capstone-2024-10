@@ -9,7 +9,7 @@ public class ElevatorKeypad : BaseWorkStation
     {
         base.Init();
 
-        Description = "Activate Elevator";
+        Description = "Activate elevator";
         CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;
@@ -17,7 +17,7 @@ public class ElevatorKeypad : BaseWorkStation
 
         TotalWorkAmount = 60f;
     }
-    public override bool CheckInteractable(Creature creature)
+    public override bool IsInteractable(Creature creature)
     {
         if (creature is not Crew crew)
         {
@@ -36,17 +36,24 @@ public class ElevatorKeypad : BaseWorkStation
         if (IsCompleted)
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Show("Completed");
+            creature.IngameUI.ErrorTextUI.Hide();
             return false;
         }
 
         if (!Managers.GameMng.PlanSystem.IsGeneratorRestored)
         {
             creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Show("Not Ready");
+            creature.IngameUI.ErrorTextUI.Hide();
             return false;
         }
 
+        if (WorkerCount > 0)
+        {
+            creature.IngameUI.InteractInfoUI.Hide();
+            creature.IngameUI.ErrorTextUI.Show("Another player is interacting");
+            return false;
+        }
+        
         creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Show(Description);
         return true;
