@@ -35,7 +35,6 @@ public class UI_SessionEntry : UI_Base
     }
     #endregion
 
-    private ILobbyController _controller;
     private SessionInfo _session;
 
     public override bool Init()
@@ -51,31 +50,29 @@ public class UI_SessionEntry : UI_Base
         transform.localScale = Vector3.one;
         transform.localPosition = Vector3.zero;
         GetObject(GameObjects.LockIcon).gameObject.SetActive(false);
-
-        GetButton((int)Buttons.JoinButton).onClick.AddListener(JoinSession);
+        GetButton(Buttons.JoinButton).onClick.AddListener(JoinSession);
 
         return true;
     }
 
-    public IEnumerator SetInfo(ILobbyController controller, SessionEntryArgs args)
+    public IEnumerator SetInfo(SessionEntryArgs args)
     {
         yield return null;
-        _controller = controller;
         _session = args.session;
         if (_session.Properties.TryGetValue("password", out SessionProperty password) && password != "")
         {
             GetObject(GameObjects.LockIcon).gameObject.SetActive(true);
         }
 
-        GetText((int)Texts.RoomName).text = _session.Name;
-        GetText((int)Texts.PlayerCount).text = _session.PlayerCount + "/" + _session.MaxPlayers;
+        GetText(Texts.RoomName).text = _session.Name;
+        GetText(Texts.PlayerCount).text = _session.PlayerCount + "/" + _session.MaxPlayers;
         if (_session.IsOpen == false || _session.PlayerCount >= _session.MaxPlayers)
         {
-            GetButton((int)Buttons.JoinButton).interactable = false;
+            GetButton(Buttons.JoinButton).interactable = false;
         }
         else
         {
-            GetButton((int)Buttons.JoinButton).interactable = true;
+            GetButton(Buttons.JoinButton).interactable = true;
         }
     }
 
@@ -83,13 +80,15 @@ public class UI_SessionEntry : UI_Base
     {
         if (_session.Properties.TryGetValue("password", out SessionProperty password))
         {
-            _controller.OpenRoomJoin(GetText((int)Texts.RoomName).text, password);
+            Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
+            var popup = Managers.UIMng.ShowPopupUI<UI_JoinRoom>(parent: Managers.UIMng.PeekPopupUI<UI_Lobby>().transform);
+            popup.SetInfo(GetText(Texts.RoomName).text, password);
         }
         else
         {
-            _controller.ExitMenu();
-            _controller.ShowLoadingMenu();
-            Managers.NetworkMng.ConnectToSession(GetText((int)Texts.RoomName).text, null);
+            Managers.UIMng.Clear();
+            Managers.UIMng.ShowPanelUI<UI_Loading>(parent: Camera.main.transform);
+            Managers.NetworkMng.ConnectToSession(GetText(Texts.RoomName).text, null);
         }
     }
 }

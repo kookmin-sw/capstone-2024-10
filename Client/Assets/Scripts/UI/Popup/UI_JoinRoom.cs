@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_RoomJoin : UI_Base
+public class UI_JoinRoom : UI_Popup
 {
     #region Enums
     enum Buttons
@@ -25,7 +25,6 @@ public class UI_RoomJoin : UI_Base
     #endregion
 
     #region Fields
-    private ILobbyController _controller;
     public TMP_InputField InputPassword { get; private set; }
     private string _roomName;
     private string _password;
@@ -42,6 +41,8 @@ public class UI_RoomJoin : UI_Base
         Bind<TMP_InputField>(typeof(InputFields));
         Bind<TMP_Text>(typeof(Texts));
 
+        transform.localPosition = new Vector3(47, 227, 0);
+
         InputPassword = Get<TMP_InputField>((int)InputFields.Password);
         _warning = Get<TMP_Text>((int)Texts.Warning);
 
@@ -49,24 +50,25 @@ public class UI_RoomJoin : UI_Base
         {
             if (JoinGame())
             {
-                _controller.CloseRoomJoin();
-                _controller.ExitMenu();
-                _controller.ShowLoadingMenu();
+                ClosePopupUI();
+                Managers.UIMng.ShowPanelUI<UI_Loading>(parent: Camera.main.transform);
             }
         });
         Get<Button>((int)Buttons.Btn_No).onClick.AddListener(() =>
         {
-            _controller.CloseRoomJoin();
+            ClosePopupUI();
+            var popup = Managers.UIMng.ShowPopupUI<UI_SessionList>(parent: transform.parent);
+            popup.Init();
+            popup.RefreshSessionLIst();
         });
 
         return true;
     }
 
-    public void SetInfo(ILobbyController controller, string roomName, string password)
+    public void SetInfo(string roomName, string password)
     {
         _roomName = roomName;
         _password = password;
-        _controller = controller;
     }
 
     public bool JoinGame()

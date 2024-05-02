@@ -126,6 +126,20 @@ public class UIManager
         return sceneUI;
     }
 
+    public T ShowPanelUI<T>(Transform parent = null, string name = null) where T : UI_Panel
+    {
+        if (string.IsNullOrEmpty(name))
+            name = typeof(T).Name;
+
+        GameObject go = Managers.ResourceMng.Instantiate($"UI/Panel/{name}");
+        T sceneUI = Util.GetOrAddComponent<T>(go);
+
+        if (parent != null)
+            go.transform.SetParent(parent);
+
+        return sceneUI;
+    }
+
     /// <summary>
     /// PopupUI를 호출하는데 사용하는 함수
     /// PopupUI는 UI 위에 연속적으로 쌓이는 형태의 UI를 의미한다.
@@ -153,6 +167,7 @@ public class UIManager
 
         go.transform.localScale = Vector3.one;
         go.transform.localPosition = prefab.transform.position;
+        go.transform.localRotation = Quaternion.Euler(Vector3.zero);
 
         return popup;
     }
@@ -209,6 +224,20 @@ public class UIManager
         Managers.ResourceMng.Destroy(popup.gameObject);
         popup = null;
         _order--;
+    }
+
+    public void ClosePopupUIUntil<T>() where T : UI_Popup
+    {
+        if (_popupStack.Count == 0)
+            return;
+
+        if (FindPopup<T>() == null)
+            return;
+
+        while (_popupStack.Peek().GetType() != typeof(T))
+        {
+            ClosePopupUI();
+        }
     }
 
     /// <summary>

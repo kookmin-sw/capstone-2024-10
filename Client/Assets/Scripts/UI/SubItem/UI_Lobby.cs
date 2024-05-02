@@ -8,7 +8,7 @@ using Fusion;
 using SlimUI.ModernMenu;
 using System;
 
-public class UI_Lobby : UI_Base
+public class UI_Lobby : UI_Popup
 {
     #region Enums
 
@@ -18,93 +18,39 @@ public class UI_Lobby : UI_Base
         Btn_CreateGame,
         Btn_RefreshSession,
     }
-
-    public enum GameObjects
-    {
-        RoomContent,
-        RoomList,
-    }
-
-    public enum SubUIs
-    {
-        UI_RoomJoin,
-        UI_RoomCreate,
-    }
-
     #endregion
-
-    private ILobbyController _controller;
-    public GameObject RoomList { get; private set; }
-    public UI_RoomCreate RoomCreate { get; private set; }
-    public UI_RoomJoin RoomJoin { get; private set; }
 
     public override bool Init()
     {
-        if (_init == true)
-            return true;
-
         if (base.Init() == false)
             return false;
 
         Bind<Button>(typeof(Buttons));
-        Bind<GameObject>(typeof(GameObjects));
-        Bind<UI_Base>(typeof(SubUIs));
 
         GetButton((int)Buttons.Btn_QuickStart).onClick.AddListener(EnterGame);
         GetButton((int)Buttons.Btn_CreateGame).onClick.AddListener(CreateGame);
         GetButton((int)Buttons.Btn_RefreshSession).onClick.AddListener(Refresh);
 
-        RoomCreate = Get<UI_Base>(SubUIs.UI_RoomCreate) as UI_RoomCreate;
-        RoomCreate.Init();
-        RoomCreate.gameObject.SetActive(false);
-
-        RoomJoin = Get<UI_Base>(SubUIs.UI_RoomJoin) as UI_RoomJoin;
-        RoomJoin.Init();
-        RoomJoin.gameObject.SetActive(false);
-
-        RoomList = GetObject((int)GameObjects.RoomList);
-
         GetButton((int)Buttons.Btn_CreateGame).interactable = false;
         GetButton((int)Buttons.Btn_QuickStart).interactable = false;
         Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Btn_CreateGame).interactable = true;
         Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Btn_QuickStart).interactable = true;
-        RefreshSessionLIst();
+
+        var popup = Managers.UIMng.ShowPopupUI<UI_SessionList>(parent: transform);
+        popup.Init();
+        popup.RefreshSessionLIst();
 
         return true;
     }
 
-    public void RefreshSessionLIst()
+    
+    public void SetInfo(UI_LobbyController controller)
     {
-        foreach (Transform child in GetObject((int)GameObjects.RoomContent).transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        foreach (SessionInfo session in Managers.NetworkMng.Sessions)
-        {
-            if (session.IsVisible)
-            {
-                UI_SessionEntry entry = Managers.UIMng.MakeSubItem<UI_SessionEntry>(GetObject((int)GameObjects.RoomContent).transform);
-                var args = new SessionEntryArgs()
-                {
-                    session = session
-                };
-                StartCoroutine(entry.SetInfo(_controller, args));
-            }
-        }
-    }
-
-    public void SetInfo(ILobbyController controller)
-    {
-        _controller = controller;
-        RoomCreate.SetInfo(controller);
-        RoomJoin.SetInfo(controller, null, null);
-
         foreach (int i in Enum.GetValues(typeof(Buttons)))
         {
             BindEvent(GetButton(i).gameObject, (e) => {
                 if (GetButton(i).interactable)
-                    _controller?.PlayHover();
+                    controller?.PlayHover();
             }, Define.UIEvent.PointerEnter);
         }
     }
@@ -116,22 +62,28 @@ public class UI_Lobby : UI_Base
 
     IEnumerator RefreshWait()
     {
+        Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
+        var popup = Managers.UIMng.ShowPopupUI<UI_SessionList>(parent : transform);
+        popup.Init();
+
         GetButton((int)Buttons.Btn_RefreshSession).interactable = false;
-        RefreshSessionLIst();
-        yield return new WaitForSeconds(3f);
+        popup.RefreshSessionLIst();
+        yield return new WaitForSeconds(1f);
         GetButton((int)Buttons.Btn_RefreshSession).interactable = true;
     }
 
     void CreateGame()
     {
-        RoomCreate.SetInfo(_controller);
-        _controller.OpenRoomCreate();
+        Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
+        var popup = Managers.UIMng.ShowPopupUI<UI_CreateRoom>(parent: transform);
+        popup.Init();
+        popup.SetInfo();
     }
 
     void EnterGame()
     {
-        _controller.ExitMenu();
-        _controller.ShowLoadingMenu();
+        Managers.UIMng.Clear();
+        Managers.UIMng.ShowPanelUI<UI_Loading>(parent: Camera.main.transform);
         Managers.NetworkMng.ConnectToAnySession();
     }
 }
