@@ -24,7 +24,6 @@ public abstract class Alien : Creature
     {
         base.Init();
 
-        Managers.ObjectMng.Aliens[NetworkObject.Id] = this;
         SkillController = gameObject.GetComponent<SkillController>();
         SkillController.Skills = new Dictionary<int, BaseSkill>(Define.MAX_SKILL_NUM);
 

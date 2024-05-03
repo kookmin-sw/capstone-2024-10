@@ -9,13 +9,15 @@ public abstract class BaseItemObject : NetworkBehaviour, IInteractable
 
     [Networked] public NetworkBool IsGettable { get; set; }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public virtual void Rpc_SetInfo(NetworkBool isGettable)
+    public override void Spawned()
     {
-        //ItemData = Managers.DataMng.ItemDataDict[DataId];
+        Init();
+    }
 
-        //Description = $"Take {ItemData?.Name}";
+    public virtual void Init() { }
 
+    public virtual void SetInfo(NetworkBool isGettable)
+    {
         IsGettable = isGettable;
     }
 

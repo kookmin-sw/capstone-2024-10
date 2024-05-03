@@ -25,8 +25,6 @@ public class Crew : Creature
     {
         base.Init();
 
-        Managers.ObjectMng.Crews[NetworkObject.Id] = this;
-
         Inventory = gameObject.GetComponent<Inventory>();
         AudioSource = gameObject.GetComponent<AudioSource>();
 
@@ -110,19 +108,19 @@ public class Crew : Creature
             CrewStat.ChangeSanity(10f);
             return;
         }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Rpc_OnBlind(2f, 3f);
-            return;
-        }
         if (Input.GetKeyDown(KeyCode.H))
         {
-            Managers.GameMng.RenderingSystem.SetColorAdjustments(true);
+            Managers.GameMng.RenderingSystem.ApplyErosion(true);
             return;
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
-            Managers.GameMng.RenderingSystem.SetColorAdjustments(false);
+            Managers.GameMng.RenderingSystem.ApplyErosion(false);
+            return;
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Rpc_OnBlind(2f, 3f);
             return;
         }
         if (Input.GetKeyDown(KeyCode.L))
@@ -327,7 +325,7 @@ public class Crew : Creature
         Managers.UIMng.ShowPopupUI<UI_GameOver>();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        
+
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

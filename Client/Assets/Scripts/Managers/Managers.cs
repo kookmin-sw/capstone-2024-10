@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Managers : MonoBehaviour
@@ -59,7 +57,6 @@ public class Managers : MonoBehaviour
             InputMng.Init();
             DataMng.Init();
             SoundMng.Init();
-            ObjectMng.Init();
         }
     }
 
