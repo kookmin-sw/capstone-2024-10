@@ -34,8 +34,8 @@ public class UI_CrewStamina : UI_Base
 
         if (Crew.CrewStat.Doped)
         {
-            _fill.color = Color.yellow;
             _fill.fillAmount = Crew.CrewStat.Stamina / Crew.CrewStat.MaxStamina;
+            _fill.color = Color.yellow;
             _fill.DOFade(_fill.fillAmount > 0.9f ? 0 : 1, 0.5f);
         }
         else

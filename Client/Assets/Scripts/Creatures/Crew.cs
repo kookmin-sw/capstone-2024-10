@@ -327,13 +327,14 @@ public class Crew : Creature
         Managers.UIMng.ShowPopupUI<UI_GameOver>();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void Rpc_OnDead()
     {
         Collider.enabled = false;
-        Managers.GameMng.GameEndSystem.DeathCount++;
+        //Managers.GameMng.GameEndSystem.DeathCount++;
     }
 
     public void OnClear()

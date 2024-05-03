@@ -6,11 +6,11 @@ using UnityEngine;
 public class GameEndSystem : NetworkBehaviour
 {
 
-    public float DeathCount { get; set; }
+    public float DeathCount = 0.0f;
 
     public void Init()
     {
-        DeathCount = 0;
+        Managers.GameMng.GameEndSystem = this;
     }
     public void EndGame()
     {
