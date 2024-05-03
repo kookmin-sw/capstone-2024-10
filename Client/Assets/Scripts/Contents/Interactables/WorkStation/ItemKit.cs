@@ -59,7 +59,7 @@ public class ItemKit : BaseWorkStation
         Rpc_WorkComplete();
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_WorkComplete()
     {
         if (IsCompleted)

@@ -6,11 +6,8 @@ public class FlashBangObject : BaseItemObject
     public override int DataId => Define.ITEM_FLASHBANG_ID;
     public AudioSource AudioSource { get; protected set; }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public override void Rpc_SetInfo(NetworkBool isGettable)
+    public override void Init()
     {
-        base.Rpc_SetInfo(isGettable);
-
         AudioSource = GetComponent<AudioSource>();
     }
 

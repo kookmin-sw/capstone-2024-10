@@ -25,8 +25,6 @@ public class Crew : Creature
     {
         base.Init();
 
-        Managers.ObjectMng.Crews[NetworkObject.Id] = this;
-
         Inventory = gameObject.GetComponent<Inventory>();
         AudioSource = gameObject.GetComponent<AudioSource>();
 
@@ -117,12 +115,12 @@ public class Crew : Creature
         }
         if (Input.GetKeyDown(KeyCode.H))
         {
-            Managers.GameMng.RenderingSystem.SetColorAdjustments(true);
+            Managers.GameMng.RenderingSystem.ApplyErosion(true);
             return;
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
-            Managers.GameMng.RenderingSystem.SetColorAdjustments(false);
+            Managers.GameMng.RenderingSystem.ApplyErosion(false);
             return;
         }
         if (Input.GetKeyDown(KeyCode.L))

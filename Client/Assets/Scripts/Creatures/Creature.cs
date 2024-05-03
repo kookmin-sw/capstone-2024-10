@@ -110,12 +110,10 @@ public abstract class Creature : NetworkBehaviour
     {
         if (CreatureType == Define.CreatureType.Crew)
         {
-            Transform.parent = Managers.ObjectMng.CrewRoot;
             CreatureData = Managers.DataMng.CrewDataDict[templateID];
         }
         else
         {
-            Transform.parent = Managers.ObjectMng.AlienRoot;
             CreatureData = Managers.DataMng.AlienDataDict[templateID];
         }
 

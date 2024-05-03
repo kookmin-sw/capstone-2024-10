@@ -108,7 +108,7 @@ public class Door : BaseWorkStation
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
-        string soundPath = IsOpened ? "Door_Close" : "Door_Open";
+        string soundPath = IsOpened ? "Door_Open" : "Door_Close";
         Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/{soundPath}", 1f, 1f, isLoop: false);
     }
 

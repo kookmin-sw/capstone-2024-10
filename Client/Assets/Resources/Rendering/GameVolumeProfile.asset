@@ -15,7 +15,7 @@ MonoBehaviour:
   active: 0
   indirectDiffuseLightingMultiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   indirectDiffuseLightingLayers:
     m_OverrideState: 0
     m_Value: 255
@@ -26,7 +26,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 255
   reflectionProbeIntensityMultiplier:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 3
 --- !u!114 &-7630159202167355138
 MonoBehaviour:
@@ -43,7 +43,7 @@ MonoBehaviour:
   active: 0
   quality:
     m_OverrideState: 1
-    m_Value: 3
+    m_Value: 0
   focusMode:
     m_OverrideState: 1
     m_Value: 2
@@ -55,10 +55,10 @@ MonoBehaviour:
     m_Value: 0
   nearFocusStart:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 0
   nearFocusEnd:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 0.00001
   farFocusStart:
     m_OverrideState: 1
     m_Value: 1.67
@@ -66,28 +66,28 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 4.04
   m_NearSampleCount:
-    m_OverrideState: 0
-    m_Value: 5
+    m_OverrideState: 1
+    m_Value: 3
   m_NearMaxBlur:
-    m_OverrideState: 0
-    m_Value: 4
-  m_FarSampleCount:
-    m_OverrideState: 0
-    m_Value: 7
-  m_FarMaxBlur:
-    m_OverrideState: 0
-    m_Value: 8
-  m_Resolution:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 2
+  m_FarSampleCount:
+    m_OverrideState: 1
+    m_Value: 4
+  m_FarMaxBlur:
+    m_OverrideState: 1
+    m_Value: 5
+  m_Resolution:
+    m_OverrideState: 1
+    m_Value: 4
   m_HighQualityFiltering:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 0
   m_PhysicallyBased:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
   m_LimitManualRangeNearBlur:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
 --- !u!114 &-7219278318506790414
 MonoBehaviour:
@@ -257,7 +257,7 @@ MonoBehaviour:
     m_Value: -3.5
   limitMax:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 15
   curveMap:
     m_OverrideState: 0
     m_Value:
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f077503be6ae942a1e1245dbd53ea9, type: 3}
   m_Name: Bloom
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   quality:
     m_OverrideState: 1
     m_Value: 1
@@ -900,7 +900,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 953beb541740ddc499d005ee80c9ff29, type: 3}
   m_Name: Fog
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   quality:
     m_OverrideState: 0
     m_Value: 1
@@ -936,7 +936,7 @@ MonoBehaviour:
     m_Value: 10
   meanFreePath:
     m_OverrideState: 1
-    m_Value: 15
+    m_Value: 3
   enableVolumetricFog:
     m_OverrideState: 1
     m_Value: 1
@@ -1188,7 +1188,7 @@ MonoBehaviour:
     m_Value: {x: 0.5, y: 0.5}
   intensity:
     m_OverrideState: 1
-    m_Value: 0.1
+    m_Value: 0.2
   smoothness:
     m_OverrideState: 1
     m_Value: 1

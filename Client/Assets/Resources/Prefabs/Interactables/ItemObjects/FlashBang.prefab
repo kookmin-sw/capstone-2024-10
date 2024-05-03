@@ -175,6 +175,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4223660590032030622}
+  - component: {fileID: 7925538821500252914}
   - component: {fileID: 732738240848735796}
   - component: {fileID: -4062392879345232781}
   - component: {fileID: 1998004082807474668}
@@ -206,6 +207,27 @@ Transform:
   - {fileID: 6063695211027671192}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!65 &7925538821500252914
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3591238353466249508}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.1, y: 0.2, z: 0.12}
+  m_Center: {x: 0, y: 0.04, z: -0.02}
 --- !u!136 &732738240848735796
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -399,7 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa5caa2d41d643a2aeaf40f64553b5ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _CanGet:
+  _IsGettable:
     _value: 0
 --- !u!1 &3922017175454867523
 GameObject:
