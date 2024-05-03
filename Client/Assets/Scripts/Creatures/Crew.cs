@@ -333,16 +333,25 @@ public class Crew : Creature
     public void Rpc_OnDead()
     {
         Collider.enabled = false;
+        Managers.GameMng.GameEndSystem.DeathCount++;
     }
 
     public void OnClear()
     {
+        Rpc_OnClear();
+
         CrewIngameUI.HideUI();
         Managers.UIMng.ShowPopupUI<UI_GameClear>();
         CrewIngameUI.UIGameClear();
         CrewSoundController.PlayGameClear();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void Rpc_OnClear()
+    {
+        Collider.enabled = false;
     }
 
     #endregion

@@ -9,6 +9,7 @@ public class UI_CrewStamina : UI_Base
 {
     public Crew Crew { get; set; }
     private Image _fill;
+    private float timer = 60.0f;
 
     enum Images
     {
@@ -31,8 +32,17 @@ public class UI_CrewStamina : UI_Base
 
         if (Crew.Object == null || !Crew.Object.IsValid) return;
 
-        _fill.fillAmount = Crew.CrewStat.Stamina / Crew.CrewStat.MaxStamina;
-        _fill.color = Crew.CrewStat.IsRunnable ? Color.white : Color.red;
-        _fill.DOFade(_fill.fillAmount > 0.9f ? 0 : 1, 0.5f);
+        if (Crew.CrewStat.Doped)
+        {
+            _fill.color = Color.yellow;
+            _fill.fillAmount = Crew.CrewStat.Stamina / Crew.CrewStat.MaxStamina;
+            _fill.DOFade(_fill.fillAmount > 0.9f ? 0 : 1, 0.5f);
+        }
+        else
+        {
+            _fill.fillAmount = Crew.CrewStat.Stamina / Crew.CrewStat.MaxStamina;
+            _fill.color = Crew.CrewStat.IsRunnable ? Color.white : Color.red;
+            _fill.DOFade(_fill.fillAmount > 0.9f ? 0 : 1, 0.5f);
+        }
     }
 }
