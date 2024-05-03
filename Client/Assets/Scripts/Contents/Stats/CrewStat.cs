@@ -1,4 +1,3 @@
-using System;
 using Data;
 using UnityEngine;
 
@@ -91,8 +90,7 @@ public class CrewStat : BaseStat
         RunSpeed = CrewData.RunSpeed * ratio;
         SitSpeed = CrewData.SitSpeed * ratio;
 
-        Managers.GameMng.RenderingSystem.SetChromaticAberration(Sanity);
-        Managers.GameMng.RenderingSystem.SetVignette(Sanity);
+        Managers.GameMng.RenderingSystem.ApplySanity(Sanity);
     }
 
     #endregion

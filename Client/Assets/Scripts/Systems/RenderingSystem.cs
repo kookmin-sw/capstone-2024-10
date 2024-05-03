@@ -12,7 +12,6 @@ public class RenderingSystem : NetworkBehaviour
     public Fog Fog { get; protected set; }
     public ChromaticAberration ChromaticAberration { get; protected set; }
     public ColorAdjustments ColorAdjustments { get; protected set; }
-    public IndirectLightingController IndirectLightingController { get; protected set; }
     public Vignette Vignette { get; protected set; }
 
     public Material DamageMaterial { get; protected set; }
@@ -25,6 +24,7 @@ public class RenderingSystem : NetworkBehaviour
     private Color _erosionColor2 = new Color(76.0f / 255.0f, 76.0f / 255.0f, 255.0f / 255.0f);
     private Color _defaultColor = new Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
     private float _damageEffectSpeed = 1.5f;
+    private float blindValue = 15f;
 
 
     public override void Spawned()
@@ -44,26 +44,29 @@ public class RenderingSystem : NetworkBehaviour
             ChromaticAberration = chromaticAberration;
         if (VolumeProfile.TryGet<ColorAdjustments>(out var colorAdjustments))
             ColorAdjustments = colorAdjustments;
-        if (VolumeProfile.TryGet<IndirectLightingController>(out var indirectLightingController))
-            IndirectLightingController = indirectLightingController;
         if (VolumeProfile.TryGet<Vignette>(out var vignette))
             Vignette = vignette;
 
         DamageMaterial = Managers.ResourceMng.Load<Material>("Material/DamageMaterial");
 
         ChromaticAberration.intensity.value = 0f;
+        ColorAdjustments.postExposure.value = 0f;
         ColorAdjustments.colorFilter.value = _defaultColor;
         Vignette.intensity.value = 0.2f;
-        IndirectLightingController.indirectDiffuseLightingMultiplier.value = 0f;
 
         DamageEffect(3);
     }
 
     #region Volume
 
-    public void SetChromaticAberration(float sanity)
+    public void ApplySanity(float sanity)
     {
-        ChromaticAberration.intensity.value = (100f - sanity) * 0.01f;
+        _setVignetteTweener.Kill();
+        _setVignetteTweener = DOVirtual.Float(Vignette.intensity.value,
+            0.2f + (100f - sanity) * 0.01f * 0.55f, 1f, value =>
+            {
+                Vignette.intensity.value = value;
+            });
 
         _setChromaticAberrationTweener.Kill();
         _setChromaticAberrationTweener = DOVirtual.Float(ChromaticAberration.intensity.value,
@@ -73,41 +76,42 @@ public class RenderingSystem : NetworkBehaviour
             });
     }
 
-    public void SetColorAdjustments(bool isErosion)
+    public void ApplyErosion(bool isErosion)
     {
         Color color = _defaultColor;
+        float value = 0f;
 
         if (isErosion)
+        {
             color = _erosionColor;
+            value = 100f;
+        }
 
         _setColorAdjustmentsTweener.Kill();
         _setColorAdjustmentsTweener = DOVirtual.Color(ColorAdjustments.colorFilter.value, color, 2f, value =>
         {
             ColorAdjustments.colorFilter.value = value;
         });
-    }
 
-    public void SetVignette(float sanity)
-    {
-        _setVignetteTweener.Kill();
-        _setVignetteTweener = DOVirtual.Float(Vignette.intensity.value,
-            0.2f + (100f - sanity) * 0.01f * 0.55f, 1f, value =>
-        {
-            Vignette.intensity.value = value;
-        });
+        _setChromaticAberrationTweener.Kill();
+        _setChromaticAberrationTweener = DOVirtual.Float(ChromaticAberration.intensity.value,
+            value, 2f, value =>
+            {
+                ChromaticAberration.intensity.value = value;
+            });
     }
 
     public void GetBlind(float blindTime, float backTime)
     {
         _getBlindTweener.Kill();
-        IndirectLightingController.indirectDiffuseLightingMultiplier.value = 5000f;
+        ColorAdjustments.postExposure.value = blindValue;
 
         DOVirtual.DelayedCall(blindTime, () =>
         {
             _getBlindTweener.Kill();
-            _getBlindTweener = DOVirtual.Float(IndirectLightingController.indirectDiffuseLightingMultiplier.value, 0, backTime, value =>
+            _getBlindTweener = DOVirtual.Float(ColorAdjustments.postExposure.value, 0f, backTime, value =>
             {
-                IndirectLightingController.indirectDiffuseLightingMultiplier.value = value;
+                ColorAdjustments.postExposure.value = value;
             });
         });
     }

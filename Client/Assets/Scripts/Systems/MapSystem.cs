@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
 using Fusion;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class MapSystem : NetworkBehaviour
@@ -13,7 +10,7 @@ public class MapSystem : NetworkBehaviour
     [Header("Item Spawn")]
     [SerializeField] private int _totalItemCount;
     [SerializeField] private List<ItemSpawnData> _itemSpawnDatas;
-    
+
     public void Init()
     {
         Managers.GameMng.MapSystem = this;
@@ -92,7 +89,7 @@ public class MapSystem : NetworkBehaviour
         bool TrySpawnItem(ItemSpawnData data)
         {
             if(!TrySelectSector(data, out Define.SectorName selectedSector)) return false;
-            
+
             while (!Sectors[selectedSector].SpawnItem(data.Prefab))
             {
                 availableSectors.Remove(selectedSector);

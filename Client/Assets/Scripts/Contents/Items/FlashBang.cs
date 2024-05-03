@@ -30,6 +30,7 @@ public class FlashBang : BaseItem
         DOVirtual.DelayedCall(0.5f, () =>
         {
             NetworkObject no = Managers.ObjectMng.SpawnItemObject(Define.ITEM_FLASHBANG_ID, Owner.CreatureCamera.Transform.position, false);
+            no.GetComponent<BoxCollider>().enabled = false;
             no.GetComponent<Rigidbody>().AddForce(Owner.CreatureCamera.Transform.forward * 500f);
 
             DOVirtual.DelayedCall(1.5f, () =>
