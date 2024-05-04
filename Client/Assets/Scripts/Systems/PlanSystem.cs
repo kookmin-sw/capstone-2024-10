@@ -18,7 +18,7 @@ public class PlanSystem : NetworkBehaviour
     {
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
-        Managers.ObjectMng.MyCrew.CrewIngameUI.ObjectiveUI.UpdateBatteryCount(BatteryChargeCount);
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateBatteryCount(BatteryChargeCount);
 
         if (BatteryChargeCount == Define.BATTERY_COLLECT_GOAL)
         {
@@ -30,6 +30,6 @@ public class PlanSystem : NetworkBehaviour
     {
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
-        Managers.ObjectMng.MyCrew.CrewIngameUI.ObjectiveUI.OnGeneratorRestored();
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnGeneratorRestored();
     }
 }

@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_CrewObjective : UI_Base
+public class UI_CrewPlan : UI_Base
 {
     private UI_PlanPanel _planA;
     private UI_PlanPanel _planB;
