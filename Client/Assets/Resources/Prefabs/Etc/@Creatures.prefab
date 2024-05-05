@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9188159356349766036}
   - component: {fileID: 3752927880965826204}
-  - component: {fileID: 8428754632824893660}
+  - component: {fileID: 3134403363453362337}
   m_Layer: 0
   m_Name: '@Creatures'
   m_TagString: Untagged
@@ -50,8 +50,8 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 8428754632824893660}
---- !u!114 &8428754632824893660
+  - {fileID: 3134403363453362337}
+--- !u!114 &3134403363453362337
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -60,6 +60,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 836041946619486513}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b02fa0f558aa21540949c69f7e8ccf9c, type: 3}
+  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  SyncScale: 1
+  SyncParent: 1
+  _autoAOIOverride: 1
+  DisableSharedModeInterpolation: 0

@@ -1,11 +1,8 @@
-using System.Collections.Generic;
-using Data;
 using Fusion;
 using UnityEngine;
 
 public class ObjectManager
 {
-    public Transform CreatureRoot => GameObject.Find("@Creatures").transform;
     public Creature MyCreature { get; set; }
     public Crew MyCrew => MyCreature as Crew;
     public Alien MyAlien => MyCreature as Alien;
@@ -17,7 +14,6 @@ public class ObjectManager
         string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");
         NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
-        no.transform.SetParent(CreatureRoot);
 
         Crew crew = no.GetComponent<Crew>();
         crew.SetInfo(crewDataId, isGameScene);
@@ -30,7 +26,6 @@ public class ObjectManager
         string className = Managers.DataMng.AlienDataDict[alienDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");
         NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
-        no.transform.SetParent(CreatureRoot);
 
         Alien alien = no.GetComponent<Alien>();
         alien.SetInfo(alienDataId);
@@ -49,6 +44,7 @@ public class ObjectManager
 
         return no;
     }
+
 
     #endregion
 }
