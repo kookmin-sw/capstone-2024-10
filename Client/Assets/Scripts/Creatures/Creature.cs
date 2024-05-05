@@ -207,7 +207,7 @@ public abstract class Creature : NetworkBehaviour
 
         //Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red);
 
-        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 1.5f, layerMask: LayerMask.GetMask("MapObject")))
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 1.5f, layerMask: LayerMask.GetMask("MapObject", "WorkStation")))
         {
             if (rayHit.transform.gameObject.TryGetComponent(out IInteractable interactable))
             {

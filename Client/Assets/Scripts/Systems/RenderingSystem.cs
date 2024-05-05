@@ -9,7 +9,6 @@ public class RenderingSystem : NetworkBehaviour
 {
     public Volume Volume { get; protected set; }
     public VolumeProfile VolumeProfile => Volume.sharedProfile;
-    public Fog Fog { get; protected set; }
     public ChromaticAberration ChromaticAberration { get; protected set; }
     public ColorAdjustments ColorAdjustments { get; protected set; }
     public Vignette Vignette { get; protected set; }
@@ -38,8 +37,6 @@ public class RenderingSystem : NetworkBehaviour
 
         Volume = GetComponent<Volume>();
 
-        if (VolumeProfile.TryGet<Fog>(out var fog))
-            Fog = fog;
         if (VolumeProfile.TryGet<ChromaticAberration>(out var chromaticAberration))
             ChromaticAberration = chromaticAberration;
         if (VolumeProfile.TryGet<ColorAdjustments>(out var colorAdjustments))
@@ -138,7 +135,6 @@ public class RenderingSystem : NetworkBehaviour
     private IEnumerator DamageEffectProgress(float intensity)
     {
         float targetRadius = Mathf.Lerp(1.2f, -1f, Mathf.InverseLerp(0, 1, intensity));
-        //float targetRadius = Remap(intensity, 0, 1, 1.2f, -1f);
         float curRadius = 1; // No damage
         for (float t = 0; curRadius != targetRadius; t += Time.deltaTime * _damageEffectSpeed)
         {
@@ -156,11 +152,6 @@ public class RenderingSystem : NetworkBehaviour
                 yield return null;
             }
         }
-
-        // Camera shake
-        //Vector3 velocity = new Vector3(0, -0.5f, -1);
-        //velocity.Normalize();
-        //impulseSource.GenerateImpulse(velocity * intensity * 0.4f);
     }
 
     #endregion
