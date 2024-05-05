@@ -119,7 +119,7 @@ public class Inventory: NetworkBehaviour
 
         Ray ray = new Ray(Owner.Head.transform.position, Owner.Head.transform.forward);
 
-        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 1f, layerMask: LayerMask.GetMask("MapObject")))
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 1f, layerMask: LayerMask.GetMask("MapObject", "WorkStation")))
         {
             Debug.DrawRay(ray.origin, ray.direction * 1f, Color.blue, 0.5f);
             return false;
