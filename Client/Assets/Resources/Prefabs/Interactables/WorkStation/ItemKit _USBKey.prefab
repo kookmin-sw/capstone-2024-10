@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: -7063927424009573794}
   - component: {fileID: 4388194047007253240}
   - component: {fileID: 6781550415590428301}
-  - component: {fileID: -379113403093983909}
   - component: {fileID: 6304200391465576354}
+  - component: {fileID: -379113403093983909}
   m_Layer: 11
   m_Name: ItemKit _USBKey
   m_TagString: Untagged
@@ -200,21 +200,8 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: -379113403093983909}
   - {fileID: 6304200391465576354}
---- !u!114 &-379113403093983909
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1120575333297816}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9adb7049e404e52aebabf3566b57551, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _itemId: 201001
+  - {fileID: -379113403093983909}
 --- !u!114 &6304200391465576354
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -231,6 +218,19 @@ MonoBehaviour:
   SyncParent: 1
   _autoAOIOverride: 1
   DisableSharedModeInterpolation: 0
+--- !u!114 &-379113403093983909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120575333297816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9adb7049e404e52aebabf3566b57551, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _itemId: 201001
 --- !u!1 &1140513267480146
 GameObject:
   m_ObjectHideFlags: 0
