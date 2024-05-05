@@ -12,6 +12,7 @@ public class PlanSystem : NetworkBehaviour
     public void Init()
     {
         Managers.GameMng.PlanSystem = this;
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateBatteryCount(0);
     }
     
     private void OnBatteryCharge()

@@ -7,14 +7,21 @@ using UnityEngine.UI;
 
 public class UI_CrewPlan : UI_Base
 {
+    private UI_PlanPanel _batteryCollectPlan;
     private UI_PlanPanel _planA;
     private UI_PlanPanel _planB;
     private UI_PlanPanel _planC;
     enum GameObjects
     {
+        Plan_BatteryCollect,
         PlanA,
         PlanB,
         PlanC,
+    }
+
+    enum Texts
+    {
+        Main_Title_text
     }
 
     private class UI_PlanPanel : UI_Base
@@ -70,6 +77,8 @@ public class UI_CrewPlan : UI_Base
 
             yield return _objectiveText.DOColor(Color.gray, 1f).WaitForCompletion();
 
+            if(string.IsNullOrEmpty(nextObjective)) yield break;
+
             yield return new WaitForSeconds(1f);
 
             yield return _objectiveText.DOFade(0f, 0.5f).WaitForCompletion();
@@ -87,7 +96,6 @@ public class UI_CrewPlan : UI_Base
             {
                 SetText(nextObjective, false);
             }
-
         }
         private void KillTween()
         {
@@ -103,22 +111,67 @@ public class UI_CrewPlan : UI_Base
             return false;
 
         Bind<GameObject>(typeof(GameObjects));
+        Bind<TMP_Text>(typeof(Texts));
+        GetText(Texts.Main_Title_text).SetText("Restore power of laboratory!");
+        _batteryCollectPlan = GetObject(GameObjects.Plan_BatteryCollect).GetOrAddComponent<UI_PlanPanel>();
         _planA = GetObject(GameObjects.PlanA).GetOrAddComponent<UI_PlanPanel>();
         _planB = GetObject(GameObjects.PlanB).GetOrAddComponent<UI_PlanPanel>();
         _planC = GetObject(GameObjects.PlanC).GetOrAddComponent<UI_PlanPanel>();
+        _planA.gameObject.SetActive(false);
+        _planB.gameObject.SetActive(false);
         _planC.gameObject.SetActive(false);
+
         return true;
     }
 
     public void UpdateBatteryCount(int count)
     {
-        _planA.SetText($"a. Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})", true);
+        _batteryCollectPlan.SetText($"Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})", true);
         if (count >= Define.BATTERY_COLLECT_GOAL)
         {
-            _planA.SetText($"a. Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})", true, true);
+            _batteryCollectPlan.SetText($"Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})", true, true);
 
-            StartCoroutine(_planA.CompleteObjective("b. Restore the backup generator (0/1)"));
+            StartCoroutine(OnBatteryChargeFinished());
         }
+    }
+
+    public void UpdateFuseCount(int count)
+    {
+        _planA.SetText($"Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})", true);
+        if (count >= Define.BATTERY_COLLECT_GOAL)
+        {
+            _planA.SetText($"Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})", true, true);
+
+            StartCoroutine(_planA.CompleteObjective("Activate the elevator and escape!"));
+        }
+    }
+
+    public void OnKeycardUseFinished()
+    {
+        _planB.SetText($"Find and use keycard on main control computer (1/1)", true, true);
+
+        StartCoroutine(_planB.CompleteObjective("Use cargo cotrol device to unlock the cargo passage gate (0/1)"));
+    }
+
+    public void OnCargoComputerWorkFinished()
+    {
+        _planB.SetText($"Use cargo cotrol device to unlock the cargo passage gate (1/1)", true, true);
+
+        StartCoroutine(_planB.CompleteObjective("Escape through the cargo passage!"));
+    }
+
+    private IEnumerator OnBatteryChargeFinished()
+    {
+        var titleText = GetText(Texts.Main_Title_text);
+
+        StartCoroutine(_batteryCollectPlan.CompleteObjective(""));
+        yield return titleText.DOFade(0, 1f).WaitForCompletion();
+
+        titleText.SetText("Complete any plan to escape!");
+        titleText.DOFade(1, 1f);
+
+        _planA.gameObject.SetActive(true);
+        _planB.gameObject.SetActive(true);
     }
 
     public void OnGeneratorRestored()
