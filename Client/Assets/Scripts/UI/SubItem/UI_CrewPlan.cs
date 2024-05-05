@@ -7,13 +7,13 @@ using UnityEngine.UI;
 
 public class UI_CrewPlan : UI_Base
 {
-    private UI_PlanPanel _batteryCollectPlan;
+    private UI_PlanPanel _batteryChargePlan;
     private UI_PlanPanel _planA;
     private UI_PlanPanel _planB;
     private UI_PlanPanel _planC;
     enum GameObjects
     {
-        Plan_BatteryCollect,
+        Plan_BatteryCharge,
         PlanA,
         PlanB,
         PlanC,
@@ -113,7 +113,7 @@ public class UI_CrewPlan : UI_Base
         Bind<GameObject>(typeof(GameObjects));
         Bind<TMP_Text>(typeof(Texts));
         GetText(Texts.Main_Title_text).SetText("Restore power of laboratory!");
-        _batteryCollectPlan = GetObject(GameObjects.Plan_BatteryCollect).GetOrAddComponent<UI_PlanPanel>();
+        _batteryChargePlan = GetObject(GameObjects.Plan_BatteryCharge).GetOrAddComponent<UI_PlanPanel>();
         _planA = GetObject(GameObjects.PlanA).GetOrAddComponent<UI_PlanPanel>();
         _planB = GetObject(GameObjects.PlanB).GetOrAddComponent<UI_PlanPanel>();
         _planC = GetObject(GameObjects.PlanC).GetOrAddComponent<UI_PlanPanel>();
@@ -126,52 +126,54 @@ public class UI_CrewPlan : UI_Base
 
     public void UpdateBatteryCount(int count)
     {
-        _batteryCollectPlan.SetText($"Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})", true);
-        if (count >= Define.BATTERY_COLLECT_GOAL)
+        _batteryChargePlan.SetText($"Find and insert batteries in battery charger ({count}/{Define.BATTERY_CHARGE_GOAL})", true);
+        if (count >= Define.BATTERY_CHARGE_GOAL)
         {
-            _batteryCollectPlan.SetText($"Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})", true, true);
+            _batteryChargePlan.SetText($"Collect and charge the batteries ({count}/{Define.BATTERY_CHARGE_GOAL})", true, true);
 
             StartCoroutine(OnBatteryChargeFinished());
         }
     }
 
-    public void UpdateFuseCount(int count)
+    public void UpdateUSBKeyCount(int count)
     {
-        _planA.SetText($"Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})", true);
-        if (count >= Define.BATTERY_COLLECT_GOAL)
+        _planA.SetText($"Find and insert USB Keys in elevator control computer({count}/{Define.USBKEY_INSERT_GOAL})", true);
+        if (count >= Define.USBKEY_INSERT_GOAL)
         {
-            _planA.SetText($"Collect and charge the batteries ({count}/{Define.BATTERY_COLLECT_GOAL})", true, true);
+            _planA.SetText($"Find and insert USB Keys in elevator control computer({count}/{Define.USBKEY_INSERT_GOAL})", true, true);
 
             StartCoroutine(_planA.CompleteObjective("Activate the elevator and escape!"));
         }
     }
 
-    public void OnKeycardUseFinished()
+    public void OnCardkeyUsed()
     {
-        _planB.SetText($"Find and use keycard on main control computer (1/1)", true, true);
+        _planB.SetText($"Find and use cardkey on main control computer (1/1)", true, true);
 
-        StartCoroutine(_planB.CompleteObjective("Use cargo cotrol device to unlock the cargo passage gate (0/1)"));
+        StartCoroutine(_planB.CompleteObjective("Use cargo control computer to unlock the cargo passage gate (0/1)"));
     }
 
     public void OnCargoComputerWorkFinished()
     {
-        _planB.SetText($"Use cargo cotrol device to unlock the cargo passage gate (1/1)", true, true);
+        _planB.SetText($"Use cargo control computer to unlock the cargo passage gate (1/1)", true, true);
 
-        StartCoroutine(_planB.CompleteObjective("Escape through the cargo passage!"));
+        StartCoroutine(_planB.CompleteObjective("Open the the cargo passage gate and escape!"));
     }
 
     private IEnumerator OnBatteryChargeFinished()
     {
         var titleText = GetText(Texts.Main_Title_text);
 
-        StartCoroutine(_batteryCollectPlan.CompleteObjective(""));
+        StartCoroutine(_batteryChargePlan.CompleteObjective(""));
         yield return titleText.DOFade(0, 1f).WaitForCompletion();
 
         titleText.SetText("Complete any plan to escape!");
         titleText.DOFade(1, 1f);
 
         _planA.gameObject.SetActive(true);
+        _planA.SetText($"Find and insert USB Keys in elevator control computer (0/{Define.USBKEY_INSERT_GOAL})", false);
         _planB.gameObject.SetActive(true);
+        _planB.SetText($"Find and use cardkey on main control computer (0/1)", false);
     }
 
     public void OnGeneratorRestored()

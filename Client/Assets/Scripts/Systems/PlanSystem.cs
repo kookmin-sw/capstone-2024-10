@@ -5,32 +5,37 @@ using Fusion;
 
 public class PlanSystem : NetworkBehaviour
 {
-    [Networked, OnChangedRender(nameof(OnBatteryCharge))] public int BatteryChargeCount { get; set; }
+    [Networked, OnChangedRender(nameof(OnBatteryCharge))]
+    public int BatteryChargeCount { get; set; }
+
     public bool IsBatteryChargeFinished { get; private set; }
-    [Networked, OnChangedRender(nameof(OnGeneratorRestored))] public NetworkBool IsGeneratorRestored { get; set; }
+    public bool IsKeyCardUsed { get; private set; }
+
+    [Networked, OnChangedRender(nameof(OnCardkeyUsed))]
+    public NetworkBool IsCardkeyUsed { get; set; }
 
     public void Init()
     {
         Managers.GameMng.PlanSystem = this;
         Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateBatteryCount(0);
     }
-    
+
     private void OnBatteryCharge()
     {
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
         Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateBatteryCount(BatteryChargeCount);
 
-        if (BatteryChargeCount == Define.BATTERY_COLLECT_GOAL)
+        if (BatteryChargeCount == Define.BATTERY_CHARGE_GOAL)
         {
             IsBatteryChargeFinished = true;
         }
     }
 
-    private void OnGeneratorRestored()
+    private void OnCardkeyUsed()
     {
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
-        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnGeneratorRestored();
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnKeycardUsed();
     }
 }

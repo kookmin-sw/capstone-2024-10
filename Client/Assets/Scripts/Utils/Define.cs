@@ -197,7 +197,8 @@ public static class Define
     public const float PASIVE_REDUCE_SANITY = 1f;
     public const float SIT_RECOVER_SANITY = 1f;
 
-    public const int BATTERY_COLLECT_GOAL = 3;
+    public const int BATTERY_CHARGE_GOAL = 3;
+    public const int USBKEY_INSERT_GOAL = 2;
 
     #endregion
 }
