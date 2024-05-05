@@ -5,7 +5,7 @@ public class Door : BaseWorkStation
 {
     public new string Description => IsOpened ? "Close" : "Open";
 
-    [Networked] private NetworkBool IsOpened { get; set; } = false;
+    [Networked] public NetworkBool IsOpened { get; set; } = true;
 
     public NetworkMecanimAnimator NetworkAnim { get; protected set; }
 
