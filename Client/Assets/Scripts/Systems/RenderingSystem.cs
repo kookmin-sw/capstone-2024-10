@@ -20,8 +20,8 @@ public class RenderingSystem : NetworkBehaviour
     private Tweener _setColorAdjustmentsTweener;
     private Tweener _setVignetteTweener;
     private Tweener _getBlindTweener;
-    private Color _erosionColor = new Color(255.0f / 255.0f, 76.0f / 255.0f, 76.0f / 255.0f);
-    private Color _erosionColor2 = new Color(76.0f / 255.0f, 76.0f / 255.0f, 255.0f / 255.0f);
+    private Color _erosionColor2 = new Color(255.0f / 255.0f, 76.0f / 255.0f, 76.0f / 255.0f);
+    private Color _erosionColor = new Color(76.0f / 255.0f, 76.0f / 255.0f, 255.0f / 255.0f);
     private Color _defaultColor = new Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
     private float _damageEffectSpeed = 1.5f;
     private float blindValue = 15f;

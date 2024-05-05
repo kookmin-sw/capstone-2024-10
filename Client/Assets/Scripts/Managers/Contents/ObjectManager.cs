@@ -45,6 +45,5 @@ public class ObjectManager
         return no;
     }
 
-
     #endregion
 }
