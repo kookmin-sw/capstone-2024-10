@@ -25,7 +25,7 @@ public class ReadyScene : BaseScene
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
         ingameUI.UI_CrewHP.gameObject.SetActive(false);
         ingameUI.UI_CrewStamina.gameObject.SetActive(false);
-        ingameUI.ObjectiveUI.gameObject.SetActive(false);
+        ingameUI.PlanUI.gameObject.SetActive(false);
         ingameUI.UI_Inventory.gameObject.SetActive(false);
     }
 

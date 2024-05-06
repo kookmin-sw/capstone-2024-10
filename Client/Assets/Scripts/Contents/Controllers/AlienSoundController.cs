@@ -116,7 +116,7 @@ public class AlienSoundController : BaseSoundController
                 //     Debug.DrawRay(ray.origin, ray.direction * 15f, Color.green);
 
                 if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 15f,
-                        layerMask: LayerMask.GetMask("Crew", "MapObject", "WorkStation")))
+                        layerMask: LayerMask.GetMask("Crew", "MapObject", "PlanTargetObject")))
                 {
                     if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
                     {

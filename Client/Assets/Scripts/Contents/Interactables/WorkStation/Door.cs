@@ -3,17 +3,24 @@ using UnityEngine;
 
 public class Door : BaseWorkStation
 {
-    public new string Description => IsOpened ? "Close" : "Open";
+    private new string Description
+    {
+        get
+        {
+            if (Managers.ObjectMng.MyCreature is Alien) return "Crash door";
+            return IsOpened ? "Close" : "Open";
+        }
+    }
 
-    [Networked] public NetworkBool IsOpened { get; set; } = true;
+    [Networked] private NetworkBool IsOpened { get; set; } = true;
 
-    public NetworkMecanimAnimator NetworkAnim { get; protected set; }
+    private NetworkMecanimAnimator _mecanimAnimator;
 
     protected override void Init()
     {
         base.Init();
 
-        NetworkAnim = transform.GetComponent<NetworkMecanimAnimator>();
+        _mecanimAnimator = transform.GetComponent<NetworkMecanimAnimator>();
         AudioSource = gameObject.GetComponent<AudioSource>();
 
         CrewActionType = Define.CrewActionType.OpenDoor;
@@ -31,15 +38,17 @@ public class Door : BaseWorkStation
             return false;
         }
 
+        if (WorkerCount > 0 && Worker == null)
+        {
+            return false;
+        }
+
         creature.IngameUI.InteractInfoUI.Show(Description);
         return true;
     }
 
     public override bool Interact(Creature creature)
     {
-        if (WorkerCount > 0)
-            return false;
-
         Worker = creature;
         Worker.IngameUI.InteractInfoUI.Hide();
         Worker.CreatureState = Define.CreatureState.Interact;
@@ -96,7 +105,7 @@ public class Door : BaseWorkStation
     protected override void Rpc_WorkComplete()
     {
         IsOpened = !IsOpened;
-        NetworkAnim.Animator.SetBool("OpenParameter", IsOpened);
+        _mecanimAnimator.Animator.SetBool("OpenParameter", IsOpened);
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

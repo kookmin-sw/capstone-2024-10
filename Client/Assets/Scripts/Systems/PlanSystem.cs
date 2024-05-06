@@ -5,31 +5,80 @@ using Fusion;
 
 public class PlanSystem : NetworkBehaviour
 {
-    [Networked, OnChangedRender(nameof(OnBatteryCharge))] public int BatteryChargeCount { get; set; }
+    [Networked, OnChangedRender(nameof(OnBatteryCharge))]
+    public int BatteryChargeCount { get; set; }
+    [Networked, OnChangedRender(nameof(OnUSBKeyInsert))]
+    public int USBKeyInsertCount { get; set; }
     public bool IsBatteryChargeFinished { get; private set; }
-    [Networked, OnChangedRender(nameof(OnGeneratorRestored))] public NetworkBool IsGeneratorRestored { get; set; }
+    public bool IsUSBKeyInsertFinished { get; private set; }
+
+    [Networked, OnChangedRender(nameof(OnCardkeyUsed))]
+    public NetworkBool IsCardkeyUsed { get; set; }
+    [Networked, OnChangedRender(nameof(OnCentralComputerWorkFinished))]
+    public NetworkBool IsCentralComputerWorkFinished { get; set; }
+    [Networked, OnChangedRender(nameof(OnCargoPassageOpen))]
+    public NetworkBool IsCargoPassageOpen { get; set; }
 
     public void Init()
     {
         Managers.GameMng.PlanSystem = this;
+        if (Managers.ObjectMng.MyCreature is Crew) GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
     }
-    
+
     private void OnBatteryCharge()
     {
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
-        Managers.ObjectMng.MyCrew.CrewIngameUI.ObjectiveUI.UpdateBatteryCount(BatteryChargeCount);
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateBatteryCount(BatteryChargeCount);
 
-        if (BatteryChargeCount == Define.BATTERY_COLLECT_GOAL)
+        if (BatteryChargeCount == Define.BATTERY_CHARGE_GOAL)
         {
             IsBatteryChargeFinished = true;
+            GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
+            GameObject.FindGameObjectsWithTag("CentralControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+            GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
         }
     }
 
-    private void OnGeneratorRestored()
+    private void OnUSBKeyInsert()
     {
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
-        Managers.ObjectMng.MyCrew.CrewIngameUI.ObjectiveUI.OnGeneratorRestored();
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateUSBKeyCount(USBKeyInsertCount);
+
+        if (USBKeyInsertCount == Define.USBKEY_INSERT_GOAL)
+        {
+            IsUSBKeyInsertFinished = true;
+            GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
+            GameObject.FindGameObjectsWithTag("ElevatorKeypad").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+        }
     }
+
+    private void OnCardkeyUsed()
+    {
+        if (Managers.ObjectMng.MyCreature is Alien) return;
+
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnCardkeyUsed();
+    }
+
+    private void OnCentralComputerWorkFinished()
+    {
+        if (Managers.ObjectMng.MyCreature is Alien) return;
+
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnCentralControlComputerWorkFinished();
+        GameObject.FindGameObjectsWithTag("CentralControlComputer").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
+        GameObject.FindGameObjectsWithTag("CargoPassageControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+    }
+
+    private void OnCargoPassageOpen()
+    {
+        if (Managers.ObjectMng.MyCreature is Alien) return;
+
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnCargoPassageOpen();
+        GameObject.FindGameObjectsWithTag("CargoPassageControlComputer").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
+        GameObject.FindGameObjectsWithTag("CargoPassageGate").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+    }
+
+
+
 }

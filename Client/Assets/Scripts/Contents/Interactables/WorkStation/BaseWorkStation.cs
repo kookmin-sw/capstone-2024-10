@@ -13,7 +13,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 
     [Networked] protected float CurrentWorkAmount { get; set; } = 0f;
     [Networked] protected float TotalWorkAmount { get; set; }
-    protected bool CanRememberWork { get; set; }
+    [Networked] protected bool CanRememberWork { get; set; }
     protected string Description { get; set; }
 
     [Networked] protected int WorkerCount { get; set; }
@@ -91,9 +91,9 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         Worker.ReturnToIdle(0f);
 
         Rpc_RemoveWorker();
-        Rpc_StopSound();
+        if (AudioSource != null) Rpc_StopSound();
 
-        DOVirtual.DelayedCall(0.5f, () => { Worker = null; });
+        DOVirtual.DelayedCall(0.3f, () => { Worker = null; });
     }
 
     protected virtual void WorkComplete()
@@ -127,9 +127,9 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     protected void Rpc_RemoveWorker()
     {
-        WorkerCount--;
+        WorkerCount = WorkerCount > 0 ? WorkerCount - 1 : 0;
 
-        if (!CanRememberWork && WorkerCount <= 0)
+        if (!CanRememberWork && WorkerCount == 0)
             CurrentWorkAmount = 0f;
     }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class UI_CrewIngame : UI_Ingame
 {
-    public UI_CrewObjective ObjectiveUI { get; private set; }
+    public UI_CrewPlan PlanUI { get; private set; }
     public UI_Inventory UI_Inventory { get; private set; }
     public UI_CrewHP UI_CrewHP { get; private set; }
     public UI_CrewStamina UI_CrewStamina { get; private set; }
@@ -26,7 +26,7 @@ public class UI_CrewIngame : UI_Ingame
        UI_CrewHP,
        UI_CrewStamina,
        UI_Inventory,
-       UI_CrewObjective,
+       UI_CrewPlan,
     }
 
 
@@ -36,7 +36,7 @@ public class UI_CrewIngame : UI_Ingame
 
         Bind<UI_Base>(typeof(CrewSubItemUIs));
 
-        ObjectiveUI = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewObjective) as UI_CrewObjective;
+        PlanUI = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewPlan) as UI_CrewPlan;
         UI_Inventory = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_Inventory) as UI_Inventory;
         UI_CrewHP = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewHP) as UI_CrewHP;
         UI_CrewStamina = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewStamina) as UI_CrewStamina;
@@ -53,12 +53,12 @@ public class UI_CrewIngame : UI_Ingame
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewHP) as UI_CrewHP).Crew = Crew;
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewStamina) as UI_CrewStamina).Crew = Crew;
 
-        ObjectiveUI.UpdateBatteryCount(0);
+        PlanUI.EnableBatteryChargePlan();
     }
 
     public void HideUI()
     {
-        ObjectiveUI.gameObject.SetActive(false);
+        PlanUI.gameObject.SetActive(false);
         UI_Inventory.gameObject.SetActive(false);
         UI_CrewHP.gameObject.SetActive(false);
         UI_CrewStamina.gameObject.SetActive(false);
