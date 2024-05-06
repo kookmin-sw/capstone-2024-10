@@ -12,9 +12,11 @@ GameObject:
   - component: {fileID: 6097199260773070987}
   - component: {fileID: 6097199260774070859}
   - component: {fileID: 7232087768849947135}
-  m_Layer: 12
-  m_Name: Emergency_Device
-  m_TagString: Untagged
+  - component: {fileID: 3051625426071055667}
+  - component: {fileID: 18297982761213502}
+  m_Layer: 11
+  m_Name: EmergencyControlDevice
+  m_TagString: EmergencyControlDevice
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 4294967295
@@ -107,3 +109,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.2672402, y: 2.4869378, z: 0.754605}
   m_Center: {x: -5.842984e-14, y: -0.11638737, z: 0.37730217}
+--- !u!114 &3051625426071055667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6097199260771869835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6722775ee94a69f458e6c01b0ec783e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &18297982761213502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6097199260771869835}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1852037109
+  ObjectInterest: 1
+  Flags: 131073
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 3051625426071055667}

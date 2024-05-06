@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using DG.Tweening;
 using Fusion;
 using UnityEngine;
@@ -44,7 +44,7 @@ public class RenderingSystem : NetworkBehaviour
         if (VolumeProfile.TryGet<Vignette>(out var vignette))
             Vignette = vignette;
 
-        DamageMaterial = Managers.ResourceMng.Load<Material>("Material/DamageMaterial");
+        DamageMaterial = Managers.ResourceMng.Load<Material>("Materials/DamageMaterial");
 
         ChromaticAberration.intensity.value = 0f;
         ColorAdjustments.postExposure.value = 0f;

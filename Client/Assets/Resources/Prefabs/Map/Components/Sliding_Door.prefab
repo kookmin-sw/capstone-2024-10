@@ -154,7 +154,6 @@ GameObject:
   - component: {fileID: 9073716672162536934}
   - component: {fileID: 2446807245209783857}
   - component: {fileID: 1726343276259717573}
-  - component: {fileID: 8714555422781730289}
   - component: {fileID: 2769975127236410613}
   m_Layer: 11
   m_Name: Movable
@@ -259,7 +258,7 @@ Animator:
   m_GameObject: {fileID: 8332219760109891214}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: f802f865c691c1b47a897e7c2595f044, type: 2}
+  m_Controller: {fileID: 9100000, guid: fb93114f4dea0424aad6ca6aa5795c64, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -282,11 +281,13 @@ MonoBehaviour:
   m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SortKey: 0
+  SortKey: 3523310262
   ObjectInterest: 1
-  Flags: 262144
+  Flags: 262145
   NestedObjects: []
-  NetworkedBehaviours: []
+  NetworkedBehaviours:
+  - {fileID: 1726343276259717573}
+  - {fileID: 0}
 --- !u!114 &1726343276259717573
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305,18 +306,6 @@ MonoBehaviour:
   SyncSettings: 79
   StateHashes: 00000000c0aec0d242e18c579a2c4204c8763d2d
   TriggerHashes: 00000000
---- !u!114 &8714555422781730289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8332219760109891214}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a63cddc2e958b834eb28525cceb11e61, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!82 &2769975127236410613
 AudioSource:
   m_ObjectHideFlags: 0

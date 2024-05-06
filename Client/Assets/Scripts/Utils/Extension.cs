@@ -62,4 +62,25 @@ public static class Extension
             runner.AddGlobal(sb);
         }
     }
+
+    public static void SetLayerRecursive(this GameObject root, int layer)
+    {
+        if (root == null) return;
+
+        root.layer = layer;
+
+        // 모든 자식 레이어 변경
+        foreach (Transform child in root.transform)
+        {
+            SetLayerRecursive(child.gameObject, layer);
+        }
+    }
+
+    public static void SetLayerRecursive(this GameObject[] root, int layer)
+    {
+        foreach (var go in root)
+        {
+            go.SetLayerRecursive(layer);
+        }
+    }
 }

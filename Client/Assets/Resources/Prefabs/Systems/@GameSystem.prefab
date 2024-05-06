@@ -19,7 +19,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &516434508644561993
 Transform:
   m_ObjectHideFlags: 0
@@ -87,8 +87,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c160b5c6947d1e34ea6fe249fb97cea6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _batteryChargers: []
+  _centralControlComputers: []
+  _elevatorControlComputers: []
+  _cargoPassageControlComputers: []
+  _elevatorKeypads: []
+  _cargoPassageGates:
+  - {fileID: 0}
   _BatteryChargeCount: 0
-  _IsGeneratorRestored:
+  _USBKeyInsertCount: 0
+  _IsCardkeyUsed:
+    _value: 0
+  _IsCargoPassageUnlocked:
     _value: 0
 --- !u!114 &7673804491711146235
 MonoBehaviour:

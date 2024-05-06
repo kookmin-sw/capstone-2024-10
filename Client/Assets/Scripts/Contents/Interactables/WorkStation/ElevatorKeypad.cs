@@ -19,42 +19,29 @@ public class ElevatorKeypad : BaseWorkStation
     }
     public override bool IsInteractable(Creature creature)
     {
-        if (creature is not Crew crew)
-        {
-            creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Hide();
-            return false;
-        }
+        if(!base.IsInteractable(creature)) return false;
 
-        if (creature.CreatureState == Define.CreatureState.Interact)
+        if (creature is not Crew)
         {
-            creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Hide();
             return false;
         }
 
         if (IsCompleted)
         {
-            creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Hide();
             return false;
         }
 
-        if (!Managers.GameMng.PlanSystem.IsGeneratorRestored)
+        if (!Managers.GameMng.PlanSystem.IsUSBKeyInsertFinished)
         {
-            creature.IngameUI.InteractInfoUI.Hide();
-            creature.IngameUI.ErrorTextUI.Hide();
             return false;
         }
 
-        if (WorkerCount > 0)
+        if (WorkerCount > 0 && Worker == null)
         {
-            creature.IngameUI.InteractInfoUI.Hide();
             creature.IngameUI.ErrorTextUI.Show("Another player is interacting");
             return false;
         }
-        
-        creature.IngameUI.ErrorTextUI.Hide();
+
         creature.IngameUI.InteractInfoUI.Show(Description);
         return true;
     }
@@ -65,6 +52,13 @@ public class ElevatorKeypad : BaseWorkStation
         if (IsCompleted) return;
         IsCompleted = true;
         _elevatorDoor.GetComponent<NetworkMecanimAnimator>().Animator.SetBool("OpenParameter", true);
+        Rpc_SetLayer();
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    private void Rpc_SetLayer()
+    {
+        gameObject.SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
