@@ -5,26 +5,53 @@ using UnityEngine;
 
 public class GameEndSystem : NetworkBehaviour
 {
-
-    public float DeathCount = 0.0f;
-
+    [Networked] public NetworkBool IsCrewClear { get; set; } = false;
+    [Networked] public NetworkBool IsGameEnd { get; set; } = false;
+    
     public void Init()
     {
         Managers.GameMng.GameEndSystem = this;
     }
+
     public void EndGame()
     {
-        if (Managers.NetworkMng.NumPlayers == 1)
+        if (IsGameEnd)
         {
-
-            if (DeathCount <= 3)
+            if (Managers.NetworkMng.NumPlayers <= 1)
             {
-                Managers.ObjectMng.MyAlien.OnAllKill();
-            }
-            else
-            {
-                Managers.ObjectMng.MyAlien.OnClear();
+                if (IsCrewClear)
+                {
+                    Managers.ObjectMng.MyAlien.OnClear();
+                    IsGameEnd = false;
+                }
+                else
+                {
+                    Managers.ObjectMng.MyAlien.OnAllKill();
+                    IsGameEnd = false;
+                }
             }
         }
+        else
+        {
+            return;
+        }
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void Rpc_GameClear()
+    {
+        IsCrewClear = true;
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void Rpc_GameEnd()
+    {
+        IsGameEnd = true;
+    }
+
+    public async void Exit()
+    {
+        await Runner.Shutdown();
+        Managers.SceneMng.LoadScene(Define.SceneType.LobbyScene);
     }
 }

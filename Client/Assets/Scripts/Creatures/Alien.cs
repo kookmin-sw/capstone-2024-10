@@ -65,6 +65,17 @@ public abstract class Alien : Creature
         Gizmos.DrawWireSphere( Head.transform.position + transform.forward * CurrentSkillRange, CurrentSkillRange);
     }
 
+    protected override void OnUpdate()
+    {
+        base.OnUpdate();
+
+        if (Managers.GameMng.GameEndSystem != null)
+        {
+            Managers.GameMng.GameEndSystem.EndGame();
+        }
+        
+    }
+
     protected override void HandleInput()
     {
         base.HandleInput();

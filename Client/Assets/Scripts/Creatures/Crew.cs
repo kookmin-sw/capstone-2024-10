@@ -323,6 +323,8 @@ public class Crew : Creature
 
         CrewIngameUI.HideUI();
         Managers.UIMng.ShowPopupUI<UI_GameOver>();
+        Managers.GameMng.GameEndSystem.Rpc_GameEnd();
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -332,7 +334,6 @@ public class Crew : Creature
     public void Rpc_OnDead()
     {
         Collider.enabled = false;
-        //Managers.GameMng.GameEndSystem.DeathCount++;
     }
 
     public void OnClear()
