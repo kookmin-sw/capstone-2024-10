@@ -7,7 +7,7 @@ public class ElevatorControlComputer : BaseWorkStation
     {
         base.Init();
 
-        Description ="Insert USBKey into computer";
+        Description = "Insert USBKey";
         CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = false;
