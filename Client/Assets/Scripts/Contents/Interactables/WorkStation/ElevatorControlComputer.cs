@@ -6,7 +6,7 @@ public class ElevatorControlComputer : BaseWorkStation
     protected override void Init()
     {
         base.Init();
-
+        
         Description ="Insert USB Key";
         CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
