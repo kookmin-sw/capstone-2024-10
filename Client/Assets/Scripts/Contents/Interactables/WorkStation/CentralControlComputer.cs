@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CentralControlComputer : BaseWorkStation
 {
-    private new string Description => Managers.GameMng.PlanSystem.IsCardkeyUsed ? "Use central control computer" : "Insert cardkey into computer";
+    private new string Description => Managers.GameMng.PlanSystem.IsCardkeyUsed ? "Use central control computer" : "Insert cardkey";
     protected override void Init()
     {
         base.Init();
