@@ -51,9 +51,9 @@ public class UI_GameOver : UI_Popup
     {
         yield return new WaitForSeconds(0.2f);
         accumTime = 0f;
-        while (accumTime < 1f)
+        while (accumTime < 2f)
         {
-            CanvasGroup.alpha = Mathf.Lerp(0f, 1f, accumTime / 1f);
+            CanvasGroup.alpha = Mathf.Lerp(0f, 1f, accumTime / 2f);
             yield return 0;
             accumTime += Time.deltaTime;
         }
@@ -62,7 +62,7 @@ public class UI_GameOver : UI_Popup
 
     public void ExitGame()
     {
-        Managers.StartMng.Player.ExitGame();
+        Managers.GameMng.GameEndSystem.Exit();
     }
 
 }
