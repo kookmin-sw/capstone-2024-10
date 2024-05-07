@@ -18,7 +18,7 @@ public class ItemKit : BaseWorkStation
         Transform = gameObject.GetComponent<Transform>();
         AudioSource = gameObject.GetComponent<AudioSource>();
 
-        Description = "Open";
+        Description = "Open ItemKit";
         CrewActionType = Define.CrewActionType.OpenItemKit;
         CanRememberWork = false;
         IsCompleted = false;

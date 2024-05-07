@@ -7,7 +7,7 @@ public class Door : BaseWorkStation
     {
         get
         {
-            if (Managers.ObjectMng.MyCreature is Alien) return "Crash door";
+            if (Managers.ObjectMng.MyCreature is Alien) return "Crash Door";
             return IsOpened ? "Close" : "Open";
         }
     }

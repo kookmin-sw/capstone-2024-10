@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CentralControlComputer : BaseWorkStation
 {
-    private new string Description => Managers.GameMng.PlanSystem.IsCardkeyUsed ? "Use central control computer" : "Insert cardkey";
+    private new string Description => Managers.GameMng.PlanSystem.IsCardkeyUsed ? "Use Central Control Computer" : "Insert Card Key";
     protected override void Init()
     {
         base.Init();
@@ -33,7 +33,7 @@ public class CentralControlComputer : BaseWorkStation
 
         if (!Managers.GameMng.PlanSystem.IsCardkeyUsed && crew.Inventory.CurrentItem is not CardKey)
         {
-            creature.IngameUI.ErrorTextUI.Show("You should have cardkey on your hand");
+            creature.IngameUI.ErrorTextUI.Show("You should have card key on your hand");
             return false;
         }
 
@@ -68,6 +68,6 @@ public class CentralControlComputer : BaseWorkStation
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
-        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/GeneratorController", 1f, 1f, isLoop: true);
+        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/Insert", 1f, 1f, isLoop: false);
     }
 }

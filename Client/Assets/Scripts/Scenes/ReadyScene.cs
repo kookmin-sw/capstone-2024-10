@@ -9,7 +9,7 @@ public class ReadyScene : BaseScene
 
         SceneType = Define.SceneType.ReadyScene;
 
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Sci Fi Ambience 10", Define.SoundType.Environment, volume:0.8f);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Environment, volume:1f);
 
         Managers.UIMng.ShowPopupUI<UI_StartGame>(parent: Managers.UIMng.Root.transform);
 

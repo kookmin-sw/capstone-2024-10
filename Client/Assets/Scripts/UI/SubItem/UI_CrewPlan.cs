@@ -86,8 +86,8 @@ public class UI_CrewPlan : UI_Base
             _objectiveText.DOFade(1f, 1f);
             _objectiveText.fontStyle = FontStyles.Normal;
             _objectiveText.color = Color.white;
-    
-            
+
+
             SetObjectiveText(nextObjective, false);
             SetHintText(nextHint);
 
@@ -109,7 +109,7 @@ public class UI_CrewPlan : UI_Base
         Bind<GameObject>(typeof(GameObjects));
         Bind<TMP_Text>(typeof(Texts));
 
-        GetText(Texts.Main_Title_text).SetText("Restore power of laboratory!");
+        GetText(Texts.Main_Title_text).SetText("Restore Power Of Facility!");
         _batteryChargePlan = GetObject(GameObjects.Plan_BatteryCharge).GetOrAddComponent<UI_PlanPanel>();
         _planA = GetObject(GameObjects.PlanA).GetOrAddComponent<UI_PlanPanel>();
         _planB = GetObject(GameObjects.PlanB).GetOrAddComponent<UI_PlanPanel>();
@@ -127,51 +127,51 @@ public class UI_CrewPlan : UI_Base
 
     public void UpdateBatteryCount(int count)
     {
-        _batteryChargePlan.SetObjectiveText($"Insert batteries in battery charger ({count}/{Define.BATTERY_CHARGE_GOAL})", true);
+        _batteryChargePlan.SetObjectiveText($"Insert Batteries In Battery Charger ({count}/{Define.BATTERY_CHARGE_GOAL})", true);
         if (count >= Define.BATTERY_CHARGE_GOAL)
         {
-            _batteryChargePlan.SetObjectiveText($"Insert batteries in battery charger ({count}/{Define.BATTERY_CHARGE_GOAL})", true, true);
+            _batteryChargePlan.SetObjectiveText($"Insert Batteries In Battery Charger ({count}/{Define.BATTERY_CHARGE_GOAL})", true, true);
 
             StartCoroutine(OnBatteryChargeFinished());
         }
     }
-    /// 
+    ///
     /// Plan A: 엘리베이터 조작 컴퓨터에 USBKey 일정 개수 사용 -> 엘리베이터 조작 키패드 상호작용 -> 엘리베이터로 탈출
-    /// 
+    ///
     public void UpdateUSBKeyCount(int count)
     {
-        _planA.SetObjectiveText($"Insert USB Keys in elevator control computer ({count}/{Define.USBKEY_INSERT_GOAL})", true);
+        _planA.SetObjectiveText($"Insert USB Keys In Elevator Control Computer ({count}/{Define.USBKEY_INSERT_GOAL})", true);
         if (count >= Define.USBKEY_INSERT_GOAL)
         {
-            _planA.SetObjectiveText($"Insert USB Keys in elevator control computer ({count}/{Define.USBKEY_INSERT_GOAL})", true, true);
+            _planA.SetObjectiveText($"Insert USB Keys In Elevator Control Computer ({count}/{Define.USBKEY_INSERT_GOAL})", true, true);
 
-            StartCoroutine(_planA.CompleteObjective("Activate the elevator and escape!",""));
+            StartCoroutine(_planA.CompleteObjective("Activate The Elevator And Escape!",""));
         }
     }
-    /// 
+    ///
     /// Plan B: 중앙통제실 컴퓨터에 Cardkey사용 -> 중앙통제실 컴퓨터 상호작용 -> 화물통제 컴퓨터 상호작용 -> 화물 통로로 탈출 (화물 통로 문 자동 열림)
-    /// 
+    ///
     public void OnCardkeyUsed()
     {
-        _planB.SetObjectiveText($"Use cardkey on central control computer", true, true);
+        _planB.SetObjectiveText($"Use Card Key On Central Control Computer", true, true);
 
-        StartCoroutine(_planB.CompleteObjective("Use central control computer",
+        StartCoroutine(_planB.CompleteObjective("Use Central Control Computer",
             MakeHintFromSectorName(new [] { Define.SectorName.CentralControlRoom })));
     }
 
     public void OnCentralControlComputerWorkFinished()
     {
-        _planB.SetObjectiveText($"Use central control computer", true, true);
+        _planB.SetObjectiveText($"Use Central Control Computer", true, true);
 
-        StartCoroutine(_planB.CompleteObjective("Use cargo control computer to open cargo passage gate",
+        StartCoroutine(_planB.CompleteObjective("Use Cargo Control Computer To Open Cargo Gate",
             MakeHintFromSectorName(new[] { Define.SectorName.CargoControlRoom, Define.SectorName.DirectorOffice})));
     }
 
     public void OnCargoPassageOpen()
     {
-        _planB.SetObjectiveText($"Use cargo control computer to open cargo passage gate", true, true);
+        _planB.SetObjectiveText($"Use Cargo Control Computer To Open Cargo Gate", true, true);
 
-        StartCoroutine(_planB.CompleteObjective("Escape through the cargo passage gate!", ""));
+        StartCoroutine(_planB.CompleteObjective("Escape Through The Cargo Gate!", ""));
     }
 
     private IEnumerator OnBatteryChargeFinished()
@@ -182,15 +182,15 @@ public class UI_CrewPlan : UI_Base
         yield return titleText.DOFade(0, 1f).WaitForCompletion();
 
         _batteryChargePlan.gameObject.SetActive(false);
-        titleText.SetText("Complete any plan to escape!");
+        titleText.SetText("Complete Any Plan To Escape!");
         titleText.DOFade(1, 1f);
 
         _planA.gameObject.SetActive(true);
-        _planA.SetObjectiveText($"Insert USB Keys in elevator control computer (0/{Define.USBKEY_INSERT_GOAL})", false);
+        _planA.SetObjectiveText($"Insert USB Keys In Elevator Control Computer (0/{Define.USBKEY_INSERT_GOAL})", false);
         _planA.SetHintText(MakeHintFromSectorName(new[] { Define.SectorName.PowerRoom, Define.SectorName.VisitingRoom }));
 
         _planB.gameObject.SetActive(true);
-        _planB.SetObjectiveText($"Use cardkey on central control computer", false);
+        _planB.SetObjectiveText($"Use Card Key On Central Control Computer", false);
         _planB.SetHintText(MakeHintFromSectorName(new[] {Define.SectorName.CentralControlRoom }));
     }
 
