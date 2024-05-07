@@ -7,13 +7,12 @@ public class ElevatorControlComputer : BaseWorkStation
     {
         base.Init();
 
-        Description ="Insert USBKey into computer";
+        Description ="Insert USB Key";
         CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = false;
         IsCompleted = false;
 
-        //TotalWorkAmount = 150f;
         TotalWorkAmount = 15f; // TODO: for test
     }
 
@@ -33,7 +32,7 @@ public class ElevatorControlComputer : BaseWorkStation
 
         if (crew.Inventory.CurrentItem is not USBKey)
         {
-            creature.IngameUI.ErrorTextUI.Show("You should have USBKey on your hand");
+            creature.IngameUI.ErrorTextUI.Show("You should have USB key on your hand");
             return false;
         }
 
@@ -64,6 +63,6 @@ public class ElevatorControlComputer : BaseWorkStation
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
-        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/GeneratorController", 1f, 1f, isLoop: true);
+        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/Insert", 1f, 1f, isLoop: false);
     }
 }

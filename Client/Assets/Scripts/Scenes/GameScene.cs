@@ -10,7 +10,7 @@ public class GameScene : BaseScene
 
         SceneType = Define.SceneType.GameScene;
 
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Sci Fi Ambience 10", Define.SoundType.Environment, volume:0.3f);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Environment, volume:1f);
     }
 
     public override IEnumerator OnPlayerSpawn()

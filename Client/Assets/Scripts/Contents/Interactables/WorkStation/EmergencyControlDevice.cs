@@ -7,7 +7,7 @@ public class EmergencyControlDevice : BaseWorkStation
     {
         base.Init();
 
-        Description ="Activate panic room";
+        Description ="Activate Panic Room";
         CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;
@@ -30,7 +30,7 @@ public class EmergencyControlDevice : BaseWorkStation
         {
             return false;
         }
-        
+
         creature.IngameUI.InteractInfoUI.Show(Description);
         return true;
     }

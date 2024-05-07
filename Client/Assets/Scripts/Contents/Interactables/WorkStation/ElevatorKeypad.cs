@@ -9,7 +9,7 @@ public class ElevatorKeypad : BaseWorkStation
     {
         base.Init();
 
-        Description = "Activate elevator";
+        Description = "Activate Elevator";
         CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;
