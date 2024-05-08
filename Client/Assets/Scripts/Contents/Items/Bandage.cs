@@ -22,6 +22,14 @@ public class Bandage : BaseItem
 
     protected override void UseItem()
     {
+        Owner.CreatureState = Define.CreatureState.Use;
+        Owner.CreaturePose = Define.CreaturePose.Stand;
+
+        Owner.CrewAnimController.PlayAnim(Define.CrewActionType.Bandage);
+        Owner.CrewSoundController.PlaySound(Define.CrewActionType.Bandage);
+
         Owner.CrewStat.ChangeHp((int)ItemData.Value);
+
+        Owner.ReturnToIdle(5f);
     }
 }

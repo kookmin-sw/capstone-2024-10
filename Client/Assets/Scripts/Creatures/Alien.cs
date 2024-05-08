@@ -65,17 +65,6 @@ public abstract class Alien : Creature
         Gizmos.DrawWireSphere( Head.transform.position + transform.forward * CurrentSkillRange, CurrentSkillRange);
     }
 
-    protected override void OnUpdate()
-    {
-        base.OnUpdate();
-
-        if (Managers.GameMng.GameEndSystem != null)
-        {
-            Managers.GameMng.GameEndSystem.EndGame();
-        }
-        
-    }
-
     protected override void HandleInput()
     {
         base.HandleInput();
@@ -124,12 +113,12 @@ public abstract class Alien : Creature
         // TODO - TEST CODE
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            OnAllKill();
+            Managers.GameMng.GameEndSystem.Rpc_CrewEndGame(false);
             return;
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            OnClear();
+            Managers.GameMng.GameEndSystem.Rpc_CrewEndGame(true);
             return;
         }
         ////////////////
@@ -140,26 +129,11 @@ public abstract class Alien : Creature
         else
         {
             CreatureState = Define.CreatureState.Move;
-
-            if (Input.GetKey(KeyCode.LeftShift) && Direction.z > 0)
-                CreaturePose = Define.CreaturePose.Run;
-            else
-                if (CreaturePose == Define.CreaturePose.Run)
-                    CreaturePose = Define.CreaturePose.Stand;
         }
     }
 
     protected override void UpdateIdle()
     {
-        switch (CreaturePose)
-        {
-            case Define.CreaturePose.Stand:
-                break;
-            case Define.CreaturePose.Run:
-                CreaturePose = Define.CreaturePose.Stand;
-                break;
-        }
-
         KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
     }
 
@@ -169,9 +143,6 @@ public abstract class Alien : Creature
         {
             case Define.CreaturePose.Stand:
                 AlienStat.Speed = AlienStat.WalkSpeed;
-                break;
-            case Define.CreaturePose.Run:
-                AlienStat.Speed = AlienStat.RunSpeed;
                 break;
         }
 
@@ -203,24 +174,18 @@ public abstract class Alien : Creature
         ReturnToIdle(blindTime);
     }
 
-    public void OnAllKill()
+    public void OnWin()
     {
-        Managers.UIMng.ShowPopupUI<UI_AllKill>();
-        AlienIngameUI.UIGameClear();
-        AlienSoundController.PlayGameClear();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        AlienSoundController.PlayEndGame();
 
-        Collider.enabled = false;
+        AlienIngameUI.UIGameClear();
     }
 
-    public void OnClear()
+    public void OnDefeat()
     {
-        Managers.UIMng.ShowPopupUI<UI_Kill>();
+        AlienSoundController.PlayEndGame();
+
         AlienIngameUI.UIGameClear();
-        AlienSoundController.PlayGameClear();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
     }
 
     #endregion

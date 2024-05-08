@@ -13,9 +13,10 @@ public class CrewStat : BaseStat
     public float MaxSanity { get; set; }
     public float SitSpeed { get; set; }
 
-    public bool IsRunnable { get; set; }
-    public bool Exhausted { get; set; }
-    public bool Doped { get; set; }
+    public bool IsRunnable { get; set; } = true;
+    public bool Exhausted { get; set; } = false;
+    public bool Doped { get; set; } = false;
+    public bool Erosion { get; set; } = false;
 
     public override void SetStat(CreatureData creatureData)
     {
@@ -28,7 +29,6 @@ public class CrewStat : BaseStat
         Sanity = CrewData.MaxSanity;
         MaxSanity = CrewData.MaxSanity;
         SitSpeed = CrewData.SitSpeed;
-        IsRunnable = true;
     }
 
     #region Event
@@ -78,19 +78,18 @@ public class CrewStat : BaseStat
 
         Sanity = Mathf.Clamp(Sanity + value, 0, MaxSanity);
 
-        float ratio = 1f;
-        if (Sanity >= 70)
-            ratio = 1f;
-        else if (Sanity < 50)
-            ratio = 0.85f;
-        else if (Sanity < 25)
-            ratio = 0.7f;
+        float ratio = 0.7f + Sanity * 0.003f;
 
+        ChangeSpeed(ratio);
+
+        Managers.GameMng.RenderingSystem.ApplySanity(Sanity);
+    }
+
+    public void ChangeSpeed(float ratio)
+    {
         WalkSpeed = CrewData.WalkSpeed * ratio;
         RunSpeed = CrewData.RunSpeed * ratio;
         SitSpeed = CrewData.SitSpeed * ratio;
-
-        Managers.GameMng.RenderingSystem.ApplySanity(Sanity);
     }
 
     #endregion

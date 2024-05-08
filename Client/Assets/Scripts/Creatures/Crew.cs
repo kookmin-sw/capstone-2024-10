@@ -129,7 +129,7 @@ public class Crew : Creature
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            OnClear();
+            OnWin();
             return;
         }
         /////////////////////////////////
@@ -223,8 +223,8 @@ public class Crew : Creature
             CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
             CrewStat.ChangeSanity(Define.SIT_RECOVER_SANITY * Runner.DeltaTime);
         }
-        else if (CrewSoundController.IsChasing)
-            CrewStat.ChangeSanity(-Define.PASIVE_REDUCE_SANITY * Runner.DeltaTime);
+        else if (CrewStat.Erosion)
+            CrewStat.ChangeSanity(-Define.EROSION_REDUCE_SANITY * Runner.DeltaTime);
     }
 
     protected override void UpdateIdle()
@@ -291,7 +291,7 @@ public class Crew : Creature
 
         if (CrewStat.Hp <= 0)
         {
-            OnDead();
+            OnDefeat();
             return;
         }
 
@@ -312,46 +312,42 @@ public class Crew : Creature
         CrewStat.ChangeSanity(-value);
     }
 
-    public void OnDead()
+    public void OnDefeat()
     {
-        Rpc_OnDead();
-
         CreatureState = Define.CreatureState.Dead;
 
         CrewAnimController.PlayAnim(Define.CrewActionType.Dead);
         CrewSoundController.PlaySound(Define.CrewActionType.Dead);
 
         CrewIngameUI.HideUI();
-        Managers.UIMng.ShowPopupUI<UI_GameOver>();
-        Managers.GameMng.GameEndSystem.Rpc_GameEnd();
+        Managers.GameMng.GameEndSystem.CrewEndGame(false);
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
+        Rpc_OnDefeat();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_OnDead()
+    public void Rpc_OnDefeat()
     {
         Collider.enabled = false;
     }
 
-    public void OnClear()
+    public void OnWin()
     {
-        Rpc_OnClear();
+        CreatureState = Define.CreatureState.Idle;
+
+        CrewSoundController.PlayEndGame();
 
         CrewIngameUI.HideUI();
-        Managers.UIMng.ShowPopupUI<UI_GameClear>();
-        CrewIngameUI.UIGameClear();
-        CrewSoundController.PlayGameClear();
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        Managers.GameMng.GameEndSystem.CrewEndGame(true);
+        CrewIngameUI.EndGame();
+
+        Rpc_OnWin();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_OnClear()
+    public void Rpc_OnWin()
     {
-        Collider.enabled = false;
+        gameObject.SetActive(false);
     }
 
     #endregion

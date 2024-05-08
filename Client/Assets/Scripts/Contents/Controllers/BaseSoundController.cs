@@ -62,11 +62,11 @@ public abstract class BaseSoundController : NetworkBehaviour
 
     #endregion
 
-    #region GameClear
+    #region EndGame
 
-    public void PlayGameClear()
+    public void PlayEndGame()
     {
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 1f);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.7f);
     }
 
     #endregion

@@ -15,9 +15,7 @@ public class RenderingSystem : NetworkBehaviour
 
     public Material DamageMaterial { get; protected set; }
 
-    private Tweener _setChromaticAberrationTweener;
     private Tweener _setColorAdjustmentsTweener;
-    private Tweener _setVignetteTweener;
     private Tweener _getBlindTweener;
     private Color _erosionColor2 = new Color(255.0f / 255.0f, 76.0f / 255.0f, 76.0f / 255.0f);
     private Color _erosionColor = new Color(76.0f / 255.0f, 76.0f / 255.0f, 255.0f / 255.0f);
@@ -58,19 +56,8 @@ public class RenderingSystem : NetworkBehaviour
 
     public void ApplySanity(float sanity)
     {
-        _setVignetteTweener.Kill();
-        _setVignetteTweener = DOVirtual.Float(Vignette.intensity.value,
-            0.2f + (100f - sanity) * 0.01f * 0.55f, 1f, value =>
-            {
-                Vignette.intensity.value = value;
-            });
-
-        _setChromaticAberrationTweener.Kill();
-        _setChromaticAberrationTweener = DOVirtual.Float(ChromaticAberration.intensity.value,
-            (100f - sanity) * 0.01f, 1f, value =>
-            {
-                ChromaticAberration.intensity.value = value;
-            });
+        Vignette.intensity.value = 0.2f + (100f - sanity) * 0.01f * 0.55f;
+        //ChromaticAberration.intensity.value = (100f - sanity) * 0.01f;
     }
 
     public void ApplyErosion(bool isErosion)
@@ -90,12 +77,7 @@ public class RenderingSystem : NetworkBehaviour
             ColorAdjustments.colorFilter.value = value;
         });
 
-        _setChromaticAberrationTweener.Kill();
-        _setChromaticAberrationTweener = DOVirtual.Float(ChromaticAberration.intensity.value,
-            value, 2f, value =>
-            {
-                ChromaticAberration.intensity.value = value;
-            });
+        ChromaticAberration.intensity.value = value;
     }
 
     public void GetBlind(float blindTime, float backTime)
