@@ -46,12 +46,12 @@ public class GameEndSystem : NetworkBehaviour
             if (KilledCrewNum >= Define.PLAYER_COUNT - 1)
             {
                 Managers.UIMng.ShowPopupUI<UI_AlienWin>();
-                alien.OnWin();
+                alien.OnEndGame();
             }
             else
             {
                 Managers.UIMng.ShowPopupUI<UI_AlienDefeat>();
-                alien.OnDefeat();
+                alien.Rpc_OnEndGame();
             }
         }
     }

@@ -147,6 +147,5 @@ public class CrewAnimController : BaseAnimController
         SetBool("Throw", false);
         SetBool("Damaged", false);
         SetBool("Bandage", false);
-        SetBool("Antipsychotic", false);
     }
 }

@@ -17,10 +17,11 @@ public abstract class BaseSkill : NetworkBehaviour
     public float CurrentReadySkillAmount { get; protected set; }
     public bool Ready { get; protected set; }
     public bool IsHit { get; protected set; }
+    public Vector3 HitVector { get; protected set; }
 
     public Alien Owner { get; protected set; }
     public Vector3 ForwardDirection => Owner.Transform.forward;
-    public Vector3 AttackPosition => Owner.Head.transform.position + ForwardDirection * SkillData.Range;
+    public Vector3 AttackPosition => Owner.Head.transform.position + Vector3.down * 0.2f;
 
     #endregion
 
@@ -43,6 +44,7 @@ public abstract class BaseSkill : NetworkBehaviour
         CurrentReadySkillAmount = 0f;
         Ready = true;
         IsHit = false;
+        HitVector = new Vector3(1f, 1f, 0.1f);
     }
 
     public virtual bool CheckAndUseSkill()

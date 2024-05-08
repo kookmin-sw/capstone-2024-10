@@ -27,19 +27,27 @@ public class LeapAttack : BaseSkill
 
         while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
-            if (CurrentSkillAmount < SkillData.TotalSkillAmount - 0.5f)
+            if (CurrentSkillAmount < SkillData.TotalSkillAmount - 0.5f && !IsHit)
             {
-                Collider[] hitColliders = new Collider[3];
-
-                if (!IsHit && Physics.OverlapSphereNonAlloc(AttackPosition, SkillData.Range, hitColliders, LayerMask.GetMask("Crew")) > 0)
+                for (float i = -1f; i <= 1f && !IsHit; i += 0.2f)
                 {
-                    if (hitColliders[0].gameObject.TryGetComponent(out Crew crew))
+                    for (float j = -1f; j <= 1f && !IsHit; j += 0.2f)
                     {
-                        IsHit = true;
-                        IsMoving = false;
-                        Owner.AlienSoundController.PlaySound(Define.AlienActionType.Hit);
-                        crew.Rpc_OnDamaged(SkillData.Damage);
-                        crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
+                        Ray ray = new Ray(AttackPosition + Owner.CameraRotationY * new Vector3(i, j, 0f), ForwardDirection);
+
+                        Debug.DrawRay(ray.origin, ray.direction * SkillData.Range, Color.red);
+
+                        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: SkillData.Range,
+                                layerMask: LayerMask.GetMask("Crew", "MapObject", "PlanTargetObject")))
+                        {
+                            if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
+                            {
+                                IsHit = true;
+                                Owner.AlienSoundController.PlaySound(Define.AlienActionType.Hit);
+                                crew.Rpc_OnDamaged(SkillData.Damage);
+                                crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
+                            }
+                        }
                     }
                 }
             }

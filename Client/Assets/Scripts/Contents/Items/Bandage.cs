@@ -10,6 +10,9 @@ public class Bandage : BaseItem
         ItemGameObject.transform.localEulerAngles = new Vector3(-9f, -83f, 83f);
         ItemGameObject.transform.localScale = new Vector3(0.7f, 0.7f, 0.7f);
         ItemGameObject.SetActive(false);
+
+        CrewActionType = Define.CrewActionType.Bandage;
+        TotalWorkAmount = 10f;
     }
     public override bool CheckAndUseItem()
     {
@@ -20,16 +23,8 @@ public class Bandage : BaseItem
         return true;
     }
 
-    protected override void UseItem()
+    protected override void UseItemComplete()
     {
-        Owner.CreatureState = Define.CreatureState.Use;
-        Owner.CreaturePose = Define.CreaturePose.Stand;
-
-        Owner.CrewAnimController.PlayAnim(Define.CrewActionType.Bandage);
-        Owner.CrewSoundController.PlaySound(Define.CrewActionType.Bandage);
-
         Owner.CrewStat.ChangeHp((int)ItemData.Value);
-
-        Owner.ReturnToIdle(5f);
     }
 }

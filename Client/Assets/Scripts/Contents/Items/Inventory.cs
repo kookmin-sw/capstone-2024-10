@@ -108,7 +108,6 @@ public class Inventory: NetworkBehaviour
         if (!CurrentItem.CheckAndUseItem())
             return false;
 
-        RemoveItem();
         return true;
     }
 

@@ -60,18 +60,6 @@ public class Crew : Creature
 
     #region Update
 
-    public void OnDrawGizmos()
-    {
-        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
-            return;
-
-        Vector3 center = CreatureCamera.Transform.position;
-        Vector3 size = new Vector3(50f, 2f, 50f);
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireCube(center, size);
-    }
-
     protected override void OnUpdate()
     {
         base.OnUpdate();
@@ -83,7 +71,7 @@ public class Crew : Creature
     {
         base.HandleInput();
 
-        if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead || CreatureState == Define.CreatureState.Use)
+        if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead)
             return;
 
         /////////////////////////////////
@@ -134,7 +122,7 @@ public class Crew : Creature
         }
         /////////////////////////////////
 
-        if (CreatureState == Define.CreatureState.Interact)
+        if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
         {
             if (Input.GetKeyDown(KeyCode.F))
                 CreatureState = Define.CreatureState.Idle;
@@ -317,6 +305,7 @@ public class Crew : Creature
         CreatureState = Define.CreatureState.Dead;
 
         CrewAnimController.PlayAnim(Define.CrewActionType.Dead);
+        CrewSoundController.StopAllSound();
         CrewSoundController.PlaySound(Define.CrewActionType.Dead);
 
         CrewIngameUI.HideUI();
@@ -335,6 +324,7 @@ public class Crew : Creature
     {
         CreatureState = Define.CreatureState.Idle;
 
+        CrewSoundController.StopAllSound();
         CrewSoundController.PlayEndGame();
 
         CrewIngameUI.HideUI();
