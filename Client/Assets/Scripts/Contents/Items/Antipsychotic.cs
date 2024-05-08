@@ -14,16 +14,15 @@ public class Antipsychotic : BaseItem
     }
     public override bool CheckAndUseItem()
     {
-        if (Owner.CrewStat.Sanity >= Owner.CrewStat.MaxSanity)
-            return false;
-
         UseItem();
         return true;
     }
 
     protected override void UseItem()
     {
-        DOVirtual.Float(0, 0, 5, value =>
+        Owner.CrewSoundController.PlaySound(Define.CrewActionType.Antipsychotic);
+
+        DOVirtual.Float(0, 0, 10, value =>
         {
             Owner.CrewStat.ChangeSanity(ItemData.Value * Time.deltaTime);
         });

@@ -8,7 +8,7 @@ public class CentralControlComputer : BaseWorkStation
     {
         base.Init();
 
-        CrewActionType = Define.CrewActionType.KeypadUse;
+        CrewActionType = Define.CrewActionType.Insert;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = false;
         IsCompleted = false;

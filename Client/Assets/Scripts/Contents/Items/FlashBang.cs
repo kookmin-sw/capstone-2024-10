@@ -25,7 +25,7 @@ public class FlashBang : BaseItem
         Owner.CreatureState = Define.CreatureState.Use;
         Owner.CreaturePose = Define.CreaturePose.Stand;
 
-        Owner.CrewAnimController.PlayAnim(Define.CrewActionType.Throw);
+        Owner.CrewAnimController.PlayAnim(Define.CrewActionType.FlashBang);
 
         DOVirtual.DelayedCall(0.5f, () =>
         {

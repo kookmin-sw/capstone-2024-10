@@ -1,4 +1,5 @@
 using Fusion;
+using UnityEngine;
 
 public abstract class BaseAnimController : NetworkBehaviour
 {
@@ -46,6 +47,15 @@ public abstract class BaseAnimController : NetworkBehaviour
     protected void SetFloat(string parameter, float value)
     {
         NetworkAnim.Animator.SetFloat(parameter, value);
+    }
+
+    protected float Lerp(float start, float end, float time)
+    {
+        float value = Mathf.Lerp(start, end, time);
+        if (value > end - 0.01f && value < end + 0.01f)
+            value = end;
+
+        return value;
     }
 
     protected abstract void SetParameterFalse();

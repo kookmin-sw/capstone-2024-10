@@ -10,10 +10,7 @@ public class GameClearPoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Crew creature = other.GetComponent<Crew>();
-            creature.OnClear();
-            Managers.ResourceMng.Destroy(other.gameObject);
-            Managers.GameMng.GameEndSystem.Rpc_GameClear();
-            Managers.GameMng.GameEndSystem.Rpc_GameEnd();
+            creature.OnWin();
         }
     }
 }

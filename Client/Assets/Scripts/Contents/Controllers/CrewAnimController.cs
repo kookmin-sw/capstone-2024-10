@@ -1,6 +1,5 @@
 using UnityEngine;
 using Fusion;
-using Unity.VisualScripting;
 
 public class CrewAnimController : BaseAnimController
 {
@@ -14,16 +13,16 @@ public class CrewAnimController : BaseAnimController
         {
             case Define.CreaturePose.Stand:
             case Define.CreaturePose.Run:
-                SitParameter = Mathf.Lerp(SitParameter, 0, Runner.DeltaTime * 5);
+                SitParameter = Lerp(SitParameter, 0f, Runner.DeltaTime * 5f);
                 break;
             case Define.CreaturePose.Sit:
-                SitParameter = Mathf.Lerp(SitParameter, 1, Runner.DeltaTime * 5);
+                SitParameter = Lerp(SitParameter, 1f, Runner.DeltaTime * 5f);
                 break;
         }
 
-        XParameter = Mathf.Lerp(XParameter, 0, Runner.DeltaTime * 5);
-        ZParameter = Mathf.Lerp(ZParameter, 0, Runner.DeltaTime * 5);
-        SpeedParameter = Mathf.Lerp(SpeedParameter, 0, Runner.DeltaTime * 5);
+        XParameter = Lerp(XParameter, 0f, Runner.DeltaTime * 5f);
+        ZParameter = Lerp(ZParameter, 0f, Runner.DeltaTime * 5f);
+        SpeedParameter = Lerp(SpeedParameter, 0f, Runner.DeltaTime * 5f);
 
         SetParameterFalse();
         SetFloat("X", XParameter);
@@ -34,25 +33,25 @@ public class CrewAnimController : BaseAnimController
 
     public override void PlayMove()
     {
-        XParameter = Mathf.Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5);
-        ZParameter = Mathf.Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5);
+        XParameter = Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5f);
+        ZParameter = Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5f);
 
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
                 SetFloat("Z", ZParameter);
-                SitParameter = Mathf.Lerp(SitParameter, 0, Runner.DeltaTime * 5);
-                SpeedParameter = Mathf.Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5);
+                SitParameter = Lerp(SitParameter, 0f, Runner.DeltaTime * 5f);
+                SpeedParameter = Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5f);
                 break;
             case Define.CreaturePose.Sit:
                 SetFloat("Z", ZParameter);
-                SitParameter = Mathf.Lerp(SitParameter, 1, Runner.DeltaTime * 5);
-                SpeedParameter = Mathf.Lerp(SpeedParameter, 1, Runner.DeltaTime * 5);
+                SitParameter = Lerp(SitParameter, 1f, Runner.DeltaTime * 5f);
+                SpeedParameter = Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5f);
                 break;
             case Define.CreaturePose.Run:
                 SetFloat("Z", ZParameter * 1.8f);
-                SitParameter = Mathf.Lerp(SitParameter, 0, Runner.DeltaTime * 5);
-                SpeedParameter = Mathf.Lerp(SpeedParameter, 2, Runner.DeltaTime * 5);
+                SitParameter = Lerp(SitParameter, 0f, Runner.DeltaTime * 5f);
+                SpeedParameter = Lerp(SpeedParameter, 2f, Runner.DeltaTime * 5f);
                 break;
         }
 
@@ -70,6 +69,12 @@ public class CrewAnimController : BaseAnimController
     {
         switch (crewActionType)
         {
+            case Define.CrewActionType.Damaged:
+                PlayDamaged();
+                break;
+            case Define.CrewActionType.Dead:
+                PlayDead();
+                break;
             case Define.CrewActionType.KeypadUse:
                 PlayKeypadUse();
                 break;
@@ -79,19 +84,26 @@ public class CrewAnimController : BaseAnimController
             case Define.CrewActionType.OpenDoor:
                 PlayOpenDoor();
                 break;
-            case Define.CrewActionType.ChargeBattery:
+            case Define.CrewActionType.Insert:
                 PlayChargeBattery();
                 break;
-            case Define.CrewActionType.Throw:
+            case Define.CrewActionType.FlashBang:
                 PlayThrow();
                 break;
-            case Define.CrewActionType.Damaged:
-                PlayDamaged();
-                break;
-            case Define.CrewActionType.Dead:
-                PlayDead();
+            case Define.CrewActionType.Bandage:
+                PlayBandage();
                 break;
         }
+    }
+
+    public void PlayDamaged()
+    {
+        SetBool("Damaged", true);
+    }
+
+    public void PlayDead()
+    {
+        SetBool("IsDead", true);
     }
 
     public void PlayKeypadUse()
@@ -119,14 +131,9 @@ public class CrewAnimController : BaseAnimController
         SetBool("Throw", true);
     }
 
-    public void PlayDamaged()
+    public void PlayBandage()
     {
-        SetBool("Damaged", true);
-    }
-
-    public void PlayDead()
-    {
-        SetBool("IsDead", true);
+        SetBool("Bandage", true);
     }
 
     #endregion
@@ -139,5 +146,7 @@ public class CrewAnimController : BaseAnimController
         SetBool("ChargeBattery", false);
         SetBool("Throw", false);
         SetBool("Damaged", false);
+        SetBool("Bandage", false);
+        SetBool("Antipsychotic", false);
     }
 }

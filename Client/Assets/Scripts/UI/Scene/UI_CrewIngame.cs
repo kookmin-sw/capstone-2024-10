@@ -11,7 +11,7 @@ public class UI_CrewIngame : UI_Ingame
     public UI_CrewHP UI_CrewHP { get; private set; }
     public UI_CrewStamina UI_CrewStamina { get; private set; }
 
-    public UI_GameClear UI_GameClear { get; private set; }
+    public UI_CrewWin UICrewWin { get; private set; }
 
     public Canvas Canvas;
     public Camera camera;
@@ -49,7 +49,7 @@ public class UI_CrewIngame : UI_Ingame
     public override void InitAfterNetworkSpawn(Creature creature)
     {
         base.InitAfterNetworkSpawn(creature);
- 
+
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewHP) as UI_CrewHP).Crew = Crew;
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewStamina) as UI_CrewStamina).Crew = Crew;
 
@@ -64,7 +64,7 @@ public class UI_CrewIngame : UI_Ingame
         UI_CrewStamina.gameObject.SetActive(false);
     }
 
-    public void UIGameClear()
+    public void EndGame()
     {
         Canvas.renderMode = RenderMode.ScreenSpaceCamera;
         Transform[] children = gameObject.GetComponentsInChildren<Transform>();

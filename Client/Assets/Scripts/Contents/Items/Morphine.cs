@@ -23,6 +23,8 @@ public class Morphine : BaseItem
 
     protected override void UseItem()
     {
+        Owner.CrewSoundController.PlaySound(Define.CrewActionType.Morphine);
+
         Owner.CrewStat.Doped = true;
 
         DOVirtual.DelayedCall(ItemData.Value, () =>

@@ -6,9 +6,9 @@ public class AlienAnimController : BaseAnimController
 
     public override void PlayIdle()
     {
-        XParameter = Mathf.Lerp(XParameter, 0, Runner.DeltaTime * 5);
-        ZParameter = Mathf.Lerp(ZParameter, 0, Runner.DeltaTime * 5);
-        SpeedParameter = Mathf.Lerp(SpeedParameter, 0, Runner.DeltaTime * 5);
+        XParameter = Lerp(XParameter, 0f, Runner.DeltaTime * 5f);
+        ZParameter = Lerp(ZParameter, 0f, Runner.DeltaTime * 5f);
+        SpeedParameter = Lerp(SpeedParameter, 0f, Runner.DeltaTime * 5f);
 
         SetParameterFalse();
         SetFloat("X", XParameter);
@@ -18,22 +18,22 @@ public class AlienAnimController : BaseAnimController
 
     public override void PlayMove()
     {
-        XParameter = Mathf.Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5);
-        ZParameter = Mathf.Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5);
+        XParameter = Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5f);
+        ZParameter = Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5f);
 
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
                 SetFloat("Z", ZParameter);
-                SpeedParameter = Mathf.Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5);
+                SpeedParameter = Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5f);
                 break;
             case Define.CreaturePose.Sit:
                 SetFloat("Z", ZParameter);
-                SpeedParameter = Mathf.Lerp(SpeedParameter, 1, Runner.DeltaTime * 5);
+                SpeedParameter = Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5f);
                 break;
             case Define.CreaturePose.Run:
                 SetFloat("Z", ZParameter * 1.8f);
-                SpeedParameter = Mathf.Lerp(SpeedParameter, 2, Runner.DeltaTime * 5);
+                SpeedParameter = Lerp(SpeedParameter, 2f, Runner.DeltaTime * 5f);
                 break;
         }
 
