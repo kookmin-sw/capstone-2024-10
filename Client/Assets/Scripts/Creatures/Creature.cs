@@ -3,6 +3,7 @@ using Fusion;
 using Fusion.Addons.SimpleKCC;
 using DG.Tweening;
 using Data;
+using UnityEngine.Serialization;
 
 public abstract class Creature : NetworkBehaviour
 {
@@ -28,7 +29,7 @@ public abstract class Creature : NetworkBehaviour
             if (value == Define.CreatureState.Move)
                 BaseSoundController.PlayMove();
             else
-                BaseSoundController.Rpc_StopEffectMusic();
+                BaseSoundController.Rpc_StopEffectSound();
         }
     }
 
@@ -48,6 +49,7 @@ public abstract class Creature : NetworkBehaviour
         }
     }
 
+    public Quaternion CameraRotationY { get; set; }
     public Vector3 Direction { get; set; }
     public Vector3 Velocity { get; set; }
 
@@ -163,9 +165,9 @@ public abstract class Creature : NetworkBehaviour
 
     protected virtual void HandleInput()
     {
-        Quaternion cameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
+        CameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
         Direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
-        Velocity = (cameraRotationY * Direction).normalized;
+        Velocity = (CameraRotationY * Direction).normalized;
     }
 
     protected void UpdateByState()

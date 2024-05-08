@@ -11,7 +11,7 @@ public class CrewSoundController : BaseSoundController
                 Rpc_PlayFootStepSound(1.205f, 0.2f);
                 break;
             case Define.CreaturePose.Sit:
-                Rpc_StopEffectMusic();
+                Rpc_StopEffectSound();
                 break;
             case Define.CreaturePose.Run:
                 Rpc_PlayFootStepSound(2f, 1f);

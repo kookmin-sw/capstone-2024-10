@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Data;
@@ -55,15 +54,6 @@ public abstract class Alien : Creature
     }
 
     #region Update
-
-    public void OnDrawGizmos()
-    {
-        if (!CreatureCamera || !HasStateAuthority || !IsSpawned)
-            return;
-
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere( Head.transform.position + transform.forward * CurrentSkillRange, CurrentSkillRange);
-    }
 
     protected override void HandleInput()
     {
@@ -174,18 +164,20 @@ public abstract class Alien : Creature
         ReturnToIdle(blindTime);
     }
 
-    public void OnWin()
+    public void OnEndGame()
     {
+        AlienSoundController.StopAllSound();
         AlienSoundController.PlayEndGame();
 
         AlienIngameUI.UIGameClear();
+
+        Rpc_OnEndGame();
     }
 
-    public void OnDefeat()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void Rpc_OnEndGame()
     {
-        AlienSoundController.PlayEndGame();
-
-        AlienIngameUI.UIGameClear();
+        gameObject.SetActive(false);
     }
 
     #endregion

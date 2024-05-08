@@ -27,10 +27,19 @@ public abstract class BaseSoundController : NetworkBehaviour
     public abstract void PlayMove();
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_StopEffectMusic()
+    public void Rpc_StopEffectSound()
     {
         if (CreatureAudioSource.isPlaying)
             CreatureAudioSource.Stop();
+    }
+
+    public void StopAllSound()
+    {
+        Managers.SoundMng.Stop(Define.SoundType.Bgm);
+        Managers.SoundMng.Stop(Define.SoundType.Bgm);
+        Managers.SoundMng.Stop(Define.SoundType.Bgm);
+
+        Rpc_StopEffectSound();
     }
 
     #region Chasing
@@ -66,7 +75,7 @@ public abstract class BaseSoundController : NetworkBehaviour
 
     public void PlayEndGame()
     {
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.7f);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Environment, volume: 0.8f);
     }
 
     #endregion
