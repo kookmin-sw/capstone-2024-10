@@ -31,5 +31,7 @@ public class Morphine : BaseItem
         {
             Owner.CrewStat.Doped = false;
         });
+
+        Owner.Inventory.RemoveItem();
     }
 }

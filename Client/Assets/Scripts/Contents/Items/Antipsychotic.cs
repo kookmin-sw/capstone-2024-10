@@ -26,5 +26,7 @@ public class Antipsychotic : BaseItem
         {
             Owner.CrewStat.ChangeSanity(ItemData.Value * Time.deltaTime);
         });
+
+        Owner.Inventory.RemoveItem();
     }
 }

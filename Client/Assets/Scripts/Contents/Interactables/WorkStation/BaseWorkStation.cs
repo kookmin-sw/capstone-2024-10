@@ -44,15 +44,14 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
 
         return true;
     }
-    
+
     public virtual bool Interact(Creature creature)
     {
         Worker = creature;
-        Worker.IngameUI.InteractInfoUI.Hide();
         Worker.CreatureState = Define.CreatureState.Interact;
         Worker.CreaturePose = Define.CreaturePose.Stand;
+        Worker.IngameUI.InteractInfoUI.Hide();
         Worker.IngameUI.WorkProgressBarUI.Show(Description, CurrentWorkAmount, TotalWorkAmount);
-
         Rpc_AddWorker();
         PlayAnim();
         Rpc_PlaySound();

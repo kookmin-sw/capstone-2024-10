@@ -71,7 +71,7 @@ public class Crew : Creature
     {
         base.HandleInput();
 
-        if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead || CreatureState == Define.CreatureState.Use)
+        if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead)
             return;
 
         /////////////////////////////////
@@ -122,7 +122,7 @@ public class Crew : Creature
         }
         /////////////////////////////////
 
-        if (CreatureState == Define.CreatureState.Interact)
+        if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
         {
             if (Input.GetKeyDown(KeyCode.F))
                 CreatureState = Define.CreatureState.Idle;
