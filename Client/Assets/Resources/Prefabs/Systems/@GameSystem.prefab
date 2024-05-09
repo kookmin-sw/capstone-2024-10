@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 516434508644561993}
   - component: {fileID: 7207966761359428766}
   - component: {fileID: 3003123320743294143}
+  - component: {fileID: 4704297354454387191}
   - component: {fileID: 7456184101988879778}
   - component: {fileID: 7673804491711146235}
   m_Layer: 0
@@ -54,6 +55,7 @@ MonoBehaviour:
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: 3003123320743294143}
+  - {fileID: 4704297354454387191}
   - {fileID: 7456184101988879778}
   - {fileID: 7673804491711146235}
   - {fileID: 3928836982233390386}
@@ -69,9 +71,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6991fad599db5a41a0b4c49e1eb61e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4704297354454387191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6419352827352035619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffc228bebe0243e459c3ada1e2be34bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _totalItemCount: 10
   _itemSpawnDatas:
-  - Prefab: {fileID: 1120575333297816, guid: e33450eb92498084b835521234b119fc, type: 3}
+  - Prefab: {fileID: 2456343074442511123, guid: 651267bc0bc8c0a4fbf95c442517d389, type: 3}
     GlobalMinCount: 10
     GlobalMaxCount: 10
     MaxCountPerSector: 10
@@ -87,18 +101,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c160b5c6947d1e34ea6fe249fb97cea6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _batteryChargers: []
-  _centralControlComputers: []
-  _elevatorControlComputers: []
-  _cargoPassageControlComputers: []
-  _elevatorKeypads: []
-  _cargoPassageGates:
-  - {fileID: 0}
   _BatteryChargeCount: 0
   _USBKeyInsertCount: 0
   _IsCardkeyUsed:
     _value: 0
-  _IsCargoPassageUnlocked:
+  _IsCentralComputerWorkFinished:
+    _value: 0
+  _IsCargoPassageOpen:
     _value: 0
 --- !u!114 &7673804491711146235
 MonoBehaviour:
@@ -112,7 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9636914bd642a5f46b72ec251efe930c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeathCount: 0
+  _CrewNum: 1
+  _KilledCrewNum: 0
 --- !u!1 &7900258476493451640
 GameObject:
   m_ObjectHideFlags: 0
