@@ -10,12 +10,14 @@ public class UI_Ingame : UI_Scene
     public UI_WorkProgressBar WorkProgressBarUI { get; private set; }
     public UI_InteractInfo InteractInfoUI { get; private set; }
     public UI_ErrorText ErrorTextUI { get; private set; }
+    public UI_CurrentSector CurrentSectorUI { get; private set; }
 
     protected enum SubItemUIs
     {
         UI_WorkProgressBar,
         UI_InteractInfo,
         UI_ErrorText,
+        UI_CurrentSector,
     }
 
     public override bool Init()
@@ -27,6 +29,7 @@ public class UI_Ingame : UI_Scene
         WorkProgressBarUI = Get<UI_Base>(SubItemUIs.UI_WorkProgressBar) as UI_WorkProgressBar;
         InteractInfoUI = Get<UI_Base>(SubItemUIs.UI_InteractInfo) as UI_InteractInfo;
         ErrorTextUI = Get<UI_Base>(SubItemUIs.UI_ErrorText) as UI_ErrorText;
+        CurrentSectorUI = Get<UI_Base>(SubItemUIs.UI_CurrentSector) as UI_CurrentSector;
 
         return true;
     }

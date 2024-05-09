@@ -64,6 +64,16 @@ public abstract class Creature : NetworkBehaviour
     public BaseSoundController BaseSoundController { get; protected set; }
 
     public UI_Ingame IngameUI { get; set; }
+    private Define.SectorName _currentSector = Define.SectorName.F1_Corridor_A; // TODO: 임시 초기값
+    public Define.SectorName CurrentSector
+    {
+        get => _currentSector;
+        set
+        {
+            _currentSector = value;
+            IngameUI.CurrentSectorUI.SetSector(value);
+        }
+    }
 
     public GameObject Head { get; protected set; }
     public CreatureCamera CreatureCamera { get; protected set; }
