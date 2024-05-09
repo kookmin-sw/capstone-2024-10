@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,12 +16,14 @@ public class UI_AlienDefeat : UI_Popup
     enum Texts
     {
         Text1,
-        Text2
+        Text2,
+        Text3
     }
 
     private CanvasGroup CanvasGroup;
     private Coroutine FadeCor;
     private float accumTime = 0f;
+    private bool isAnimating = false;
 
     public override bool Init()
     {
@@ -31,6 +34,7 @@ public class UI_AlienDefeat : UI_Popup
         Bind<TMP_Text>(typeof(Texts));
 
         GetButton((int)Buttons.Quit).onClick.AddListener(ExitGame);
+        GetText(Texts.Text3).alpha = 0f;
 
         CanvasGroup = GetComponent<CanvasGroup>();
         StartFadeIn();
@@ -62,6 +66,24 @@ public class UI_AlienDefeat : UI_Popup
 
     public void ExitGame()
     {
-        Managers.GameMng.GameEndSystem.Exit();
+        if (Managers.NetworkMng.NumPlayers <= 1)
+        {
+            Managers.GameMng.GameEndSystem.Exit();
+        }
+        else
+        {
+            if (isAnimating)
+                return;
+
+            Sequence sequence = DOTween.Sequence();
+
+            sequence.Append(GetText(Texts.Text3).DOFade(1f, 1.5f).SetEase(Ease.OutQuad));
+            sequence.AppendInterval(0.5f);
+            sequence.Append(GetText(Texts.Text3).DOFade(0f, 1.5f).SetEase(Ease.OutQuad));
+            sequence.OnComplete(() => isAnimating = false);
+            sequence.Play();
+
+            isAnimating = true;
+        }
     }
 }
