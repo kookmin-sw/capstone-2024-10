@@ -51,7 +51,8 @@ public class GameEndSystem : NetworkBehaviour
             else
             {
                 Managers.UIMng.ShowPopupUI<UI_AlienDefeat>();
-                alien.Rpc_OnEndGame();
+                alien.OnEndGame();
+                //alien.Rpc_OnEndGame();
             }
         }
     }
