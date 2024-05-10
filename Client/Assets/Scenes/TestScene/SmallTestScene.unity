@@ -1683,7 +1683,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerName: Player
   DefaultRoomName: TestMapScene
-  Creature: 1
+  Creature: 2
   PrefabNum: 0
   PlayerSpawnPosition: {x: 0, y: 0.15, z: 0}
 --- !u!114 &999382491
@@ -5113,6 +5113,10 @@ PrefabInstance:
     - target: {fileID: 206409717032807606, guid: d918e66b7226adc4bb925e10fd83c368, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2365474327744005791, guid: d918e66b7226adc4bb925e10fd83c368, type: 3}
+      propertyPath: SortKey
+      value: 950648858
       objectReference: {fileID: 0}
     - target: {fileID: 6316672938093252001, guid: d918e66b7226adc4bb925e10fd83c368, type: 3}
       propertyPath: m_Name
