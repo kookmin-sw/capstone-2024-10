@@ -11,6 +11,8 @@ public class SectorEntrance : MonoBehaviour
     {
         if (other.TryGetComponent<Creature>(out var creature))
         {
+            if (Managers.ObjectMng.MyCreature != creature) return;
+
             if (creature.CurrentSector != _sectorName)
             {
                 if (creature.CurrentSector != Define.SectorName.None) Managers.GameMng.MapSystem.Sectors[creature.CurrentSector].OnCreatureExit(creature);
