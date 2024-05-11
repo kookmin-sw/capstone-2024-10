@@ -19,6 +19,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public List<SessionInfo> Sessions = new List<SessionInfo>();
     public Action OnSessionUpdated;
     public bool IsMaster { get => Runner.IsSharedModeMasterClient; }
+    public NetworkSceneManagerEx Scene { get; set; }
 
     public int NumPlayers
     {
@@ -39,7 +40,21 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         AllConnected,
     }
 
-    public Stage CurrentStage { get; private set; } = 0;
+    public PlayerSystem.PlayState CurrentPlayState
+    {
+        get
+        {
+            if (PlayerSystem == null)
+                return PlayerSystem.PlayState.None;
+
+            return PlayerSystem.CurrentPlayState;
+        }
+        set
+        {
+            if (PlayerSystem != null)
+                PlayerSystem.CurrentPlayState = value;
+        }
+    }
 
     public string DefaultRoomName;
     public Define.CreatureType Creature;
@@ -112,13 +127,14 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         NetworkSceneInfo scene = new NetworkSceneInfo();
         scene.AddSceneRef(Managers.SceneMng.GetSceneRef(Define.SceneType.ReadyScene));
         Managers.SceneMng.Clear();
+        Scene = Managers.Instance.gameObject.GetOrAddComponent<NetworkSceneManagerEx>();
 
         StartGameArgs startGameArgs = new StartGameArgs()
         {
             GameMode = GameMode.Shared,
             SessionName = sessionName,
             PlayerCount = Define.PLAYER_COUNT,
-            SceneManager = Managers.Instance.gameObject.AddComponent<NetworkSceneManagerEx>(),
+            SceneManager = Scene,
             Scene = scene
         };
 
@@ -152,26 +168,12 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (TryGetSceneRef(out var sceneRef))
         {
-            StartCoroutine(StartWithClient(GameMode.Shared, sceneRef));
+            StartCoroutine(StartClient(GameMode.Shared, sceneRef));
         }
-    }
-
-    protected IEnumerator StartWithClient(GameMode serverMode, SceneRef sceneRef)
-    {
-        if (CurrentStage != Stage.Disconnected)
-        {
-            yield break;
-        }
-
-        CurrentStage = Stage.StartingUp;
-
-        yield return StartClient(serverMode, sceneRef);
     }
 
     protected IEnumerator StartClient(GameMode serverMode, SceneRef sceneRef = default)
     {
-        CurrentStage = Stage.ConnectingClient;
-
         var clientTask = InitializeNetworkRunner(Runner, serverMode, NetAddress.Any(), sceneRef, null);
 
         while (clientTask.IsCompleted == false)
@@ -185,18 +187,12 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         }
 
         Runner.SessionInfo.IsVisible = false;
-
-        CurrentStage = Stage.AllConnected;
     }
 
     protected Task InitializeNetworkRunner(NetworkRunner runner, GameMode gameMode, NetAddress address, SceneRef scene, Action<NetworkRunner> onGameStarted,
       INetworkRunnerUpdater updater = null)
     {
-        var sceneManager = runner.GetComponent<INetworkSceneManager>();
-        if (sceneManager == null)
-        {
-            sceneManager = runner.gameObject.AddComponent<NetworkSceneManagerDefault>();
-        }
+        Scene = Managers.Instance.gameObject.GetOrAddComponent<NetworkSceneManagerEx>();
 
         var objectProvider = runner.GetComponent<INetworkObjectProvider>();
         if (objectProvider == null)
@@ -217,7 +213,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             Scene = sceneInfo,
             SessionName = DefaultRoomName,
             OnGameStarted = onGameStarted,
-            SceneManager = sceneManager,
+            SceneManager = Scene,
             Updater = updater,
             ObjectProvider = objectProvider,
         });
@@ -234,13 +230,14 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     }
 
 
-    public void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
+    public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (player == runner.LocalPlayer)
         {
+            PlayerSpawnPosition += new Vector3(UnityEngine.Random.Range(0, 2), 0, UnityEngine.Random.Range(0, 2));
             NetworkObject playerObject = Creature == Define.CreatureType.Crew ?
-                Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, PlayerSpawnPosition, false) :
-                Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, PlayerSpawnPosition);
+                await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, PlayerSpawnPosition, false) :
+                await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, PlayerSpawnPosition);
 
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
 

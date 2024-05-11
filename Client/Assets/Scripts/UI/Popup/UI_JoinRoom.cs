@@ -51,7 +51,7 @@ public class UI_JoinRoom : UI_Popup
             if (JoinGame())
             {
                 ClosePopupUI();
-                Managers.UIMng.ShowPanelUI<UI_Loading>(parent: Camera.main.transform);
+                Managers.UIMng.ShowPanelUI<UI_Loading>();
             }
         });
         Get<Button>((int)Buttons.Btn_No).onClick.AddListener(() =>
