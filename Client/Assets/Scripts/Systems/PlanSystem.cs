@@ -18,6 +18,8 @@ public class PlanSystem : NetworkBehaviour
     public NetworkBool IsCentralComputerWorkFinished { get; set; }
     [Networked, OnChangedRender(nameof(OnCargoPassageOpen))]
     public NetworkBool IsCargoPassageOpen { get; set; }
+    [Networked, OnChangedRender(nameof(OnPanicRoomActivated))]
+    public NetworkBool IsPanicRoomActivated { get; set; }
 
     public void Init()
     {
@@ -34,9 +36,6 @@ public class PlanSystem : NetworkBehaviour
         if (BatteryChargeCount == Define.BATTERY_CHARGE_GOAL)
         {
             IsBatteryChargeFinished = true;
-            GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
-            GameObject.FindGameObjectsWithTag("CentralControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
-            GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
         }
     }
 
@@ -79,6 +78,23 @@ public class PlanSystem : NetworkBehaviour
         GameObject.FindGameObjectsWithTag("CargoPassageGate").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
     }
 
+    public void EnablePlanC()
+    {
+        if (Managers.ObjectMng.MyCreature is Alien) return;
 
+        if (!IsBatteryChargeFinished) return;
+        
+        GameObject.FindGameObjectsWithTag("EmergencyControlDevice").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.EnablePlanC();
+    }
+
+    private void OnPanicRoomActivated()
+    {
+        if (Managers.ObjectMng.MyCreature is Alien) return;
+
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnPanicRoomActivated();
+        GameObject.FindGameObjectsWithTag("EmergencyControlDevice").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
+        GameObject.FindGameObjectsWithTag("PanicRoom").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+    }
 
 }

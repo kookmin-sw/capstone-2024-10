@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class EmergencyControlDevice : BaseWorkStation
 {
+    
     protected override void Init()
     {
         base.Init();
@@ -21,12 +22,17 @@ public class EmergencyControlDevice : BaseWorkStation
     {
         if (!base.IsInteractable(creature)) return false;
 
-        if (creature is not Crew crew)
+        if (creature is not Crew)
         {
             return false;
         }
 
-        if (!Managers.GameMng.PlanSystem.IsBatteryChargeFinished)
+        if (!Managers.GameMng.PlanSystem.IsBatteryChargeFinished || Managers.GameMng.PlanSystem.IsPanicRoomActivated)
+        {
+            return false;
+        }
+
+        if (Managers.GameMng.GameEndSystem.CrewNum != 1)
         {
             return false;
         }
@@ -40,7 +46,17 @@ public class EmergencyControlDevice : BaseWorkStation
     {
         if (IsCompleted) return;
         IsCompleted = true;
-        Managers.GameMng.PlanSystem.IsCardkeyUsed = true;
+
+        Managers.GameMng.PlanSystem.IsPanicRoomActivated = true;
+        GameObject[] panicRooms = GameObject.FindGameObjectsWithTag("PanicRoom");
+
+        foreach (var room in panicRooms)
+        {
+            room.GetComponent<PanicRoom>().Rpc_ChangeLightColor();
+        }
+
+        panicRooms[Random.Range(0, panicRooms.Length)].GetComponent<PanicRoom>().IsLocked = false;
+
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

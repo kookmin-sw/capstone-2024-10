@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CargoPassageControlComputer : BaseWorkStation
 {
-    [SerializeField] private CargoPassageGate[] _cargoPassageGates;
+    [SerializeField] private Gate[] _cargoPassageGates;
     protected override void Init()
     {
         base.Init();
@@ -44,7 +44,7 @@ public class CargoPassageControlComputer : BaseWorkStation
         Managers.GameMng.PlanSystem.IsCargoPassageOpen = true;
         foreach (var gate in _cargoPassageGates)
         {
-            gate.OpenDoor();
+            gate.Open();
         }
     }
 

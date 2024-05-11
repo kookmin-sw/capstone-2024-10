@@ -4,11 +4,15 @@ using UnityEngine;
 public class CentralControlComputer : BaseWorkStation
 {
     private new string Description => Managers.GameMng.PlanSystem.IsCardkeyUsed ? "Use Central Control Computer" : "Insert Card Key";
+
+    private new Define.CrewActionType CrewActionType => Managers.GameMng.PlanSystem.IsCardkeyUsed
+        ? Define.CrewActionType.KeypadUse
+        : Define.CrewActionType.Insert;
+
     protected override void Init()
     {
         base.Init();
 
-        CrewActionType = Define.CrewActionType.Insert;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = false;
         IsCompleted = false;
@@ -68,6 +72,12 @@ public class CentralControlComputer : BaseWorkStation
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
-        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/Insert", 1f, 1f, isLoop: false);
+        if (!Managers.GameMng.PlanSystem.IsCardkeyUsed) Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/Insert", 1f, 1f, isLoop: false);
+        else Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/KeypadUse", 1f, 1f, isLoop: true);
+    }
+
+    protected override void PlayAnim()
+    {
+        CrewWorker.CrewAnimController.PlayAnim(CrewActionType);
     }
 }
