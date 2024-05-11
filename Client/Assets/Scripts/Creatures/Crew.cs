@@ -309,7 +309,7 @@ public class Crew : Creature
         CrewSoundController.PlaySound(Define.CrewActionType.Dead);
 
         CrewIngameUI.HideUI();
-        Managers.GameMng.GameEndSystem.CrewEndGame(false);
+        Managers.GameMng.GameEndSystem.EndCrewGame(false);
 
         Rpc_OnDefeat();
     }
@@ -328,7 +328,7 @@ public class Crew : Creature
         CrewSoundController.PlayEndGame();
 
         CrewIngameUI.HideUI();
-        Managers.GameMng.GameEndSystem.CrewEndGame(true);
+        Managers.GameMng.GameEndSystem.EndCrewGame(true);
         CrewIngameUI.EndGame();
 
         Rpc_OnWin();

@@ -7,9 +7,9 @@ using UnityEngine;
 public class UI_CrewIngame : UI_Ingame
 {
     public UI_CrewPlan PlanUI { get; private set; }
-    public UI_Inventory UI_Inventory { get; private set; }
-    public UI_CrewHP UI_CrewHP { get; private set; }
-    public UI_CrewStamina UI_CrewStamina { get; private set; }
+    public UI_Inventory InventoryUI { get; private set; }
+    public UI_CrewHP CrewHpUI { get; private set; }
+    public UI_CrewStamina CrewStaminaUI { get; private set; }
 
     public UI_CrewWin UICrewWin { get; private set; }
 
@@ -37,9 +37,9 @@ public class UI_CrewIngame : UI_Ingame
         Bind<UI_Base>(typeof(CrewSubItemUIs));
 
         PlanUI = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewPlan) as UI_CrewPlan;
-        UI_Inventory = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_Inventory) as UI_Inventory;
-        UI_CrewHP = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewHP) as UI_CrewHP;
-        UI_CrewStamina = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewStamina) as UI_CrewStamina;
+        InventoryUI = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_Inventory) as UI_Inventory;
+        CrewHpUI = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewHP) as UI_CrewHP;
+        CrewStaminaUI = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)CrewSubItemUIs.UI_CrewStamina) as UI_CrewStamina;
 
         Canvas = gameObject.GetComponent<Canvas>();
 
@@ -59,9 +59,10 @@ public class UI_CrewIngame : UI_Ingame
     public void HideUI()
     {
         PlanUI.gameObject.SetActive(false);
-        UI_Inventory.gameObject.SetActive(false);
-        UI_CrewHP.gameObject.SetActive(false);
-        UI_CrewStamina.gameObject.SetActive(false);
+        InventoryUI.gameObject.SetActive(false);
+        CrewHpUI.gameObject.SetActive(false);
+        CrewStaminaUI.gameObject.SetActive(false);
+        CurrentSectorUI.gameObject.SetActive(false);
     }
 
     public void EndGame()

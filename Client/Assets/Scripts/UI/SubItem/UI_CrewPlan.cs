@@ -192,8 +192,30 @@ public class UI_CrewPlan : UI_Base
         _planB.gameObject.SetActive(true);
         _planB.SetObjectiveText($"Use Card Key On Central Control Computer", false);
         _planB.SetHintText(MakeHintFromSectorName(new[] {Define.SectorName.CentralControlRoom }));
+
+        GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
+        GameObject.FindGameObjectsWithTag("CentralControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+        GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+
+        if (Managers.GameMng.GameEndSystem.CrewNum == 1)
+        {
+            Managers.GameMng.PlanSystem.EnablePlanC();
+        }
     }
 
+    public void EnablePlanC()
+    {
+        _planC.gameObject.SetActive(true);
+        _planC.SetObjectiveText($"Use Emergency Control Device To Open Panic Room", false);
+        _planC.SetHintText(MakeHintFromSectorName(new[] { Define.SectorName.Oratory, Define.SectorName.SampleRoom }));
+    }
+
+    public void OnPanicRoomActivated()
+    {
+        _planC.SetObjectiveText("Use Emergency Control Device To Open Panic Room", true, true);
+
+        StartCoroutine(_planC.CompleteObjective("Find Open Panic Room And Enter!", "Hint: Only One Panic Room Is Open"));
+    }
     private static string MakeHintFromSectorName(Define.SectorName[] loc)
     {
         string text = $"Loc: {loc[0]}";

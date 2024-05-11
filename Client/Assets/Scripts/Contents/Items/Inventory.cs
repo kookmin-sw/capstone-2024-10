@@ -70,7 +70,7 @@ public class Inventory: NetworkBehaviour
         if (ItemInventory[CurrentItemIdx] == -1)
         {
             ItemInventory[CurrentItemIdx] = itemId;
-            Owner.CrewIngameUI.UI_Inventory.Show(CurrentItemIdx, itemId);
+            Owner.CrewIngameUI.InventoryUI.Show(CurrentItemIdx, itemId);
             Rpc_ShowItem(itemId);
             return;
         }
@@ -80,7 +80,7 @@ public class Inventory: NetworkBehaviour
             if (ItemInventory[i] == -1)
             {
                 ItemInventory[i] = itemId;
-                Owner.CrewIngameUI.UI_Inventory.Show(i, itemId);
+                Owner.CrewIngameUI.InventoryUI.Show(i, itemId);
                 return;
             }
         }
@@ -92,7 +92,7 @@ public class Inventory: NetworkBehaviour
             return -1;
 
         Rpc_HideItem(ItemInventory[CurrentItemIdx]);
-        Owner.CrewIngameUI.UI_Inventory.Hide(CurrentItemIdx);
+        Owner.CrewIngameUI.InventoryUI.Hide(CurrentItemIdx);
 
         int itemId = CurrentItem.DataId;
         ItemInventory[CurrentItemIdx] = -1;
@@ -140,7 +140,7 @@ public class Inventory: NetworkBehaviour
         if (CurrentItem != null)
             Rpc_ShowItem(ItemInventory[idx]);
 
-        Owner.CrewIngameUI.UI_Inventory.Highlight(idx);
+        Owner.CrewIngameUI.InventoryUI.Highlight(idx);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

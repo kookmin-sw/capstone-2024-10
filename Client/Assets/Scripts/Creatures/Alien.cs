@@ -103,12 +103,12 @@ public abstract class Alien : Creature
         // TODO - TEST CODE
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            Managers.GameMng.GameEndSystem.Rpc_CrewEndGame(false);
+            Managers.GameMng.GameEndSystem.Rpc_EndCrewGame(false);
             return;
         }
         if (Input.GetKeyDown(KeyCode.X))
         {
-            Managers.GameMng.GameEndSystem.Rpc_CrewEndGame(true);
+            Managers.GameMng.GameEndSystem.Rpc_EndCrewGame(true);
             return;
         }
         ////////////////
@@ -164,18 +164,18 @@ public abstract class Alien : Creature
         ReturnToIdle(blindTime);
     }
 
-    public void OnEndGame()
+    public void OnGameEnd()
     {
         AlienSoundController.StopAllSound();
         AlienSoundController.PlayEndGame();
 
         AlienIngameUI.UIGameClear();
 
-        Rpc_OnEndGame();
+        Rpc_OnGameEnd();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_OnEndGame()
+    public void Rpc_OnGameEnd()
     {
         gameObject.SetActive(false);
     }

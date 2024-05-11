@@ -23,10 +23,10 @@ public class ReadyScene : BaseScene
 
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
-        ingameUI.UI_CrewHP.gameObject.SetActive(false);
-        ingameUI.UI_CrewStamina.gameObject.SetActive(false);
+        ingameUI.CrewHpUI.gameObject.SetActive(false);
+        ingameUI.CrewStaminaUI.gameObject.SetActive(false);
         ingameUI.PlanUI.gameObject.SetActive(false);
-        ingameUI.UI_Inventory.gameObject.SetActive(false);
+        ingameUI.InventoryUI.gameObject.SetActive(false);
     }
 
     public override void Clear()
