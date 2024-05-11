@@ -10,6 +10,21 @@ public class CursedHowl : BaseSkill
         SkillActionType = Define.AlienActionType.CursedHowl;
     }
 
+    public override bool CheckAndUseSkill()
+    {
+        if (CurrentCoolTime > 0f)
+            return false;
+
+        if (Managers.GameMng.MapSystem.Sectors[Owner.CurrentSector].IsErosion)
+            return false;
+
+        if (SkillData.Range > 0f)
+            Owner.CurrentSkillRange = SkillData.Range;
+
+        ReadySkill();
+        return true;
+    }
+
     protected override IEnumerator ProgressSkill()
     {
         PlayAnim(false);
@@ -17,7 +32,7 @@ public class CursedHowl : BaseSkill
 
         while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
-            // TODO
+            Managers.GameMng.MapSystem.Sectors[Owner.CurrentSector].GetErosion();
 
             UpdateWorkAmount();
             yield return null;

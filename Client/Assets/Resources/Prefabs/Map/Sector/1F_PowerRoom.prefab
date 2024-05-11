@@ -389,6 +389,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6973100691950037102}
   - component: {fileID: -7282573960656174610}
+  - component: {fileID: 2893460777500426099}
   m_Layer: 11
   m_Name: 1F_PowerRoom
   m_TagString: Untagged
@@ -430,6 +431,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sectorName: 16
+  _IsErosion:
+    _value: 0
+--- !u!114 &2893460777500426099
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6117238314703156082}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1891778093
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects:
+  - {fileID: 2945911209573707322}
+  NetworkedBehaviours:
+  - {fileID: -7282573960656174610}
 --- !u!1 &6554895101217101497
 GameObject:
   m_ObjectHideFlags: 0
@@ -7431,11 +7453,26 @@ PrefabInstance:
       propertyPath: m_Name
       value: ElevatorControlComputer
       objectReference: {fileID: 0}
+    - target: {fileID: 6829769339481509520, guid: 31613c6c845d836428ed9b4cc736775d, type: 3}
+      propertyPath: SortKey
+      value: 2373040631
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 31613c6c845d836428ed9b4cc736775d, type: 3}
+--- !u!114 &2945911209573707322 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6829769339481509520, guid: 31613c6c845d836428ed9b4cc736775d, type: 3}
+  m_PrefabInstance: {fileID: 8514562675917529258}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8846636425987607749 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 931221827577506927, guid: 31613c6c845d836428ed9b4cc736775d, type: 3}

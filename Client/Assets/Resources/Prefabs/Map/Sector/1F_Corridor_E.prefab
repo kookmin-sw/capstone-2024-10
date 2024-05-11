@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2108090175275196701}
   - component: {fileID: -6117887515588094480}
+  - component: {fileID: 4994949059107801658}
   m_Layer: 11
   m_Name: 1F_Corridor_E
   m_TagString: Untagged
@@ -50,6 +51,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sectorName: 5
+  _IsErosion:
+    _value: 0
+--- !u!114 &4994949059107801658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4094829784036046373}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 1951224249
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects:
+  - {fileID: 1482788573138663913}
+  NetworkedBehaviours:
+  - {fileID: -6117887515588094480}
 --- !u!1 &4989426168452206454
 GameObject:
   m_ObjectHideFlags: 0
@@ -893,7 +915,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 547529938775647576, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
       propertyPath: SortKey
-      value: 3228784502
+      value: 3015684409
       objectReference: {fileID: 0}
     - target: {fileID: 2641733520114195201, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
       propertyPath: m_Name
@@ -944,6 +966,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
+--- !u!114 &1482788573138663913 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 547529938775647576, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
+  m_PrefabInstance: {fileID: 1372150714069753009}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &4580561536240950722 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3214364790916415859, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}

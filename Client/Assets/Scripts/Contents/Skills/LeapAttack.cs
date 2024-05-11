@@ -7,6 +7,7 @@ public class LeapAttack : BaseSkill
     public SimpleKCC KCC => Owner.KCC;
 
     public bool IsMoving { get; protected set; }
+    public bool IsErosion => Managers.GameMng.MapSystem.Sectors[Owner.CurrentSector].IsErosion;
 
     public override void SetInfo(int templateId)
     {
@@ -16,6 +17,21 @@ public class LeapAttack : BaseSkill
         SkillActionType = Define.AlienActionType.LeapAttack;
 
         IsMoving = false;
+    }
+
+    public override bool CheckAndUseSkill()
+    {
+        if (CurrentCoolTime > 0f)
+            return false;
+
+        if (!IsErosion)
+            return false;
+
+        if (SkillData.Range > 0f)
+            Owner.CurrentSkillRange = SkillData.Range;
+
+        ReadySkill();
+        return true;
     }
 
     protected override IEnumerator ProgressSkill()

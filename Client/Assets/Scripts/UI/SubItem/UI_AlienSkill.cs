@@ -8,59 +8,38 @@ using UnityEngine.UI;
 public class UI_AlienSkill : UI_Base
 {
     public Alien Alien { get; set; }
+    public Dictionary<int, BaseSkill> AlienSkills => Alien.SkillController.Skills;
     public Image[] imageCooldowns;
-    public float[] cooldowns;
-    private bool[] isCooldowns;
 
     public override bool Init()
     {
         if (base.Init() == false)
             return false;
 
-        isCooldowns = new bool[3];
-        cooldowns = new float[3];
-
         for (int i = 0; i < 3; i++)
-        { 
             imageCooldowns[i].fillAmount = 0f;
-            cooldowns[i] = 5f;
-            isCooldowns[i] = false;
-        }
 
-        Debug.Log("initSuccess");
         return true;
     }
 
-    private void Update()
+    public override void OnUpdate()
     {
         if (Alien == null) return;
 
         if (Alien.Object == null || !Alien.Object.IsValid) return;
 
-        Debug.Log("hihi");
-
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Debug.Log('Q');
-            isCooldowns[0] = true;
-        }   
-        else if (Input.GetKeyDown(KeyCode.Mouse1))
-            isCooldowns[1] = true;
-        else if (Input.GetKeyDown(KeyCode.R))
-            isCooldowns[2] = true;
-
         for (int i = 0; i < 3; i++)
         {
-            if (isCooldowns[i])
+            if (AlienSkills[i + 1] is LeapAttack leapAttack)
             {
-                imageCooldowns[i].fillAmount += 1 / cooldowns[i] * Time.deltaTime;
-
-                if (imageCooldowns[i].fillAmount >= 1)
+                if (!leapAttack.IsErosion)
                 {
-                    isCooldowns[i] = false;
-                    imageCooldowns[i].fillAmount = 0;
+                    imageCooldowns[i].fillAmount = 1f;
+                    continue;
                 }
             }
+
+            imageCooldowns[i].fillAmount = AlienSkills[i + 1].CurrentCoolTime / AlienSkills[i + 1].SkillData.CoolTime;
         }
     }
 }

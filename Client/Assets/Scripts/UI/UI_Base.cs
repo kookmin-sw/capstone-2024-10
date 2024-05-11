@@ -19,6 +19,11 @@ public abstract class UI_Base : MonoBehaviour
 
     protected bool _init = false;
 
+    private void Start()
+    {
+        Init();
+    }
+
     public virtual bool Init()
     {
         if (_init)
@@ -27,10 +32,12 @@ public abstract class UI_Base : MonoBehaviour
         return _init = true;
     }
 
-    private void Start()
+    private void Update()
     {
-        Init();
+        OnUpdate();
     }
+
+    public virtual void OnUpdate() {}
 
     /// <summary>
     /// enum 타입의 이름들을 스트링으로 변환해 UI 요소에 연결한다.
@@ -44,9 +51,9 @@ public abstract class UI_Base : MonoBehaviour
         if (names.Length == 0) return;
 
         int startIdx = 0;
-  
+
         if (!_objects.TryGetValue(typeof(T), out UnityEngine.Object[] objects))
-        {   
+        {
             // T key값이 _objects에 없음
             objects = new UnityEngine.Object[names.Length];
             _objects[typeof(T)] = objects;

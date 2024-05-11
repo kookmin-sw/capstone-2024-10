@@ -22,11 +22,6 @@ public static class Extension
         return Util.GetOrAddComponent<T>(go);
     }
 
-    public static bool IsValid(this GameObject go)
-    {
-        return go != null && go.activeSelf;
-    }
-
     public static List<GameObject> FindObjectsWithTag(this Transform parent, string tag)
     {
         List<GameObject> taggedGameObjects = new List<GameObject>();

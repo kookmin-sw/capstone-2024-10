@@ -652,6 +652,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6540572320007147945}
   - component: {fileID: 1197239026105620533}
+  - component: {fileID: 8035556663697573054}
   m_Layer: 11
   m_Name: 1F_Corridor_D
   m_TagString: Untagged
@@ -695,6 +696,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sectorName: 4
+  _IsErosion:
+    _value: 0
+--- !u!114 &8035556663697573054
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6997275883250020196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3571714659
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects: []
+  NetworkedBehaviours:
+  - {fileID: 1197239026105620533}
 --- !u!1 &8229530501981062239
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,6 +19,7 @@ public static class Define
         KeypadUse,
         OpenItemKit,
         OpenDoor,
+        ChargeBattery,
         Insert,
         FlashBang,
         Bandage,

@@ -84,8 +84,11 @@ public class CrewAnimController : BaseAnimController
             case Define.CrewActionType.OpenDoor:
                 PlayOpenDoor();
                 break;
-            case Define.CrewActionType.Insert:
+            case Define.CrewActionType.ChargeBattery:
                 PlayChargeBattery();
+                break;
+            case Define.CrewActionType.Insert:
+                PlayInsert();
                 break;
             case Define.CrewActionType.FlashBang:
                 PlayThrow();
@@ -126,6 +129,11 @@ public class CrewAnimController : BaseAnimController
         SetBool("ChargeBattery", true);
     }
 
+    public void PlayInsert()
+    {
+        SetBool("Insert", true);
+    }
+
     public void PlayThrow()
     {
         SetBool("Throw", true);
@@ -144,6 +152,7 @@ public class CrewAnimController : BaseAnimController
         SetBool("OpenItemKit", false);
         SetBool("OpenDoor", false);
         SetBool("ChargeBattery", false);
+        SetBool("Insert", false);
         SetBool("Throw", false);
         SetBool("Damaged", false);
         SetBool("Bandage", false);

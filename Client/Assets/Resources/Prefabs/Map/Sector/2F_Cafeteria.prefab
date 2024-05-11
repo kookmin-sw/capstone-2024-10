@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4719762958569540117}
   - component: {fileID: 1668749439530189463}
+  - component: {fileID: -763962206979445043}
   m_Layer: 11
   m_Name: 2F_Cafeteria
   m_TagString: Untagged
@@ -173,6 +174,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sectorName: 21
+  _IsErosion:
+    _value: 0
+--- !u!114 &-763962206979445043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4528960852748465546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3741248601
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects:
+  - {fileID: 2219537799756511020}
+  NetworkedBehaviours:
+  - {fileID: 1668749439530189463}
 --- !u!1 &7195717526122597869
 GameObject:
   m_ObjectHideFlags: 0
@@ -3530,7 +3552,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -4405768996692219966, guid: 1532c1b3ae9290c41a0526d4776f8c28, type: 3}
       propertyPath: SortKey
-      value: 770403834
+      value: 4253484798
       objectReference: {fileID: 0}
     - target: {fileID: 7470185592262954403, guid: 1532c1b3ae9290c41a0526d4776f8c28, type: 3}
       propertyPath: m_Name
@@ -3581,6 +3603,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1532c1b3ae9290c41a0526d4776f8c28, type: 3}
+--- !u!114 &2219537799756511020 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: -4405768996692219966, guid: 1532c1b3ae9290c41a0526d4776f8c28, type: 3}
+  m_PrefabInstance: {fileID: 6635756831638737134}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3528094447379253239 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7845480124674955033, guid: 1532c1b3ae9290c41a0526d4776f8c28, type: 3}

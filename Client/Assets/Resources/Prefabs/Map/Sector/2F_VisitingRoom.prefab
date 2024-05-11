@@ -80,6 +80,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6012059497310523681}
   - component: {fileID: -7310682375787876138}
+  - component: {fileID: -304946177404053451}
   m_Layer: 11
   m_Name: 2F_VisitingRoom
   m_TagString: Untagged
@@ -120,6 +121,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sectorName: 22
+  _IsErosion:
+    _value: 0
+--- !u!114 &-304946177404053451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5044098617075771504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 2081691223
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects:
+  - {fileID: 6978763318977901801}
+  NetworkedBehaviours:
+  - {fileID: -7310682375787876138}
 --- !u!1 &5224220058592922590
 GameObject:
   m_ObjectHideFlags: 0
@@ -2008,6 +2030,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ElevatorControlComputer
       objectReference: {fileID: 0}
+    - target: {fileID: 6829769339481509520, guid: 31613c6c845d836428ed9b4cc736775d, type: 3}
+      propertyPath: SortKey
+      value: 1211222036
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2018,6 +2044,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 931221827577506927, guid: 31613c6c845d836428ed9b4cc736775d, type: 3}
   m_PrefabInstance: {fileID: 4472561806334917241}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6978763318977901801 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6829769339481509520, guid: 31613c6c845d836428ed9b4cc736775d, type: 3}
+  m_PrefabInstance: {fileID: 4472561806334917241}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4717829897532462542
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -11,6 +11,7 @@ public abstract class BaseStat : NetworkBehaviour
     public float WalkSpeed { get; set; }
     public float RunSpeed { get; set; }
     public float WorkSpeed { get; set; }
+    public bool IsErosion { get; set; } = false;
 
     public override void Spawned()
     {

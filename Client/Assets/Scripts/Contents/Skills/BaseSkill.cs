@@ -13,15 +13,16 @@ public abstract class BaseSkill : NetworkBehaviour
     public Define.AlienActionType ReadySkillActionType { get; protected set; }
     public Define.AlienActionType SkillActionType { get; protected set; }
 
-    public float CurrentSkillAmount { get; protected set; }
-    public float CurrentReadySkillAmount { get; protected set; }
-    public bool Ready { get; protected set; }
-    public bool IsHit { get; protected set; }
-    public Vector3 HitVector { get; protected set; }
+    public float CurrentSkillAmount { get; protected set; } = 0f;
+    public float CurrentReadySkillAmount { get; protected set; } = 0f;
+    public float CurrentCoolTime { get; set; } = 0f;
+    public bool IsHit { get; protected set; } = false;
 
     public Alien Owner { get; protected set; }
     public Vector3 ForwardDirection => Owner.Transform.forward;
     public Vector3 AttackPosition => Owner.Head.transform.position + Vector3.down * 0.2f;
+
+    private Tweener _coolTimeTweener;
 
     #endregion
 
@@ -39,17 +40,11 @@ public abstract class BaseSkill : NetworkBehaviour
     {
         DataId = templateId;
         SkillData = Managers.DataMng.SkillDataDict[templateId];
-
-        CurrentSkillAmount = 0f;
-        CurrentReadySkillAmount = 0f;
-        Ready = true;
-        IsHit = false;
-        HitVector = new Vector3(1f, 1f, 0.1f);
     }
 
     public virtual bool CheckAndUseSkill()
     {
-        if (!Ready)
+        if (CurrentCoolTime > 0f)
             return false;
 
         if (SkillData.Range > 0f)
@@ -87,8 +82,16 @@ public abstract class BaseSkill : NetworkBehaviour
 
     protected void Cooldown()
     {
-        Ready = false;
-        DOVirtual.DelayedCall(SkillData.CoolTime, () => { Ready = true; });
+        CurrentCoolTime = SkillData.CoolTime;
+        _coolTimeTweener= DOVirtual.Float(0f, 0f, SkillData.CoolTime, value =>
+        {
+            CurrentCoolTime -= Time.deltaTime;
+            if (CurrentCoolTime < 0.05f)
+            {
+                CurrentCoolTime = 0f;
+                _coolTimeTweener.Kill();
+            }
+        });
     }
 
     public void SkillInterrupt()

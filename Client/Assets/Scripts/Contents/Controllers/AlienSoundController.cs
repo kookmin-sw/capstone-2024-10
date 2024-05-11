@@ -125,7 +125,7 @@ public class AlienSoundController : BaseSoundController
                             StopAllCoroutines();
                             IsChasing = true;
                             if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
-                                Managers.SoundMng.Play($"{Define.BGM_PATH}/The Big Clash", Define.SoundType.Bgm, volume: 1);
+                                Managers.SoundMng.Play($"{Define.BGM_PATH}/In Captivity", Define.SoundType.Bgm, volume: 1);
                         }
 
                         return;
