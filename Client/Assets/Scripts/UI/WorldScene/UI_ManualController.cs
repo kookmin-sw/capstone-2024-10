@@ -50,11 +50,14 @@ public class UI_ManualController : UI_Base
 
             Bind<GameObject>(typeof(Manual_GameObjects));
 
-            for (int i = 0; i < GetObject(Manual_GameObjects.Pages).transform.childCount; i++)
+            if (Pages.Count == 0)
             {
-                Pages.Add(GetObject(Manual_GameObjects.Pages).transform.GetChild(i).gameObject);
+                for (int i = 0; i < GetObject(Manual_GameObjects.Pages).transform.childCount; i++)
+                {
+                    Pages.Add(GetObject(Manual_GameObjects.Pages).transform.GetChild(i).gameObject);
+                }
             }
-      
+
             return true;
         }
 
@@ -78,7 +81,6 @@ public class UI_ManualController : UI_Base
             }
 
             Pages[pageNum].SetActive(true);
-
         }
     }
 
@@ -89,6 +91,7 @@ public class UI_ManualController : UI_Base
 
         Bind<GameObject>(typeof(GameObjects));
         Bind<Button>(typeof(Buttons));
+        Bind<TMP_Text>(typeof(Texts));
 
         _controller = FindObjectOfType<UI_LobbyController>();
         _crewManual = GetObject(GameObjects.CrewManual).GetOrAddComponent<UI_Manual>();
@@ -99,6 +102,9 @@ public class UI_ManualController : UI_Base
         GetButton(Buttons.Btn_AlienManual).onClick.AddListener(ShowAlienManual);
         GetButton(Buttons.Btn_NextPage).onClick.AddListener(NextPage);
         GetButton(Buttons.Btn_PrevPage).onClick.AddListener(PrevPage);
+
+        _crewManual.Init();
+        _alienManual.Init();
 
         ShowCrewManual();
 

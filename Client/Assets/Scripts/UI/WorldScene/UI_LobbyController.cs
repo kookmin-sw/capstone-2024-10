@@ -71,7 +71,7 @@ public class UI_LobbyController : UI_Base
 
         GetObject(GameObjects.PLAY).SetActive(false);
         GetObject(GameObjects.EXIT).SetActive(false);
-        GetObject(GameObjects.EXTRAS).SetActive(false);
+        if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         GetObject(GameObjects.MAIN).SetActive(true);
         
         return true;
