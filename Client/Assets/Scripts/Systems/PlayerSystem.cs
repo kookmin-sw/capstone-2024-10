@@ -14,14 +14,31 @@ public class PlayerSystem : NetworkBehaviour
     [Networked, Capacity(Define.PLAYER_COUNT)]
     public NetworkDictionary<PlayerRef, Vector3> SpawnPoints { get; }
 
+    public enum PlayState
+    {
+        None,
+        Ready,
+        Game,
+        Transition,
+    }
+
+    [Networked, OnChangedRender(nameof(OnPlayStateChanged))]
+    public PlayState CurrentPlayState { get; set; }
+
     public override void Spawned()
     {
         DontDestroyOnLoad(gameObject);
+        CurrentPlayState = PlayState.Ready;
     }
 
     public void OnReadyCountChanged()
     {
         OnReadyCountUpdated?.Invoke();
+    }
+
+    public void OnPlayStateChanged()
+    {
+        Debug.Log($"Current Play State: {CurrentPlayState}");
     }
 
     public override void FixedUpdateNetwork()

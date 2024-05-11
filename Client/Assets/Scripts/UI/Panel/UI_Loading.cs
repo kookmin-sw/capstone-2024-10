@@ -21,6 +21,7 @@ public class UI_Loading : UI_Panel
     public bool waitForInput;
     private Slider _loadingBar;
     private TMP_Text _loadPromptText;
+    private float _loadingSpeed;
     public KeyCode userPromptKey;
 
     public bool isDone { get; private set; } = false;
@@ -30,6 +31,12 @@ public class UI_Loading : UI_Panel
     {
         if (base.Init() == false)
             return false;
+
+        GameObject go = Managers.ResourceMng.Instantiate("Cameras/LobbyCamera");
+        transform.SetParent(go.transform);
+
+        var canvas = gameObject.GetComponent<Canvas>();
+        canvas.sortingOrder = 20;
 
         DontDestroyOnLoad(transform.parent.gameObject);
 
@@ -44,20 +51,39 @@ public class UI_Loading : UI_Panel
         userPromptKey = KeyCode.F;
 
         StartCoroutine(LoadAsynchronously());
+        if (Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.LobbyScene))
+        {
+            _loadingSpeed = 0.3f;
+            StartCoroutine(SpawnCheck());
+        }
+        else if (Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.ReadyScene))
+        {
+            _loadingSpeed = 0.1f;
+            StartCoroutine(TransitionCheck());
+        }
 
         return true;
     }
 
     void Update()
     {
-        loadingProgress += 0.5f * Time.deltaTime;
-        if (Managers.SceneMng.CurrentScene.SceneType == Define.SceneType.ReadyScene)
-        {
-            if (Managers.ObjectMng.MyCreature)
-            {
-                OnLoadingDone();
-            }
-        }
+        loadingProgress += _loadingSpeed * Time.deltaTime;
+    }
+
+    public IEnumerator SpawnCheck()
+    {
+        yield return new WaitUntil(() => Managers.ObjectMng.MyCreature != null);
+        yield return new WaitUntil(() => Managers.ObjectMng.MyCreature.IsSpawned);
+        isDone = true;
+    }
+
+    public IEnumerator TransitionCheck()
+    {
+        yield return new WaitUntil(() => Managers.NetworkMng.CurrentPlayState == PlayerSystem.PlayState.Transition);
+        yield return new WaitUntil(() => Managers.NetworkMng.CurrentPlayState != PlayerSystem.PlayState.Transition);
+        yield return new WaitUntil(() => Managers.ObjectMng.MyCreature != null);
+        yield return new WaitUntil(() => Managers.ObjectMng.MyCreature.IsSpawned);
+        isDone = true;
     }
 
     public IEnumerator LoadAsynchronously()
@@ -72,23 +98,26 @@ public class UI_Loading : UI_Panel
                 _loadPromptText.text = "Press " + userPromptKey.ToString().ToUpper() + " to continue";
                 _loadingBar.value = 1;
 
-                if (Input.GetKeyDown(userPromptKey))
+                if (isDone && Input.GetKeyDown(userPromptKey))
                 {
                     OnLoadingDone();
+                    yield break;
                 }
             }
-            else if (progress >= 0.9f && !waitForInput)
+            else if (isDone && progress >= 0.9f && !waitForInput)
             {
                 OnLoadingDone();
+                yield break;
             }
 
             yield return null;
         }
+
+        OnLoadingDone();
     }
 
     public void OnLoadingDone()
     {
-        isDone = true;
         Destroy(transform.parent.gameObject);
     }
 }

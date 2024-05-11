@@ -4,4 +4,5 @@ public class GameManager
     public PlanSystem PlanSystem { get; set; }
     public RenderingSystem RenderingSystem { get; set; }
     public GameEndSystem GameEndSystem { get; set; }
+    public SettingSystem SettingSystem { get; set; }
 }
