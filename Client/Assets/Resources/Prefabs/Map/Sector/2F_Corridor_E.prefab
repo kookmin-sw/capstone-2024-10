@@ -788,6 +788,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7871300608111827072}
   - component: {fileID: 2182321055254443742}
+  - component: {fileID: 4956920378298177902}
   m_Layer: 11
   m_Name: 2F_Corridor_E
   m_TagString: Untagged
@@ -832,6 +833,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sectorName: 10
+  _IsErosion:
+    _value: 0
+--- !u!114 &4956920378298177902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7774855256535614376}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3236714009
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects:
+  - {fileID: 551078138973240915}
+  NetworkedBehaviours:
+  - {fileID: 2182321055254443742}
 --- !u!1 &8847917592352363721
 GameObject:
   m_ObjectHideFlags: 0
@@ -1222,7 +1244,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 547529938775647576, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
       propertyPath: SortKey
-      value: 2848650848
+      value: 433464404
       objectReference: {fileID: 0}
     - target: {fileID: 2641733520114195201, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
       propertyPath: m_Name
@@ -1273,6 +1295,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
+--- !u!114 &551078138973240915 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 547529938775647576, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
+  m_PrefabInstance: {fileID: 17140500916509451}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &3217631232535698040 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3214364790916415859, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}

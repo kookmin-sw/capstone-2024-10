@@ -26,7 +26,6 @@ public class Crew : Creature
         base.Init();
 
         Inventory = gameObject.GetComponent<Inventory>();
-        AudioSource = gameObject.GetComponent<AudioSource>();
 
         Head = Util.FindChild(gameObject, "head.x", true);
         RightHand = Util.FindChild(gameObject, "c_middle1.r", true);
@@ -211,7 +210,7 @@ public class Crew : Creature
             CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
             CrewStat.ChangeSanity(Define.SIT_RECOVER_SANITY * Runner.DeltaTime);
         }
-        else if (CrewStat.Erosion)
+        else if (CrewStat.IsErosion)
             CrewStat.ChangeSanity(-Define.EROSION_REDUCE_SANITY * Runner.DeltaTime);
     }
 

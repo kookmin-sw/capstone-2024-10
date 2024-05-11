@@ -528,6 +528,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7030881829091506616}
   - component: {fileID: -2525122564263686767}
+  - component: {fileID: 1737461934078090274}
   m_Layer: 11
   m_Name: 2F_Corridor_A
   m_TagString: Untagged
@@ -571,6 +572,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sectorName: 6
+  _IsErosion:
+    _value: 0
+--- !u!114 &1737461934078090274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4623271259057360338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SortKey: 3220778207
+  ObjectInterest: 1
+  Flags: 1
+  NestedObjects:
+  - {fileID: 7513475763541150856}
+  NetworkedBehaviours:
+  - {fileID: -2525122564263686767}
 --- !u!1 &4849999044486617517
 GameObject:
   m_ObjectHideFlags: 0
@@ -12479,7 +12501,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 547529938775647576, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
       propertyPath: SortKey
-      value: 1782794712
+      value: 2800412083
       objectReference: {fileID: 0}
     - target: {fileID: 2641733520114195201, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
       propertyPath: m_Name
@@ -12539,6 +12561,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3214364790916415859, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
   m_PrefabInstance: {fileID: 8060332766303988176}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7513475763541150856 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 547529938775647576, guid: 362ac89037e36864cbd9e7722e16cfcd, type: 3}
+  m_PrefabInstance: {fileID: 8060332766303988176}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1552182283, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8191377279645934037
 PrefabInstance:
   m_ObjectHideFlags: 0

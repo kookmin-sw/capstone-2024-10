@@ -8,7 +8,7 @@ public class BatteryCharger : BaseWorkStation
         base.Init();
 
         Description = "Charge Battery";
-        CrewActionType = Define.CrewActionType.Insert;
+        CrewActionType = Define.CrewActionType.ChargeBattery;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = false;
         IsCompleted = false;

@@ -697,7 +697,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 696734544713720496}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.000000021855694, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -939,7 +939,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23a58e8d0afbf0a4c836f92a5de1b668, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _cargoPassageGates: []
+  _cargoPassageGates:
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &696734544713720498
 GameObject:
   m_ObjectHideFlags: 0

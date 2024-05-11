@@ -3,7 +3,7 @@ using UnityEngine;
 using Data;
 using Fusion;
 
-public abstract class Alien : Creature
+public class Alien : Creature
 {
     #region Field
 
@@ -25,8 +25,12 @@ public abstract class Alien : Creature
 
         SkillController = gameObject.GetComponent<SkillController>();
         SkillController.Skills = new Dictionary<int, BaseSkill>(Define.MAX_SKILL_NUM);
+        SkillController.Skills[0] = gameObject.GetComponent<BasicAttack>();
+        SkillController.Skills[1] = gameObject.GetComponent<Roar>();
+        SkillController.Skills[2] = gameObject.GetComponent<CursedHowl>();
+        SkillController.Skills[3] = gameObject.GetComponent<LeapAttack>();
 
-        AudioSource = gameObject.GetComponent<AudioSource>();
+        Head = Util.FindChild(gameObject, "head", true);
     }
 
     public override void SetInfo(int templateID)
@@ -35,7 +39,6 @@ public abstract class Alien : Creature
 
         base.SetInfo(templateID);
 
-        Head = Util.FindChild(gameObject, "head", true);
         Head.transform.localScale = Vector3.zero;
 
         CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", Util.FindChild(gameObject, "Anglerox_ Neck", true).transform).GetComponent<CreatureCamera>();
@@ -44,13 +47,19 @@ public abstract class Alien : Creature
 
         AlienStat.SetStat(AlienData);
 
-        CurrentSkillRange = 1.5f;
-        IsSpawned = true;
+        SkillController.Skills[0].SetInfo(Define.SKILL_BASIC_ATTACK_ID);
+        SkillController.Skills[1].SetInfo(Define.SKILL_ROAR_ID);
+        SkillController.Skills[2].SetInfo(Define.SKILL_CURSED_HOWL_ID);
+        SkillController.Skills[3].SetInfo(Define.SKILL_LEAP_ATTACK_ID);
+
+        CurrentSkillRange = SkillController.Skills[0].SkillData.Range;
 
         if (Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene))
         {
             StartCoroutine(Managers.SceneMng.CurrentScene.OnPlayerSpawn());
         }
+
+        IsSpawned = true;
     }
 
     #region Update

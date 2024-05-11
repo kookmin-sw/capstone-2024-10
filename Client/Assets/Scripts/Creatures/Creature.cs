@@ -3,7 +3,6 @@ using Fusion;
 using Fusion.Addons.SimpleKCC;
 using DG.Tweening;
 using Data;
-using UnityEngine.Serialization;
 
 public abstract class Creature : NetworkBehaviour
 {
@@ -16,6 +15,9 @@ public abstract class Creature : NetworkBehaviour
     [Networked] public Define.CreatureType CreatureType { get; set; }
 
     private Define.CreatureState _creatureState;
+    private Define.CreaturePose _creaturePose;
+    private Define.SectorName _currentSector = Define.SectorName.F1_Corridor_A; // TODO: 임시 초기값
+
     public Define.CreatureState CreatureState
     {
         get => _creatureState;
@@ -32,8 +34,6 @@ public abstract class Creature : NetworkBehaviour
                 BaseSoundController.Rpc_StopEffectSound();
         }
     }
-
-    private Define.CreaturePose _creaturePose;
     public Define.CreaturePose CreaturePose
     {
         get => _creaturePose;
@@ -46,6 +46,15 @@ public abstract class Creature : NetworkBehaviour
 
             if (CreatureState == Define.CreatureState.Move)
                 BaseSoundController.PlayMove();
+        }
+    }
+    public Define.SectorName CurrentSector
+    {
+        get => _currentSector;
+        set
+        {
+            _currentSector = value;
+            IngameUI.CurrentSectorUI.SetSector(value);
         }
     }
 
@@ -64,16 +73,6 @@ public abstract class Creature : NetworkBehaviour
     public BaseSoundController BaseSoundController { get; protected set; }
 
     public UI_Ingame IngameUI { get; set; }
-    private Define.SectorName _currentSector = Define.SectorName.F1_Corridor_A; // TODO: 임시 초기값
-    public Define.SectorName CurrentSector
-    {
-        get => _currentSector;
-        set
-        {
-            _currentSector = value;
-            IngameUI.CurrentSectorUI.SetSector(value);
-        }
-    }
 
     public GameObject Head { get; protected set; }
     public CreatureCamera CreatureCamera { get; protected set; }
@@ -110,9 +109,6 @@ public abstract class Creature : NetworkBehaviour
         CreaturePose = Define.CreaturePose.Stand;
 
         Managers.ObjectMng.MyCreature = this;
-
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
 
         Rpc_SetInfo(templateID);
     }
@@ -238,6 +234,13 @@ public abstract class Creature : NetworkBehaviour
     }
 
     #endregion
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void Rpc_SetErosion(bool isErosion)
+    {
+        BaseStat.IsErosion = isErosion;
+        Managers.GameMng.RenderingSystem.ApplyErosion(isErosion);
+    }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public virtual void Rpc_OnBlind(float blindTime, float backTime)

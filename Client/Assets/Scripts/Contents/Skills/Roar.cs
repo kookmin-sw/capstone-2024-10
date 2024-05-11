@@ -32,9 +32,9 @@ public class Roar : BaseSkill
                         if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
                         {
                             IsHit = true;
-                            Owner.AlienSoundController.PlaySound(Define.AlienActionType.Hit);
                             crew.Rpc_OnDamaged(SkillData.Damage);
                             crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
+                            Owner.SkillController.Skills[3].CurrentCoolTime -= 20f;
                         }
                     }
                 }
