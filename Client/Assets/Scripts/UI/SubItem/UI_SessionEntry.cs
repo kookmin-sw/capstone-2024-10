@@ -87,7 +87,7 @@ public class UI_SessionEntry : UI_Base
         else
         {
             Managers.UIMng.Clear();
-            Managers.UIMng.ShowPanelUI<UI_Loading>(parent: Camera.main.transform);
+            Managers.UIMng.ShowPanelUI<UI_Loading>();
             Managers.NetworkMng.ConnectToSession(GetText(Texts.RoomName).text, null);
         }
     }

@@ -1,4 +1,5 @@
 using Fusion;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ public class SoundManager
         if (root == null)
         {
             root = new GameObject { name = "@Sound" };
-            Object.DontDestroyOnLoad(root);
+            UnityEngine.Object.DontDestroyOnLoad(root);
 
             string[] soundNames = System.Enum.GetNames(typeof(Define.SoundType));
             for (int i = 0; i < soundNames.Length - 1; i++)
@@ -26,6 +27,12 @@ public class SoundManager
 
             _audioSources[(int)Define.SoundType.Bgm].loop = true;
             _audioSources[(int)Define.SoundType.Environment].loop = true;
+
+            string[] volumeNames = System.Enum.GetNames(typeof(Define.VolumeType));
+            for (int i = 0; i < _audioVolume.Length; i++)
+            {
+                _audioVolume[i] = Mathf.Log(PlayerPrefs.GetFloat(volumeNames[i], 1f));
+            }
         }
 
         UpdateVolume();
@@ -53,22 +60,18 @@ public class SoundManager
             return;
 
         AudioSource audioSource = null;
-        float audioVolume = 1.0f;
         if (type == Define.SoundType.Effect)
         {
             audioSource = _audioSources[(int)Define.SoundType.Effect];
-            audioVolume = _audioVolume[(int)Define.SoundType.Effect];
             audioSource.loop = isLoop;
         }
         else if (type == Define.SoundType.Bgm)
         {
             audioSource = _audioSources[(int)Define.SoundType.Bgm];
-            audioVolume = _audioVolume[(int)Define.SoundType.Bgm];
         }
         else
         {
             audioSource = _audioSources[(int)Define.SoundType.Environment];
-            audioVolume = _audioVolume[(int)Define.SoundType.Environment];
         }
 
         if (audioSource == null)
@@ -78,7 +81,7 @@ public class SoundManager
             audioSource.Stop();
 
         audioSource.pitch = pitch;
-        audioSource.volume = volume * audioVolume;
+        audioSource.volume = volume * CustomAudioVolume(type);
         audioSource.clip = audioClip;
         audioSource.Play();
     }
@@ -92,7 +95,7 @@ public class SoundManager
             audioSource.Stop();
 
         audioSource.pitch = pitch;
-        audioSource.volume = volume * _audioVolume[(int)Define.SoundType.Environment];
+        audioSource.volume = volume * CustomAudioVolume(Define.SoundType.Environment);
         audioSource.clip = Managers.SoundMng.GetOrAddAudioClip(path);
 
         if (audioSource.clip == null)
@@ -112,7 +115,7 @@ public class SoundManager
         if (clip == null)
             return;
 
-        audioSource.PlayOneShot(clip, volume * _audioVolume[(int)Define.SoundType.Environment]);
+        audioSource.PlayOneShot(clip, volume * CustomAudioVolume(Define.SoundType.Environment));
     }
 
     public void Stop(Define.SoundType type = Define.SoundType.Effect)
@@ -179,14 +182,25 @@ public class SoundManager
         return audioSource.isPlaying;
     }
 
+    public float CustomAudioVolume(Define.SoundType soundType)
+    {
+        return Mathf.Exp(_audioVolume[(int)soundType]);
+    }
+
     public void UpdateVolume()
     {
-        // TODO: 종류 별로 볼륨을 다르게 설정할 수 있도록 수정
-        for (int i = 0; i < _audioVolume.Length; i++)
+        Define.VolumeType volumeType = Define.VolumeType.MasterVolume;
+        float masterVolume = Mathf.Log(PlayerPrefs.GetFloat(volumeType.ToString(), 1f));
+
+        for (int i = 0; i < _audioSources.Length; i++)
         {
-            _audioVolume[i] = PlayerPrefs.GetFloat("MusicVolume", 1f);
-            // _audioVolume[i] = 1f; // TODO - Test code
-            _audioSources[i].volume = _audioVolume[i];
+            volumeType = (Define.VolumeType)i;
+            float volume = Mathf.Log(PlayerPrefs.GetFloat(volumeType.ToString(), 1f));
+            float prev = _audioVolume[i];
+            _audioVolume[i] = volume + masterVolume;
+            volume = _audioVolume[i] - prev;
+            volume = _audioSources[i].volume * Mathf.Exp(volume);
+            _audioSources[i].volume = volume;
         }
     }
 }

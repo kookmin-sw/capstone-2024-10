@@ -10,7 +10,7 @@ public class GameScene : BaseScene
 
         SceneType = Define.SceneType.GameScene;
 
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Environment, volume:1f);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Bgm, volume:1f);
     }
 
     public override IEnumerator OnPlayerSpawn()

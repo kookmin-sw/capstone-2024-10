@@ -29,12 +29,8 @@ public class UI_LobbyController : UI_Base
     #endregion
 
     #region Fields
-    public ThemeType Theme;
-    public enum ThemeType { custom1, custom2, custom3 };
-    public SlimUI.ModernMenu.ThemedUIData themeController;
     private Animator _cameraAnimator;
     private UI_Loading _loadingMenu;
-    private UI_Lobby _lobbyMenu;
     #endregion
 
     #region Init
@@ -49,8 +45,6 @@ public class UI_LobbyController : UI_Base
 
         #region Base
         _cameraAnimator = Camera.main.GetComponent<Animator>();
-        Theme = ThemeType.custom2;
-        themeController = Managers.ResourceMng.Load<SlimUI.ModernMenu.ThemedUIData>("Scriptable/ThemeSettings_ModernMenuUI");
         
         GetButton(Buttons.Btn_PlayCampaign).onClick.AddListener(PlayCampaign);
         GetButton(Buttons.Btn_Settings).onClick.AddListener(Position2);
@@ -80,13 +74,11 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.EXTRAS).SetActive(false);
         GetObject(GameObjects.MAIN).SetActive(true);
         
-        SetThemeColors();
-
         return true;
     }
     #endregion
 
-    #region Interface
+    #region Other
     public void ShowLoadingMenu()
     {
         _loadingMenu.gameObject.SetActive(true);
@@ -102,41 +94,6 @@ public class UI_LobbyController : UI_Base
     {
         Destroy(gameObject);
     }
-
-    public void ExitMenu()
-    {
-        GetObject(GameObjects.PLAY).SetActive(false);
-        GetObject(GameObjects.EXIT).SetActive(false);
-        GetObject(GameObjects.EXTRAS).SetActive(false);
-        GetObject(GameObjects.MAIN).SetActive(false);
-        _loadingMenu.gameObject.SetActive(false);
-    }
-
-    #endregion
-
-    #region Other
-    void SetThemeColors()
-    {
-        switch (Theme)
-        {
-            case ThemeType.custom1:
-                themeController.currentColor = themeController.custom1.graphic1;
-                themeController.textColor = themeController.custom1.text1;
-                break;
-            case ThemeType.custom2:
-                themeController.currentColor = themeController.custom2.graphic2;
-                themeController.textColor = themeController.custom2.text2;
-                break;
-            case ThemeType.custom3:
-                themeController.currentColor = themeController.custom3.graphic3;
-                themeController.textColor = themeController.custom3.text3;
-                break;
-            default:
-                Debug.Log("Invalid theme selected.");
-                break;
-        }
-    }
-
     public void PlayCampaign()
     {
         GetObject(GameObjects.EXIT).SetActive(false);

@@ -66,7 +66,7 @@ public class UI_CreateRoom : UI_Popup
     public void CreateGame()
     {
         Managers.UIMng.Clear();
-        Managers.UIMng.ShowPanelUI<UI_Loading>(parent: Camera.main.transform);
+        Managers.UIMng.ShowPanelUI<UI_Loading>();
         string name = RoomName.text.IsNullOrEmpty() ? RoomNamePlaceholder.text : RoomName.text;
         Managers.NetworkMng.CreateSession(name, Password.text);
     }

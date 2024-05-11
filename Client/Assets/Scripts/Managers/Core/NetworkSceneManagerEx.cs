@@ -17,11 +17,17 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 
     public async void UnloadScene()
     {
+        if (Runner.IsSharedModeMasterClient)
+            Managers.NetworkMng.CurrentPlayState = PlayerSystem.PlayState.Transition;
+
         await UnloadScene(_loadedScene);
     }
 
     protected override IEnumerator UnloadSceneCoroutine(SceneRef prevScene)
     {
+        if (Runner.IsSharedModeMasterClient)
+            Managers.NetworkMng.CurrentPlayState = PlayerSystem.PlayState.Transition;
+
         yield return base.UnloadSceneCoroutine(prevScene);
     }
 
@@ -37,6 +43,7 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 
             if (Runner.IsSharedModeMasterClient)
             {
+                Managers.NetworkMng.CurrentPlayState = PlayerSystem.PlayState.Game;
                 var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
 
                 foreach (var player in players)
@@ -50,6 +57,11 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
                     Player.RPC_SpawnPlayer(Managers.NetworkMng.Runner, player, position, player == Runner.LocalPlayer);
                 }
             }
+        }
+        else if (loadedScene.name == Managers.SceneMng.GetSceneName(Define.SceneType.ReadyScene))
+        {
+            if (Runner.IsSharedModeMasterClient)
+                Managers.NetworkMng.CurrentPlayState = PlayerSystem.PlayState.Ready;
         }
     }
 }

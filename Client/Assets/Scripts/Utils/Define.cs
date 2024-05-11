@@ -88,6 +88,14 @@ public static class Define
         MaxCount,
     }
 
+    public enum VolumeType
+    {
+        BgmVolume,
+        EnvVolume,
+        EffVolume,
+        MasterVolume,
+    }
+
     #endregion
 
     #region State

@@ -55,6 +55,7 @@ public class StartManager
         Debug.Log("Game Setting Start");
         var popup = Managers.UIMng.FindPopup<UI_StartGame>();
         popup.ClosePopupUI();
+        Managers.UIMng.ShowPanelUI<UI_Loading>();
 
         if (Managers.NetworkMng.IsMaster)
         {
