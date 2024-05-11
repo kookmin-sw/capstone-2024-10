@@ -20,7 +20,7 @@ public class UI_LobbyController : UI_Base
     {
         Btn_PlayCampaign,
         Btn_Settings,
-        Btn_Extras,
+        Btn_Manual,
         Btn_Exit,
         Btn_No1,
         Btn_Yes,
@@ -52,7 +52,7 @@ public class UI_LobbyController : UI_Base
         GetButton(Buttons.Btn_Settings).onClick.AddListener(PlaySwoosh);
 
         GetButton(Buttons.Btn_Exit).onClick.AddListener(AreYouSure);
-        GetButton(Buttons.Btn_Extras).onClick.AddListener(ExtrasMenu);
+        GetButton(Buttons.Btn_Manual).onClick.AddListener(Position3);
         GetButton(Buttons.Btn_No1).onClick.AddListener(ReturnMenu);
         GetButton(Buttons.Btn_PlayCampaign).onClick.AddListener(PlayCampaign);
         GetButton(Buttons.Btn_Return).onClick.AddListener(Position1);
@@ -71,7 +71,7 @@ public class UI_LobbyController : UI_Base
 
         GetObject(GameObjects.PLAY).SetActive(false);
         GetObject(GameObjects.EXIT).SetActive(false);
-        GetObject(GameObjects.EXTRAS).SetActive(false);
+        if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         GetObject(GameObjects.MAIN).SetActive(true);
         
         return true;
@@ -121,6 +121,12 @@ public class UI_LobbyController : UI_Base
     public void DisablePlayCampaign()
     {
         GetObject(GameObjects.PLAY).SetActive(false);
+    }
+
+    public void Position3()
+    {
+        DisablePlayCampaign();
+        _cameraAnimator.SetFloat("Animate", 2);
     }
 
     public void Position2()
