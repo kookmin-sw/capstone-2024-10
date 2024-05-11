@@ -1,4 +1,5 @@
 using Fusion;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class ObjectManager
@@ -9,11 +10,11 @@ public class ObjectManager
 
     #region Creature
 
-    public NetworkObject SpawnCrew(int crewDataId, Vector3 spawnPosition, bool isGameScene)
+    public async Task<NetworkObject> SpawnCrew(int crewDataId, Vector3 spawnPosition, bool isGameScene)
     {
         string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");
-        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
+        NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPosition);
 
         Crew crew = no.GetComponent<Crew>();
         crew.SetInfo(crewDataId, isGameScene);
@@ -23,11 +24,11 @@ public class ObjectManager
         return no;
     }
 
-    public NetworkObject SpawnAlien(int alienDataId, Vector3 spawnPosition)
+    public async Task<NetworkObject> SpawnAlien(int alienDataId, Vector3 spawnPosition)
     {
         string className = Managers.DataMng.AlienDataDict[alienDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");
-        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
+        NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPosition);
 
         Alien alien = no.GetComponent<Alien>();
         alien.SetInfo(alienDataId);
