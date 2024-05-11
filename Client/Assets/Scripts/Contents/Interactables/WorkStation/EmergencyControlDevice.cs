@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class EmergencyControlDevice : BaseWorkStation
 {
-    
     protected override void Init()
     {
         base.Init();
@@ -55,8 +54,9 @@ public class EmergencyControlDevice : BaseWorkStation
             room.GetComponent<PanicRoom>().Rpc_ChangeLightColor();
         }
 
-        panicRooms[Random.Range(0, panicRooms.Length)].GetComponent<PanicRoom>().IsLocked = false;
-
+        PanicRoom unlockPanicRoom = panicRooms[Random.Range(0, panicRooms.Length)].GetComponent<PanicRoom>();
+        Debug.Log("Unlocked :" + unlockPanicRoom.name);
+        unlockPanicRoom.IsLocked = false;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

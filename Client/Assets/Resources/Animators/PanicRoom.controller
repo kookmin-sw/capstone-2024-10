@@ -6,15 +6,21 @@ AnimatorController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CargoGate
+  m_Name: PanicRoom
   serializedVersion: 5
   m_AnimatorParameters:
-  - m_Name: IsOpen
-    m_Type: 4
+  - m_Name: DoorOpen
+    m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
+  - m_Name: DoorClose
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -37,7 +43,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: IsOpen
+    m_ConditionEvent: DoorOpen
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102894310254941842}
@@ -61,8 +67,8 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
-  - m_ConditionMode: 2
-    m_ConditionEvent: IsOpen
+  - m_ConditionMode: 1
+    m_ConditionEvent: DoorClose
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102980434496029730}
@@ -87,7 +93,7 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 1
-    m_ConditionEvent: IsOpen
+    m_ConditionEvent: DoorOpen
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: 1102894310254941842}
@@ -105,13 +111,13 @@ AnimatorStateTransition:
   m_CanTransitionToSelf: 1
 --- !u!1102 &1102894310254941842
 AnimatorState:
-  serializedVersion: 6
+  serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Door_02
-  m_Speed: 0.09
+  m_Name: Door_01
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101464043774010420}
@@ -124,7 +130,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d7b9d14ecae17e247993b0d1830e9b87, type: 2}
+  m_Motion: {fileID: 7400000, guid: ba7fc1cf96ec4cf4a83100aa837d65fb, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -132,7 +138,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1102 &1102934682928008176
 AnimatorState:
-  serializedVersion: 6
+  serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -159,13 +165,13 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1102 &1102980434496029730
 AnimatorState:
-  serializedVersion: 6
-  m_ObjectHideFlags: 1
+  serializedVersion: 5
+  m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Door_02 Close
-  m_Speed: -0.09
+  m_Name: Door_01 Close
+  m_Speed: -1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101384548092370284}
@@ -178,7 +184,7 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d7b9d14ecae17e247993b0d1830e9b87, type: 2}
+  m_Motion: {fileID: 7400000, guid: ba7fc1cf96ec4cf4a83100aa837d65fb, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -186,7 +192,7 @@ AnimatorState:
   m_TimeParameter: 
 --- !u!1107 &1107227644743952460
 AnimatorStateMachine:
-  serializedVersion: 6
+  serializedVersion: 5
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -195,13 +201,13 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 1102894310254941842}
-    m_Position: {x: 420, y: 10, z: 0}
+    m_Position: {x: 420, y: 12, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102934682928008176}
     m_Position: {x: 420, y: 120, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102980434496029730}
-    m_Position: {x: 420, y: -90, z: 0}
+    m_Position: {x: 420, y: -84, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []

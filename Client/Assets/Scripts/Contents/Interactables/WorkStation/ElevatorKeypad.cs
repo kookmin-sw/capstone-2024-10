@@ -58,6 +58,8 @@ public class ElevatorKeypad : BaseWorkStation
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void Rpc_SetLayer()
     {
+        _elevatorDoor.GetComponent<AudioSource>().Play();
+
         gameObject.SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
     }
 
