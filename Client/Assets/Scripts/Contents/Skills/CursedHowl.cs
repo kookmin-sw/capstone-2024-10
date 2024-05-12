@@ -30,10 +30,10 @@ public class CursedHowl : BaseSkill
         PlayAnim(false);
         PlaySound();
 
+        Managers.GameMng.MapSystem.Sectors[Owner.CurrentSector].Rpc_GetErosion();
+
         while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
-            Managers.GameMng.MapSystem.Sectors[Owner.CurrentSector].GetErosion();
-
             UpdateWorkAmount();
             yield return null;
         }

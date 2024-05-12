@@ -62,18 +62,17 @@ public class Sector : NetworkBehaviour
         creature.Rpc_SetErosion(false);
     }
 
-    public void GetErosion()
-    {
-        Rpc_GetErosion();
-
-        if (MyCreatureIn)
-            Managers.ObjectMng.MyCreature.Rpc_SetErosion(true);
-    }
-
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void Rpc_GetErosion()
     {
         IsErosion = true;
+
+        Rpc_GetErosionAll();
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void Rpc_GetErosionAll()
+    {
         if (MyCreatureIn)
             Managers.ObjectMng.MyCreature.Rpc_SetErosion(true);
     }
