@@ -11,6 +11,9 @@ public class GameScene : BaseScene
         SceneType = Define.SceneType.GameScene;
 
         Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Bgm, volume:1f);
+
+        SettingSystem settingSystem = FindObjectOfType<SettingSystem>();
+        settingSystem.Init();
     }
 
     public override IEnumerator OnPlayerSpawn()
@@ -18,8 +21,6 @@ public class GameScene : BaseScene
         MapSystem mapSystem = null;
         PlanSystem planSystem = null;
         GameEndSystem gameEndSystem = null;
-        SettingSystem settingSystem = FindObjectOfType<SettingSystem>();
-        settingSystem.Init();
 
         while (mapSystem == null || planSystem == null)
         {

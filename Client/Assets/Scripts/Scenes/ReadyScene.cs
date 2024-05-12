@@ -14,6 +14,9 @@ public class ReadyScene : BaseScene
         Managers.UIMng.ShowPopupUI<UI_StartGame>(parent: Managers.UIMng.Root.transform);
 
         StartCoroutine(Managers.StartMng.TryStartGame());
+
+        SettingSystem settingSystem = FindAnyObjectByType<SettingSystem>();
+        settingSystem.Init();
     }
 
     public override IEnumerator OnPlayerSpawn()
