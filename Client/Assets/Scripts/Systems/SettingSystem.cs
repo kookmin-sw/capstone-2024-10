@@ -11,20 +11,16 @@ public class SettingSystem : MonoBehaviour
     public float XSensitivity = 1.0f;
     public float YSensitivity = 1.0f;
     private int _quality = 1;
+    public int VSycn = 0;
     public int Quality
     {
         get { return _quality; }
         set
         {
-            PlayerPrefs.SetInt("Textures", 1);
-            QualitySettings.SetQualityLevel(1);
+            PlayerPrefs.SetInt("Textures", value);
+            QualitySettings.SetQualityLevel(value);
             _quality = value;
         }
-    }
-
-    enum Options
-    {
-
     }
 
     public void Init()
@@ -33,22 +29,18 @@ public class SettingSystem : MonoBehaviour
 
         XSensitivity = PlayerPrefs.GetFloat("XSensitivity", 1.0f);
         YSensitivity = PlayerPrefs.GetFloat("YSensitivity", 1.0f);
-    }
-
-    void Update()
-    {
-        if (Quality != PlayerPrefs.GetInt("Textures"))
-        {
-            QualitySettings.SetQualityLevel(Quality);
-        }
-
-        Screen.SetResolution(Width, Height, Fullscreen);
+        Width = PlayerPrefs.GetInt("ScreenWidth", 1920);
+        Height = PlayerPrefs.GetInt("ScreenHeight", 1080);
+        Quality = PlayerPrefs.GetInt("Textures", 1);
+        VSycn = PlayerPrefs.GetInt("VSycn", 0);
     }
 
     public void SetResolution(int width, int height)
     {
         Width = width;
         Height = height;
+        PlayerPrefs.SetFloat("ScreenWidth", width);
+        PlayerPrefs.SetFloat("ScreenHeight", height);
         Screen.SetResolution(Width, Height, Fullscreen);
     }
 
@@ -64,5 +56,12 @@ public class SettingSystem : MonoBehaviour
         YSensitivity = sliderValueYSensitivity;
         PlayerPrefs.SetFloat("XSensitivity", sliderValueXSensitivity);
         PlayerPrefs.SetFloat("YSensitivity", sliderValueYSensitivity);
+    }
+
+    public void SetVSync(int vsync)
+    {
+        VSycn = vsync;
+        PlayerPrefs.SetInt("VSycn", vsync);
+        QualitySettings.vSyncCount = vsync;
     }
 }

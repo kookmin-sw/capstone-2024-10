@@ -28,7 +28,6 @@ public class PlayerSystem : NetworkBehaviour
     public override void Spawned()
     {
         DontDestroyOnLoad(gameObject);
-        CurrentPlayState = PlayState.Ready;
     }
 
     public void OnReadyCountChanged()

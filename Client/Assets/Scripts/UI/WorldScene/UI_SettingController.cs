@@ -53,8 +53,8 @@ public class UI_SettingController : UI_Base
 
     #endregion
 
-    private float _sliderValueXSensitivity = 0.0f;
-    private float _sliderValueYSensitivity = 0.0f;
+    private float _sliderValueXSensitivity = 1.0f;
+    private float _sliderValueYSensitivity = 1.0f;
 
     UI_LobbyController _controller;
 
@@ -103,9 +103,8 @@ public class UI_SettingController : UI_Base
         Get<Slider>(Sliders.EnvMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.EnvVolume.ToString());
         Get<Slider>(Sliders.MusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.MasterVolume.ToString());
 
-        //Get<Slider>(Sliders.SensitivityXSlider).value = Managers.GameMng.SettingSystem.XSensitivity;
-        Get<Slider>(Sliders.SensitivityXSlider).value = PlayerPrefs.GetFloat("XSensitivity", 1.0f);
-        Get<Slider>(Sliders.SensitivityYSlider).value = PlayerPrefs.GetFloat("YSensitivity", 1.0f);
+        Get<Slider>(Sliders.SensitivityXSlider).value = Managers.GameMng.SettingSystem.XSensitivity;
+        Get<Slider>(Sliders.SensitivityYSlider).value = Managers.GameMng.SettingSystem.YSensitivity;
 
 
         var dropdown = Get<TMP_Dropdown>(Dropdowns.Dropdown);
@@ -135,15 +134,15 @@ public class UI_SettingController : UI_Base
         }
 
         // check texture quality
-        if (PlayerPrefs.GetInt("Textures", 2) == 1)
+        if (Managers.GameMng.SettingSystem.Quality == 1)
         {
             TexturesLow();
         }
-        else if (PlayerPrefs.GetInt("Textures", 2) == 2)
+        else if (Managers.GameMng.SettingSystem.Quality == 2)
         {
             TexturesMed();
         }
-        else if (PlayerPrefs.GetInt("Textures", 2) == 3)
+        else if (Managers.GameMng.SettingSystem.Quality == 3)
         {
             TexturesHigh();
         }
@@ -244,14 +243,14 @@ public class UI_SettingController : UI_Base
 
     public void vsync()
     {
-        if (QualitySettings.vSyncCount == 0)
+        if (Managers.GameMng.SettingSystem.VSycn == 0)
         {
-            QualitySettings.vSyncCount = 1;
+            Managers.GameMng.SettingSystem.SetVSync(1);
             GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "on";
         }
-        else if (QualitySettings.vSyncCount == 1)
+        else if (Managers.GameMng.SettingSystem.VSycn == 1)
         {
-            QualitySettings.vSyncCount = 0;
+            Managers.GameMng.SettingSystem.SetVSync(0);
             GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "off";
         }
     }
