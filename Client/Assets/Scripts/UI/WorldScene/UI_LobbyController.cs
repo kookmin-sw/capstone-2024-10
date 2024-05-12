@@ -79,12 +79,6 @@ public class UI_LobbyController : UI_Base
     #endregion
 
     #region Other
-    public void ShowLoadingMenu()
-    {
-        _loadingMenu.gameObject.SetActive(true);
-        StartCoroutine(_loadingMenu.LoadAsynchronously());
-    }
-
     public void PlayHover()
     {
         Managers.SoundMng.Play($"{Define.EFFECT_PATH}/UI/Click", Define.SoundType.Effect, volume : 0.5f);
@@ -94,6 +88,7 @@ public class UI_LobbyController : UI_Base
     {
         Destroy(gameObject);
     }
+
     public void PlayCampaign()
     {
         GetObject(GameObjects.EXIT).SetActive(false);
