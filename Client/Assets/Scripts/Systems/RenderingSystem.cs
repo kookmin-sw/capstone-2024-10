@@ -15,14 +15,17 @@ public class RenderingSystem : NetworkBehaviour
 
     public Material DamageMaterial { get; protected set; }
 
-    private Tweener _setColorAdjustmentsTweener;
-    private Tweener _getBlindTweener;
     private Color _erosionColor = new Color(255.0f / 255.0f, 76.0f / 255.0f, 76.0f / 255.0f);
     private Color _erosionColor2 = new Color(76.0f / 255.0f, 76.0f / 255.0f, 255.0f / 255.0f);
     private Color _defaultColor = new Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
-    private float _damageEffectSpeed = 1.5f;
-    private float blindValue = 15f;
 
+    private float _defaultVignetteValue = 0.2f;
+
+    private float blindValue = 15f;
+    private float _damageEffectSpeed = 1.5f;
+
+    private Tweener _setColorAdjustmentsTweener;
+    private Tweener _getBlindTweener;
 
     public override void Spawned()
     {
@@ -47,7 +50,7 @@ public class RenderingSystem : NetworkBehaviour
         ChromaticAberration.intensity.value = 0f;
         ColorAdjustments.postExposure.value = 0f;
         ColorAdjustments.colorFilter.value = _defaultColor;
-        Vignette.intensity.value = 0.2f;
+        Vignette.intensity.value = _defaultVignetteValue;
 
         DamageEffect(3);
     }
@@ -56,19 +59,19 @@ public class RenderingSystem : NetworkBehaviour
 
     public void ApplySanity(float sanity)
     {
-        Vignette.intensity.value = 0.2f + (100f - sanity) * 0.01f * 0.55f;
+        Vignette.intensity.value = _defaultVignetteValue + (100f - sanity) * 0.01f * 0.55f;
         ChromaticAberration.intensity.value = (100f - sanity) * 0.01f;
     }
 
     public void ApplyErosion(bool isErosion)
     {
         Color color = _defaultColor;
-        float value = 0f;
+        float vignetteValue = _defaultVignetteValue;
 
         if (isErosion)
         {
             color = _erosionColor;
-            value = 100f;
+            vignetteValue = 0.15f;
         }
 
         _setColorAdjustmentsTweener.Kill();
@@ -77,7 +80,8 @@ public class RenderingSystem : NetworkBehaviour
             ColorAdjustments.colorFilter.value = value;
         });
 
-        //ChromaticAberration.intensity.value = value;
+        if (Managers.ObjectMng.MyCreature is Alien)
+            Vignette.intensity.value = vignetteValue;
     }
 
     public void GetBlind(float blindTime, float backTime)

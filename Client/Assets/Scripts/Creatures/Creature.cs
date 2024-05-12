@@ -171,8 +171,8 @@ public abstract class Creature : NetworkBehaviour
 
     protected virtual void HandleInput()
     {
-        CameraRotationY = Quaternion.Euler(0, CreatureCamera.transform.rotation.eulerAngles.y, 0);
-        Direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+        CameraRotationY = Quaternion.Euler(0f, CreatureCamera.transform.rotation.eulerAngles.y, 0f);
+        Direction = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical")).normalized;
         Velocity = (CameraRotationY * Direction).normalized;
     }
 
