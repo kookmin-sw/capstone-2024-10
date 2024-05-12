@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static UI_Loading;
 using UnityEngine.UI;
 
 public class UI_ManualController : UI_Base

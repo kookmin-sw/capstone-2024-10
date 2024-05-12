@@ -103,7 +103,8 @@ public class UI_SettingController : UI_Base
         Get<Slider>(Sliders.EnvMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.EnvVolume.ToString());
         Get<Slider>(Sliders.MusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.MasterVolume.ToString());
 
-        Get<Slider>(Sliders.SensitivityXSlider).value = Managers.GameMng.SettingSystem.XSensitivity;
+        //Get<Slider>(Sliders.SensitivityXSlider).value = Managers.GameMng.SettingSystem.XSensitivity;
+        Get<Slider>(Sliders.SensitivityXSlider).value = PlayerPrefs.GetFloat("XSensitivity", 1.0f);
         Get<Slider>(Sliders.SensitivityYSlider).value = PlayerPrefs.GetFloat("YSensitivity", 1.0f);
 
 
