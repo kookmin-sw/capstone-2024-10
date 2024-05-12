@@ -53,9 +53,8 @@ public class StartManager
         }
 
         Debug.Log("Game Setting Start");
-        var popup = Managers.UIMng.FindPopup<UI_StartGame>();
-        popup.ClosePopupUI();
         Managers.UIMng.ShowPanelUI<UI_Loading>();
+        Managers.Clear();
 
         if (Managers.NetworkMng.IsMaster)
         {
@@ -94,6 +93,12 @@ public class StartManager
         NetworkSceneManagerEx networkScene = Managers.NetworkMng.Runner.SceneManager as NetworkSceneManagerEx;
         networkScene.UnloadScene();
         Managers.SceneMng.LoadNetworkScene(Define.SceneType.GameScene);
+    }
+
+    public async void ExitGame()
+    {
+        await Managers.NetworkMng.Runner.Shutdown();
+        Managers.SceneMng.LoadScene(Define.SceneType.LobbyScene);
     }
     #endregion
 

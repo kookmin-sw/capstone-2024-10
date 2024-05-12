@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Data;
 using Fusion;
+using UnityEngine.EventSystems;
 
 public class Alien : Creature
 {
@@ -67,6 +68,9 @@ public class Alien : Creature
     protected override void HandleInput()
     {
         base.HandleInput();
+
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
 
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
             return;

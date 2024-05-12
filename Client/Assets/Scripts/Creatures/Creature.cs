@@ -3,6 +3,7 @@ using Fusion;
 using Fusion.Addons.SimpleKCC;
 using DG.Tweening;
 using Data;
+using UnityEngine.EventSystems;
 
 public abstract class Creature : NetworkBehaviour
 {
@@ -171,8 +172,11 @@ public abstract class Creature : NetworkBehaviour
 
     protected virtual void HandleInput()
     {
-        CameraRotationY = Quaternion.Euler(0f, CreatureCamera.transform.rotation.eulerAngles.y, 0f);
-        Direction = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical")).normalized;
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        CameraRotationY = Quaternion.Euler(0f, CreatureCamera.transform.rotation.eulerAngles.y, 0);
+        Direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
         Velocity = (CameraRotationY * Direction).normalized;
     }
 

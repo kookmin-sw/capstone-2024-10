@@ -126,7 +126,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         NetworkSceneInfo scene = new NetworkSceneInfo();
         scene.AddSceneRef(Managers.SceneMng.GetSceneRef(Define.SceneType.ReadyScene));
-        Managers.SceneMng.Clear();
+        Managers.Clear();
         Scene = Managers.Instance.gameObject.GetOrAddComponent<NetworkSceneManagerEx>();
 
         StartGameArgs startGameArgs = new StartGameArgs()
