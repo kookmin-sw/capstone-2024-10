@@ -60,7 +60,6 @@ public class SettingSystem : MonoBehaviour
 
     public void SetSensitivity(float sliderValueXSensitivity, float sliderValueYSensitivity)
     {
-        Debug.Log("Set Sensitivity");
         XSensitivity = sliderValueXSensitivity;
         YSensitivity = sliderValueYSensitivity;
         PlayerPrefs.SetFloat("XSensitivity", sliderValueXSensitivity);
