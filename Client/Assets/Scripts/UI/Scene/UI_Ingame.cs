@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;   
 
 public class UI_Ingame : UI_Scene
 {
@@ -11,6 +7,9 @@ public class UI_Ingame : UI_Scene
     public UI_InteractInfo InteractInfoUI { get; private set; }
     public UI_ErrorText ErrorTextUI { get; private set; }
     public UI_CurrentSector CurrentSectorUI { get; private set; }
+
+    public Canvas Canvas { get; protected set; }
+    public Camera Camera { get; protected set; }
 
     protected enum SubItemUIs
     {
@@ -39,4 +38,21 @@ public class UI_Ingame : UI_Scene
         Creature = creature;
     }
 
+    public void EndGame()
+    {
+        Canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        Transform[] children = gameObject.GetComponentsInChildren<Transform>();
+
+        // 자식 객체들 중에서 Camera 컴포넌트를 가진 객체 찾기
+        foreach (Transform child in children)
+        {
+            // 자식 객체가 Camera 컴포넌트를 가지고 있는지 확인
+            Camera childCamera = child.GetComponent<Camera>();
+            if (childCamera != null)
+            {
+                Camera = childCamera;
+            }
+        }
+        Canvas.worldCamera = Camera;
+    }
 }

@@ -326,8 +326,8 @@ public class Crew : Creature
         CrewSoundController.StopAllSound();
         CrewSoundController.PlayEndGame();
 
-        CrewIngameUI.HideUI();
         Managers.GameMng.GameEndSystem.EndCrewGame(true);
+        CrewIngameUI.HideUI();
         CrewIngameUI.EndGame();
 
         Rpc_OnWin();

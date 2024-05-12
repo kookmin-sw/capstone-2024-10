@@ -178,7 +178,8 @@ public class Alien : Creature
         AlienSoundController.StopAllSound();
         AlienSoundController.PlayEndGame();
 
-        AlienIngameUI.UIGameClear();
+        AlienIngameUI.HideUI();
+        AlienIngameUI.EndGame();
 
         Rpc_OnGameEnd();
     }

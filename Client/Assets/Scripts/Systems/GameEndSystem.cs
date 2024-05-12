@@ -14,12 +14,6 @@ public class GameEndSystem : NetworkBehaviour
         Managers.GameMng.GameEndSystem = this;
     }
 
-    private void ShowCursor()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-
     public void EndCrewGame(bool isWin)
     {
         ShowCursor();
@@ -81,5 +75,11 @@ public class GameEndSystem : NetworkBehaviour
             KilledCrewNum++;
 
         CrewNum--;
+    }
+
+    private void ShowCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 }
