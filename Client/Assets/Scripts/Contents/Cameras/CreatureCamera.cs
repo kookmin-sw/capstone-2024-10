@@ -50,10 +50,8 @@ public class CreatureCamera : MonoBehaviour
         }
 
         // 마우스 입력을 받아와 회전 각도 계산
-        //float mouseX = Input.GetAxis("Mouse X") * PlayerPrefs.GetFloat("XSensitivity", 1.0f);
-        //float mouseY = Input.GetAxis("Mouse Y") * PlayerPrefs.GetFloat("YSensitivity", 1.0f);
-        float mouseX = Input.GetAxis("Mouse X");
-        float mouseY = Input.GetAxis("Mouse Y");
+        float mouseX = Input.GetAxis("Mouse X") * Managers.GameMng.SettingSystem.XSensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * Managers.GameMng.SettingSystem.YSensitivity;
         CurrentAngle += mouseX * MouseSensitivity; //좌우 회전 값 계산
         XRotation -= mouseY * MouseSensitivity; // 상하 회전 값 계산
 

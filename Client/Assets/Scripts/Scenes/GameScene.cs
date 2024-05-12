@@ -18,17 +18,20 @@ public class GameScene : BaseScene
         MapSystem mapSystem = null;
         PlanSystem planSystem = null;
         GameEndSystem gameEndSystem = null;
+        SettingSystem settingSystem = FindObjectOfType<SettingSystem>();
+        settingSystem.Init();
+
         while (mapSystem == null || planSystem == null)
         {
             mapSystem = FindObjectOfType<MapSystem>();
             planSystem = FindObjectOfType<PlanSystem>();
             gameEndSystem = FindObjectOfType<GameEndSystem>();
+            
             yield return new WaitForSeconds(0.5f);
         }
         mapSystem.Init();
         planSystem.Init();
         gameEndSystem.Init();
-
 
         UI_Ingame ingameUI = Managers.ObjectMng.MyCreature is Crew ? Managers.UIMng.ShowSceneUI<UI_CrewIngame>() : Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
         yield return new WaitUntil(() => ingameUI.Init());
