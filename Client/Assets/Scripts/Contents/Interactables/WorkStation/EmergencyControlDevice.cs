@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Fusion;
 using UnityEngine;
 
@@ -47,16 +49,22 @@ public class EmergencyControlDevice : BaseWorkStation
         IsCompleted = true;
 
         Managers.GameMng.PlanSystem.IsPanicRoomActivated = true;
-        GameObject[] panicRooms = GameObject.FindGameObjectsWithTag("PanicRoom");
+        List<GameObject> panicRooms = GameObject.FindGameObjectsWithTag("PanicRoom").ToList();
 
+        Debug.Log(panicRooms.Count);
         foreach (var room in panicRooms)
         {
             room.GetComponent<PanicRoom>().Rpc_ChangeLightColor();
         }
+        PanicRoom unlockedPanicRoom = panicRooms[Random.Range(0, panicRooms.Count)].GetComponent<PanicRoom>();
+        panicRooms.Remove(unlockedPanicRoom.gameObject);
+        PanicRoom unlockedPanicRoom2 = panicRooms[Random.Range(0, panicRooms.Count)].GetComponent<PanicRoom>();
 
-        PanicRoom unlockPanicRoom = panicRooms[Random.Range(0, panicRooms.Length)].GetComponent<PanicRoom>();
-        Debug.Log("Unlocked :" + unlockPanicRoom.name);
-        unlockPanicRoom.IsLocked = false;
+        Debug.Log("Unlocked :" + unlockedPanicRoom.name);
+        Debug.Log("Unlocked :" + unlockedPanicRoom2.name);
+
+        unlockedPanicRoom.IsLocked = false;
+        unlockedPanicRoom2.IsLocked = false;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

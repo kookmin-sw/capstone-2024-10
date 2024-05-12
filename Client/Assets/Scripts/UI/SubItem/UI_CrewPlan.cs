@@ -214,7 +214,7 @@ public class UI_CrewPlan : UI_Base
     {
         _planC.SetObjectiveText("Use Emergency Control Device To Open Panic Room", true, true);
 
-        StartCoroutine(_planC.CompleteObjective("Find Open Panic Room And Enter!", "Hint: Only One Panic Room Is Open"));
+        StartCoroutine(_planC.CompleteObjective("Find Open Panic Room And Enter!", "Hint: Only Two Panic Rooms Are Open"));
     }
     private static string MakeHintFromSectorName(Define.SectorName[] loc)
     {
