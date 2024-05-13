@@ -146,10 +146,7 @@ public abstract class Creature : NetworkBehaviour
 
     private void LateUpdate()
     {
-        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
-            return;
-
-        CreatureCamera.UpdateCameraAngle();
+        OnLateUpdate();
     }
 
     protected virtual void OnUpdate()
@@ -159,6 +156,14 @@ public abstract class Creature : NetworkBehaviour
 
         HandleInput();
         BaseSoundController.CheckChasing();
+    }
+
+    protected virtual void OnLateUpdate()
+    {
+        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+            return;
+
+        CreatureCamera.UpdateCameraAngle();
     }
 
     public override void FixedUpdateNetwork()
@@ -253,5 +258,10 @@ public abstract class Creature : NetworkBehaviour
             return;
 
         Managers.GameMng.RenderingSystem.GetBlind(blindTime, backTime);
+    }
+
+    protected virtual bool TestInputs()
+    {
+        return false;
     }
 }

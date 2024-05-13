@@ -45,6 +45,7 @@ public class CrewStat : BaseStat
         {
             Managers.GameMng.RenderingSystem.DamageEffect(Hp);
 
+            ChangeStamina(Define.DAMAGED_RECOVER_STAMINA);
             DamagedBoost = true;
             DOVirtual.DelayedCall(3.5f, () =>
             {

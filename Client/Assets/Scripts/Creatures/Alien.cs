@@ -31,7 +31,7 @@ public class Alien : Creature
         SkillController.Skills[2] = gameObject.GetComponent<CursedHowl>();
         SkillController.Skills[3] = gameObject.GetComponent<LeapAttack>();
 
-        Head = Util.FindChild(gameObject, "head", true);
+        Head = Util.FindChild(gameObject, "Anglerox_ Head", true);
     }
 
     public override void SetInfo(int templateID)
@@ -65,24 +65,22 @@ public class Alien : Creature
 
     #region Update
 
+    protected override void OnLateUpdate()
+    {
+        base.OnLateUpdate();
+
+        Head.transform.localScale = Vector3.zero;
+    }
+
     protected override void HandleInput()
     {
         base.HandleInput();
 
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
-
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
             return;
 
-        /////////////////////////////////
-        // TODO - TEST CODE
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Rpc_OnBlind(2f, 3f);
+        if (TestInputs())
             return;
-        }
-        /////////////////////////////////
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -93,8 +91,6 @@ public class Alien : Creature
         {
             CheckInteractable(false);
         }
-
-        BaseSoundController.CheckChasing();
 
         if (Input.GetMouseButtonDown(0))
             if (CheckAndUseSkill(0))
@@ -111,21 +107,6 @@ public class Alien : Creature
         if (Input.GetKeyDown(KeyCode.R))
             if (CheckAndUseSkill(3))
                 return;
-
-        /////////////////////////////////
-        // TODO - TEST CODE
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            Managers.GameMng.GameEndSystem.Rpc_EndCrewGame(false);
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            Managers.GameMng.GameEndSystem.Rpc_EndCrewGame(true);
-            return;
-        }
-        ////////////////
-
 
         if (Velocity == Vector3.zero)
             CreatureState = Define.CreatureState.Idle;
@@ -172,8 +153,8 @@ public class Alien : Creature
         base.Rpc_OnBlind(blindTime, backTime);
 
         CreatureState = Define.CreatureState.Damaged;
-        AlienAnimController.PlayAnim(Define.AlienActionType.Damaged);
-        AlienSoundController.PlaySound(Define.AlienActionType.Damaged);
+        AlienAnimController.PlayAnim(Define.AlienActionType.GetBlind);
+        AlienSoundController.PlaySound(Define.AlienActionType.GetBlind);
         ReturnToIdle(blindTime);
     }
 
@@ -195,4 +176,25 @@ public class Alien : Creature
     }
 
     #endregion
+
+    protected override bool TestInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Rpc_OnBlind(2f, 3f);
+            return true;
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            Managers.GameMng.GameEndSystem.Rpc_EndCrewGame(false);
+            return true;
+        }
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            Managers.GameMng.GameEndSystem.Rpc_EndCrewGame(true);
+            return true;
+        }
+
+        return false;
+    }
 }
