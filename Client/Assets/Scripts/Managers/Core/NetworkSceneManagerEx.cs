@@ -39,7 +39,7 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 
         if (loadedScene.name == Managers.SceneMng.GetSceneName(Define.SceneType.GameScene))
         {
-            GameObject spawnPoint = GameObject.FindWithTag("Respawn");
+            SpawnPoint spawnPointTemp = GameObject.FindWithTag("Respawn").GetComponent<SpawnPoint>();
 
             if (Runner.IsSharedModeMasterClient)
             {
@@ -48,13 +48,18 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 
                 foreach (var player in players)
                 {
-                    if (!Managers.NetworkMng.PlayerSystem.SpawnPoints.TryGet(player, out Vector3 position))
+              
+                    if (!Managers.NetworkMng.PlayerSystem.SpawnPositions.TryGet(player, out Vector3 spawnPos))
                     {
-                        position = ( spawnPoint != null ? spawnPoint.transform.position : Vector3.zero);
+                        spawnPos = spawnPointTemp.gameObject.transform.position;
                     }
-
+                    if (!Managers.NetworkMng.PlayerSystem.SpawnSectors.TryGet(player, out Define.SectorName spawnSector))
+                    {
+                        spawnSector = spawnPointTemp.SectorName;
+                    }
+    
                     // Mater client: alien & Other clients: crew
-                    Player.RPC_SpawnPlayer(Managers.NetworkMng.Runner, player, position, player == Runner.LocalPlayer);
+                    Player.RPC_SpawnPlayer(Managers.NetworkMng.Runner, player, spawnPos, spawnSector, player == Runner.LocalPlayer);
                 }
             }
         }

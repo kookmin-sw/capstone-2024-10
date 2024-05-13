@@ -10,31 +10,34 @@ public class ObjectManager
 
     #region Creature
 
-    public async Task<NetworkObject> SpawnCrew(int crewDataId, Vector3 spawnPosition, bool isGameScene)
+    public async Task<NetworkObject> SpawnCrew(int crewDataId, Vector3 spawnPos, Define.SectorName spawnSector, bool isGameScene)
     {
         string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");
-        NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPosition);
+        NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPos);
 
         Crew crew = no.GetComponent<Crew>();
         crew.SetInfo(crewDataId, isGameScene);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        crew.CurrentSector = spawnSector;
+
         return no;
     }
 
-    public async Task<NetworkObject> SpawnAlien(int alienDataId, Vector3 spawnPosition)
+    public async Task<NetworkObject> SpawnAlien(int alienDataId, Vector3 spawnPos, Define.SectorName spawnSector)
     {
         string className = Managers.DataMng.AlienDataDict[alienDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");
-        NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPosition);
+        NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPos);
 
         Alien alien = no.GetComponent<Alien>();
         alien.SetInfo(alienDataId);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
+        alien.CurrentSector = spawnSector;
         return no;
     }
 

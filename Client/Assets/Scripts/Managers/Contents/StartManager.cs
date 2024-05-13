@@ -60,23 +60,26 @@ public class StartManager
         {
             var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
             var spawnPoints = GameObject.FindObjectsOfType<SpawnPoint>().ToList();
+    
             var respawn = GameObject.FindWithTag("Respawn");
 
             foreach (var player in players)
             {
-                Vector3 spawnPoint = Vector3.zero;
+                SpawnPoint spawnPoint;
                 if (spawnPoints.Count == 0)
                 {
-                    spawnPoint = respawn.transform.position;
+                    spawnPoint = respawn.GetComponent<SpawnPoint>();
                     Debug.LogError("Not Enough Spawn Points");
                 }
                 else
                 {
                     int rand = UnityEngine.Random.Range(0, spawnPoints.Count);
-                    spawnPoint = spawnPoints[rand].transform.position;
+                    spawnPoint = spawnPoints[rand];
                     spawnPoints.RemoveAt(rand);
                 }
-                Managers.NetworkMng.PlayerSystem.SpawnPoints.Set(player, spawnPoint);
+  
+                Managers.NetworkMng.PlayerSystem.SpawnPositions.Set(player, spawnPoint.gameObject.transform.position);
+                Managers.NetworkMng.PlayerSystem.SpawnSectors.Set(player, spawnPoint.SectorName);
             }
 
             yield return new WaitForSeconds(1.0f);
