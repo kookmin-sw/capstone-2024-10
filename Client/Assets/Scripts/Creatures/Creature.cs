@@ -17,7 +17,7 @@ public abstract class Creature : NetworkBehaviour
 
     private Define.CreatureState _creatureState;
     private Define.CreaturePose _creaturePose;
-    private Define.SectorName _currentSector = Define.SectorName.F1_Corridor_A; // TODO: 임시 초기값
+    private Define.SectorName _currentSector;
 
     public Define.CreatureState CreatureState
     {
@@ -55,7 +55,7 @@ public abstract class Creature : NetworkBehaviour
         set
         {
             _currentSector = value;
-            IngameUI.CurrentSectorUI.SetSector(value);
+            IngameUI?.CurrentSectorUI.SetSector(value);
         }
     }
 

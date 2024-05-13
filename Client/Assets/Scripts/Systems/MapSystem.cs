@@ -25,5 +25,7 @@ public class MapSystem : NetworkBehaviour
                 Debug.LogError($"Duplicate sector name detected!: {s.SectorName}");
             }
         }
+
+        Sectors[Managers.ObjectMng.MyCreature.CurrentSector].OnCreatureEnter(Managers.ObjectMng.MyCreature);
     }
 }

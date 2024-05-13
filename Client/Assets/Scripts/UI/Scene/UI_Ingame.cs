@@ -36,6 +36,7 @@ public class UI_Ingame : UI_Scene
     public virtual void InitAfterNetworkSpawn(Creature creature)
     {
         Creature = creature;
+        CurrentSectorUI.SetSector(Creature.CurrentSector);
     }
 
     public void EndGame()

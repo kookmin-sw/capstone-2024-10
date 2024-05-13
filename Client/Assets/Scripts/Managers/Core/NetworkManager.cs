@@ -59,7 +59,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public string DefaultRoomName;
     public Define.CreatureType Creature;
     public int PrefabNum;
-    public Vector3 PlayerSpawnPosition;
+    public Vector3 ReadySceneSpawnPosition;
+    public Define.SectorName ReadySceneSpawnSector;
 
     public void Init()
     {
@@ -234,10 +235,11 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (player == runner.LocalPlayer)
         {
-            PlayerSpawnPosition += new Vector3(UnityEngine.Random.Range(0, 2), 0, UnityEngine.Random.Range(0, 2));
+            ReadySceneSpawnPosition += new Vector3(UnityEngine.Random.Range(0, 2), 0, UnityEngine.Random.Range(0, 2));
+
             NetworkObject playerObject = Creature == Define.CreatureType.Crew ?
-                await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, PlayerSpawnPosition, false) :
-                await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, PlayerSpawnPosition);
+                await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, ReadySceneSpawnPosition, ReadySceneSpawnSector, false) :
+                await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, ReadySceneSpawnPosition, ReadySceneSpawnSector);
 
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
 
