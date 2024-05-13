@@ -6,7 +6,7 @@ public class LeapAttack : BaseSkill
 {
     public SimpleKCC KCC => Owner.KCC;
 
-    public bool IsMoving { get; protected set; }
+    public bool IsMoving { get; protected set; } = false;
     public bool IsErosion => Managers.GameMng.MapSystem.Sectors[Owner.CurrentSector].IsErosion;
 
     public override void SetInfo(int templateId)
@@ -15,8 +15,6 @@ public class LeapAttack : BaseSkill
 
         ReadySkillActionType = Define.AlienActionType.ReadyLeapAttack;
         SkillActionType = Define.AlienActionType.LeapAttack;
-
-        IsMoving = false;
     }
 
     public override bool CheckAndUseSkill()
@@ -41,29 +39,16 @@ public class LeapAttack : BaseSkill
         PlayAnim(false);
         PlaySound();
 
+        AttackPosition = Owner.Head.transform.position + Vector3.down * 0.2f;
         while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
             if (CurrentSkillAmount < SkillData.TotalSkillAmount - 0.5f && !IsHit)
             {
-                for (float i = -1f; i <= 1f && !IsHit; i += 0.2f)
+                for (float i = -0.5f; i <= 0.5f && !IsHit; i += 0.2f)
                 {
                     for (float j = -1f; j <= 1f && !IsHit; j += 0.2f)
                     {
-                        Ray ray = new Ray(AttackPosition + Owner.CameraRotationY * new Vector3(i, j, 0f), ForwardDirection);
-
-                        Debug.DrawRay(ray.origin, ray.direction * SkillData.Range, Color.red);
-
-                        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: SkillData.Range,
-                                layerMask: LayerMask.GetMask("Crew", "MapObject", "PlanTargetObject")))
-                        {
-                            if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
-                            {
-                                IsHit = true;
-                                Owner.AlienSoundController.PlaySound(Define.AlienActionType.Hit);
-                                crew.Rpc_OnDamaged(SkillData.Damage);
-                                crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
-                            }
-                        }
+                        DecideHit(i, j);
                     }
                 }
             }
@@ -75,7 +60,7 @@ public class LeapAttack : BaseSkill
         }
 
         IsMoving = false;
-        SkillInterrupt();
+        SkillInterrupt(1.5f);
     }
 
     public override void FixedUpdateNetwork()

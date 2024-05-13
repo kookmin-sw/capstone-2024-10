@@ -20,7 +20,7 @@ public abstract class BaseSkill : NetworkBehaviour
 
     public Alien Owner { get; protected set; }
     public Vector3 ForwardDirection => Owner.Transform.forward;
-    public Vector3 AttackPosition => Owner.Head.transform.position + Vector3.down * 0.2f;
+    public Vector3 AttackPosition { get; protected set; }
 
     private Tweener _coolTimeTweener;
 
@@ -75,6 +75,24 @@ public abstract class BaseSkill : NetworkBehaviour
         StartCoroutine(ProgressSkill());
     }
 
+    protected IEnumerator ReadySkillProgress()
+    {
+        while (CurrentReadySkillAmount < SkillData.TotalReadySkillAmount)
+        {
+            CurrentReadySkillAmount = Mathf.Clamp(CurrentReadySkillAmount + Time.deltaTime, 0, SkillData.TotalReadySkillAmount);
+            Owner.IngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentReadySkillAmount;
+
+            yield return null;
+        }
+
+        UseSkill();
+    }
+
+    protected virtual IEnumerator ProgressSkill()
+    {
+        yield return null;
+    }
+
     protected void UpdateWorkAmount()
     {
         CurrentSkillAmount = Mathf.Clamp(CurrentSkillAmount + Time.deltaTime, 0, SkillData.TotalSkillAmount);
@@ -94,7 +112,26 @@ public abstract class BaseSkill : NetworkBehaviour
         });
     }
 
-    public void SkillInterrupt()
+    protected virtual void DecideHit(float x, float y)
+    {
+        Ray ray = new Ray(AttackPosition + Owner.CameraRotationY * new Vector3(x, y, 0f), ForwardDirection);
+
+        Debug.DrawRay(ray.origin, ray.direction * SkillData.Range, Color.red);
+
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: SkillData.Range,
+                layerMask: LayerMask.GetMask("Crew", "MapObject", "PlanTargetObject")))
+        {
+            if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
+            {
+                IsHit = true;
+                Owner.AlienSoundController.PlaySound(Define.AlienActionType.Hit);
+                crew.Rpc_OnDamaged(SkillData.Damage);
+                crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
+            }
+        }
+    }
+
+    public void SkillInterrupt(float hitDelayTime)
     {
         StopAllCoroutines();
 
@@ -103,9 +140,25 @@ public abstract class BaseSkill : NetworkBehaviour
         CurrentSkillAmount = 0f;
         CurrentReadySkillAmount = 0f;
 
-        IsHit = false;
+        if (IsHit)
+        {
+            HitDelay(hitDelayTime);
+            return;
+        }
 
         Owner.ReturnToIdle(0);
+    }
+
+    protected void HitDelay(float time)
+    {
+        if (time > 0f)
+        {
+            Owner.AlienAnimController.PlayAnim(Define.AlienActionType.HitDelay);
+            Owner.AlienSoundController.PlaySound(Define.AlienActionType.HitDelay);
+        }
+
+        IsHit = false;
+        Owner.ReturnToIdle(time);
     }
 
     protected void PlayAnim(bool isReady)
@@ -119,27 +172,6 @@ public abstract class BaseSkill : NetworkBehaviour
     protected void PlaySound()
     {
         Owner.AlienSoundController.PlaySound(SkillActionType);
-    }
-
-    protected IEnumerator ReadySkillProgress()
-    {
-        while (CurrentReadySkillAmount < SkillData.TotalReadySkillAmount)
-        {
-            // if (Owner.CreatureState != Define.CreatureState.Use)
-            //     SkillInterrupt();
-
-            CurrentReadySkillAmount = Mathf.Clamp(CurrentReadySkillAmount + Time.deltaTime, 0, SkillData.TotalReadySkillAmount);
-            Owner.IngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentReadySkillAmount;
-
-            yield return null;
-        }
-
-        UseSkill();
-    }
-
-    protected virtual IEnumerator ProgressSkill()
-    {
-        yield return null;
     }
 }
 

@@ -1,4 +1,5 @@
 using Data;
+using DG.Tweening;
 using UnityEngine;
 
 public class CrewStat : BaseStat
@@ -16,6 +17,7 @@ public class CrewStat : BaseStat
     public bool IsRunnable { get; set; } = true;
     public bool Exhausted { get; set; } = false;
     public bool Doped { get; set; } = false;
+    public bool DamagedBoost { get; set; } = false;
 
     public override void SetStat(CreatureData creatureData)
     {
@@ -42,6 +44,12 @@ public class CrewStat : BaseStat
         if (value < 0)
         {
             Managers.GameMng.RenderingSystem.DamageEffect(Hp);
+
+            DamagedBoost = true;
+            DOVirtual.DelayedCall(3.5f, () =>
+            {
+                DamagedBoost = false;
+            });
         }
     }
 

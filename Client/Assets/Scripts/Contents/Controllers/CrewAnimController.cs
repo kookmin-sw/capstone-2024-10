@@ -1,4 +1,3 @@
-using UnityEngine;
 using Fusion;
 
 public class CrewAnimController : BaseAnimController

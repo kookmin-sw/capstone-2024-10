@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class AlienAnimController : BaseAnimController
 {
     #region Update
@@ -77,6 +75,9 @@ public class AlienAnimController : BaseAnimController
             case Define.AlienActionType.LeapAttack:
                 PlayLeapAttack();
                 break;
+            case Define.AlienActionType.HitDelay:
+                PlayHitDelay();
+                break;
         }
     }
 
@@ -103,7 +104,6 @@ public class AlienAnimController : BaseAnimController
     public void PlayRoar()
     {
         SetBool("Roar", true);
-        SetBool("ReadyRoar", false);
     }
 
     public void PlayReadyCursedHowl()
@@ -114,7 +114,6 @@ public class AlienAnimController : BaseAnimController
     public void PlayCursedHowl()
     {
         SetBool("CursedHowl", true);
-        SetBool("ReadyRoar", false);
     }
 
     public void PlayReadyLeapAttack()
@@ -125,7 +124,11 @@ public class AlienAnimController : BaseAnimController
     public void PlayLeapAttack()
     {
         SetBool("LeapAttack", true);
-        SetBool("ReadyLeapAttack", false);
+    }
+
+    public void PlayHitDelay()
+    {
+        SetBool("HitDelay", true);
     }
 
     #endregion
@@ -141,5 +144,6 @@ public class AlienAnimController : BaseAnimController
         SetBool("LeapAttack", false);
         SetBool("ReadyRoar", false);
         SetBool("ReadyLeapAttack", false);
+        SetBool("HitDelay", false);
     }
 }
