@@ -154,18 +154,18 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Move && CreaturePose == Define.CreaturePose.Run)
         {
             if (!CrewStat.Doped)
-                CrewStat.ChangeStamina(-Define.RUN_USE_STAMINA * Runner.DeltaTime);
+                CrewStat.ChangeStamina(-Define.RUN_USE_STAMINA * Time.deltaTime);
         }
         else
-            CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
+            CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Time.deltaTime);
 
         if (CreatureState == Define.CreatureState.Idle && CreaturePose == Define.CreaturePose.Sit)
         {
-            CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Runner.DeltaTime);
-            CrewStat.ChangeSanity(Define.SIT_RECOVER_SANITY * Runner.DeltaTime);
+            CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Time.deltaTime);
+            CrewStat.ChangeSanity(Define.SIT_RECOVER_SANITY * Time.deltaTime);
         }
         else if (CrewStat.IsErosion)
-            CrewStat.ChangeSanity(-Define.EROSION_REDUCE_SANITY * Runner.DeltaTime);
+            CrewStat.ChangeSanity(-Define.EROSION_REDUCE_SANITY * Time.deltaTime);
     }
 
     protected override void UpdateIdle()
