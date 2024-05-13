@@ -128,7 +128,7 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
         {
             if (Input.GetKeyDown(KeyCode.F))
-                CreatureState = Define.CreatureState.Idle;
+                ReturnToIdle(0f);
             return;
         }
 
@@ -249,9 +249,12 @@ public class Crew : Creature
                 break;
         }
 
+        if (CrewStat.DamagedBoost)
+            CrewStat.Speed *= 1.5f;
+
         KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
 
-        KCC.Move(Velocity * (CrewStat.Speed * Runner.DeltaTime), 0f);
+        KCC.Move(Velocity * (CrewStat.Speed * Runner.DeltaTime));
     }
 
     protected bool CheckAndUseItem()

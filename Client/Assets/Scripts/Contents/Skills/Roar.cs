@@ -16,27 +16,14 @@ public class Roar : BaseSkill
         PlayAnim(false);
         PlaySound();
 
+        AttackPosition = Owner.Head.transform.position + Vector3.down * 0.2f;
         while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
             for (float i = -1.5f; i <= 1.5f && !IsHit; i += 0.2f)
             {
-                for (float j = -1.5f; j <= 1.5f && !IsHit; j += 0.2f)
+                for (float j = -1f; j <= 1f && !IsHit; j += 0.2f)
                 {
-                    Ray ray = new Ray(AttackPosition + Owner.CameraRotationY * new Vector3(i, j, 0f), ForwardDirection);
-
-                    Debug.DrawRay(ray.origin, ray.direction * SkillData.Range, Color.red);
-
-                    if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: SkillData.Range,
-                            layerMask: LayerMask.GetMask("Crew", "MapObject", "PlanTargetObject")))
-                    {
-                        if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
-                        {
-                            IsHit = true;
-                            crew.Rpc_OnDamaged(SkillData.Damage);
-                            crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
-                            Owner.SkillController.Skills[2].CurrentCoolTime -= 20f;
-                        }
-                    }
+                    DecideHit(i, j);
                 }
             }
 
@@ -44,6 +31,24 @@ public class Roar : BaseSkill
             yield return null;
         }
 
-        SkillInterrupt();
+        SkillInterrupt(0f);
+    }
+
+    protected override void DecideHit(float x, float y)
+    {
+        Ray ray = new Ray(AttackPosition + Owner.CameraRotationY * new Vector3(x, y, 0f), ForwardDirection);
+
+        Debug.DrawRay(ray.origin, ray.direction * SkillData.Range, Color.red);
+
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: SkillData.Range,
+                layerMask: LayerMask.GetMask("Crew", "MapObject", "PlanTargetObject")))
+        {
+            if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
+            {
+                IsHit = true;
+                crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
+                Owner.SkillController.Skills[2].CurrentCoolTime -= 20f;
+            }
+        }
     }
 }
