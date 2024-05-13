@@ -71,59 +71,11 @@ public class Crew : Creature
     {
         base.HandleInput();
 
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
-
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead)
             return;
 
-        /////////////////////////////////
-        // TODO - TEST CODE
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            Rpc_OnDamaged(1);
+        if (TestInputs())
             return;
-        }
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            CrewStat.ChangeHp(1);
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.O))
-        {
-            CrewStat.ChangeSanity(-10f);
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            CrewStat.ChangeSanity(10f);
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.H))
-        {
-            Managers.GameMng.RenderingSystem.ApplyErosion(true);
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            Managers.GameMng.RenderingSystem.ApplyErosion(false);
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            Rpc_OnBlind(2f, 3f);
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            IsGameScene = true;
-        }
-        if (Input.GetKeyDown(KeyCode.Z))
-        {
-            OnWin();
-            return;
-        }
-        /////////////////////////////////
 
         if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
         {
@@ -141,8 +93,6 @@ public class Crew : Creature
         {
             CheckInteractable(false);
         }
-
-        BaseSoundController.CheckChasing();
 
         if (Input.GetKeyDown(KeyCode.G))
             if (Inventory.DropItem())
@@ -289,8 +239,6 @@ public class Crew : Creature
             return;
         }
 
-        CrewStat.ChangeStamina(Define.DAMAGED_RECOVER_STAMINA);
-
         CreatureState = Define.CreatureState.Damaged;
         CrewAnimController.PlayAnim(Define.CrewActionType.Damaged);
         CrewSoundController.PlaySound(Define.CrewActionType.Damaged);
@@ -347,4 +295,54 @@ public class Crew : Creature
     }
 
     #endregion
+
+    protected override bool TestInputs()
+    {
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            Rpc_OnDamaged(1);
+            return true;
+        }
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            CrewStat.ChangeHp(1);
+            return true;
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            CrewStat.ChangeSanity(-10f);
+            return true;
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            CrewStat.ChangeSanity(10f);
+            return true;
+        }
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Managers.GameMng.RenderingSystem.ApplyErosion(true);
+            return true;
+        }
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            Managers.GameMng.RenderingSystem.ApplyErosion(false);
+            return true;
+        }
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            Rpc_OnBlind(2f, 3f);
+            return true;
+        }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            IsGameScene = true;
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            OnWin();
+            return true;
+        }
+
+        return false;
+    }
 }

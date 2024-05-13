@@ -48,8 +48,8 @@ public class AlienAnimController : BaseAnimController
     {
         switch (alienActionType)
         {
-            case Define.AlienActionType.Damaged:
-                PlayDamaged();
+            case Define.AlienActionType.GetBlind:
+                PlayGetBlind();
                 break;
             case Define.AlienActionType.CrashDoor:
                 PlayCrashDoor();
@@ -81,9 +81,9 @@ public class AlienAnimController : BaseAnimController
         }
     }
 
-    public void PlayDamaged()
+    public void PlayGetBlind()
     {
-        SetBool("Damaged", true);
+        SetBool("GetBlind", true);
     }
 
     public void PlayCrashDoor()
@@ -135,7 +135,7 @@ public class AlienAnimController : BaseAnimController
 
     protected override void SetParameterFalse()
     {
-        SetBool("Damaged", false);
+        SetBool("GetBlind", false);
         SetBool("BasicAttack", false);
         SetBool("CrashDoor", false);
         SetBool("ReadyRoar", false);

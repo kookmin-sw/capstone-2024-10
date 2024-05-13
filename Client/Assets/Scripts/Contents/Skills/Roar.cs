@@ -46,6 +46,7 @@ public class Roar : BaseSkill
             if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
             {
                 IsHit = true;
+                crew.Rpc_OnDamaged(SkillData.Damage);
                 crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
                 Owner.SkillController.Skills[2].CurrentCoolTime -= 20f;
             }

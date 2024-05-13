@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class CreatureCamera : MonoBehaviour
 {
@@ -33,6 +34,9 @@ public class CreatureCamera : MonoBehaviour
 
     public void UpdateCameraAngle()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (!Creature.HasStateAuthority || Creature.CreatureState == Define.CreatureState.Dead || !Creature.IsSpawned)
             return;
 

@@ -20,7 +20,7 @@ public class AlienSoundController : BaseSoundController
     {
         switch (alienActionType)
         {
-            case Define.AlienActionType.Damaged:
+            case Define.AlienActionType.GetBlind:
                 Rpc_PlayDamaged();
                 break;
             case Define.AlienActionType.CrashDoor:

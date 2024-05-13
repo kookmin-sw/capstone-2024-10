@@ -30,7 +30,7 @@ public static class Define
     public enum AlienActionType
     {
         None,
-        Damaged,
+        GetBlind,
         CrashDoor,
         Hit,
         BasicAttack,
