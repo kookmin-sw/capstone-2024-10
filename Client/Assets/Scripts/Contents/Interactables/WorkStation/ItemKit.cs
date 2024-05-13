@@ -23,7 +23,7 @@ public class ItemKit : BaseWorkStation
         CanRememberWork = false;
         IsCompleted = false;
 
-        TotalWorkAmount = 15f;
+        TotalWorkAmount = 70f;
     }
 
     public override bool IsInteractable(Creature creature)
