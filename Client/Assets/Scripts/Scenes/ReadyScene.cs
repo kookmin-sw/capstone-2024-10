@@ -11,7 +11,7 @@ public class ReadyScene : BaseScene
 
         Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Bgm, volume:1f);
 
-        Managers.UIMng.ShowPopupUI<UI_StartGame>(parent: Managers.UIMng.Root.transform);
+        Managers.UIMng.ShowPopupUI<UI_StartGame>();
 
         StartCoroutine(Managers.StartMng.TryStartGame());
 
@@ -32,14 +32,25 @@ public class ReadyScene : BaseScene
         ingameUI.InventoryUI.gameObject.SetActive(false);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (FindAnyObjectByType<UI_ExitGame>() == null &&
+                FindAnyObjectByType<UI_SettingPanel>() == null &&
+                FindAnyObjectByType<UI_ManualPanel>() == null)
+                Managers.UIMng.ShowPanelUI<UI_ExitGame>();
+        }
+    }
+
     public override void Clear()
     {
-        StopAllCoroutines();
         Managers.SoundMng.Clear();
     }
 
     private void OnApplicationQuit()
     {
+        StopAllCoroutines();
         Clear();
     }
 }

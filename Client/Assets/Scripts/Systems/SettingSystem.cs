@@ -39,8 +39,8 @@ public class SettingSystem : MonoBehaviour
     {
         Width = width;
         Height = height;
-        PlayerPrefs.SetFloat("ScreenWidth", width);
-        PlayerPrefs.SetFloat("ScreenHeight", height);
+        PlayerPrefs.SetInt("ScreenWidth", width);
+        PlayerPrefs.SetInt("ScreenHeight", height);
         Screen.SetResolution(Width, Height, Fullscreen);
     }
 
@@ -50,11 +50,15 @@ public class SettingSystem : MonoBehaviour
         Screen.SetResolution(Width, Height, Fullscreen);
     }
 
-    public void SetSensitivity(float sliderValueXSensitivity, float sliderValueYSensitivity)
+    public void SetXSensitivity(float sliderValueXSensitivity)
     {
         XSensitivity = sliderValueXSensitivity;
-        YSensitivity = sliderValueYSensitivity;
         PlayerPrefs.SetFloat("XSensitivity", sliderValueXSensitivity);
+    }
+
+    public void SetYSensitivity(float sliderValueYSensitivity)
+    {
+        YSensitivity = sliderValueYSensitivity;
         PlayerPrefs.SetFloat("YSensitivity", sliderValueYSensitivity);
     }
 

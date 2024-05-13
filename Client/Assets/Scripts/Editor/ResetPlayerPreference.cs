@@ -1,8 +1,9 @@
 using UnityEngine;
 using UnityEditor;
 
-public class PlayerPrefsEditor : EditorWindow
+public class ResetPlayerPreference : EditorWindow
 {
+#if UNITY_EDITOR
     [MenuItem("Tools/Reset PlayerPrefs")]
     public static void ResetPlayerPrefs()
     {
@@ -12,4 +13,5 @@ public class PlayerPrefsEditor : EditorWindow
             Debug.Log("PlayerPrefs data has been reset.");
         }
     }
+#endif
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using Data;
 using Fusion;
+using UnityEngine.EventSystems;
 
 public class Crew : Creature
 {
@@ -69,6 +70,9 @@ public class Crew : Creature
     protected override void HandleInput()
     {
         base.HandleInput();
+
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
 
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead)
             return;

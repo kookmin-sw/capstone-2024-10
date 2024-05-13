@@ -41,10 +41,6 @@ public class UI_StartGame : UI_Popup
         {
             SimulateButtonClick(GetButton((int)Buttons.ReadyGame));
         }
-        else if (Input.GetButtonDown("Cancel"))
-        {
-            SimulateButtonClick(GetButton((int)Buttons.ExitGame));
-        }
     }
 
     private void SimulateButtonClick(Button button)
@@ -73,13 +69,7 @@ public class UI_StartGame : UI_Popup
 
     public void ExitGame()
     {
-        if (Managers.StartMng.Player == null)
-        {
-            Debug.Log("Player is null");
-            return;
-        }
-
-        Managers.StartMng.Player.ExitGame();
+        Managers.StartMng.ExitGame();
     }
 
     public void SetInfo(int count)
@@ -87,7 +77,7 @@ public class UI_StartGame : UI_Popup
         GetText((int)Texts.ReadyCount).text = $"{count} / {Define.PLAYER_COUNT}";
     }
 
-    public override void Clear()
+    private void OnDestroy()
     {
         Managers.NetworkMng.PlayerSystem.OnReadyCountUpdated -= () => SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
     }

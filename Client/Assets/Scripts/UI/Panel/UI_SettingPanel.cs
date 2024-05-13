@@ -5,7 +5,7 @@ using TMPro;
 using System;
 using System.IO;
 
-public class UI_SettingController : UI_Base
+public class UI_SettingPanel : UI_Panel
 {
     #region Enums
     enum GameObjects
@@ -53,8 +53,6 @@ public class UI_SettingController : UI_Base
 
     #endregion
 
-    UI_LobbyController _controller;
-
     public override bool Init()
     {
         if (!base.Init())
@@ -65,14 +63,26 @@ public class UI_SettingController : UI_Base
         Bind<TMP_Dropdown>(typeof(Dropdowns));
         Bind<Slider>(typeof(Sliders));
 
-        _controller = FindObjectOfType<UI_LobbyController>();
+        var canvas = GetComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceCamera;
+        canvas.worldCamera = transform.GetComponentInParent<Camera>();
+        canvas.planeDistance = 10f;
 
         for (int i = 0; i < Enum.GetNames(typeof(Buttons)).Length; i++)
         {
-            GetButton(i).gameObject.BindEvent((e) => { _controller.PlayHover(); }, Define.UIEvent.PointerEnter);
+            GetButton(i).gameObject.BindEvent((e) => { PlayHover(); }, Define.UIEvent.PointerEnter);
         }
 
-        GetButton(Buttons.Btn_Return).gameObject.BindEvent((e) => { _controller.Position1(); }, Define.UIEvent.Click);
+        GetButton(Buttons.Btn_Return).onClick.AddListener(() =>
+        {
+            Destroy(transform.parent.gameObject);
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+            if (Managers.UIMng.SceneUI != null)
+                Managers.UIMng.SceneUI.gameObject.SetActive(true);
+            Managers.UIMng.ActivatePopupUI(true);
+        });
+
         GetButton(Buttons.Btn_Game).gameObject.BindEvent((e) => { GamePanel(); }, Define.UIEvent.Click);
         GetButton(Buttons.Btn_Controls).gameObject.BindEvent((e) => { ControlsPanel(); }, Define.UIEvent.Click);
         GetButton(Buttons.Btn_Video).gameObject.BindEvent((e) => { VideoPanel(); }, Define.UIEvent.Click);
@@ -151,6 +161,11 @@ public class UI_SettingController : UI_Base
         GetObject(GameObjects.LineVideo).SetActive(false);
 
         return true;
+    }
+
+    public void PlayHover()
+    {
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/UI/Click", Define.SoundType.Effect, volume : 0.5f);
     }
 
     public void SelectResolution(string optionText)

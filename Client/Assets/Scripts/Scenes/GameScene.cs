@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class GameScene : BaseScene
 {
-    // 씬이 초기에 생성될 때 수행될 목록
     protected override void Init()
     {
         base.Init();
@@ -21,7 +20,6 @@ public class GameScene : BaseScene
         MapSystem mapSystem = null;
         PlanSystem planSystem = null;
         GameEndSystem gameEndSystem = null;
-
         while (mapSystem == null || planSystem == null)
         {
             mapSystem = FindObjectOfType<MapSystem>();
@@ -33,12 +31,22 @@ public class GameScene : BaseScene
         mapSystem.Init();
         planSystem.Init();
         gameEndSystem.Init();
-
         UI_Ingame ingameUI = Managers.ObjectMng.MyCreature is Crew ? Managers.UIMng.ShowSceneUI<UI_CrewIngame>() : Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
         yield return new WaitUntil(() => ingameUI.Init());
 
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (FindAnyObjectByType<UI_ExitGame>() == null &&
+                FindAnyObjectByType<UI_SettingPanel>() == null &&
+                FindAnyObjectByType<UI_ManualPanel>() == null)
+                Managers.UIMng.ShowPanelUI<UI_ExitGame>();
+        }
     }
 
     // 씬이 바뀔 때 정리해야 하는 목록

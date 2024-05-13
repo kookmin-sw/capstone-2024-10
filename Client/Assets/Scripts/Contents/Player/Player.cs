@@ -78,12 +78,6 @@ public class Player : NetworkBehaviour
         }
     }
 
-    public async void ExitGame()
-    {
-        await Runner.Shutdown();
-        Managers.SceneMng.LoadScene(Define.SceneType.LobbyScene);
-    }
-
     [Rpc]
     public static async void RPC_SpawnPlayer(NetworkRunner runner, [RpcTarget] PlayerRef player, Vector3 spawnPos, bool isAlien)
     {

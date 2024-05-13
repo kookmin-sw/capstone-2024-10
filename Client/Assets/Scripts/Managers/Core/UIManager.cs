@@ -249,6 +249,11 @@ public class UIManager
             ClosePopupUI();
     }
 
+    public void ActivatePopupUI(bool active)
+    {
+        _popupStack.ToList().ForEach(x => x.gameObject.SetActive(active));
+    }
+
     /// <summary>
     /// 모든 팝업 UI와 씬 Ui를 닫는 초기화를 수행한다.
     /// </summary>
