@@ -40,6 +40,7 @@ public static class Define
         CursedHowl,
         ReadyLeapAttack,
         LeapAttack,
+        HitDelay,
     }
 
     public enum SectorName
@@ -204,7 +205,7 @@ public static class Define
     public const int MAX_SKILL_NUM = 4;
 
     public const float PASIVE_RECOVER_STAMINA = 2f;
-    public const float DAMAGED_RECOVER_STAMINA = 60f;
+    public const float DAMAGED_RECOVER_STAMINA = 30f;
     public const float RUN_USE_STAMINA = 5f;
     public const float EROSION_REDUCE_SANITY = 1f;
     public const float SIT_RECOVER_SANITY = 1f;

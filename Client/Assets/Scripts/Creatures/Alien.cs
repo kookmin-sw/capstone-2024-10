@@ -147,7 +147,7 @@ public class Alien : Creature
 
         KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
 
-        KCC.Move(Velocity * (AlienStat.Speed * Runner.DeltaTime), 0f);
+        KCC.Move(Velocity * (AlienStat.Speed * Runner.DeltaTime));
     }
 
     protected bool CheckAndUseSkill(int skillIdx)

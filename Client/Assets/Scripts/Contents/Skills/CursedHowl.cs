@@ -38,6 +38,6 @@ public class CursedHowl : BaseSkill
             yield return null;
         }
 
-        SkillInterrupt();
+        SkillInterrupt(0f);
     }
 }
