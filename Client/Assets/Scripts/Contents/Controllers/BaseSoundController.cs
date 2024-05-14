@@ -36,8 +36,8 @@ public abstract class BaseSoundController : NetworkBehaviour
     public void StopAllSound()
     {
         Managers.SoundMng.Stop(Define.SoundType.Bgm);
-        Managers.SoundMng.Stop(Define.SoundType.Bgm);
-        Managers.SoundMng.Stop(Define.SoundType.Bgm);
+        Managers.SoundMng.Stop(Define.SoundType.Environment);
+        Managers.SoundMng.Stop(Define.SoundType.Effect);
 
         Rpc_StopEffectSound();
     }
@@ -75,7 +75,7 @@ public abstract class BaseSoundController : NetworkBehaviour
 
     public void PlayEndGame()
     {
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Environment, volume: 0.8f);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.8f);
     }
 
     #endregion

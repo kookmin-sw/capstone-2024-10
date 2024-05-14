@@ -40,8 +40,6 @@ public class Alien : Creature
 
         base.SetInfo(templateID);
 
-        Head.transform.localScale = Vector3.zero;
-
         CreatureCamera = Managers.ResourceMng.Instantiate("Cameras/CreatureCamera", Util.FindChild(gameObject, "Anglerox_ Neck", true).transform).GetComponent<CreatureCamera>();
         CreatureCamera.transform.localPosition = new Vector3(0.1f, 0.6f, 0f);
         CreatureCamera.SetInfo(this);
@@ -69,7 +67,8 @@ public class Alien : Creature
     {
         base.OnLateUpdate();
 
-        Head.transform.localScale = Vector3.zero;
+        if (HasStateAuthority)
+            Head.transform.localScale = Vector3.zero;
     }
 
     protected override void HandleInput()

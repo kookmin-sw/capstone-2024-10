@@ -9,7 +9,8 @@ public class ReadyScene : BaseScene
 
         SceneType = Define.SceneType.ReadyScene;
 
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Bgm, volume:1f);
+        Managers.SoundMng.Stop(Define.SoundType.Bgm);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Environment, volume:1f);
 
         Managers.UIMng.ShowPopupUI<UI_StartGame>();
 
