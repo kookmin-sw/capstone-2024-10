@@ -112,10 +112,10 @@ public class AlienSoundController : BaseSoundController
                 Ray ray = CreatureCamera.Camera.ViewportPointToRay(
                     new Vector3(i, j, CreatureCamera.Camera.nearClipPlane));
 
-                // if (i < 0.25f || j < 0.25f || i > 0.75f || j > 0.75f)
-                //     Debug.DrawRay(ray.origin, ray.direction * 15f, Color.green);
+                 if (i < 0.25f || j < 0.25f || i > 0.75f || j > 0.75f)
+                     Debug.DrawRay(ray.origin, ray.direction * 20f, Color.green);
 
-                if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 15f,
+                if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 20f,
                         layerMask: LayerMask.GetMask("Crew", "MapObject", "PlanTargetObject")))
                 {
                     if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
@@ -124,8 +124,12 @@ public class AlienSoundController : BaseSoundController
                         {
                             StopAllCoroutines();
                             IsChasing = true;
+
                             if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
-                                Managers.SoundMng.Play($"{Define.BGM_PATH}/In Captivity", Define.SoundType.Bgm, volume: 1);
+                            {
+                                Managers.SoundMng.Play($"{Define.BGM_PATH}/In Captivity", Define.SoundType.Bgm,
+                                    volume: 1);
+                            }
                         }
 
                         return;

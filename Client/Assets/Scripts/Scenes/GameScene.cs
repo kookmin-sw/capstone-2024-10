@@ -9,7 +9,8 @@ public class GameScene : BaseScene
 
         SceneType = Define.SceneType.GameScene;
 
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Bgm, volume:1f);
+        Managers.SoundMng.Stop(Define.SoundType.Bgm);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Environment, volume:1f);
 
         SettingSystem settingSystem = FindObjectOfType<SettingSystem>();
         settingSystem.Init();
@@ -25,7 +26,7 @@ public class GameScene : BaseScene
             mapSystem = FindObjectOfType<MapSystem>();
             planSystem = FindObjectOfType<PlanSystem>();
             gameEndSystem = FindObjectOfType<GameEndSystem>();
-            
+
             yield return new WaitForSeconds(0.5f);
         }
         mapSystem.Init();

@@ -249,7 +249,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
             if (Runner.IsSharedModeMasterClient)
             {
-                NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Etc/PlayerSystem");
+                NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Systems/@PlayerSystem");
                 NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, Vector3.zero);
 
                 PlayerSystem = no.GetComponent<PlayerSystem>();
