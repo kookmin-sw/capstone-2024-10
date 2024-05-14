@@ -12,9 +12,7 @@ public class PlayerSystem : NetworkBehaviour
     public Action OnReadyCountUpdated { get; set; }
 
     [Networked, Capacity(Define.PLAYER_COUNT)]
-    public NetworkDictionary<PlayerRef, Vector3> SpawnPositions { get; }
-    [Networked, Capacity(Define.PLAYER_COUNT)]
-    public NetworkDictionary<PlayerRef, Define.SectorName> SpawnSectors { get; }
+    public NetworkDictionary<PlayerRef, SpawnPoint.SpawnPointData> SpawnPoints { get; }
     public enum PlayState
     {
         None,

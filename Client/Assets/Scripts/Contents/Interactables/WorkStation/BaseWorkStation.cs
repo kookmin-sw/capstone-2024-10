@@ -37,6 +37,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     {
         creature.IngameUI.ErrorTextUI.Hide();
         creature.IngameUI.InteractInfoUI.Hide();
+        if (creature is Crew) creature.IngameUI.ObjectNameUI.Show(this.GetType().ToString());
 
         if (Worker != null) return false;
 
@@ -51,12 +52,13 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         Worker.CreatureState = Define.CreatureState.Interact;
         Worker.CreaturePose = Define.CreaturePose.Stand;
         Worker.IngameUI.InteractInfoUI.Hide();
+        Worker.IngameUI.ObjectNameUI.Hide();
         Worker.IngameUI.WorkProgressBarUI.Show(Description, CurrentWorkAmount, TotalWorkAmount);
         Rpc_AddWorker();
         PlayAnim();
         Rpc_PlaySound();
         StartCoroutine(ProgressWork());
-
+       
         return true;
     }
 

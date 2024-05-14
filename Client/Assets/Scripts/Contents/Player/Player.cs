@@ -79,11 +79,11 @@ public class Player : NetworkBehaviour
     }
 
     [Rpc]
-    public static async void RPC_SpawnPlayer(NetworkRunner runner, [RpcTarget] PlayerRef player, Vector3 spawnPos, Define.SectorName spawnSector, bool isAlien)
+    public static async void RPC_SpawnPlayer(NetworkRunner runner, [RpcTarget] PlayerRef player, SpawnPoint.SpawnPointData spawnPoint, bool isAlien)
     {
         NetworkObject no = isAlien
-            ? await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPos, spawnSector)
-            : await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPos, spawnSector, true);
+            ? await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPoint)
+            : await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, true);
         runner.SetPlayerObject(player, no);
     }
 }

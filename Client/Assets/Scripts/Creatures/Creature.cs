@@ -239,6 +239,8 @@ public abstract class Creature : NetworkBehaviour
 
         IngameUI.InteractInfoUI.Hide();
         IngameUI.ErrorTextUI.Hide();
+        IngameUI.ObjectNameUI.Hide();
+
         return false;
     }
 
