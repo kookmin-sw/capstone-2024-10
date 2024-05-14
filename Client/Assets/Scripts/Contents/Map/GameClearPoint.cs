@@ -10,7 +10,11 @@ public class GameClearPoint : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             Crew creature = other.GetComponent<Crew>();
-            creature.OnWin();
+            if (creature != null )
+            {
+                creature.OnWin();
+            }
+            
         }
     }
 }

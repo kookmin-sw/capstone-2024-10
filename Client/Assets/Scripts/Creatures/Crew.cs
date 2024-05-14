@@ -256,6 +256,9 @@ public class Crew : Creature
 
     public void OnDefeat()
     {
+        if (!HasStateAuthority || CreatureType != Define.CreatureType.Crew)
+            return;
+
         CreatureState = Define.CreatureState.Dead;
 
         CrewAnimController.PlayAnim(Define.CrewActionType.Dead);
@@ -276,12 +279,16 @@ public class Crew : Creature
 
     public void OnWin()
     {
+        if (!HasStateAuthority || CreatureType != Define.CreatureType.Crew)
+            return;
+
         CreatureState = Define.CreatureState.Idle;
 
         CrewSoundController.StopAllSound();
         CrewSoundController.PlayEndGame();
 
         Managers.GameMng.GameEndSystem.EndCrewGame(true);
+        
         CrewIngameUI.HideUI();
         CrewIngameUI.EndGame();
 
