@@ -62,6 +62,9 @@ public class Crew : Creature
 
     protected override void OnUpdate()
     {
+        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+            return;
+
         base.OnUpdate();
 
         UpdateStat();
@@ -69,6 +72,9 @@ public class Crew : Creature
 
     protected override void HandleInput()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         base.HandleInput();
 
         if (EventSystem.current.IsPointerOverGameObject())
