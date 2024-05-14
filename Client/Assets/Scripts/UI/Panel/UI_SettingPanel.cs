@@ -170,6 +170,9 @@ public class UI_SettingPanel : UI_Panel
 
     public void SelectResolution(string optionText)
     {
+        if (optionText == "Select")
+            return;
+
         string[] words = optionText.Split(' ');
         int width = int.Parse(words[0]);
         int height = int.Parse(words[2]);
