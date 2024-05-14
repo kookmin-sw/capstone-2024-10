@@ -4,7 +4,7 @@ using UnityEngine;
 public class GameEndSystem : NetworkBehaviour
 {
     [Networked, OnChangedRender(nameof(OnCrewNumChanged))]
-    public int CrewNum { get; set; } = Define.PLAYER_COUNT - 1;
+    public int CrewNum { get; set; }
 
     [Networked]
     public int KilledCrewNum { get; set; } = 0;
@@ -12,6 +12,7 @@ public class GameEndSystem : NetworkBehaviour
     public void Init()
     {
         Managers.GameMng.GameEndSystem = this;
+        CrewNum = Define.PLAYER_COUNT - 1;
     }
 
     public void EndCrewGame(bool isWin)
