@@ -48,6 +48,7 @@ public class PanicRoom : BaseWorkStation
     {
         Worker = creature;
         Worker.IngameUI.InteractInfoUI.Hide();
+        Worker.IngameUI.ObjectNameUI.Hide();
         Worker.CreatureState = Define.CreatureState.Interact;
         Worker.CreaturePose = Define.CreaturePose.Stand;
 

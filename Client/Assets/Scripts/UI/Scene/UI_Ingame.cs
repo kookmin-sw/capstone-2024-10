@@ -7,6 +7,7 @@ public class UI_Ingame : UI_Scene
     public UI_InteractInfo InteractInfoUI { get; private set; }
     public UI_ErrorText ErrorTextUI { get; private set; }
     public UI_CurrentSector CurrentSectorUI { get; private set; }
+    public UI_ObjectName ObjectNameUI { get; private set; }
 
     public Canvas Canvas { get; protected set; }
     public Camera Camera { get; protected set; }
@@ -17,6 +18,7 @@ public class UI_Ingame : UI_Scene
         UI_InteractInfo,
         UI_ErrorText,
         UI_CurrentSector,
+        UI_ObjectName,
     }
 
     public override bool Init()
@@ -29,6 +31,7 @@ public class UI_Ingame : UI_Scene
         InteractInfoUI = Get<UI_Base>(SubItemUIs.UI_InteractInfo) as UI_InteractInfo;
         ErrorTextUI = Get<UI_Base>(SubItemUIs.UI_ErrorText) as UI_ErrorText;
         CurrentSectorUI = Get<UI_Base>(SubItemUIs.UI_CurrentSector) as UI_CurrentSector;
+        ObjectNameUI = Get<UI_Base>(SubItemUIs.UI_ObjectName) as UI_ObjectName;
 
         return true;
     }

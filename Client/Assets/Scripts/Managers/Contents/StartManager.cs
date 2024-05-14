@@ -65,21 +65,20 @@ public class StartManager
 
             foreach (var player in players)
             {
-                SpawnPoint spawnPoint;
+                SpawnPoint.SpawnPointData spawnPoint;
                 if (spawnPoints.Count == 0)
                 {
-                    spawnPoint = respawn.GetComponent<SpawnPoint>();
+                    spawnPoint = respawn.GetComponent<SpawnPoint>().Data;
                     Debug.LogError("Not Enough Spawn Points");
                 }
                 else
                 {
                     int rand = UnityEngine.Random.Range(0, spawnPoints.Count);
-                    spawnPoint = spawnPoints[rand];
+                    spawnPoint = spawnPoints[rand].Data;
                     spawnPoints.RemoveAt(rand);
                 }
   
-                Managers.NetworkMng.PlayerSystem.SpawnPositions.Set(player, spawnPoint.gameObject.transform.position);
-                Managers.NetworkMng.PlayerSystem.SpawnSectors.Set(player, spawnPoint.SectorName);
+                Managers.NetworkMng.PlayerSystem.SpawnPoints.Set(player, spawnPoint);
             }
 
             yield return new WaitForSeconds(1.0f);

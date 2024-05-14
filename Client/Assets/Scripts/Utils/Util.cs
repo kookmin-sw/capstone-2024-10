@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -57,5 +58,20 @@ public class Util : MonoBehaviour
         }
 
         return null;
+    }
+
+    // 대문자 앞에 띄어쓰기 추가 (첫 글자 제외)
+    public static string AddSpanceInText(string text)
+    {
+        // 언더바 제거
+        text = text.Replace("_", "");
+
+        // 대문자 앞에 띄어쓰기 추가 (첫 글자 제외)
+        text = Regex.Replace(text, "(?<!^)([A-Z])", " $1");
+
+        text = text.Replace("F1", "1F");
+        text = text.Replace("F2", "2F");
+
+        return text;
     }
 }

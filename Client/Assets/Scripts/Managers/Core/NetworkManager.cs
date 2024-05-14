@@ -236,10 +236,14 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         if (player == runner.LocalPlayer)
         {
             ReadySceneSpawnPosition += new Vector3(UnityEngine.Random.Range(0, 2), 0, UnityEngine.Random.Range(0, 2));
-
+            SpawnPoint.SpawnPointData spawnPoint = new()
+            {
+                Position = ReadySceneSpawnPosition,
+                SectorName = ReadySceneSpawnSector
+            };
             NetworkObject playerObject = Creature == Define.CreatureType.Crew ?
-                await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, ReadySceneSpawnPosition, ReadySceneSpawnSector, false) :
-                await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, ReadySceneSpawnPosition, ReadySceneSpawnSector);
+                await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, false) :
+                await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPoint);
 
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
 
