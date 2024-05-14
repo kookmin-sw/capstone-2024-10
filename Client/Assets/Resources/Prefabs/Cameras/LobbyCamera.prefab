@@ -266,8 +266,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5056154823896635220}
   - component: {fileID: 2305675834311801881}
-  - component: {fileID: 1260714149874485146}
-  - component: {fileID: 2213484012253008768}
   - component: {fileID: 3199321936726190936}
   m_Layer: 0
   m_Name: LobbyCamera
@@ -285,7 +283,7 @@ Transform:
   m_GameObject: {fileID: 3459902462164851774}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: 0, w: -1}
-  m_LocalPosition: {x: 0.0000034838, y: -0.00000033425, z: -0.000010896}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -334,7 +332,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8224
   m_RenderingPath: 1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -343,38 +341,9 @@ Camera:
   m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 1
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &1260714149874485146
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3459902462164851774}
-  m_Enabled: 1
---- !u!95 &2213484012253008768
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3459902462164851774}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 86a9aab867c8a2b46a9ab680fc2d94a5, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &3199321936726190936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,12 +356,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23c1ce4fb46143f46bc5cb5224c934f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clearColorMode: 0
-  backgroundColorHDR: {r: 0.025, g: 0.07, b: 0.19, a: 0}
+  clearColorMode: 1
+  backgroundColorHDR: {r: 0, g: 0, b: 0, a: 0}
   clearDepth: 1
   volumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 8192
   volumeAnchorOverride: {fileID: 0}
   antialiasing: 0
   SMAAQuality: 2
@@ -423,7 +392,7 @@ MonoBehaviour:
   invertFaceCulling: 0
   probeLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 8192
   hasPersistentHistory: 0
   screenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
   screenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
