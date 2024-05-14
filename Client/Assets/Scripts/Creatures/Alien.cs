@@ -75,6 +75,9 @@ public class Alien : Creature
     {
         base.HandleInput();
 
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
             return;
 

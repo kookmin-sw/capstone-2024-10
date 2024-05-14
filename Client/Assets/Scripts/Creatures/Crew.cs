@@ -71,6 +71,9 @@ public class Crew : Creature
     {
         base.HandleInput();
 
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead)
             return;
 
