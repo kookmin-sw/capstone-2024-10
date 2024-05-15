@@ -19,11 +19,11 @@ public class LeapAttack : BaseSkill
 
     public override bool CheckAndUseSkill()
     {
-        // if (CurrentCoolTime > 0f)
-        //     return false;
-        //
-        // if (!IsErosion)
-        //     return false;
+        if (CurrentCoolTime > 0f)
+            return false;
+
+        if (!IsErosion)
+            return false;
 
         if (SkillData.Range > 0f)
             Owner.CurrentSkillRange = SkillData.Range;
