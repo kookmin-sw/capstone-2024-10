@@ -14,8 +14,7 @@ public class CargoPassageControlComputer : BaseWorkStation
         CanRememberWork = true;
         IsCompleted = false;
 
-        //TotalWorkAmount = 150f;
-        TotalWorkAmount = 15f; // TODO: for test
+        TotalWorkAmount = 150f;
     }
 
     public override bool IsInteractable(Creature creature)
