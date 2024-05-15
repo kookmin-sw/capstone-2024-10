@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class AlienSoundController : BaseSoundController
 {
+    protected override void Init()
+    {
+        base.Init();
+
+        ChasingDistance = 20f;
+    }
+
     public override void PlayMove()
     {
         switch (CreaturePose)
@@ -47,56 +54,51 @@ public class AlienSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayFootStepSound(float pitch, float volume)
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
+        if (HasStateAuthority)
+            volume *= 0.5f;
+
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/FootStep_Alien", pitch, volume, isLoop: true);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayDamaged()
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Damaged_Alien", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayCrashDoor()
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/CrashDoor", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayBasicAttack()
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayRoar()
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Roar", pitch: 1.3f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayCursedHowl()
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/CursedHowl", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayLeapAttack()
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayHit()
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack_Hit", pitch: 1f, volume: 1f, isLoop: false);
     }
 
@@ -113,9 +115,9 @@ public class AlienSoundController : BaseSoundController
                     new Vector3(i, j, CreatureCamera.Camera.nearClipPlane));
 
                  if (i < 0.25f || j < 0.25f || i > 0.75f || j > 0.75f)
-                     Debug.DrawRay(ray.origin, ray.direction * 20f, Color.green);
+                     Debug.DrawRay(ray.origin, ray.direction * ChasingDistance, Color.green);
 
-                if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 20f,
+                if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: ChasingDistance,
                         layerMask: LayerMask.GetMask("Crew", "MapObject", "PlanTargetObject")))
                 {
                     if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
@@ -128,7 +130,7 @@ public class AlienSoundController : BaseSoundController
                             if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
                             {
                                 Managers.SoundMng.Play($"{Define.BGM_PATH}/In Captivity", Define.SoundType.Bgm,
-                                    volume: 1);
+                                    volume: 0.5f);
                             }
                         }
 

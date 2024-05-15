@@ -15,7 +15,7 @@ public class FlashBangObject : BaseItemObject
     public void Rpc_PlaySound()
     {
         AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/FlashBang");
-        AudioSource.volume = 1f;
+        AudioSource.volume = 0.5f;
         AudioSource.loop = false;
         AudioSource.Play();
     }
