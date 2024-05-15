@@ -65,6 +65,9 @@ public class Alien : Creature
 
     protected override void OnLateUpdate()
     {
+        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+            return;
+
         base.OnLateUpdate();
 
         if (HasStateAuthority)
@@ -73,6 +76,9 @@ public class Alien : Creature
 
     protected override void HandleInput()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+
         base.HandleInput();
 
         if (EventSystem.current.IsPointerOverGameObject())

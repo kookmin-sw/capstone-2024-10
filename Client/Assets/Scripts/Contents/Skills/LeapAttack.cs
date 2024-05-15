@@ -19,11 +19,11 @@ public class LeapAttack : BaseSkill
 
     public override bool CheckAndUseSkill()
     {
-        if (CurrentCoolTime > 0f)
-            return false;
-
-        if (!IsErosion)
-            return false;
+        // if (CurrentCoolTime > 0f)
+        //     return false;
+        //
+        // if (!IsErosion)
+        //     return false;
 
         if (SkillData.Range > 0f)
             Owner.CurrentSkillRange = SkillData.Range;
@@ -34,17 +34,17 @@ public class LeapAttack : BaseSkill
 
     protected override IEnumerator ProgressSkill()
     {
-        IsMoving = true;
-
         PlayAnim(false);
         PlaySound();
 
-        AttackPosition = Owner.Head.transform.position + Vector3.down * 0.2f;
+        IsMoving = true;
+
         while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
             if (CurrentSkillAmount < SkillData.TotalSkillAmount - 0.5f && !IsHit)
             {
-                for (float i = -0.5f; i <= 0.5f && !IsHit; i += 0.2f)
+                AttackPosition = Owner.Head.transform.position + Vector3.down * 0.2f;
+                for (float i = -1f; i <= 1f && !IsHit; i += 0.2f)
                 {
                     for (float j = -1f; j <= 1f && !IsHit; j += 0.2f)
                     {
@@ -66,6 +66,8 @@ public class LeapAttack : BaseSkill
     public override void FixedUpdateNetwork()
     {
         if (IsMoving)
+        {
             KCC.Move(ForwardDirection * (150f * Runner.DeltaTime), 0);
+        }
     }
 }

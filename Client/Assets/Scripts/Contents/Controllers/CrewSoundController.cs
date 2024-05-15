@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class CrewSoundController : BaseSoundController
 {
+    protected override void Init()
+    {
+        base.Init();
+
+        ChasingDistance = 20f;
+    }
+
     public override void PlayMove()
     {
         switch (CreaturePose)
@@ -44,7 +51,6 @@ public class CrewSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayFootStepSound(float pitch, float volume)
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/FootStep", pitch, volume, isLoop: true);
     }
 
@@ -58,42 +64,35 @@ public class CrewSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
     protected void Rpc_PlayDeadSound()
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/GameOver", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayBandageSound()
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Bandage", pitch: 1f, volume: 1f, isLoop: true);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayAntipsychoticSound()
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayOneShotObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Antipsychotic", volume: 1f);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayMorphineSound()
     {
-        CreatureAudioSource.spatialBlend = 1.0f;
         Managers.SoundMng.PlayOneShotObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Morphine", volume: 1f);
     }
 
     public override void CheckChasing()
     {
         Collider[] hitColliders = new Collider[1];
-        if (Physics.OverlapBoxNonAlloc(CreatureCamera.Transform.position, new Vector3(25f, 1f, 25f),
+        if (Physics.OverlapBoxNonAlloc(CreatureCamera.Transform.position, new Vector3(ChasingDistance, 1f, ChasingDistance),
                 hitColliders, Quaternion.identity, LayerMask.GetMask("Alien")) > 0)
         {
             if (hitColliders[0].gameObject.TryGetComponent(out Alien alien))
             {
-
-                SoundManager._audioSources[(int)Define.SoundType.Bgm].volume =
-                    -0.045f * (alien.Transform.position - Creature.Transform.position).magnitude + 1.225f;
                 if (!IsChasing)
                 {
                     StopAllCoroutines();
@@ -102,6 +101,9 @@ public class CrewSoundController : BaseSoundController
                     if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
                         Managers.SoundMng.Play($"{Define.BGM_PATH}/Deep Space Pulsing Signals", Define.SoundType.Bgm, volume: 0.3f);
                 }
+
+                SoundManager._audioSources[(int)Define.SoundType.Bgm].volume =
+                    -0.045f * (alien.Transform.position - Creature.Transform.position).magnitude + 1.1f;
                 return;
             }
         }

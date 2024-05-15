@@ -13,13 +13,14 @@ public abstract class BaseSoundController : NetworkBehaviour
     public AudioSource BgmAudioSource => SoundManager._audioSources[(int)Define.SoundType.Bgm];
 
     public bool IsChasing { get; protected set; } = false;
+    public float ChasingDistance { get; protected set; }
 
     public override void Spawned()
     {
         Init();
     }
 
-    protected void Init()
+    protected virtual void Init()
     {
         Creature = gameObject.GetComponent<Creature>();
     }
