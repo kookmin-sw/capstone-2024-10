@@ -13,7 +13,7 @@ public class ElevatorControlComputer : BaseWorkStation
         CanRememberWork = false;
         IsCompleted = false;
 
-        TotalWorkAmount = 15f; // TODO: for test
+        TotalWorkAmount = 30f;
     }
 
     public override bool IsInteractable(Creature creature)

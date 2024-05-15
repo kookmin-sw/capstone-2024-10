@@ -17,8 +17,7 @@ public class CentralControlComputer : BaseWorkStation
         CanRememberWork = false;
         IsCompleted = false;
 
-        //TotalWorkAmount = 150f;
-        TotalWorkAmount = 15f; // TODO: for test
+        TotalWorkAmount = 20f;
     }
 
     public override bool IsInteractable(Creature creature)
@@ -59,7 +58,7 @@ public class CentralControlComputer : BaseWorkStation
         {
             Managers.GameMng.PlanSystem.IsCardkeyUsed = true;
             CurrentWorkAmount = 0;
-            TotalWorkAmount = 50f;
+            TotalWorkAmount = 150f;
             CanRememberWork = true;
         }
         else
