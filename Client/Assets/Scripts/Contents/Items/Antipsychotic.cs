@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Antipsychotic : BaseItem
 {
+    public float Duration { get; protected set; } = 5;
     public override void SetInfo(int templateId, Crew owner)
     {
         base.SetInfo(templateId, owner);
@@ -22,9 +23,9 @@ public class Antipsychotic : BaseItem
     {
         Owner.CrewSoundController.PlaySound(Define.CrewActionType.Antipsychotic);
 
-        DOVirtual.Float(0, 0, 10, value =>
+        DOVirtual.Float(0, 0, Duration, value =>
         {
-            Owner.CrewStat.ChangeSanity(ItemData.Value * Time.deltaTime);
+            Owner.CrewStat.ChangeSanity(ItemData.Value / Duration * Time.deltaTime);
         });
 
         Owner.Inventory.RemoveItem();
