@@ -6,10 +6,7 @@
 - 플랫폼: PC, Windows 64bit
 
 ## 문서
-(링크 추가 예정)
-- 포스터
-- 최종 발표 자료
-- 수행 결과 보고서
+- [수행 결과 보고서, 발표자료, 포스터](https://drive.google.com/drive/folders/1YLPKqJtpWfhtyn0_Kj3BOs8C5MarKasF)
 
 
 ## 시놉시스 
