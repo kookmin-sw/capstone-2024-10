@@ -5,6 +5,9 @@
 - 장르: 1 vs 3 구도의 비대칭 PvP(Player versus Player)
 - 플랫폼: PC, Windows 64bit
 
+## 문서
+- [수행 결과 보고서, 발표자료, 포스터](https://drive.google.com/drive/folders/1YLPKqJtpWfhtyn0_Kj3BOs8C5MarKasF)
+
 ## 시놉시스 
 
 *“정체불명의 괴수에게 장악되어 뒤틀린 시설에서 탈출하라”*
