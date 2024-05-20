@@ -61,7 +61,6 @@
 ### Server
 
 - Photon Fusion
-- Playfab
 
 ### Collaboration
 
@@ -77,6 +76,7 @@
     - [캡스톤 Repository 생성되기 이전의 작업 Repository](https://github.com/KMUGameProgramming/HideNSeek)
     - [프로젝트 관리현황 - 노션](https://www.notion.so/98b1141f9ad8483fafd8c783eb8fb844?v=b17ecf9e1bc94a27834986dfd7d4ae14)
     - [프로젝트 회의록 - 노션](https://www.notion.so/4ada763c5f4f47ba85e27a2ed6b53a27?v=115701ea93ca43f9a09e027d7e602572)
+    - [프로젝트 보고서, 발표자료, 포스터](https://drive.google.com/drive/folders/1YLPKqJtpWfhtyn0_Kj3BOs8C5MarKasF)
 
 ## 설치방법 및 데모 실행 방법
 
