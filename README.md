@@ -80,8 +80,6 @@
 - Alien과 Crew
 ![Alien and Crew](img/Alien_Crew.jpg)
 - Crew들의 협력
-![Crew cooperation](img/Crew_Work.gif)
-- Alien의 능력: 침식
-![Alien Ability Erode](img/Alien_Erode.gif)
-- Crew의 저항 수단: 섬광탄
-![Crew Flashbang](img/Crew_Flashbang.gif)
+![Crew cooperation](img/Crew_Work.jpg)
+- Alien의 능력: Cursed Howl
+![Alien Ability Erode](img/Alien_Erode.jpg)
