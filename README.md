@@ -1,9 +1,10 @@
 # Face The Abyss
 
 - 주제: 온라인 멀티플레이어 게임
-- 테마: 호러, Sci-Fi
-- 장르: 1 vs 3 구도의 비대칭 PvP(Player versus Player)
-- 플랫폼: PC, Windows 64bit
+- 장르: FPS, 호러, 1:3 비대칭 PvP
+- 테마: Sci-Fi
+- 플랫폼: PC(Windows 64bit)
+- 플레이 인원: 4인
 
 ## 문서
 - [수행 결과 보고서, 발표자료, 포스터](https://drive.google.com/drive/folders/1YLPKqJtpWfhtyn0_Kj3BOs8C5MarKasF)
@@ -50,29 +51,38 @@
 
 ## 기술 스택
 
-### Client
+#### ✔️Client
+<img src="https://img.shields.io/badge/Unity-002244?style=for-the-badge&logo=unity&logoColor=White"><img src="https://img.shields.io/badge/csharp-262577?style=for-the-badge&logo=csharp&logoColor=512BD4">
 
-- Unity (C#)
+#### ✔️Server
+<img src="https://img.shields.io/badge/Photon-004480?style=for-the-badge&logo=photon&logoColor=white">
 
-### Server
+#### ✔️Collaboration
+<img src="https://img.shields.io/badge/git-2E69AE?style=for-the-badge&logo=git&logoColor=F05032"><img src="https://img.shields.io/badge/github-EA4AAA?style=for-the-badge&logo=github&logoColor=181717"><img src="https://img.shields.io/badge/notion-FFFFFF?style=for-the-badge&logo=notion&logoColor=000000"><img src="https://img.shields.io/badge/slack-CC6699?style=for-the-badge&logo=slack&logoColor=4A154B">
 
-- Photon Fusion
+## 설치 방법
 
-### Collaboration
-
-- Github
-- Notion
+- [깃허브 릴리즈](https://github.com/kookmin-sw/capstone-2024-10/releases/tag/v1.0.0)
 
 ## 프로젝트 진행
 
-- 애자일 방식 (sprint)
+- [프로젝트 관리현황 - 노션](https://www.notion.so/98b1141f9ad8483fafd8c783eb8fb844?v=b17ecf9e1bc94a27834986dfd7d4ae14)
+- [프로젝트 회의록 - 노션](https://www.notion.so/4ada763c5f4f47ba85e27a2ed6b53a27?v=115701ea93ca43f9a09e027d7e602572)
+- [프로젝트 보고서, 발표자료, 포스터](https://drive.google.com/drive/folders/1YLPKqJtpWfhtyn0_Kj3BOs8C5MarKasF)
 
-- 링크
+## 시연 영상
 
-    - [캡스톤 Repository 생성되기 이전의 작업 Repository](https://github.com/KMUGameProgramming/HideNSeek)
-    - [프로젝트 관리현황 - 노션](https://www.notion.so/98b1141f9ad8483fafd8c783eb8fb844?v=b17ecf9e1bc94a27834986dfd7d4ae14)
-    - [프로젝트 회의록 - 노션](https://www.notion.so/4ada763c5f4f47ba85e27a2ed6b53a27?v=115701ea93ca43f9a09e027d7e602572)
-    - [프로젝트 보고서, 발표자료, 포스터](https://drive.google.com/drive/folders/1YLPKqJtpWfhtyn0_Kj3BOs8C5MarKasF)
+https://www.youtube.com/watch?v=TFiCZCVrkcs
+
+## 포스터
+
+![포스터](https://github.com/kookmin-sw/capstone-2024-10/assets/39542671/648beacb-d815-437b-b393-4007f5683da2)
+
+## 프로젝트 진행
+
+- [프로젝트 관리현황 - 노션](https://www.notion.so/98b1141f9ad8483fafd8c783eb8fb844?v=b17ecf9e1bc94a27834986dfd7d4ae14)
+- [프로젝트 회의록 - 노션](https://www.notion.so/4ada763c5f4f47ba85e27a2ed6b53a27?v=115701ea93ca43f9a09e027d7e602572)
+- [프로젝트 보고서, 발표자료, 포스터](https://drive.google.com/drive/folders/1YLPKqJtpWfhtyn0_Kj3BOs8C5MarKasF)
 
 ## 설치방법 및 데모 실행 방법
 
@@ -80,9 +90,6 @@
 
 ## 프리뷰
 
-- Alien과 Crew
 ![Alien and Crew](img/Alien_Crew.jpg)
-- Crew들의 협력
 ![Crew cooperation](img/Crew_Work.jpg)
-- Alien의 능력: Cursed Howl
 ![Alien Ability Erode](img/Alien_Erode.jpg)
