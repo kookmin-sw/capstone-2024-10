@@ -72,7 +72,8 @@
 
 ## 시연 영상
 
-https://www.youtube.com/watch?v=TFiCZCVrkcs
+- [최종 - 유튜브](https://youtu.be/5T9ZN6I3MyI) 
+- [아이템 - 유튜브](https://www.youtube.com/watch?v=TFiCZCVrkcs)
 
 ## 포스터
 
