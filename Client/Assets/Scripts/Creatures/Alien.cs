@@ -87,8 +87,8 @@ public class Alien : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
             return;
 
-        if (TestInputs())
-            return;
+        //if (TestInputs())
+        //    return;
 
         if (Input.GetKeyDown(KeyCode.F))
         {
