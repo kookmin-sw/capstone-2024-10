@@ -83,8 +83,8 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead)
             return;
 
-        if (TestInputs())
-            return;
+        //if (TestInputs())
+        //    return;
 
         if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
         {
