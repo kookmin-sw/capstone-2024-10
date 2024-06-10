@@ -87,8 +87,8 @@ public class Alien : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
             return;
 
-        //if (TestInputs())
-        //    return;
+        if (TestInputs())
+            return;
 
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -168,6 +168,9 @@ public class Alien : Creature
 
     public void OnGameEnd()
     {
+        if (!HasStateAuthority || !IsSpawned)
+            return;
+
         AlienSoundController.StopAllSound();
         AlienSoundController.PlayEndGame();
 

@@ -59,7 +59,7 @@ public class RenderingSystem : NetworkBehaviour
 
     public void ApplySanity(float sanity)
     {
-        Vignette.intensity.value = _defaultVignetteValue + (100f - sanity) * 0.01f * 0.55f;
+        Vignette.intensity.value = _defaultVignetteValue + (100f - sanity) * 0.01f * 0.4f;
         ChromaticAberration.intensity.value = (100f - sanity) * 0.01f;
     }
 

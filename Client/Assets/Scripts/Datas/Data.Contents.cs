@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine.Serialization;
 
 namespace Data
 {
@@ -13,7 +12,6 @@ namespace Data
         public string Name;
         public float WalkSpeed;
         public float RunSpeed;
-        public float WorkSpeed;
     }
 
     #endregion

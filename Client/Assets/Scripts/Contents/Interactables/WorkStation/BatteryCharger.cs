@@ -13,7 +13,7 @@ public class BatteryCharger : BaseWorkStation
         CanRememberWork = false;
         IsCompleted = false;
 
-        TotalWorkAmount = 20f;
+        TotalWorkAmount = 2f;
     }
 
     public override bool IsInteractable(Creature creature)

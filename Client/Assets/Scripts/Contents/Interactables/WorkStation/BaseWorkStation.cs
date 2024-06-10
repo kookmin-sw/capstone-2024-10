@@ -58,7 +58,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         PlayAnim();
         Rpc_PlaySound();
         StartCoroutine(ProgressWork());
-       
+
         return true;
     }
 
@@ -74,7 +74,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
                 yield break;
             }
 
-            Rpc_UpdateWorkAmount(Time.deltaTime, Worker.BaseStat.WorkSpeed);
+            Rpc_UpdateWorkAmount(Time.deltaTime);
             Worker.IngameUI.WorkProgressBarUI.CurrentWorkAmount = CurrentWorkAmount;
             yield return null;
         }
@@ -112,9 +112,9 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     #region Rpc
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    private void Rpc_UpdateWorkAmount(float deltaTime, float workSpeed)
+    private void Rpc_UpdateWorkAmount(float deltaTime)
     {
-        CurrentWorkAmount = Mathf.Clamp(CurrentWorkAmount + deltaTime * workSpeed, 0, TotalWorkAmount);
+        CurrentWorkAmount = Mathf.Clamp(CurrentWorkAmount + deltaTime, 0, TotalWorkAmount);
     }
 
     protected abstract void Rpc_WorkComplete();

@@ -6,7 +6,6 @@ public static class Define
 
     public enum CreatureType
     {
-        None,
         Crew,
         Alien,
     }
@@ -78,7 +77,6 @@ public static class Define
         ReadyScene,
         LobbyScene,
         GameScene,
-        Map_JSJ,
     }
 
     public enum SoundType
@@ -150,23 +148,6 @@ public static class Define
 
     #endregion
 
-    #region NonContent
-
-    public enum Layer
-    {
-        Ground = 6,
-        Block = 7,
-        Monster = 8,
-        Player = 9,
-    }
-
-    public enum CameraMode
-    {
-        QuarterView,
-    }
-
-    #endregion
-
     #region DataId
 
     public const int CREW_CREWA_ID = 101000;
@@ -200,18 +181,18 @@ public static class Define
 
     #region Value
 
-    public const int PLAYER_COUNT = 4;
+    public const int PLAYER_COUNT = 2;
     public const int MAX_ITEM_NUM = 4;
     public const int MAX_SKILL_NUM = 4;
 
-    public const float PASIVE_RECOVER_STAMINA = 2f;
-    public const float DAMAGED_RECOVER_STAMINA = 30f;
+    public const float PASIVE_RECOVER_STAMINA = 3f;
+    public const float DAMAGED_RECOVER_STAMINA = 40f;
     public const float RUN_USE_STAMINA = 5f;
     public const float EROSION_REDUCE_SANITY = 1f;
-    public const float SIT_RECOVER_SANITY = 1f;
+    public const float SIT_RECOVER_SANITY = 2f;
 
-    public const int BATTERY_CHARGE_GOAL = 10;
-    public const int USBKEY_INSERT_GOAL = 5;
+    public const int BATTERY_CHARGE_GOAL = 2;
+    public const int USBKEY_INSERT_GOAL = 2;
 
     #endregion
 }

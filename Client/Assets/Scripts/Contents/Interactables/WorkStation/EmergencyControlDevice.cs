@@ -15,7 +15,7 @@ public class EmergencyControlDevice : BaseWorkStation
         CanRememberWork = true;
         IsCompleted = false;
 
-        TotalWorkAmount = 100f;
+        TotalWorkAmount = 10f;
     }
 
     public override bool IsInteractable(Creature creature)

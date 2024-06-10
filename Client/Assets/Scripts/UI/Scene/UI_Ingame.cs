@@ -44,6 +44,8 @@ public class UI_Ingame : UI_Scene
 
     public void EndGame()
     {
+        HideUi();
+
         Canvas.renderMode = RenderMode.ScreenSpaceCamera;
         Transform[] children = gameObject.GetComponentsInChildren<Transform>();
 
@@ -58,5 +60,14 @@ public class UI_Ingame : UI_Scene
             }
         }
         Canvas.worldCamera = Camera;
+    }
+
+    public void HideUi()
+    {
+        WorkProgressBarUI.Hide();
+        InteractInfoUI.Hide();
+        ErrorTextUI.Hide();
+        CurrentSectorUI.Hide();
+        ObjectNameUI.Hide();
     }
 }
