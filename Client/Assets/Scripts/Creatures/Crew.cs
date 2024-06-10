@@ -83,8 +83,8 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead)
             return;
 
-        //if (TestInputs())
-        //    return;
+        if (TestInputs())
+            return;
 
         if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
         {
@@ -265,7 +265,7 @@ public class Crew : Creature
 
     public void OnDefeat()
     {
-        if (!HasStateAuthority || CreatureType != Define.CreatureType.Crew)
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
             return;
 
         CreatureState = Define.CreatureState.Dead;
@@ -278,6 +278,7 @@ public class Crew : Creature
         Managers.GameMng.GameEndSystem.EndCrewGame(false);
 
         Rpc_OnDefeat();
+        Inventory.OnDefeat();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -297,7 +298,7 @@ public class Crew : Creature
         CrewSoundController.PlayEndGame();
 
         Managers.GameMng.GameEndSystem.EndCrewGame(true);
-        
+
         CrewIngameUI.HideUI();
         CrewIngameUI.EndGame();
 

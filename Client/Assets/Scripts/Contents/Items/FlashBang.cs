@@ -24,9 +24,9 @@ public class FlashBang : BaseItem
 
     protected override void UseItemComplete()
     {
-        NetworkObject no = Managers.ObjectMng.SpawnItemObject(Define.ITEM_FLASHBANG_ID, Owner.LeftHand.transform.position, false);
+        NetworkObject no = Managers.ObjectMng.SpawnItemObject(Define.ITEM_FLASHBANG_ID, Owner.Head.transform.position, false);
         no.GetComponent<BoxCollider>().enabled = false;
-        no.GetComponent<Rigidbody>().AddForce(Owner.CreatureCamera.Transform.forward * 700f);
+        no.GetComponent<Rigidbody>().AddForce(Owner.CreatureCamera.Transform.forward * 800f);
 
         DOVirtual.DelayedCall(1.5f, () =>
         {

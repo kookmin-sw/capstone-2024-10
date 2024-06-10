@@ -23,4 +23,6 @@ public class UI_CurrentSector : UI_Base
         GetText(Texts.SectorName).text =
             sector != Define.SectorName.None ? Util.AddSpanceInText(sector.ToString()) : "";
     }
+
+    public void Hide() => gameObject.SetActive(false);
 }

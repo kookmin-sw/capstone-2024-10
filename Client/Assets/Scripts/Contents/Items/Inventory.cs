@@ -130,6 +130,17 @@ public class Inventory: NetworkBehaviour
         return true;
     }
 
+    public void OnDefeat()
+    {
+        for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
+        {
+            if (ItemInventory[i] == -1)
+                continue;
+
+            NetworkObject no = Managers.ObjectMng.SpawnItemObject(ItemInventory[i], Owner.Head.transform.position + Owner.Head.transform.forward + Owner.CameraRotationY * new Vector3(i * 0.5f - 0.75f, 0f, 0f), true);
+        }
+    }
+
     public void ChangeItem(int idx)
     {
         if (CurrentItem != null)

@@ -10,7 +10,6 @@ public abstract class BaseStat : NetworkBehaviour
     public float Speed { get; set; }
     public float WalkSpeed { get; set; }
     public float RunSpeed { get; set; }
-    public float WorkSpeed { get; set; }
     public bool IsErosion { get; set; } = false;
 
     public override void Spawned()
@@ -31,6 +30,5 @@ public abstract class BaseStat : NetworkBehaviour
         Speed = creatureData.WalkSpeed;
         WalkSpeed = creatureData.WalkSpeed;
         RunSpeed = creatureData.RunSpeed;
-        WorkSpeed = creatureData.WorkSpeed;
     }
 }

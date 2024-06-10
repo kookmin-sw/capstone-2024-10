@@ -13,7 +13,7 @@ public class Computer : BaseWorkStation
         IsCompleted = false;
         CanRememberWork = true;
 
-        TotalWorkAmount = 150f;
+        TotalWorkAmount = 15f;
     }
 
     public override bool IsInteractable(Creature creature)
