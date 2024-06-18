@@ -40,7 +40,7 @@ public class FlashBang : BaseItem
         Collider[] hitColliders = new Collider[4];
 
         if (Physics.OverlapSphereNonAlloc(attackPosition, 6f, hitColliders,
-                LayerMask.GetMask("Crew", "Alien")) > 0)
+                LayerMask.GetMask("Alien")) > 0)
         {
             foreach (var hitCollider in hitColliders)
                 if (hitCollider.gameObject.TryGetComponent(out Creature creature))
