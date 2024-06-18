@@ -23,7 +23,9 @@ public class UI_Loading : UI_Panel
     private TMP_Text _loadPromptText;
     private float _loadingSpeed;
     public KeyCode userPromptKey;
+    public bool LoadingMap = false;
 
+    public bool IsMapLoaded { get; private set; } = false;
     public bool isDone { get; private set; } = false;
     public float loadingProgress { get; private set; } = 0.0f;
 
@@ -32,7 +34,7 @@ public class UI_Loading : UI_Panel
         if (base.Init() == false)
             return false;
 
-        GameObject go = Managers.ResourceMng.Instantiate("Cameras/LobbyCamera");
+        GameObject go = Managers.ResourceMng.Instantiate("Cameras/UICamera");
         transform.SetParent(go.transform);
 
         var canvas = gameObject.GetComponent<Canvas>();
@@ -83,7 +85,14 @@ public class UI_Loading : UI_Panel
         yield return new WaitUntil(() => Managers.NetworkMng.CurrentPlayState != PlayerSystem.PlayState.Transition);
         yield return new WaitUntil(() => Managers.ObjectMng.MyCreature != null);
         yield return new WaitUntil(() => Managers.ObjectMng.MyCreature.IsSpawned);
+        yield return new WaitUntil(() => IsMapLoaded);
+        yield return new WaitForSeconds(2.0f);
         isDone = true;
+    }
+
+    public void OnMapLoadComplete()
+    {
+        IsMapLoaded = true;
     }
 
     public IEnumerator LoadAsynchronously()
@@ -118,6 +127,7 @@ public class UI_Loading : UI_Panel
 
     public void OnLoadingDone()
     {
+        Managers.UIMng.PanelUI = null;
         Destroy(transform.parent.gameObject);
     }
 }

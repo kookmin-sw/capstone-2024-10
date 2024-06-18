@@ -23,6 +23,8 @@ public class UIManager
     /// </summary>
     public UI_Scene SceneUI { get; private set; }
 
+    public UI_Panel PanelUI { get; set; }
+
     /// <summary>
     /// 모든 UI의 부모가 되는 게임 오브젝트
     /// </summary>
@@ -133,6 +135,7 @@ public class UIManager
 
         GameObject go = Managers.ResourceMng.Instantiate($"UI/Panel/{name}");
         T sceneUI = Util.GetOrAddComponent<T>(go);
+        PanelUI = sceneUI;
 
         if (parent != null)
             go.transform.SetParent(parent);
