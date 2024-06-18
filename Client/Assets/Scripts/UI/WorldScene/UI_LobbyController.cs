@@ -14,6 +14,7 @@ public class UI_LobbyController : UI_Base
         PLAY,
         EXIT,
         EXTRAS,
+        TITLE
     }
 
     enum Buttons
@@ -73,7 +74,8 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.EXIT).SetActive(false);
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         GetObject(GameObjects.MAIN).SetActive(true);
-        
+        GetObject(GameObjects.TITLE).SetActive(true);
+
         return true;
     }
     #endregion
@@ -94,6 +96,7 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.EXIT).SetActive(false);
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         GetObject(GameObjects.PLAY).SetActive(true);
+        GetObject(GameObjects.TITLE).SetActive(false);
     }
 
     public void PlayCampaignMobile()
@@ -102,6 +105,7 @@ public class UI_LobbyController : UI_Base
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         GetObject(GameObjects.PLAY).SetActive(true);
         GetObject(GameObjects.MAIN).SetActive(false);
+        GetObject(GameObjects.TITLE).SetActive(false);
     }
 
     public void ReturnMenu()
@@ -110,6 +114,7 @@ public class UI_LobbyController : UI_Base
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         GetObject(GameObjects.EXIT).SetActive(false);
         GetObject(GameObjects.MAIN).SetActive(true);
+        GetObject(GameObjects.TITLE).SetActive(true);
     }
 
 
@@ -132,6 +137,8 @@ public class UI_LobbyController : UI_Base
 
     public void Position1()
     {
+        GetObject(GameObjects.TITLE).SetActive(true);
+        GetObject(GameObjects.EXIT).SetActive(false);
         _cameraAnimator.SetFloat("Animate", 0);
     }
     
@@ -143,6 +150,7 @@ public class UI_LobbyController : UI_Base
     // Are You Sure - Quit Panel Pop Up
     public void AreYouSure()
     {
+        GetObject(GameObjects.TITLE).SetActive(false);
         GetObject(GameObjects.EXIT).SetActive(true);
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         DisablePlayCampaign();
