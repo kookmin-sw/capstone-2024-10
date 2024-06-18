@@ -24,6 +24,7 @@ public class Managers : MonoBehaviour
     private UIManager _uiMng = new UIManager();
     private GameManager _gameMng = new GameManager();
     private NetworkManager _networkMng;
+    private TutorialManager _tutorialMng = new TutorialManager();
 
     public static DataManager DataMng => Instance._dataMng;
     public static InputManager InputMng => Instance._inputMng;
@@ -33,6 +34,7 @@ public class Managers : MonoBehaviour
     public static UIManager UIMng => Instance._uiMng;
     public static NetworkManager NetworkMng => Instance._networkMng;
     public static GameManager GameMng => Instance._gameMng;
+    public static TutorialManager TutorialMng => Instance._tutorialMng;
     #endregion
 
     public static void Init()
