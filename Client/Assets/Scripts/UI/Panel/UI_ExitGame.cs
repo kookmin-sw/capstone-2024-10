@@ -32,7 +32,7 @@ public class UI_ExitGame : UI_Panel
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        var camera = Managers.ResourceMng.Instantiate("Cameras/LobbyCamera");
+        var camera = Managers.ResourceMng.Instantiate("Cameras/UICamera");
         transform.SetParent(camera.transform);
         var canvas = GetComponent<Canvas>();
         canvas.planeDistance = 10f;

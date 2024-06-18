@@ -37,6 +37,12 @@ public class GameScene : BaseScene
 
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
+
+        var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
+        if (loadingUI != null)
+        {
+            loadingUI.OnMapLoadComplete();
+        }
     }
 
     private void Update()
