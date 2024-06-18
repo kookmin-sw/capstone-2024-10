@@ -34,7 +34,7 @@ public class UI_Loading : UI_Panel
         if (base.Init() == false)
             return false;
 
-        GameObject go = Managers.ResourceMng.Instantiate("Cameras/LobbyCamera");
+        GameObject go = Managers.ResourceMng.Instantiate("Cameras/UICamera");
         transform.SetParent(go.transform);
 
         var canvas = gameObject.GetComponent<Canvas>();
@@ -86,7 +86,7 @@ public class UI_Loading : UI_Panel
         yield return new WaitUntil(() => Managers.ObjectMng.MyCreature != null);
         yield return new WaitUntil(() => Managers.ObjectMng.MyCreature.IsSpawned);
         yield return new WaitUntil(() => IsMapLoaded);
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(2.0f);
         isDone = true;
     }
 

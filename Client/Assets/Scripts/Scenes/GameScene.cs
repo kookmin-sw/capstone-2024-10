@@ -39,8 +39,10 @@ public class GameScene : BaseScene
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
 
         var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
-        Debug.Assert(loadingUI != null);
-        loadingUI.OnMapLoadComplete();
+        if (loadingUI != null)
+        {
+            loadingUI.OnMapLoadComplete();
+        }
     }
 
     private void Update()
