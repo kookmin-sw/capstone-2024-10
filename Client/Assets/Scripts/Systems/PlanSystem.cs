@@ -83,7 +83,7 @@ public class PlanSystem : NetworkBehaviour
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
         if (!IsBatteryChargeFinished) return;
-        
+
         GameObject.FindGameObjectsWithTag("EmergencyControlDevice").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
         Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.EnablePlanC();
     }

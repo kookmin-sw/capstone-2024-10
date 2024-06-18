@@ -48,13 +48,13 @@ public class SoundManager
         _audioClips.Clear();
     }
 
-    public void Play(string path, Define.SoundType type = Define.SoundType.Effect, float pitch = 1.0f, float volume = 1.0f, bool isLoop = false)
+    public void Play(string path, Define.SoundType type = Define.SoundType.Effect, float pitch = 1.0f, float volume = 1.0f, bool isLoop = false, bool isOneShot = false)
     {
         AudioClip audioClip = GetOrAddAudioClip(path, type);
-        Play(audioClip, type, pitch, volume, isLoop);
+        Play(audioClip, type, pitch, volume, isLoop, isOneShot);
     }
 
-    public void Play(AudioClip audioClip, Define.SoundType type = Define.SoundType.Effect, float pitch = 1.0f, float volume = 1.0f, bool isLoop = false)
+    public void Play(AudioClip audioClip, Define.SoundType type = Define.SoundType.Effect, float pitch = 1.0f, float volume = 1.0f, bool isLoop = false, bool isOneShot = false)
     {
         if (audioClip == null)
             return;
@@ -63,6 +63,11 @@ public class SoundManager
         if (type == Define.SoundType.Effect)
         {
             audioSource = _audioSources[(int)Define.SoundType.Effect];
+            if (isOneShot)
+            {
+                audioSource.PlayOneShot(audioClip);
+                return;
+            }
             audioSource.loop = isLoop;
         }
         else if (type == Define.SoundType.Bgm)
