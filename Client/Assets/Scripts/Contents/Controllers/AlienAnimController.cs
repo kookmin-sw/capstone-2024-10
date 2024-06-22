@@ -19,21 +19,8 @@ public class AlienAnimController : BaseAnimController
         XParameter = Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5f);
         ZParameter = Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5f);
 
-        switch (CreaturePose)
-        {
-            case Define.CreaturePose.Stand:
-                SetFloat("Z", ZParameter);
-                SpeedParameter = Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5f);
-                break;
-            case Define.CreaturePose.Sit:
-                SetFloat("Z", ZParameter);
-                SpeedParameter = Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5f);
-                break;
-            case Define.CreaturePose.Run:
-                SetFloat("Z", ZParameter * 1.8f);
-                SpeedParameter = Lerp(SpeedParameter, 2f, Runner.DeltaTime * 5f);
-                break;
-        }
+        SetFloat("Z", ZParameter);
+        SpeedParameter = Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5f);
 
         SetParameterFalse();
         SetFloat("X", XParameter);

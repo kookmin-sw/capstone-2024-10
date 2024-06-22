@@ -12,6 +12,12 @@ public class FlashBangObject : BaseItemObject
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
+    public void Rpc_Explode()
+    {
+        gameObject.SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void Rpc_PlaySound()
     {
         AudioSource.clip = Managers.SoundMng.GetOrAddAudioClip($"{Define.EFFECT_PATH}/Interactable/FlashBang");

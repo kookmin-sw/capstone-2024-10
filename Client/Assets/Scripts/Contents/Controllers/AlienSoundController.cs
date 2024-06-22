@@ -81,13 +81,13 @@ public class AlienSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayRoar()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Roar", pitch: 1.3f, volume: 1f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Roar", pitch: 1.3f, volume: 0.4f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayCursedHowl()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/CursedHowl", pitch: 1f, volume: 1f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/CursedHowl", pitch: 1f, volume: 0.5f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -118,7 +118,7 @@ public class AlienSoundController : BaseSoundController
                      Debug.DrawRay(ray.origin, ray.direction * ChasingDistance, Color.green);
 
                 if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: ChasingDistance,
-                        layerMask: LayerMask.GetMask("Crew", "MapObject", "PlanTargetObject")))
+                        layerMask: LayerMask.GetMask("Crew", "MapObject", "InteractableObject")))
                 {
                     if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
                     {
