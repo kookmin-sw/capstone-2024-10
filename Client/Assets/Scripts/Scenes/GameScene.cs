@@ -32,7 +32,22 @@ public class GameScene : BaseScene
         mapSystem.Init();
         planSystem.Init();
         gameEndSystem.Init();
-        UI_Ingame ingameUI = Managers.ObjectMng.MyCreature is Crew ? Managers.UIMng.ShowSceneUI<UI_CrewIngame>() : Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
+        //UI_Ingame ingameUI = Managers.ObjectMng.MyCreature is Crew ? Managers.UIMng.ShowSceneUI<UI_CrewIngame>() : Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
+        UI_Ingame ingameUI = null;
+        switch(Managers.NetworkMng.Creature)
+        {
+            case Define.CreatureType.Crew:
+                Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
+                break;
+
+            case Define.CreatureType.Alien:
+                Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
+                break;
+
+            case Define.CreatureType.TutoCrew:
+                Managers.UIMng.ShowSceneUI<UI_CrewTutorial>();
+                break;
+        }
         yield return new WaitUntil(() => ingameUI.Init());
 
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);

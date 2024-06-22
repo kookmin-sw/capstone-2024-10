@@ -8,6 +8,8 @@ public static class Define
     {
         Crew,
         Alien,
+        TutoCrew,
+        TutoAlien,
     }
 
     public enum CrewActionType

@@ -5,12 +5,10 @@ using UnityEngine.EventSystems;
 
 public class TutorialCrew : Crew
 {
-    public TutorialCrewUI CrewTutorialUI => IngameUI as TutorialCrewUI;
+    public UI_CrewTutorial CrewTutorialUI => IngameUI as UI_CrewTutorial;
 
     protected override void Init()
     {
         base.Init();
-
-
     }
 }

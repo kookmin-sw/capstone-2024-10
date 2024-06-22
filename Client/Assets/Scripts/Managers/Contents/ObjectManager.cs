@@ -10,11 +10,22 @@ public class ObjectManager
 
     #region Creature
 
-    public async Task<NetworkObject> SpawnCrew(int crewDataId, SpawnPoint.SpawnPointData spawnPoint, bool isGameScene)
+    public async Task<NetworkObject> SpawnCrew(int crewDataId, SpawnPoint.SpawnPointData spawnPoint, bool isGameScene, bool isTutorial = false)
     {
         string className = Managers.DataMng.CrewDataDict[crewDataId].Name;
-        NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");
-        NetworkObject no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPoint.Position);
+        NetworkObject prefab = null;
+        NetworkObject no = null;
+
+        if(isTutorial)
+        {
+            prefab = Managers.ResourceMng.Load<NetworkObject>($"Prefabs/Creatures/CrewT");
+            no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPoint.Position);
+        }
+        else
+        {
+            prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");
+            no = await Managers.NetworkMng.Runner.SpawnAsync(prefab, spawnPoint.Position);
+        }
 
         Crew crew = no.GetComponent<Crew>();
         crew.SetInfo(crewDataId, isGameScene);
@@ -26,7 +37,7 @@ public class ObjectManager
         return no;
     }
 
-    public async Task<NetworkObject> SpawnAlien(int alienDataId, SpawnPoint.SpawnPointData spawnPoint)
+    public async Task<NetworkObject> SpawnAlien(int alienDataId, SpawnPoint.SpawnPointData spawnPoint, bool isTutorial = false)
     {
         string className = Managers.DataMng.AlienDataDict[alienDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.CREATURE_PATH}/{className}");

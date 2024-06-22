@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class TutorialCrewUI : UI_CrewIngame
+public class UI_CrewTutorial : UI_CrewIngame
 {
     public UI_TutorialPlan TutorialPlanUI { get; private set; }
 
