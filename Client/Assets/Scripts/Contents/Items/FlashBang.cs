@@ -31,6 +31,7 @@ public class FlashBang : BaseItem
         DOVirtual.DelayedCall(1.5f, () =>
         {
             no.GetComponent<FlashBangObject>().Rpc_PlaySound();
+            no.GetComponent<FlashBangObject>().Rpc_Explode();
             Explode(no.transform.position);
         });
     }

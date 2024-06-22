@@ -41,7 +41,7 @@ public class Roar : BaseSkill
         Debug.DrawRay(ray.origin, ray.direction * SkillData.Range, Color.red);
 
         if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: SkillData.Range,
-                layerMask: LayerMask.GetMask("Crew", "MapObject", "PlanTargetObject")))
+                layerMask: LayerMask.GetMask("Crew", "MapObject", "InteractableObject")))
         {
             if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
             {
