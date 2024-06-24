@@ -69,6 +69,11 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
         }
 
+        if (ReadySceneSpawnPosition == default(Vector3))
+            ReadySceneSpawnPosition = new Vector3(34, 4, -8);
+        if (ReadySceneSpawnSector == default(Define.SectorName))
+            ReadySceneSpawnSector = Define.SectorName.Cafeteria;
+
         StartCoroutine(Reserve());
     }
 
@@ -235,7 +240,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (player == runner.LocalPlayer)
         {
-            ReadySceneSpawnPosition += new Vector3(UnityEngine.Random.Range(0, 2), 0, UnityEngine.Random.Range(0, 2));
+            ReadySceneSpawnPosition += new Vector3(UnityEngine.Random.Range(0, 3), 0, UnityEngine.Random.Range(0, 3));
             SpawnPoint.SpawnPointData spawnPoint = new()
             {
                 Position = ReadySceneSpawnPosition,
