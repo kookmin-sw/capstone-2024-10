@@ -21,6 +21,37 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public bool IsMaster { get => Runner.IsSharedModeMasterClient; }
     public NetworkSceneManagerEx Scene { get; set; }
 
+    private List<(PlayerRef, PlayerData)> _players = new();
+    public int AlienPlayerCount { get; private set; } = 0;
+    public int CrewPlayerCount { get; private set; } = 0;
+    public int SpawnCount { get; private set; } = 0;
+    public bool IsTriggered { get; set; } = true;
+    public bool IsAlienDropped
+    {
+        get
+        {
+            return AlienPlayerCount == 0
+                   && SceneType == Define.SceneType.GameScene && IsTriggered;
+        }
+    }
+
+    public bool AreAllCrewsDropped
+    {
+        get
+        {
+            return AlienPlayerCount >= 1
+                && SceneType == Define.SceneType.GameScene && CrewPlayerCount == 0 & IsTriggered;
+        }
+    }
+
+    public Define.SceneType SceneType
+    {
+        get
+        {
+            return (Managers.SceneMng.CurrentScene is BaseScene scene) ?
+                   scene.SceneType : Define.SceneType.UnknownScene;
+        }
+    }
     public int NumPlayers
     {
         get
@@ -74,15 +105,93 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         if (ReadySceneSpawnSector == default(Define.SectorName))
             ReadySceneSpawnSector = Define.SectorName.Cafeteria;
 
-        StartCoroutine(Reserve());
+        StartCoroutine(WaitForInit());
     }
 
-    public IEnumerator Reserve()
+    public IEnumerator WaitForInit()
     {
         while (PlayerSystem == null)
         {
             PlayerSystem = FindAnyObjectByType<PlayerSystem>();
-            yield return null;
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    public void CountSetting()
+    {
+        AlienPlayerCount = Define.ALIEN_COUNT;
+        CrewPlayerCount = SpawnCount - AlienPlayerCount;
+        Debug.Log($"Alien: {AlienPlayerCount} Crew: {CrewPlayerCount}");
+    }
+
+    public Player GetPlayerObject(PlayerRef playerRef)
+    {
+        if (Runner.TryGetPlayerObject(playerRef, out NetworkObject player))
+            return player.GetComponent<Player>();
+
+        return null;
+    }
+
+    public struct PlayerData
+    {
+        public Define.CreatureType CreatureType;
+    }
+
+    public IEnumerator AddPlayer(PlayerRef playerRef)
+    {
+        Player player;
+        while ((player = GetPlayerObject(playerRef)) == null)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        SpawnCount++;
+        Debug.Log($"Add Player = {SpawnCount} / {Define.PLAYER_COUNT} PlayerRef: {playerRef}");
+
+        _players.Add((playerRef, new PlayerData { CreatureType = player.CreatureType }));
+    }
+
+    public void RemovePlayer(PlayerRef playerRef)
+    {
+        SpawnCount--;
+        Debug.Log($"Remove Player {SpawnCount} / {Define.PLAYER_COUNT} PlayerRef: {playerRef}");
+
+        var record = _players.FirstOrDefault((tuple) => tuple.Item1 == playerRef);
+        var playerData = record.Item2;
+        Debug.Log($"{playerData.CreatureType} Disconnected");
+        if (playerData.CreatureType == Define.CreatureType.Alien)
+        {
+            AlienPlayerCount--;
+            Debug.Log($"Alien Count : {AlienPlayerCount}");
+        }
+        else
+        {
+            CrewPlayerCount--;
+            Debug.Log($"Crew Count : {CrewPlayerCount}");
+        }
+        _players.Remove(record);
+    }
+
+    public List<(PlayerRef, PlayerData)> CopyPlayerList()
+    {
+        return new List<(PlayerRef, PlayerData)>(_players);
+    }
+
+    private void Update()
+    {
+        if (PlayerSystem == null)
+            return;
+
+        if (IsAlienDropped)
+        {
+            Managers.ObjectMng.MyCrew.OnWin();
+            IsTriggered = false;
+        }
+
+        if (AreAllCrewsDropped)
+        {
+            Managers.GameMng.GameEndSystem.EndAlienGame();
+            IsTriggered = false;
         }
     }
 
@@ -260,16 +369,19 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
                 PlayerSystem = no.GetComponent<PlayerSystem>();
             }
         }
-    }
 
-    public void OnConnectedToServer(NetworkRunner runner)
-    {
-        Debug.Log("OnConnectedToServer");
+        StartCoroutine(AddPlayer(player));
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
     {
         Debug.Log("OnPlayerLeft");
+        RemovePlayer(player);
+    }
+
+    public void OnConnectedToServer(NetworkRunner runner)
+    {
+        Debug.Log("OnConnectedToServer");
     }
 
     public void OnSceneLoadDone(NetworkRunner runner)

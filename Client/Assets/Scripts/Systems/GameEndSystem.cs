@@ -31,7 +31,7 @@ public class GameEndSystem : NetworkBehaviour
         Rpc_EndCrewGame(isWin);
     }
 
-    private void EndAlienGame()
+    public void EndAlienGame()
     {
         if (Managers.ObjectMng.MyCreature is not Alien alien)
             return;
