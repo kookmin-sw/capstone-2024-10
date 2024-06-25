@@ -14,8 +14,7 @@ using UnityEditor;
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
     public NetworkRunner Runner { get; private set; }
-    [SerializeField]
-    public string PlayerName;
+    public string PlayerName { get; set; }
     public List<SessionInfo> Sessions = new List<SessionInfo>();
     public Action OnSessionUpdated;
     public bool IsMaster { get => Runner.IsSharedModeMasterClient; }
@@ -25,13 +24,14 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public int AlienPlayerCount { get; private set; } = 0;
     public int CrewPlayerCount { get; private set; } = 0;
     public int SpawnCount { get; private set; } = 0;
-    public bool IsTriggered { get; set; } = true;
+    public bool IsTriggered { get; set; } = false;
+    public bool _testSetting = false;
     public bool IsAlienDropped
     {
         get
         {
             return AlienPlayerCount == 0
-                   && SceneType == Define.SceneType.GameScene && IsTriggered;
+                   && SceneType == Define.SceneType.GameScene && !IsTriggered;
         }
     }
 
@@ -40,7 +40,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         get
         {
             return AlienPlayerCount >= 1
-                && SceneType == Define.SceneType.GameScene && CrewPlayerCount == 0 & IsTriggered;
+                && SceneType == Define.SceneType.GameScene && CrewPlayerCount == 0 & !IsTriggered;
         }
     }
 
@@ -179,19 +179,19 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     private void Update()
     {
-        if (PlayerSystem == null)
+        if (PlayerSystem == null || _testSetting)
             return;
 
         if (IsAlienDropped)
         {
             Managers.ObjectMng.MyCrew.OnWin();
-            IsTriggered = false;
+            IsTriggered = true;
         }
 
         if (AreAllCrewsDropped)
         {
             Managers.GameMng.GameEndSystem.EndAlienGame();
-            IsTriggered = false;
+            IsTriggered = true;
         }
     }
 
@@ -290,6 +290,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     protected IEnumerator StartClient(GameMode serverMode, SceneRef sceneRef = default)
     {
         var clientTask = InitializeNetworkRunner(Runner, serverMode, NetAddress.Any(), sceneRef, null);
+        _testSetting = true;
 
         while (clientTask.IsCompleted == false)
         {

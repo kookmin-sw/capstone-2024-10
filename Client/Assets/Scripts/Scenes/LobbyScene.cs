@@ -15,15 +15,9 @@ public class LobbyScene : BaseScene
 
         Managers.SoundMng.Play($"{Define.BGM_PATH}/Black Magic", Define.SoundType.Bgm, 0.4f);
 
-        string nickname = Managers.NetworkMng.PlayerName;
-        if (string.IsNullOrEmpty(nickname))
-        {
-            Managers.UIMng.ShowPanelUI<UI_Entry>();
-        }
-        else
-        {
-            Managers.NetworkMng.ConnectToLobby(nickname);
-        }
+        int randomInt = Random.Range(1000, 9999);
+        string nickname = "User-" + randomInt.ToString();
+        Managers.NetworkMng.ConnectToLobby(nickname);
 
         SettingSystem settingSystem = FindAnyObjectByType<SettingSystem>();
         settingSystem.Init();
