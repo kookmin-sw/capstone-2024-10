@@ -10,6 +10,8 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using WebSocketSharp;
 using UnityEditor;
+using Unity.VisualScripting;
+
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
@@ -20,7 +22,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public bool IsMaster { get => Runner.IsSharedModeMasterClient; }
     public NetworkSceneManagerEx Scene { get; set; }
 
-    private List<(PlayerRef, PlayerData)> _players = new();
+    private List<Pair<PlayerRef, PlayerData>> _players = new();
     public int AlienPlayerCount { get; private set; } = 0;
     public int CrewPlayerCount { get; private set; } = 0;
     public int SpawnCount { get; private set; } = 0;
@@ -30,17 +32,17 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         get
         {
-            return AlienPlayerCount == 0
+            return AlienPlayerCount == 0 && CrewPlayerCount >= 1 && CrewPlayerCount <= Define.PLAYER_COUNT - Define.ALIEN_COUNT
                    && SceneType == Define.SceneType.GameScene && !IsTriggered;
         }
     }
 
-    public bool AreAllCrewsDropped
+    public bool AreCrewsDropped
     {
         get
         {
-            return AlienPlayerCount >= 1
-                && SceneType == Define.SceneType.GameScene && CrewPlayerCount == 0 & !IsTriggered;
+            return AlienPlayerCount >= 1 && CrewPlayerCount == 0 
+                && SceneType == Define.SceneType.GameScene && !IsTriggered;
         }
     }
 
@@ -117,11 +119,34 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
-    public void CountSetting()
+    public void CalculatePlayerCreatures()
     {
-        AlienPlayerCount = Define.ALIEN_COUNT;
-        CrewPlayerCount = SpawnCount - AlienPlayerCount;
+        AlienPlayerCount = 0;
+        CrewPlayerCount = 0;
+
+        for (int i = 0; i < _players.Count; i++)
+        {
+            Player player = GetPlayerObject(_players[i].First);
+
+            if (player == null)
+            {
+                Debug.LogWarning("Can't get the player object from the playerRef");
+                return;
+            }
+
+            if (player.IsMaster)
+                _players[i].Second.CreatureType = Define.CreatureType.Alien;
+
+            if (_players[i].Second.CreatureType == Define.CreatureType.Alien)
+                AlienPlayerCount++;
+            else
+                CrewPlayerCount++;
+        }
+
         Debug.Log($"Alien: {AlienPlayerCount} Crew: {CrewPlayerCount}");
+        string str = "";
+        _players.ForEach((tuple) => str += tuple.Second.CreatureType + " ");
+        Debug.Log(str + $", Total : {_players.Count}");
     }
 
     public Player GetPlayerObject(PlayerRef playerRef)
@@ -137,18 +162,17 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         public Define.CreatureType CreatureType;
     }
 
-    public IEnumerator AddPlayer(PlayerRef playerRef)
+    public void AddPlayer(PlayerRef playerRef)
     {
-        Player player;
-        while ((player = GetPlayerObject(playerRef)) == null)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
-
         SpawnCount++;
         Debug.Log($"Add Player = {SpawnCount} / {Define.PLAYER_COUNT} PlayerRef: {playerRef}");
 
-        _players.Add((playerRef, new PlayerData { CreatureType = player.CreatureType }));
+        CrewPlayerCount++;
+        _players.Add(new (playerRef, new PlayerData { CreatureType = Define.CreatureType.Crew }));
+
+        string str = "";
+        _players.ForEach((tuple) => str += tuple.Second.CreatureType + " ");
+        Debug.Log(str);
     }
 
     public void RemovePlayer(PlayerRef playerRef)
@@ -156,25 +180,29 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         SpawnCount--;
         Debug.Log($"Remove Player {SpawnCount} / {Define.PLAYER_COUNT} PlayerRef: {playerRef}");
 
-        var record = _players.FirstOrDefault((tuple) => tuple.Item1 == playerRef);
-        var playerData = record.Item2;
+        var record = _players.FirstOrDefault((pair) => pair.First == playerRef);
+        var playerData = record.Second;
         Debug.Log($"{playerData.CreatureType} Disconnected");
         if (playerData.CreatureType == Define.CreatureType.Alien)
         {
             AlienPlayerCount--;
-            Debug.Log($"Alien Count : {AlienPlayerCount}");
         }
         else
         {
             CrewPlayerCount--;
-            Debug.Log($"Crew Count : {CrewPlayerCount}");
         }
+
+        Debug.Log($"Alien Count : {AlienPlayerCount}");
+        Debug.Log($"Crew Count : {CrewPlayerCount}");
         _players.Remove(record);
+        string str = "";
+        _players.ForEach((pair) => str += pair.Second.CreatureType + " ");
+        Debug.Log(str + $", Total : {_players.Count}");
     }
 
-    public List<(PlayerRef, PlayerData)> CopyPlayerList()
+    public List<Pair<PlayerRef, PlayerData>> CopyPlayerList()
     {
-        return new List<(PlayerRef, PlayerData)>(_players);
+        return new List<Pair<PlayerRef, PlayerData>>(_players);
     }
 
     private void Update()
@@ -188,7 +216,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             IsTriggered = true;
         }
 
-        if (AreAllCrewsDropped)
+        if (AreCrewsDropped)
         {
             Managers.GameMng.GameEndSystem.EndAlienGame();
             IsTriggered = true;
@@ -371,7 +399,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             }
         }
 
-        StartCoroutine(AddPlayer(player));
+        AddPlayer(player);
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)

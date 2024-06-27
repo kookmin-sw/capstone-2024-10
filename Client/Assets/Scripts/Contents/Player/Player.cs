@@ -12,7 +12,7 @@ public class Player : NetworkBehaviour
 {
     [Networked] public NetworkString<_32> PlayerName { get; set; }
     [Networked]
-    NetworkBool IsMaster { get; set; }
+    public NetworkBool IsMaster { get; set; }
 
     [Networked]
     public PlayerRef PlayerRef { get; set; }

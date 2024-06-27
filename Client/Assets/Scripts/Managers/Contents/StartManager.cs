@@ -55,7 +55,7 @@ public class StartManager
         Debug.Log("Game Setting Start");
         Managers.UIMng.ShowPanelUI<UI_Loading>();
         Managers.Clear();
-        Managers.NetworkMng.CountSetting();
+        Managers.NetworkMng.CalculatePlayerCreatures();
 
         if (Managers.NetworkMng.IsMaster)
         {
