@@ -1,3 +1,4 @@
+using Fusion;
 using System;
 
 public class Pair<T1, T2>

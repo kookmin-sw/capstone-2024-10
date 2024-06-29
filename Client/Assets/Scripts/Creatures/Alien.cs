@@ -3,6 +3,7 @@ using UnityEngine;
 using Data;
 using Fusion;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class Alien : Creature
 {
@@ -166,13 +167,17 @@ public class Alien : Creature
         ReturnToIdle(blindTime);
     }
 
-    public void OnGameEnd()
+    public IEnumerator OnGameEnd()
     {
         if (!HasStateAuthority || !IsSpawned)
-            return;
+            yield break;
+
+        yield return new WaitUntil(() => AlienSoundController != null);
 
         AlienSoundController.StopAllSound();
         AlienSoundController.PlayEndGame();
+
+        yield return new WaitUntil(() => AlienSoundController != null);
 
         AlienIngameUI.HideUI();
         AlienIngameUI.EndGame();

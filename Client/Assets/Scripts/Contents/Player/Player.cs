@@ -19,7 +19,7 @@ public class Player : NetworkBehaviour
     public Action<string> OnPlayerNameUpdate { get; set; }
 
     public Creature Creature { get; private set; } 
-    public Define.CreatureType CreatureType { get; private set; }
+    public Define.CreatureType CreatureType { get; private set; } = Define.CreatureType.None;
     [Networked]
     public Define.PlayerState State { get; set; } = Define.PlayerState.None;
     public bool IsSpawned { get; set; } = false;
@@ -67,6 +67,7 @@ public class Player : NetworkBehaviour
         }
 
         IsSpawned = true;
+        Runner.SetPlayerObject(Runner.LocalPlayer, Object);
     }
 
     private void Update()

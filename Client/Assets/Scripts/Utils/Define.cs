@@ -6,6 +6,7 @@ public static class Define
 
     public enum CreatureType
     {
+        None,
         Crew,
         Alien,
     }
@@ -105,6 +106,13 @@ public static class Define
         Ready,
     }
 
+    public enum CrewState
+    {
+        None,
+        Alive,
+        Dead,
+    }
+
     public enum CreatureState
     {
         Idle,
@@ -182,7 +190,6 @@ public static class Define
     #region Value
 
     public const int PLAYER_COUNT = 2;
-    public const int ALIEN_COUNT = 1;
     public const int MAX_ITEM_NUM = 4;
     public const int MAX_SKILL_NUM = 4;
 

@@ -18,6 +18,8 @@ public class StartManager
 
     public string SAVEDATA_PATH;
 
+    public bool IsGameStarted = false;
+
     public Player Player { get; set; }
     public List<Player> AllPlayers
     {
@@ -56,6 +58,7 @@ public class StartManager
         Managers.UIMng.ShowPanelUI<UI_Loading>();
         Managers.Clear();
         Managers.NetworkMng.CalculatePlayerCreatures();
+        IsGameStarted = true;
 
         if (Managers.NetworkMng.IsMaster)
         {

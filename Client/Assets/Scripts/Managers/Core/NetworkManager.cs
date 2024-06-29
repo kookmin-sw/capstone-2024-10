@@ -26,34 +26,9 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public int AlienPlayerCount { get; private set; } = 0;
     public int CrewPlayerCount { get; private set; } = 0;
     public int SpawnCount { get; private set; } = 0;
-    public bool IsTriggered { get; set; } = false;
-    public bool _testSetting = false;
-    public bool IsAlienDropped
-    {
-        get
-        {
-            return AlienPlayerCount == 0 && CrewPlayerCount >= 1 && CrewPlayerCount <= Define.PLAYER_COUNT - Define.ALIEN_COUNT
-                   && SceneType == Define.SceneType.GameScene && !IsTriggered;
-        }
-    }
+    public bool IsTestScene = false;
+    public bool IsTriggered { get; private set; } = false;
 
-    public bool AreCrewsDropped
-    {
-        get
-        {
-            return AlienPlayerCount >= 1 && CrewPlayerCount == 0 
-                && SceneType == Define.SceneType.GameScene && !IsTriggered;
-        }
-    }
-
-    public Define.SceneType SceneType
-    {
-        get
-        {
-            return (Managers.SceneMng.CurrentScene is BaseScene scene) ?
-                   scene.SceneType : Define.SceneType.UnknownScene;
-        }
-    }
     public int NumPlayers
     {
         get
@@ -65,13 +40,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     }
 
     public PlayerSystem PlayerSystem { get; set; }
-    public enum Stage
-    {
-        Disconnected,
-        StartingUp,
-        ConnectingClient,
-        AllConnected,
-    }
 
     public PlayerSystem.PlayState CurrentPlayState
     {
@@ -102,10 +70,12 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
         }
 
-        if (ReadySceneSpawnPosition == default(Vector3))
+        if (ReadySceneSpawnPosition == default)
             ReadySceneSpawnPosition = new Vector3(34, 4, -8);
-        if (ReadySceneSpawnSector == default(Define.SectorName))
+        if (ReadySceneSpawnSector == default)
             ReadySceneSpawnSector = Define.SectorName.Cafeteria;
+        if (Creature == default)
+            Creature = Define.CreatureType.Crew;
 
         StartCoroutine(WaitForInit());
     }
@@ -149,6 +119,15 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Debug.Log(str + $", Total : {_players.Count}");
     }
 
+    public PlayerData GetPlayerData(PlayerRef playerRef)
+    {
+        var record = _players.FirstOrDefault((pair) => pair.First == playerRef);
+        if (record == null)
+            return default;
+
+        return record.Second;
+    }
+
     public Player GetPlayerObject(PlayerRef playerRef)
     {
         if (Runner.TryGetPlayerObject(playerRef, out NetworkObject player))
@@ -157,18 +136,34 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         return null;
     }
 
-    public struct PlayerData
+    public class PlayerData
     {
         public Define.CreatureType CreatureType;
+        public Define.CrewState State;
     }
 
-    public void AddPlayer(PlayerRef playerRef)
+    public IEnumerator AddPlayer(PlayerRef playerRef)
     {
         SpawnCount++;
         Debug.Log($"Add Player = {SpawnCount} / {Define.PLAYER_COUNT} PlayerRef: {playerRef}");
 
-        CrewPlayerCount++;
-        _players.Add(new (playerRef, new PlayerData { CreatureType = Define.CreatureType.Crew }));
+        Player player;
+        while ((player = GetPlayerObject(playerRef)) == null)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        while (player.CreatureType == Define.CreatureType.None)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        if (player.CreatureType == Define.CreatureType.Alien)
+            AlienPlayerCount++;
+        else
+            CrewPlayerCount++;
+
+        _players.Add(new (playerRef, new PlayerData { CreatureType = player.CreatureType, State = Define.CrewState.Alive }));
 
         string str = "";
         _players.ForEach((tuple) => str += tuple.Second.CreatureType + " ");
@@ -186,10 +181,14 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         if (playerData.CreatureType == Define.CreatureType.Alien)
         {
             AlienPlayerCount--;
+            if (Managers.GameMng.GameEndSystem != null)
+                OnAlienDropped();
         }
         else
         {
             CrewPlayerCount--;
+            if (Managers.GameMng.GameEndSystem != null)
+                Managers.GameMng.GameEndSystem.RPC_OnCrewDropped(playerRef);
         }
 
         Debug.Log($"Alien Count : {AlienPlayerCount}");
@@ -200,27 +199,47 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Debug.Log(str + $", Total : {_players.Count}");
     }
 
-    public List<Pair<PlayerRef, PlayerData>> CopyPlayerList()
+    public async void OnAlienDropped()
     {
-        return new List<Pair<PlayerRef, PlayerData>>(_players);
-    }
-
-    private void Update()
-    {
-        if (PlayerSystem == null || _testSetting)
+        if (Managers.NetworkMng.IsTestScene || IsTriggered)
             return;
 
-        if (IsAlienDropped)
+        int cnt = 0;
+        Player player = null;
+        while (cnt++ < 5 && (player = GetPlayerObject(Runner.LocalPlayer)) == null)
         {
-            Managers.ObjectMng.MyCrew.OnWin();
-            IsTriggered = true;
+
+            await Task.Delay(500);
         }
 
-        if (AreCrewsDropped)
+        if (player != null && player.CreatureType == Define.CreatureType.Crew)
         {
-            Managers.GameMng.GameEndSystem.EndAlienGame();
-            IsTriggered = true;
+            Managers.ObjectMng.MyCrew.OnWin();
         }
+        else
+        {
+            // Crew에 대한 종속성 없이 UI_CrewWin 호출
+            if (Managers.UIMng.SceneUI != null)
+            {
+                Destroy(Managers.UIMng.SceneUI.gameObject);
+            }
+            Managers.UIMng.Clear();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            Managers.SoundMng.Stop(Define.SoundType.Bgm);
+            Managers.SoundMng.Stop(Define.SoundType.Environment);
+            Managers.SoundMng.Stop(Define.SoundType.Effect);
+            Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.8f);
+            Managers.UIMng.ShowPopupUI<UI_CrewWin>();
+        }
+
+        IsTriggered = true;
+    }
+
+    public async void ExitGame()
+    {
+        await Runner.Shutdown();
+        Managers.SceneMng.LoadScene(Define.SceneType.LobbyScene);
     }
 
     public void ConnectToLobby(string playerName)
@@ -318,7 +337,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     protected IEnumerator StartClient(GameMode serverMode, SceneRef sceneRef = default)
     {
         var clientTask = InitializeNetworkRunner(Runner, serverMode, NetAddress.Any(), sceneRef, null);
-        _testSetting = true;
+        IsTestScene = true;
 
         while (clientTask.IsCompleted == false)
         {
@@ -399,7 +418,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             }
         }
 
-        AddPlayer(player);
+        StartCoroutine(AddPlayer(player));
     }
 
     public void OnPlayerLeft(NetworkRunner runner, PlayerRef player)
@@ -435,7 +454,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public void OnHostMigration(NetworkRunner runner, HostMigrationToken hostMigrationToken)
     {
-
     }
 
     public void OnInput(NetworkRunner runner, NetworkInput input)
