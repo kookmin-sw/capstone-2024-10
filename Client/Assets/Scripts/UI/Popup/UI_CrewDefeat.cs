@@ -62,7 +62,7 @@ public class UI_CrewDefeat : UI_Popup
 
     public void ExitGame()
     {
-        Managers.GameMng.GameEndSystem.ExitGame();
+        Managers.NetworkMng.ExitGame();
     }
 
 }

@@ -51,14 +51,6 @@ public class PlayerSystem : NetworkBehaviour
             CountReady();
     }
 
-    public Player GetPlayer()
-    {
-        if (Runner.TryGetPlayerObject(Runner.LocalPlayer, out NetworkObject player))
-            return player.GetComponent<Player>();
-
-        return null;
-    }
-
     public void CountReady()
     {
         int count = 0;

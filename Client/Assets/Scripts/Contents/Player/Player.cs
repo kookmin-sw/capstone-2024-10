@@ -12,15 +12,17 @@ public class Player : NetworkBehaviour
 {
     [Networked] public NetworkString<_32> PlayerName { get; set; }
     [Networked]
-    NetworkBool IsMaster { get; set; }
+    public NetworkBool IsMaster { get; set; }
 
     [Networked]
     public PlayerRef PlayerRef { get; set; }
     public Action<string> OnPlayerNameUpdate { get; set; }
 
-    public Creature Creature { get; set; }
+    public Creature Creature { get; private set; } 
+    public Define.CreatureType CreatureType { get; private set; } = Define.CreatureType.None;
     [Networked]
     public Define.PlayerState State { get; set; } = Define.PlayerState.None;
+    public bool IsSpawned { get; set; } = false;
 
     public override void Spawned()
     {
@@ -36,19 +38,19 @@ public class Player : NetworkBehaviour
     {
         yield return new WaitUntil(() => isActiveAndEnabled);
 
-        yield return new WaitUntil(() => Object != null && Object.IsValid);
+        yield return new WaitUntil(() => Object && Object.IsValid);
 
         yield return new WaitUntil(() => Runner && Runner.IsRunning);
 
-        Define.SceneType sceneType = Managers.SceneMng.CurrentScene.SceneType;
-        if (sceneType != Define.SceneType.GameScene && sceneType != Define.SceneType.ReadyScene)
+        yield return new WaitUntil(() => PlayerRef.IsRealPlayer);
+
+        if (!Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene | (int)Define.SceneType.ReadyScene))
             yield break;
 
-        var creature = GetComponent<Creature>();
-
-        if (Managers.ObjectMng.MyCreature is Crew)
+        Creature = GetComponent<Creature>();
+        if (Creature is Crew)
         {
-            if (creature is Crew)
+            if (Managers.ObjectMng.MyCreature is Crew)
             {
                 var ui = Managers.UIMng.MakeWorldSpaceUI<UI_NameTag>(transform);
 
@@ -57,16 +59,28 @@ public class Player : NetworkBehaviour
                     ui.gameObject.SetActive(false);
                 }
             }
+            CreatureType = Define.CreatureType.Crew;
         }
+        else
+        {
+            CreatureType = Define.CreatureType.Alien;
+        }
+
+        IsSpawned = true;
+        Runner.SetPlayerObject(Runner.LocalPlayer, Object);
     }
 
     private void Update()
     {
         OnPlayerNameUpdate?.Invoke((IsMaster ? " Master " : "") + PlayerName.Value);
+    }
 
+    public override void FixedUpdateNetwork()
+    {
         if (HasStateAuthority)
         {
             IsMaster = Runner.IsSharedModeMasterClient;
+            PlayerRef = Runner.LocalPlayer;
         }
     }
 

@@ -1,4 +1,6 @@
 using Fusion;
+using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameEndSystem : NetworkBehaviour
@@ -8,18 +10,38 @@ public class GameEndSystem : NetworkBehaviour
 
     [Networked]
     public int KilledCrewNum { get; set; } = 0;
+    [Networked]
+    public int DroppedCrewNum { get; set; } = 0;
 
     public void Init()
     {
         Managers.GameMng.GameEndSystem = this;
         CrewNum = Define.PLAYER_COUNT - 1;
+
+        if (Managers.NetworkMng.IsTestScene)
+        {
+            Managers.StartMng.IsGameStarted = true;
+            return;
+        }
+
+        if (Managers.NetworkMng.SpawnCount != Define.PLAYER_COUNT)
+        {
+            if (Managers.ObjectMng.MyCreature is Alien)
+            {
+                StartCoroutine(EndAlienGame());
+            }
+            else
+            {
+                EndCrewGame(true);
+            }
+        }
     }
 
     public void EndCrewGame(bool isWin)
     {
         ShowCursor();
 
-        if (isWin)
+        if (isWin && !Managers.NetworkMng.IsTriggered)
         {
             Managers.UIMng.ShowPopupUI<UI_CrewWin>();
         }
@@ -28,33 +50,43 @@ public class GameEndSystem : NetworkBehaviour
             Managers.UIMng.ShowPopupUI<UI_CrewDefeat>();
         }
 
-        Rpc_EndCrewGame(isWin);
+        Rpc_EndCrewGame(isWin, Runner.LocalPlayer);
     }
 
-    private void EndAlienGame()
+    public IEnumerator EndAlienGame()
     {
         if (Managers.ObjectMng.MyCreature is not Alien alien)
-            return;
+            yield break;
 
         ShowCursor();
 
-        if (KilledCrewNum >= Define.PLAYER_COUNT - 1)
+        if (!Managers.NetworkMng.IsTriggered)
         {
-            Managers.UIMng.ShowPopupUI<UI_AlienWin>();
-        }
-        else
-        {
-            Managers.UIMng.ShowPopupUI<UI_AlienDefeat>();
+            if (KilledCrewNum + DroppedCrewNum >= Define.PLAYER_COUNT - 1)
+            {
+                Managers.UIMng.ShowPopupUI<UI_AlienWin>();
+            }
+            else
+            {
+                Managers.UIMng.ShowPopupUI<UI_AlienDefeat>();
+            }
         }
 
-        alien.OnGameEnd();
+        yield return new WaitUntil(() => alien);
+
+        alien.StartCoroutine("OnGameEnd");
+    }
+
+    public override void FixedUpdateNetwork()
+    {
+        Debug.Log($"Killed {KilledCrewNum}, Dropped {DroppedCrewNum}, Total {CrewNum}, Crew {Managers.NetworkMng.CrewPlayerCount}, Alien {Managers.NetworkMng.AlienPlayerCount}");
     }
 
     public void OnCrewNumChanged()
     {
         if (CrewNum <= 0)
         {
-            EndAlienGame();
+            StartCoroutine(EndAlienGame());
         }
 
         if (CrewNum == 1)
@@ -63,17 +95,27 @@ public class GameEndSystem : NetworkBehaviour
         }
     }
 
-    public async void ExitGame()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
+    public void RPC_OnCrewDropped(PlayerRef playerRef)
     {
-        await Runner.Shutdown();
-        Managers.SceneMng.LoadScene(Define.SceneType.LobbyScene);
+        if (Managers.NetworkMng.IsTestScene)
+            return;
+
+        DroppedCrewNum++;
+        if (Managers.NetworkMng.GetPlayerData(playerRef).State == Define.CrewState.Alive)
+        {
+            CrewNum--;
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void Rpc_EndCrewGame(NetworkBool isWin)
+    public void Rpc_EndCrewGame(NetworkBool isWin, PlayerRef playerRef = default)
     {
         if (!isWin)
+        {
             KilledCrewNum++;
+            Managers.NetworkMng.GetPlayerData(playerRef).State = Define.CrewState.Dead;
+        }
 
         CrewNum--;
     }
