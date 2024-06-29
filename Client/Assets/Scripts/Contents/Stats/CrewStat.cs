@@ -43,7 +43,7 @@ public class CrewStat : BaseStat
 
         if (value < 0)
         {
-            Managers.GameMng.RenderingSystem.DamageEffect(Hp);
+            Managers.GameMng.RenderingSystem.ApplyDamageEffect(Hp);
 
             ChangeStamina(Define.DAMAGED_RECOVER_STAMINA);
             DamagedBoost = true;
@@ -92,7 +92,7 @@ public class CrewStat : BaseStat
         RunSpeed = CrewData.RunSpeed * ratio;
         SitSpeed = CrewData.SitSpeed * ratio;
 
-        Managers.GameMng.RenderingSystem.ApplySanity(Sanity);
+        Managers.GameMng.RenderingSystem.ApplySanityEffect(Sanity);
     }
 
     #endregion

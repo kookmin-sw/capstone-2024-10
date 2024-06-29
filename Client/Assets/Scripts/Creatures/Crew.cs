@@ -173,7 +173,7 @@ public class Crew : Creature
             CrewStat.ChangeStamina(Define.PASIVE_RECOVER_STAMINA * Time.deltaTime);
             CrewStat.ChangeSanity(Define.SIT_RECOVER_SANITY * Time.deltaTime);
         }
-        else if (CrewStat.IsErosion)
+        else if (CrewStat.IsUnderErosion)
             CrewStat.ChangeSanity(-Define.EROSION_REDUCE_SANITY * Time.deltaTime);
     }
 
@@ -337,17 +337,17 @@ public class Crew : Creature
         }
         if (Input.GetKeyDown(KeyCode.H))
         {
-            Managers.GameMng.RenderingSystem.ApplyErosion(true);
+            Managers.GameMng.RenderingSystem.ApplyErosionEffect(true);
             return true;
         }
         if (Input.GetKeyDown(KeyCode.J))
         {
-            Managers.GameMng.RenderingSystem.ApplyErosion(false);
+            Managers.GameMng.RenderingSystem.ApplyErosionEffect(false);
             return true;
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Rpc_OnBlind(2f, 3f);
+            Rpc_ApplyBlind(2f, 3f);
             return true;
         }
         if (Input.GetKeyDown(KeyCode.L))

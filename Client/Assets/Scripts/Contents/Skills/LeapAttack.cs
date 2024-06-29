@@ -7,7 +7,7 @@ public class LeapAttack : BaseSkill
     public SimpleKCC KCC => Owner.KCC;
 
     public bool IsMoving { get; protected set; } = false;
-    public bool IsErosion => Managers.GameMng.MapSystem.Sectors[Owner.CurrentSector].IsErosion;
+    public bool IsErosion => Managers.GameMng.MapSystem.Sectors[Owner.CurrentSector].IsEroded;
 
     public override void SetInfo(int templateId)
     {

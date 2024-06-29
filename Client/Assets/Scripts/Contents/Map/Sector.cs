@@ -5,75 +5,85 @@ using UnityEngine;
 
 public class Sector : NetworkBehaviour
 {
-    [SerializeField] // 인스펙터 창에서 지정을 위해 필요
-    private Define.SectorName _sectorName;
+    [SerializeField] private Define.SectorName _sectorName;
+    [SerializeField] private Define.SectorName[] _lightOnTargetSectors;
     public Define.SectorName SectorName => _sectorName;
+    [Networked] public NetworkBool IsEroded { get; set; } = false;
 
-    public List<Transform> ItemSpawnPoints { get; protected set; } =  new();
-    public Transform ItemParent { get; protected set; }
-    public bool MyCreatureIn { get; protected set; }
+    private List<Transform> _itemSpawnPoints = new();
+    private Transform _itemParent;
+    private List<Light> _lights = new();
+    private bool _hasMyCreature;
 
-    [Networked] public NetworkBool IsErosion { get; set; } = false;
 
     public void Init()
     {
-        ItemSpawnPoints = gameObject.transform.FindObjectsWithTag("ItemSpawnPoint")
+        _itemSpawnPoints = gameObject.transform.FindObjectsWithTag("ItemSpawnPoint")
             .Select(obj => obj.transform)
             .ToList();
-        ItemParent = GameObject.FindGameObjectWithTag("ItemParent").transform;
+        _itemParent = GameObject.FindGameObjectWithTag("ItemParent").transform;
 
-        if (ItemParent == null) ItemParent = Managers.GameMng.MapSystem.gameObject.transform;
+        _lights = transform.GetComponentsInChildren<Light>().ToList();
+        if (_itemParent == null) _itemParent = Managers.GameMng.MapSystem.gameObject.transform;
     }
 
     public bool SpawnItem(GameObject go)
     {
-        if(ItemSpawnPoints.Count == 0) return false;
+        if(_itemSpawnPoints.Count == 0) return false;
 
         // 스폰 포인트 랜덤 선택
-        Transform spawnPoint = ItemSpawnPoints[Random.Range(0, ItemSpawnPoints.Count)];
+        Transform spawnPoint = _itemSpawnPoints[Random.Range(0, _itemSpawnPoints.Count)];
 
         NetworkObject no = Managers.NetworkMng.Runner.Spawn(go, spawnPoint.position, spawnPoint.rotation);
-        no.transform.SetParent(ItemParent);
+        no.transform.SetParent(_itemParent);
 
         BaseItemObject item = no.GetComponent<BaseItemObject>();
         if (item != null)
             item.SetInfo(true);
 
         // 한 번 선택된 스폰포인트는 더이상 선택되지 않음
-        ItemSpawnPoints.Remove(spawnPoint);
+        _itemSpawnPoints.Remove(spawnPoint);
 
         return true;
     }
 
     public void OnCreatureEnter(Creature creature)
     {
-        MyCreatureIn = true;
+        _hasMyCreature = true;
 
-        if (IsErosion)
-            creature.Rpc_SetErosion(true);
-
-        Debug.Log($"{SectorName}: OnCreatureEnter");
+        if (IsEroded)
+            creature.Rpc_ApplyErosion(true);
     }
 
     public void OnCreatureExit(Creature creature)
     {
-        MyCreatureIn = false;
+        _hasMyCreature = false;
 
-        creature.Rpc_SetErosion(false);
+        creature.Rpc_ApplyErosion(false);
+    }
+
+    public void EnableLight()
+    {
+
+    }
+
+    public void DisableLight()
+    {
+
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void Rpc_GetErosion()
+    public void Rpc_ApplyErosion()
     {
-        IsErosion = true;
+        IsEroded = true;
 
-        Rpc_GetErosionAll();
+        Rpc_ApplyErosionAll();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_GetErosionAll()
+    private void Rpc_ApplyErosionAll()
     {
-        if (MyCreatureIn)
-            Managers.ObjectMng.MyCreature.Rpc_SetErosion(true);
+        if (_hasMyCreature)
+            Managers.ObjectMng.MyCreature.Rpc_ApplyErosion(true);
     }
 }
