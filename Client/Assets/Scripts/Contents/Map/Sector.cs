@@ -6,7 +6,8 @@ using UnityEngine;
 public class Sector : NetworkBehaviour
 {
     [SerializeField] private Define.SectorName _sectorName;
-    [SerializeField] private Define.SectorName[] _lightOnTargetSectors;
+    [SerializeField] private Define.SectorName[] _lightEnableTargetSectors;
+    [SerializeField] private Light[] _additionalLightEnableTargets;
     public Define.SectorName SectorName => _sectorName;
     [Networked] public NetworkBool IsEroded { get; set; } = false;
 
@@ -53,6 +54,23 @@ public class Sector : NetworkBehaviour
 
         if (IsEroded)
             creature.Rpc_ApplyErosion(true);
+
+        foreach (var sector in Managers.GameMng.MapSystem.Sectors.Keys)
+        {
+            if (_lightEnableTargetSectors.Contains(sector))
+            {
+                Managers.GameMng.MapSystem.Sectors[sector].EnableLight();
+            }
+            else
+            {
+                Managers.GameMng.MapSystem.Sectors[sector].DisableLight();
+            }
+        }
+
+        foreach (var additionalLight in _additionalLightEnableTargets)
+        {
+            additionalLight.enabled = true;
+        }
     }
 
     public void OnCreatureExit(Creature creature)
@@ -62,14 +80,20 @@ public class Sector : NetworkBehaviour
         creature.Rpc_ApplyErosion(false);
     }
 
-    public void EnableLight()
+    private void EnableLight()
     {
-
+        foreach (var sectorlight in _lights)
+        {
+            sectorlight.enabled = true;
+        }
     }
 
-    public void DisableLight()
+    private void DisableLight()
     {
-
+        foreach (var sectorlight in _lights)
+        {
+            sectorlight.enabled = false;
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
