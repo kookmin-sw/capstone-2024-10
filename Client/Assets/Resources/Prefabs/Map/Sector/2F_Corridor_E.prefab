@@ -833,7 +833,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sectorName: 10
-  _IsErosion:
+  _lightEnableTargetSectors: 0a0000000900000017000000180000001600000015000000
+  _additionalLightEnableTargets:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  _IsEroded:
     _value: 0
 --- !u!114 &4956920378298177902
 MonoBehaviour:
@@ -849,7 +861,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 3236714009
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects:
   - {fileID: 551078138973240915}
   NetworkedBehaviours:

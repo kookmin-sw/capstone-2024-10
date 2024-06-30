@@ -79,7 +79,7 @@ public class GameEndSystem : NetworkBehaviour
 
     public override void FixedUpdateNetwork()
     {
-        Debug.Log($"Killed {KilledCrewNum}, Dropped {DroppedCrewNum}, Total {CrewNum}, Crew {Managers.NetworkMng.CrewPlayerCount}, Alien {Managers.NetworkMng.AlienPlayerCount}");
+        //Debug.Log($"Killed {KilledCrewNum}, Dropped {DroppedCrewNum}, Total {CrewNum}, Crew {Managers.NetworkMng.CrewPlayerCount}, Alien {Managers.NetworkMng.AlienPlayerCount}");
     }
 
     public void OnCrewNumChanged()
