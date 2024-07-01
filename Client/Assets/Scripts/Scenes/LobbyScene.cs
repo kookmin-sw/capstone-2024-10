@@ -25,7 +25,7 @@ public class LobbyScene : BaseScene
 
     public override void Clear()
     {
-        FindObjectOfType<UI_LobbyController>().DestroyMenu();
+        FindObjectOfType<UI_LobbyController>()?.DestroyMenu();
     }
 
     private void OnApplicationQuit()

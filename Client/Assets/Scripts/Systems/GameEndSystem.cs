@@ -26,23 +26,21 @@ public class GameEndSystem : NetworkBehaviour
         if (Managers.NetworkMng.IsEndGameTriggered)
         {
             Managers.StartMng.IsGameStarted = true;
-            return;
         }
+    }
 
+    public void InitAfterUIPopup()
+    {
         if (Managers.NetworkMng.SpawnCount != Define.PLAYER_COUNT && !Managers.NetworkMng.IsEndGameTriggered)
         {
             // 로딩 중간에 끊겼을 때, Crew 혹은 Alien이 스폰이 되지 않는 경우가 있다
             if (Managers.ObjectMng.MyCreature is Alien)
             {
-                Util.ClearUIAndSound();
-                Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.8f);
                 StartCoroutine(EndAlienGame());
             }
             else
             {
-                Util.ClearUIAndSound();
-                Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.8f);
-                EndCrewGame(true);
+                Managers.ObjectMng.MyCrew.OnWin();
             }
 
             Managers.NetworkMng.IsEndingTriggered = true;
@@ -82,7 +80,6 @@ public class GameEndSystem : NetworkBehaviour
             if (KilledCrewNum + DroppedCrewNum >= Define.PLAYER_COUNT - 1)
             {
                 Managers.UIMng.ShowPopupUI<UI_AlienWin>();
-                
             }
             else
             {
@@ -141,7 +138,7 @@ public class GameEndSystem : NetworkBehaviour
         CrewNum--;
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_ResetDropCrew()
     {
         if (Managers.NetworkMng.IsEndGameTriggered)
@@ -150,7 +147,7 @@ public class GameEndSystem : NetworkBehaviour
         DroppedCrew = false;
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_ResetKilledCrew()
     {
         if (Managers.NetworkMng.IsEndGameTriggered)
@@ -159,7 +156,7 @@ public class GameEndSystem : NetworkBehaviour
         KilledCrew = false;
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     public void RPC_ResetWinedCrew()
     {
         if (Managers.NetworkMng.IsEndGameTriggered)

@@ -51,6 +51,7 @@ public class UI_Loading : UI_Panel
         waitForInput = false;
         LoadingProgress = 0.0f;
         userPromptKey = KeyCode.F;
+        _loadPromptText.text = "";
 
         StartCoroutine(LoadAsynchronously());
         if (Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.LobbyScene))
@@ -116,7 +117,7 @@ public class UI_Loading : UI_Panel
 
             if (progress >= 0.9f && waitForInput)
             {
-                _loadPromptText.text = "Press " + userPromptKey.ToString().ToUpper() + " to continue";
+                // _loadPromptText.text = "Press " + userPromptKey.ToString().ToUpper() + " to continue";
                 _loadingBar.value = 1;
 
                 if (IsDone && Input.GetKeyDown(userPromptKey))

@@ -288,21 +288,17 @@ public class Crew : Creature
         Collider.enabled = false;
     }
 
-    public IEnumerator OnWin()
+    public void OnWin()
     {
         if (!HasStateAuthority || CreatureType != Define.CreatureType.Crew)
-            yield break;
+            return;
 
         CreatureState = Define.CreatureState.Idle;
-
-        yield return new WaitUntil(() => CrewSoundController != null);
 
         CrewSoundController.StopAllSound();
         CrewSoundController.PlayEndGame();
 
         Managers.GameMng.GameEndSystem.EndCrewGame(true);
-
-        yield return new WaitUntil(() => CrewIngameUI != null);
 
         CrewIngameUI.HideUI();
         CrewIngameUI.EndGame();
@@ -361,7 +357,7 @@ public class Crew : Creature
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            StartCoroutine(OnWin());
+            OnWin();
             return true;
         }
 

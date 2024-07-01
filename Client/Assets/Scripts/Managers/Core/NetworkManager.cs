@@ -210,8 +210,9 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         if (Managers.NetworkMng.IsEndGameTriggered || IsEndingTriggered)
             return;
 
+        int cnt = 0;
         Player player = null;
-        while ((player = GetPlayerObject(Runner.LocalPlayer)) == null)
+        while (cnt++ < 6 && (player = GetPlayerObject(Runner.LocalPlayer)) == null)
         {
             await Task.Delay(500);
         }
@@ -219,7 +220,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         // 로딩 중간에 에일리언 탈주 시, 에일리언이 바뀔 수 있음
         if (player != null && player.CreatureType == Define.CreatureType.Crew)
         {
-            StartCoroutine(Managers.ObjectMng.MyCrew.OnWin());
+            Managers.ObjectMng.MyCrew.OnWin();
         }
         else
         {
@@ -260,7 +261,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         List<SessionInfo> enterable = new List<SessionInfo>();
         foreach (var session in Sessions)
         {
-            if (!session.Properties.ContainsKey("password"))
+            if (!session.Properties.ContainsKey("password") && session.PlayerCount < Define.PLAYER_COUNT)
             {
                 enterable.Add(session);
             }
@@ -278,7 +279,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         ConnectToSession(sessionName, null);
     }
 
-    public async void ConnectToSession(string sessionName, string password)
+    public void ConnectToSession(string sessionName, string password)
     {
         NetworkSceneInfo scene = new NetworkSceneInfo();
         scene.AddSceneRef(Managers.SceneMng.GetSceneRef(Define.SceneType.ReadyScene));
@@ -302,7 +303,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             };
         }
 
-        await Runner.StartGame(startGameArgs);
+        Runner.StartGame(startGameArgs);
     }
 
     private bool TryGetSceneRef(out SceneRef sceneRef)

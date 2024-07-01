@@ -57,7 +57,7 @@ public class UI_CrewIngame : UI_Ingame
         CrewHpUI.gameObject.SetActive(false);
         CrewStaminaUI.gameObject.SetActive(false);
         CurrentSectorUI.gameObject.SetActive(false);
-        RemainPersonUI?.Hide();
-        CrewMessaageUI?.Hide();
+        RemainPersonUI.Hide();
+        CrewMessageUI.Hide();
     }
 }

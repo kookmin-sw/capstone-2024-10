@@ -58,9 +58,7 @@ public class UI_CrewMessaage : UI_Base
             DeadMessage();
             Managers.GameMng.GameEndSystem.RPC_ResetKilledCrew();
         }
-
     }
-
 
     public void StartFadeIn()
     {

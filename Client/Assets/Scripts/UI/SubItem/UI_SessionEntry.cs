@@ -76,7 +76,7 @@ public class UI_SessionEntry : UI_Base
         }
     }
 
-    private void JoinSession()
+    private async void JoinSession()
     {
         if (_session.Properties.TryGetValue("password", out SessionProperty password))
         {
@@ -87,8 +87,8 @@ public class UI_SessionEntry : UI_Base
         else
         {
             Managers.UIMng.Clear();
-            Managers.UIMng.ShowPanelUI<UI_Loading>();
             Managers.NetworkMng.ConnectToSession(GetText(Texts.RoomName).text, null);
+            Managers.UIMng.ShowPanelUI<UI_Loading>();
         }
     }
 }
