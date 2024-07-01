@@ -7,11 +7,18 @@ public class GameEndSystem : NetworkBehaviour
 {
     [Networked, OnChangedRender(nameof(OnCrewNumChanged))]
     public int CrewNum { get; set; }
-
     [Networked]
     public int KilledCrewNum { get; set; } = 0;
     [Networked]
     public int DroppedCrewNum { get; set; } = 0;
+    [Networked]
+    public bool KilledCrew { get; set; } = false;
+    [Networked]
+    public bool DroppedCrew { get; set; } = false;
+    [Networked]
+    public bool WinedCrew { get; set; } = false;
+
+
 
     public void Init()
     {
@@ -65,10 +72,12 @@ public class GameEndSystem : NetworkBehaviour
             if (KilledCrewNum + DroppedCrewNum >= Define.PLAYER_COUNT - 1)
             {
                 Managers.UIMng.ShowPopupUI<UI_AlienWin>();
+                
             }
             else
             {
                 Managers.UIMng.ShowPopupUI<UI_AlienDefeat>();
+
             }
         }
 
@@ -102,6 +111,7 @@ public class GameEndSystem : NetworkBehaviour
             return;
 
         DroppedCrewNum++;
+        DroppedCrew = true;
         if (Managers.NetworkMng.GetPlayerData(playerRef).State == Define.CrewState.Alive)
         {
             CrewNum--;
@@ -114,10 +124,41 @@ public class GameEndSystem : NetworkBehaviour
         if (!isWin)
         {
             KilledCrewNum++;
+            KilledCrew = true;
             Managers.NetworkMng.GetPlayerData(playerRef).State = Define.CrewState.Dead;
         }
 
+        if (isWin)
+        {
+            WinedCrew = true;
+        }
+
         CrewNum--;
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
+    public void RPC_ResetDropCrew()
+    {
+        if (Managers.NetworkMng.IsTestScene)
+            return;
+
+        DroppedCrew = false;
+    }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
+    public void RPC_ResetKilledCrew()
+    {
+        if (Managers.NetworkMng.IsTestScene)
+            return;
+
+        KilledCrew = false;
+    }
+    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
+    public void RPC_ResetWinedCrew()
+    {
+        if (Managers.NetworkMng.IsTestScene)
+            return;
+
+        WinedCrew = false;
     }
 
     private void ShowCursor()
