@@ -103,17 +103,17 @@ public class UI_CrewMessaage : UI_Base
 
     public void EscapeMessage()
     {
-        GetText(Texts.Message).text = "One of the crew escaped!";
+        GetText(Texts.Message).text = "One of the Crew has Escaped";
         StartFadeIn();
     }
     public void DeadMessage()
     {
-        GetText(Texts.Message).text = "One of the crew died!";
+        GetText(Texts.Message).text = "One of the Crew has Died";
         StartFadeIn();
     }
     public void DropMessage()
     {
-        GetText(Texts.Message).text = "One of the crew dropped!";
+        GetText(Texts.Message).text = "One of the Crew has Left the Game. ";
         StartFadeIn();
     }
 
