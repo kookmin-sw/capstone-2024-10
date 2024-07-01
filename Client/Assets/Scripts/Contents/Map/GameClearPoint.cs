@@ -12,7 +12,7 @@ public class GameClearPoint : MonoBehaviour
             Crew creature = other.GetComponent<Crew>();
             if (creature != null )
             {
-                creature.OnWin();
+                StartCoroutine(creature.OnWin());
             }
             
         }

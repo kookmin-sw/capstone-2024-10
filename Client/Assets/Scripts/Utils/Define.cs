@@ -110,7 +110,8 @@ public static class Define
     {
         None,
         Alive,
-        Dead,
+        GameEnd,
+        Disconnected,
     }
 
     public enum CreatureState

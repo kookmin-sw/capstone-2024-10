@@ -2,6 +2,7 @@ using UnityEngine;
 using Data;
 using Fusion;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class Crew : Creature
 {
@@ -287,17 +288,21 @@ public class Crew : Creature
         Collider.enabled = false;
     }
 
-    public void OnWin()
+    public IEnumerator OnWin()
     {
         if (!HasStateAuthority || CreatureType != Define.CreatureType.Crew)
-            return;
+            yield break;
 
         CreatureState = Define.CreatureState.Idle;
+
+        yield return new WaitUntil(() => CrewSoundController != null);
 
         CrewSoundController.StopAllSound();
         CrewSoundController.PlayEndGame();
 
         Managers.GameMng.GameEndSystem.EndCrewGame(true);
+
+        yield return new WaitUntil(() => CrewIngameUI != null);
 
         CrewIngameUI.HideUI();
         CrewIngameUI.EndGame();
@@ -356,7 +361,7 @@ public class Crew : Creature
         }
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            OnWin();
+            StartCoroutine(OnWin());
             return true;
         }
 

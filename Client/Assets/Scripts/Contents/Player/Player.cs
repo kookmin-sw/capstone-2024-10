@@ -42,8 +42,6 @@ public class Player : NetworkBehaviour
 
         yield return new WaitUntil(() => Runner && Runner.IsRunning);
 
-        yield return new WaitUntil(() => PlayerRef.IsRealPlayer);
-
         if (!Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene | (int)Define.SceneType.ReadyScene))
             yield break;
 
@@ -67,7 +65,8 @@ public class Player : NetworkBehaviour
         }
 
         IsSpawned = true;
-        Runner.SetPlayerObject(Runner.LocalPlayer, Object);
+        if (Managers.NetworkMng.GetPlayerObject(Runner.LocalPlayer) == null)
+            Runner.SetPlayerObject(Runner.LocalPlayer, Object);
     }
 
     private void Update()
