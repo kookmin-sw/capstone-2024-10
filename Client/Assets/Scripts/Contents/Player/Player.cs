@@ -65,8 +65,6 @@ public class Player : NetworkBehaviour
         }
 
         IsSpawned = true;
-        if (Managers.NetworkMng.GetPlayerObject(Runner.LocalPlayer) == null)
-            Runner.SetPlayerObject(Runner.LocalPlayer, Object);
     }
 
     private void Update()

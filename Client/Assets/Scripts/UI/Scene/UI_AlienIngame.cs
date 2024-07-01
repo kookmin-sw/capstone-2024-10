@@ -40,7 +40,7 @@ public class UI_AlienIngame : UI_Ingame
         UI_AlienSkill.gameObject.SetActive(false);
         CurrentSectorUI.gameObject.SetActive(false);
         RemainPersonUI.gameObject.SetActive(false);
-        CrewMessaageUI?.Hide();
-        RemainPersonUI?.Hide();
+        CrewMessageUI.Hide();
+        RemainPersonUI.Hide();
     }
 }
