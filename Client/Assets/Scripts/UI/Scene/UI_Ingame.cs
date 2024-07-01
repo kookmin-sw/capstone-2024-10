@@ -75,6 +75,6 @@ public class UI_Ingame : UI_Scene
         CurrentSectorUI.Hide();
         ObjectNameUI.Hide();
         RemainPersonUI.Hide();
-        CrewMessaageUI.Hide();
+        CrewMessaageUI?.Hide();
     }
 }

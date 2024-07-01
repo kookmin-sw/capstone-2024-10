@@ -67,4 +67,24 @@ public class Util : MonoBehaviour
 
         return text;
     }
+
+    public static void ClearAllUI()
+    {
+        if (Managers.UIMng.SceneUI != null)
+        {
+            Destroy(Managers.UIMng.SceneUI.gameObject);
+        }
+
+        Managers.UIMng.Clear();
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public static void ClearUIAndSound()
+    {
+        ClearAllUI();
+        Managers.SoundMng.Stop(Define.SoundType.Bgm);
+        Managers.SoundMng.Stop(Define.SoundType.Environment);
+        Managers.SoundMng.Stop(Define.SoundType.Effect);
+    }
 }

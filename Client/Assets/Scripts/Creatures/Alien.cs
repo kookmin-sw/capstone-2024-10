@@ -177,7 +177,7 @@ public class Alien : Creature
         AlienSoundController.StopAllSound();
         AlienSoundController.PlayEndGame();
 
-        yield return new WaitUntil(() => AlienSoundController != null);
+        yield return new WaitUntil(() => AlienIngameUI != null);
 
         AlienIngameUI.HideUI();
         AlienIngameUI.EndGame();

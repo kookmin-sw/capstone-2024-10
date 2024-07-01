@@ -43,7 +43,6 @@ public class UI_CrewMessaage : UI_Base
             return;
         }
 
-
         if (Managers.GameMng.GameEndSystem.DroppedCrew)
         {
             DropMessage();

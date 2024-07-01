@@ -26,8 +26,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public int AlienPlayerCount { get; private set; } = 0;
     public int CrewPlayerCount { get; private set; } = 0;
     public int SpawnCount { get; private set; } = 0;
-    public bool IsTestScene = false;
-    public bool IsTriggered { get; private set; } = false;
+    public bool IsEndGameTriggered = false;
+    public bool IsEndingTriggered { get; set; } = false;
 
     public int NumPlayers
     {
@@ -181,8 +181,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         if (playerData.CreatureType == Define.CreatureType.Alien)
         {
             AlienPlayerCount--;
-            if (Managers.GameMng.GameEndSystem != null)
-                OnAlienDropped();
+            OnAlienDropped();
         }
         else
         {
@@ -199,41 +198,36 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Debug.Log(str + $", Total : {_players.Count}");
     }
 
+    private void ShowCrewEnding()
+    {
+        Util.ClearUIAndSound();
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.8f);
+        Managers.UIMng.ShowPopupUI<UI_CrewWin>();
+    }
+
     public async void OnAlienDropped()
     {
-        if (Managers.NetworkMng.IsTestScene || IsTriggered)
+        if (Managers.NetworkMng.IsEndGameTriggered || IsEndingTriggered)
             return;
 
-        int cnt = 0;
         Player player = null;
-        while (cnt++ < 5 && (player = GetPlayerObject(Runner.LocalPlayer)) == null)
+        while ((player = GetPlayerObject(Runner.LocalPlayer)) == null)
         {
-
             await Task.Delay(500);
         }
 
+        // 로딩 중간에 에일리언 탈주 시, 에일리언이 바뀔 수 있음
         if (player != null && player.CreatureType == Define.CreatureType.Crew)
         {
-            Managers.ObjectMng.MyCrew.OnWin();
+            StartCoroutine(Managers.ObjectMng.MyCrew.OnWin());
         }
         else
         {
             // Crew에 대한 종속성 없이 UI_CrewWin 호출
-            if (Managers.UIMng.SceneUI != null)
-            {
-                Destroy(Managers.UIMng.SceneUI.gameObject);
-            }
-            Managers.UIMng.Clear();
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            Managers.SoundMng.Stop(Define.SoundType.Bgm);
-            Managers.SoundMng.Stop(Define.SoundType.Environment);
-            Managers.SoundMng.Stop(Define.SoundType.Effect);
-            Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.8f);
-            Managers.UIMng.ShowPopupUI<UI_CrewWin>();
+            ShowCrewEnding();
         }
 
-        IsTriggered = true;
+        IsEndingTriggered = true;
     }
 
     public async void ExitGame()
@@ -337,7 +331,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     protected IEnumerator StartClient(GameMode serverMode, SceneRef sceneRef = default)
     {
         var clientTask = InitializeNetworkRunner(Runner, serverMode, NetAddress.Any(), sceneRef, null);
-        IsTestScene = true;
+        IsEndGameTriggered = true;
 
         while (clientTask.IsCompleted == false)
         {
