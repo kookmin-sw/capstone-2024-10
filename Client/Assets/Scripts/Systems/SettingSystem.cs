@@ -18,7 +18,7 @@ public class SettingSystem : MonoBehaviour
         set
         {
             PlayerPrefs.SetInt("Textures", value);
-            QualitySettings.SetQualityLevel(value);
+            SetQuality(value);
             _quality = value;
         }
     }
@@ -33,6 +33,11 @@ public class SettingSystem : MonoBehaviour
         Height = PlayerPrefs.GetInt("ScreenHeight", 1080);
         Quality = PlayerPrefs.GetInt("Textures", 1);
         VSycn = PlayerPrefs.GetInt("VSycn", 0);
+    }
+
+    private void SetQuality(int index)
+    {
+        QualitySettings.globalTextureMipmapLimit = 3 - index;
     }
 
     public void SetResolution(int width, int height)
