@@ -83,7 +83,9 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.MAIN).SetActive(true);
         GetObject(GameObjects.TITLE).SetActive(true);
 
-        GetText(Texts.Version).text = "v" + PlayerSettings.bundleVersion;
+        //GetText(Texts.Version).text = "v" + PlayerSettings.bundleVersion;
+        // 빌드 시 사용 할 수 있음
+        GetText(Texts.Version).text = "v" + Application.version;
 
         return true;
     }
