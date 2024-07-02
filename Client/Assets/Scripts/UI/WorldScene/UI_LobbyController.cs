@@ -84,17 +84,10 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.MAIN).SetActive(true);
         GetObject(GameObjects.TITLE).SetActive(true);
 
-#if UnityEditor
-        GetText(Texts.Version).text = "v" + PlayerSettings.bundleVersion;
-#else
-        string path = Application.streamingAssetsPath + "/bundle_version.txt";
-        string bundleVersion = "1.0.0";
-        if (File.Exists(path))
-        {
-            bundleVersion = File.ReadAllText(path);
-        }
-        GetText(Texts.Version).text = "v" + bundleVersion;
-#endif
+
+        //GetText(Texts.Version).text = "v" + PlayerSettings.bundleVersion;
+        // 빌드 시 사용 할 수 있음
+        GetText(Texts.Version).text = "v" + Application.version;
 
         return true;
     }
