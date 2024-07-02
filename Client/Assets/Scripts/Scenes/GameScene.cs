@@ -37,15 +37,15 @@ public class GameScene : BaseScene
         switch(Managers.NetworkMng.Creature)
         {
             case Define.CreatureType.Crew:
-                Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
+                ingameUI = Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
                 break;
 
             case Define.CreatureType.Alien:
-                Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
+                ingameUI = Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
                 break;
 
             case Define.CreatureType.TutoCrew:
-                Managers.UIMng.ShowSceneUI<UI_CrewTutorial>();
+                ingameUI = Managers.UIMng.ShowSceneUI<UI_CrewTutorial>();
                 break;
         }
         yield return new WaitUntil(() => ingameUI.Init());

@@ -8,15 +8,18 @@ using UnityEngine.UI;
 public class UI_TutorialPlan : UI_Base
 {
     private GameObject planBatteryCharge;
+    private GameObject planUseComputer;
 
     enum GameObjects
     {
         Plan_BatteryCharge,
+        Plan_UseComputer,
     }
 
     enum Texts
     {
         Main_Title_text,
+        Objective_Text,
     }
 
     public override bool Init()
@@ -27,8 +30,33 @@ public class UI_TutorialPlan : UI_Base
         Bind<TMP_Text>(typeof(Texts));
 
         planBatteryCharge = GetObject(GameObjects.Plan_BatteryCharge);
+        planUseComputer = GetObject(GameObjects.Plan_UseComputer);
+
+        planBatteryCharge.SetActive(true);
+        planUseComputer.SetActive(false);
+
+        UpdateBatteryCount(0);
 
         return true;
     }
 
+    public void UpdateBatteryCount(int batteryCount)
+    {
+        planBatteryCharge.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>()
+            .SetText($"Insert Batteries In Battery Charger ({batteryCount}/2)", true);
+        if(batteryCount >= 2)
+        {
+            planBatteryCharge.SetActive(false);
+            planUseComputer.SetActive(true);
+
+            planUseComputer.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>()
+                .SetText($"Get and Use Cardkey on Central Control Computer", true);
+        }
+    }
+
+    public void OnCardkeyUsed()
+    {
+        planUseComputer.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>()
+            .SetText($"Use Central Control Computer", true);
+    }
 }

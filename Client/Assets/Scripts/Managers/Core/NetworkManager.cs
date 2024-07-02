@@ -259,6 +259,11 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
                     break;
 
                 case Define.CreatureType.TutoCrew:
+                    spawnPoint = new()
+                    {
+                        Position = GameObject.FindWithTag("Respawn").transform.position,
+                        SectorName = Define.SectorName.F1_Corridor_D
+                    };
                     playerObject = await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, false, true);
                     break;
             }

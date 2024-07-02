@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class UI_CrewTutorial : UI_CrewIngame
 {
-    public UI_TutorialPlan TutorialPlanUI { get; private set; }
+    public GameObject TutorialPlanUI { get; private set; }
 
     enum SubItemUIsForTuto
     {
@@ -14,17 +14,21 @@ public class UI_CrewTutorial : UI_CrewIngame
     {
         if (base.Init() == false) { return false; }
 
-        Bind<UI_Base>(typeof(SubItemUIsForTuto));
+        Bind<GameObject>(typeof(SubItemUIsForTuto));
 
-        TutorialPlanUI = Get<UI_Base>(Enum.GetNames(typeof(SubItemUIsForTuto)).Length + (int)SubItemUIsForTuto.UI_TutorialPlan) as UI_TutorialPlan;
+        TutorialPlanUI = GetObject(SubItemUIsForTuto.UI_TutorialPlan);
         PlanUI.gameObject.SetActive(false);
         TutorialPlanUI.gameObject.SetActive(true);
+
+        CrewStaminaUI.gameObject.SetActive(false);
+        CrewHpUI.gameObject.SetActive(false);
+        CurrentSectorUI.gameObject.SetActive(false);
 
         return true;
     }
 
     public override void InitAfterNetworkSpawn(Creature creature)
     {
-        base.InitAfterNetworkSpawn(creature);
+        //base.InitAfterNetworkSpawn(creature);
     }
 }

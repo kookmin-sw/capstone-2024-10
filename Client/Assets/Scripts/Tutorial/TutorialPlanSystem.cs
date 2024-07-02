@@ -13,19 +13,33 @@ public class TutorialPlanSystem : NetworkBehaviour
     [Networked, OnChangedRender(nameof(OnComputerWorkFinished))]
     public NetworkBool IsComputerWorkFinished { get; set; }
 
-    public void Init()
+    [Networked, OnChangedRender(nameof(OnCardkeyUsed))]
+    public NetworkBool IsCardkeyUsed { get; set; }
+
+    private void Start()
     {
         Managers.TutorialMng.TutorialPlanSystem = this;
+        Managers.NetworkMng.StartSharedClient();
         if (Managers.ObjectMng.MyCreature is Crew) GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            EndTutorial();
+        }
     }
 
     private void OnBatteryCharge()
     {
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
-        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateBatteryCount(BatteryChargeCount);
+        GameObject.FindWithTag("Player").GetComponent<TutorialCrew>()
+            .CrewTutorialUI.TutorialPlanUI.GetComponent<UI_TutorialPlan>().UpdateBatteryCount(BatteryChargeCount);
 
-        if (BatteryChargeCount == Define.BATTERY_CHARGE_GOAL)
+        //TODO: DEFINE에 튜토리얼용 값 따로 추가
+        if (BatteryChargeCount == 2)
         {
             IsBatteryChargeFinished = true;
         }
@@ -35,6 +49,18 @@ public class TutorialPlanSystem : NetworkBehaviour
     {
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
+        GameObject.Find("CargoPassageGate").GetComponent<Gate>().Open();
+    }
 
+    private void OnCardkeyUsed()
+    {
+        if (Managers.ObjectMng.MyCreature is Alien) return;
+
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnCardkeyUsed();
+    }
+
+    public void EndTutorial()
+    {
+        Managers.SceneMng.LoadScene(0);
     }
 }
