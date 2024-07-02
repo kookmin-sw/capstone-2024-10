@@ -3,6 +3,7 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class UI_LobbyController : UI_Base
 {
@@ -83,11 +84,21 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.MAIN).SetActive(true);
         GetObject(GameObjects.TITLE).SetActive(true);
 
+#if UnityEditor
         GetText(Texts.Version).text = "v" + PlayerSettings.bundleVersion;
+#else
+        string path = Application.streamingAssetsPath + "/bundle_version.txt";
+        string bundleVersion = "1.0.0";
+        if (File.Exists(path))
+        {
+            bundleVersion = File.ReadAllText(path);
+        }
+        GetText(Texts.Version).text = "v" + bundleVersion;
+#endif
 
         return true;
     }
-    #endregion
+#endregion
 
     #region Other
     public void PlayHover()

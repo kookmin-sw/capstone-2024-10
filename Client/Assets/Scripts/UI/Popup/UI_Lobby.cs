@@ -80,7 +80,7 @@ public class UI_Lobby : UI_Popup
         popup.SetInfo();
     }
 
-    async void EnterGame()
+    void EnterGame()
     {
         Managers.UIMng.Clear();
         Managers.NetworkMng.ConnectToAnySession();
