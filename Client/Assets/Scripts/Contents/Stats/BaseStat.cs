@@ -10,7 +10,7 @@ public abstract class BaseStat : NetworkBehaviour
     public float Speed { get; set; }
     public float WalkSpeed { get; set; }
     public float RunSpeed { get; set; }
-    public bool IsErosion { get; set; } = false;
+    public bool IsUnderErosion { get; set; } = false;
 
     public override void Spawned()
     {

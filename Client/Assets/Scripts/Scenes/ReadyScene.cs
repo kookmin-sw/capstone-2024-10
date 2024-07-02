@@ -25,8 +25,8 @@ public class ReadyScene : BaseScene
         UI_CrewIngame ingameUI = Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
         yield return new WaitUntil(() => ingameUI.Init());
 
-        ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
+        ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         ingameUI.CrewHpUI.gameObject.SetActive(false);
         ingameUI.CrewStaminaUI.gameObject.SetActive(false);
         ingameUI.PlanUI.gameObject.SetActive(false);

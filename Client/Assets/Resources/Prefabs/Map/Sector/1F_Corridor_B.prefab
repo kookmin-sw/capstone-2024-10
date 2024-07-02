@@ -167,7 +167,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sectorName: 2
-  _IsErosion:
+  _lightEnableTargetSectors: 02000000010000000c0000000d0000000e0000000900000003000000040000000b000000060000001000000005000000
+  _IsEroded:
     _value: 0
 --- !u!114 &-1894697666103748573
 MonoBehaviour:
@@ -183,7 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 4258888511
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
   - {fileID: -9139450609498887725}

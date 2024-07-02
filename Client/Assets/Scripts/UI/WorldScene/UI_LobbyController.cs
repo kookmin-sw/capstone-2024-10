@@ -1,19 +1,21 @@
 using System;
-using System.Collections;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.IO;
 
 public class UI_LobbyController : UI_Base
 {
     #region Enums
+
     enum GameObjects
     {
         MAIN,
         PLAY,
         EXIT,
         EXTRAS,
+        TITLE
     }
 
     enum Buttons
@@ -26,6 +28,12 @@ public class UI_LobbyController : UI_Base
         Btn_Yes,
         Btn_Return,
     }
+
+    public enum Texts
+    {
+        Version,
+    }
+
     #endregion
 
     #region Fields
@@ -41,11 +49,12 @@ public class UI_LobbyController : UI_Base
 
         Bind<GameObject>(typeof(GameObjects));
         Bind<Button>(typeof(Buttons));
+        Bind<TMP_Text>(typeof(Texts));
         DontDestroyOnLoad(gameObject);
 
         #region Base
         _cameraAnimator = Camera.main.GetComponent<Animator>();
-        
+
         GetButton(Buttons.Btn_PlayCampaign).onClick.AddListener(PlayCampaign);
         GetButton(Buttons.Btn_Settings).onClick.AddListener(Position2);
         GetButton(Buttons.Btn_Settings).onClick.AddListener(ReturnMenu);
@@ -73,10 +82,16 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.EXIT).SetActive(false);
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         GetObject(GameObjects.MAIN).SetActive(true);
-        
+        GetObject(GameObjects.TITLE).SetActive(true);
+
+
+        //GetText(Texts.Version).text = "v" + PlayerSettings.bundleVersion;
+        // 빌드 시 사용 할 수 있음
+        GetText(Texts.Version).text = "v" + Application.version;
+
         return true;
     }
-    #endregion
+#endregion
 
     #region Other
     public void PlayHover()
@@ -94,6 +109,7 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.EXIT).SetActive(false);
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         GetObject(GameObjects.PLAY).SetActive(true);
+        GetObject(GameObjects.TITLE).SetActive(false);
     }
 
     public void PlayCampaignMobile()
@@ -102,6 +118,7 @@ public class UI_LobbyController : UI_Base
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         GetObject(GameObjects.PLAY).SetActive(true);
         GetObject(GameObjects.MAIN).SetActive(false);
+        GetObject(GameObjects.TITLE).SetActive(false);
     }
 
     public void ReturnMenu()
@@ -110,6 +127,7 @@ public class UI_LobbyController : UI_Base
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         GetObject(GameObjects.EXIT).SetActive(false);
         GetObject(GameObjects.MAIN).SetActive(true);
+        GetObject(GameObjects.TITLE).SetActive(true);
     }
 
 
@@ -132,9 +150,11 @@ public class UI_LobbyController : UI_Base
 
     public void Position1()
     {
+        GetObject(GameObjects.TITLE).SetActive(true);
+        GetObject(GameObjects.EXIT).SetActive(false);
         _cameraAnimator.SetFloat("Animate", 0);
     }
-    
+
     public void PlaySwoosh()
     {
         Managers.SoundMng.Play($"{Define.EFFECT_PATH}/UI/Click2");
@@ -143,6 +163,7 @@ public class UI_LobbyController : UI_Base
     // Are You Sure - Quit Panel Pop Up
     public void AreYouSure()
     {
+        GetObject(GameObjects.TITLE).SetActive(false);
         GetObject(GameObjects.EXIT).SetActive(true);
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
         DisablePlayCampaign();

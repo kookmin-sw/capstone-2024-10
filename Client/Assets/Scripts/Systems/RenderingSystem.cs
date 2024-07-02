@@ -24,8 +24,8 @@ public class RenderingSystem : NetworkBehaviour
     private float blindValue = 15f;
     private float _damageEffectSpeed = 1.5f;
 
-    private Tweener _setColorAdjustmentsTweener;
-    private Tweener _getBlindTweener;
+    private Tweener _erosionEffectTweener;
+    private Tweener _blindEffectTweener;
 
     public override void Spawned()
     {
@@ -52,30 +52,30 @@ public class RenderingSystem : NetworkBehaviour
         ColorAdjustments.colorFilter.value = _defaultColor;
         Vignette.intensity.value = _defaultVignetteValue;
 
-        DamageEffect(3);
+        ApplyDamageEffect(3);
     }
 
     #region Volume
 
-    public void ApplySanity(float sanity)
+    public void ApplySanityEffect(float sanity)
     {
         Vignette.intensity.value = _defaultVignetteValue + (100f - sanity) * 0.01f * 0.4f;
         ChromaticAberration.intensity.value = (100f - sanity) * 0.01f;
     }
 
-    public void ApplyErosion(bool isErosion)
+    public void ApplyErosionEffect(bool isApplying)
     {
         Color color = _defaultColor;
         float vignetteValue = _defaultVignetteValue;
 
-        if (isErosion)
+        if (isApplying)
         {
             color = _erosionColor;
             vignetteValue = 0.15f;
         }
 
-        _setColorAdjustmentsTweener.Kill();
-        _setColorAdjustmentsTweener = DOVirtual.Color(ColorAdjustments.colorFilter.value, color, 2f, value =>
+        _erosionEffectTweener.Kill();
+        _erosionEffectTweener = DOVirtual.Color(ColorAdjustments.colorFilter.value, color, 2f, value =>
         {
             ColorAdjustments.colorFilter.value = value;
         });
@@ -84,15 +84,15 @@ public class RenderingSystem : NetworkBehaviour
             Vignette.intensity.value = vignetteValue;
     }
 
-    public void GetBlind(float blindTime, float backTime)
+    public void ApplyBlindEffect(float blindTime, float backTime)
     {
-        _getBlindTweener.Kill();
+        _blindEffectTweener.Kill();
         ColorAdjustments.postExposure.value = blindValue;
 
         DOVirtual.DelayedCall(blindTime, () =>
         {
-            _getBlindTweener.Kill();
-            _getBlindTweener = DOVirtual.Float(ColorAdjustments.postExposure.value, 0f, backTime, value =>
+            _blindEffectTweener.Kill();
+            _blindEffectTweener = DOVirtual.Float(ColorAdjustments.postExposure.value, 0f, backTime, value =>
             {
                 ColorAdjustments.postExposure.value = value;
             });
@@ -103,7 +103,7 @@ public class RenderingSystem : NetworkBehaviour
 
     #region Custom Pass Volume
 
-    public void DamageEffect(int hp)
+    public void ApplyDamageEffect(int hp)
     {
         float ratio;
         if (hp >= 3)
@@ -115,10 +115,10 @@ public class RenderingSystem : NetworkBehaviour
         else
             ratio = 1f;
 
-        StartCoroutine(DamageEffectProgress(ratio));
+        StartCoroutine(ProgressDamageEffect(ratio));
     }
 
-    private IEnumerator DamageEffectProgress(float intensity)
+    private IEnumerator ProgressDamageEffect(float intensity)
     {
         float targetRadius = Mathf.Lerp(1.2f, -1f, Mathf.InverseLerp(0, 1, intensity));
         float curRadius = 1; // No damage

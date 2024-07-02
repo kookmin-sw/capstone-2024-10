@@ -6,6 +6,7 @@ public static class Define
 
     public enum CreatureType
     {
+        None,
         Crew,
         Alien,
         TutoCrew,
@@ -105,6 +106,14 @@ public static class Define
     {
         None,
         Ready,
+    }
+
+    public enum CrewState
+    {
+        None,
+        Alive,
+        GameEnd,
+        Disconnected,
     }
 
     public enum CreatureState

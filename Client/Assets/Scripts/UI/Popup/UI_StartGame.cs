@@ -79,6 +79,6 @@ public class UI_StartGame : UI_Popup
 
     private void OnDestroy()
     {
-        Managers.NetworkMng.PlayerSystem.OnReadyCountUpdated -= () => SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
+        // Managers.NetworkMng.PlayerSystem.OnReadyCountUpdated -= () => SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
     }
 }

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -48,11 +49,7 @@ public class UI_JoinRoom : UI_Popup
 
         Get<Button>((int)Buttons.Btn_Yes).onClick.AddListener(() =>
         {
-            if (JoinGame())
-            {
-                ClosePopupUI();
-                Managers.UIMng.ShowPanelUI<UI_Loading>();
-            }
+            JoinGame();
         });
         Get<Button>((int)Buttons.Btn_No).onClick.AddListener(() =>
         {
@@ -71,15 +68,17 @@ public class UI_JoinRoom : UI_Popup
         _password = password;
     }
 
-    public bool JoinGame()
+    public void JoinGame()
     {
         if (!string.IsNullOrEmpty(_password) && _password != InputPassword.text)
         {
             _warning.text = "Password is incorrect";
-            return false;
+            return;
         }
 
         Managers.NetworkMng.ConnectToSession(_roomName, null);
-        return true;
+
+        ClosePopupUI();
+        Managers.UIMng.ShowPanelUI<UI_Loading>();
     }
 }

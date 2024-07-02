@@ -83,7 +83,7 @@ public class UI_Lobby : UI_Popup
     void EnterGame()
     {
         Managers.UIMng.Clear();
-        Managers.UIMng.ShowPanelUI<UI_Loading>();
         Managers.NetworkMng.ConnectToAnySession();
+        Managers.UIMng.ShowPanelUI<UI_Loading>();
     }
 }

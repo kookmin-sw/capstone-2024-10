@@ -14,13 +14,7 @@ public class UIManager
     /// </summary>
     int _order = 10;
 
-    /// <summary>
-    /// UI_Popup을 관리하는 스택
-    /// </summary>
     Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
-    /// <summary>
-    /// 씬 UI를 담고 있는 프로퍼티, 직접 수정 불가능하다.
-    /// </summary>
     public UI_Scene SceneUI { get; private set; }
 
     public UI_Panel PanelUI { get; set; }

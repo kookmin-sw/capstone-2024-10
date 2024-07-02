@@ -68,7 +68,7 @@ public class UI_AlienDefeat : UI_Popup
     {
         if (Managers.NetworkMng.NumPlayers <= 1)
         {
-            Managers.GameMng.GameEndSystem.ExitGame();
+            Managers.NetworkMng.ExitGame();
         }
         else
         {

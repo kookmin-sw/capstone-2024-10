@@ -224,7 +224,7 @@ public abstract class Creature : NetworkBehaviour
 
         //Debug.DrawRay(ray.origin, ray.direction * 1.5f, Color.red);
 
-        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 1.5f, layerMask: LayerMask.GetMask("MapObject", "PlanTargetObject")))
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: 1.5f, layerMask: LayerMask.GetMask("MapObject", "InteractableObject")))
         {
             if (rayHit.transform.gameObject.TryGetComponent(out IInteractable interactable))
             {
@@ -247,19 +247,19 @@ public abstract class Creature : NetworkBehaviour
     #endregion
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public void Rpc_SetErosion(bool isErosion)
+    public void Rpc_ApplyErosion(bool isApplying)
     {
-        BaseStat.IsErosion = isErosion;
-        Managers.GameMng.RenderingSystem.ApplyErosion(isErosion);
+        BaseStat.IsUnderErosion = isApplying;
+        Managers.GameMng.RenderingSystem.ApplyErosionEffect(isApplying);
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public virtual void Rpc_OnBlind(float blindTime, float backTime)
+    public virtual void Rpc_ApplyBlind(float blindTime, float backTime)
     {
         if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
             return;
 
-        Managers.GameMng.RenderingSystem.GetBlind(blindTime, backTime);
+        Managers.GameMng.RenderingSystem.ApplyBlindEffect(blindTime, backTime);
     }
 
     protected virtual bool TestInputs()

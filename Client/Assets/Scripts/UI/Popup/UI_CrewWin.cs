@@ -62,6 +62,6 @@ public class UI_CrewWin : UI_Popup
 
     public void ExitGame()
     {
-        Managers.GameMng.GameEndSystem.ExitGame();
+        Managers.NetworkMng.ExitGame();
     }
 }

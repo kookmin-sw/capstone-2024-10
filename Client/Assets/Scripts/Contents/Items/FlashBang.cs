@@ -31,6 +31,7 @@ public class FlashBang : BaseItem
         DOVirtual.DelayedCall(1.5f, () =>
         {
             no.GetComponent<FlashBangObject>().Rpc_PlaySound();
+            no.GetComponent<FlashBangObject>().Rpc_Explode();
             Explode(no.transform.position);
         });
     }
@@ -44,7 +45,7 @@ public class FlashBang : BaseItem
         {
             foreach (var hitCollider in hitColliders)
                 if (hitCollider.gameObject.TryGetComponent(out Creature creature))
-                    creature.Rpc_OnBlind(ItemData.Value, 3f);
+                    creature.Rpc_ApplyBlind(ItemData.Value, 3f);
         }
     }
 }

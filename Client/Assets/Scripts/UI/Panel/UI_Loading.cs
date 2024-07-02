@@ -26,8 +26,8 @@ public class UI_Loading : UI_Panel
     public bool LoadingMap = false;
 
     public bool IsMapLoaded { get; private set; } = false;
-    public bool isDone { get; private set; } = false;
-    public float loadingProgress { get; private set; } = 0.0f;
+    public bool IsDone { get; private set; } = false;
+    public float LoadingProgress { get; private set; } = 0.0f;
 
     public override bool Init()
     {
@@ -49,8 +49,9 @@ public class UI_Loading : UI_Panel
         _loadPromptText = GetText(Texts.TextPrompt);
 
         waitForInput = false;
-        loadingProgress = 0.0f;
+        LoadingProgress = 0.0f;
         userPromptKey = KeyCode.F;
+        _loadPromptText.text = "";
 
         StartCoroutine(LoadAsynchronously());
         if (Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.LobbyScene))
@@ -62,6 +63,7 @@ public class UI_Loading : UI_Panel
         {
             _loadingSpeed = 0.1f;
             StartCoroutine(TransitionCheck());
+            StartCoroutine(OnAlienDropped());
         }
 
         return true;
@@ -69,14 +71,25 @@ public class UI_Loading : UI_Panel
 
     void Update()
     {
-        loadingProgress += _loadingSpeed * Time.deltaTime;
+        LoadingProgress += _loadingSpeed * Time.deltaTime;
     }
 
     public IEnumerator SpawnCheck()
     {
         yield return new WaitUntil(() => Managers.ObjectMng.MyCreature != null);
         yield return new WaitUntil(() => Managers.ObjectMng.MyCreature.IsSpawned);
-        isDone = true;
+        IsDone = true;
+    }
+
+    public IEnumerator OnAlienDropped()
+    {
+        while (Managers.NetworkMng.AlienPlayerCount >= 1)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        Managers.NetworkMng.OnAlienDropped();
+        IsDone = true;
     }
 
     public IEnumerator TransitionCheck()
@@ -87,7 +100,7 @@ public class UI_Loading : UI_Panel
         yield return new WaitUntil(() => Managers.ObjectMng.MyCreature.IsSpawned);
         yield return new WaitUntil(() => IsMapLoaded);
         yield return new WaitForSeconds(2.0f);
-        isDone = true;
+        IsDone = true;
     }
 
     public void OnMapLoadComplete()
@@ -97,23 +110,23 @@ public class UI_Loading : UI_Panel
 
     public IEnumerator LoadAsynchronously()
     {
-        while (!isDone)
+        while (!IsDone)
         {
-            float progress = Mathf.Clamp01(loadingProgress / .95f);
+            float progress = Mathf.Clamp01(LoadingProgress / .95f);
             _loadingBar.value = progress;
 
             if (progress >= 0.9f && waitForInput)
             {
-                _loadPromptText.text = "Press " + userPromptKey.ToString().ToUpper() + " to continue";
+                // _loadPromptText.text = "Press " + userPromptKey.ToString().ToUpper() + " to continue";
                 _loadingBar.value = 1;
 
-                if (isDone && Input.GetKeyDown(userPromptKey))
+                if (IsDone && Input.GetKeyDown(userPromptKey))
                 {
                     OnLoadingDone();
                     yield break;
                 }
             }
-            else if (isDone && progress >= 0.9f && !waitForInput)
+            else if (IsDone && progress >= 0.9f && !waitForInput)
             {
                 OnLoadingDone();
                 yield break;
@@ -127,6 +140,7 @@ public class UI_Loading : UI_Panel
 
     public void OnLoadingDone()
     {
+        StopAllCoroutines();
         Managers.UIMng.PanelUI = null;
         Destroy(transform.parent.gameObject);
     }

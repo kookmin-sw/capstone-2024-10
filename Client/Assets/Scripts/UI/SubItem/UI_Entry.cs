@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Entry : UI_Panel
+public class UI_Entry : UI_Base
 {
     #region Enums
     public enum Buttons
@@ -18,6 +18,7 @@ public class UI_Entry : UI_Panel
 
     public enum Texts
     {
+        Name,
     }
 
     public enum GameObjects
@@ -37,14 +38,16 @@ public class UI_Entry : UI_Panel
         Bind<GameObject>(typeof(GameObjects));
 
         GetButton((int)Buttons.Submit).onClick.AddListener(SubmitName);
+        GetText((int)Texts.Name).text = Managers.NetworkMng.PlayerName;
 
         return true;
     }
 
     public void SubmitName()
     {
-        string name = GetObject((int)GameObjects.NickName).GetComponent<TMP_InputField>().text;
-        Managers.NetworkMng.ConnectToLobby(name);
-        Destroy(gameObject);
+        var input = GetObject((int)GameObjects.NickName).GetComponent<TMP_InputField>();
+        Managers.NetworkMng.PlayerName = input.text;
+        input.text = "";
+        GetText((int)Texts.Name).text = Managers.NetworkMng.PlayerName;
     }
 }

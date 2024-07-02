@@ -3,6 +3,7 @@ using UnityEngine;
 using Data;
 using Fusion;
 using UnityEngine.EventSystems;
+using System.Collections;
 
 public class Alien : Creature
 {
@@ -156,9 +157,9 @@ public class Alien : Creature
     #region Event
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
-    public override void Rpc_OnBlind(float blindTime, float backTime)
+    public override void Rpc_ApplyBlind(float blindTime, float backTime)
     {
-        base.Rpc_OnBlind(blindTime, backTime);
+        base.Rpc_ApplyBlind(blindTime, backTime);
 
         CreatureState = Define.CreatureState.Damaged;
         AlienAnimController.PlayAnim(Define.AlienActionType.GetBlind);
@@ -166,13 +167,17 @@ public class Alien : Creature
         ReturnToIdle(blindTime);
     }
 
-    public void OnGameEnd()
+    public IEnumerator OnGameEnd()
     {
         if (!HasStateAuthority || !IsSpawned)
-            return;
+            yield break;
+
+        yield return new WaitUntil(() => AlienSoundController != null);
 
         AlienSoundController.StopAllSound();
         AlienSoundController.PlayEndGame();
+
+        yield return new WaitUntil(() => AlienIngameUI != null);
 
         AlienIngameUI.HideUI();
         AlienIngameUI.EndGame();
@@ -192,7 +197,7 @@ public class Alien : Creature
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Rpc_OnBlind(2f, 3f);
+            Rpc_ApplyBlind(2f, 3f);
             return true;
         }
         if (Input.GetKeyDown(KeyCode.Z))

@@ -4073,7 +4073,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7248788017678217095, guid: 6fdb3aaf5497e1547918aafa36904b69, type: 3}
       propertyPath: m_Name
-      value: '@RenderingSystem'
+      value: '@GameRenderingSystem'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5475,11 +5475,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e11b68cfa65e85444a9b9ff196f29a34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerName: Player
+  IsTestScene: 0
   DefaultRoomName: Test
-  Creature: 0
+  Creature: 1
   PrefabNum: 0
-  ReadySceneSpawnPosition: {x: 0, y: 0, z: 0}
+  ReadySceneSpawnPosition: {x: 0, y: 0.5, z: 0}
   ReadySceneSpawnSector: 1
 --- !u!114 &999382491
 MonoBehaviour:
@@ -9437,10 +9437,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Map
       objectReference: {fileID: 0}
-    - target: {fileID: 6825217453611155057, guid: 5231a4bab55a19a4b9326cb5ecc5b6c7, type: 3}
-      propertyPath: m_audioClip
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7865775579036726535, guid: 5231a4bab55a19a4b9326cb5ecc5b6c7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 12.25
@@ -9481,8 +9477,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6825217453611155057, guid: 5231a4bab55a19a4b9326cb5ecc5b6c7, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
