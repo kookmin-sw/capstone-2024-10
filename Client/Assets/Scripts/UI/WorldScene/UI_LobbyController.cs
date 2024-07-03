@@ -23,6 +23,7 @@ public class UI_LobbyController : UI_Base
         Btn_PlayCampaign,
         Btn_Settings,
         Btn_Manual,
+        Btn_Credit,
         Btn_Exit,
         Btn_No1,
         Btn_Yes,
@@ -134,6 +135,7 @@ public class UI_LobbyController : UI_Base
     public void DisablePlayCampaign()
     {
         GetObject(GameObjects.PLAY).SetActive(false);
+        GetObject(GameObjects.TITLE).SetActive(true);
     }
 
     public void Position3()
@@ -166,7 +168,7 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.TITLE).SetActive(false);
         GetObject(GameObjects.EXIT).SetActive(true);
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
-        DisablePlayCampaign();
+        GetObject(GameObjects.PLAY).SetActive(false);
     }
 
     public void AreYouSureMobile()

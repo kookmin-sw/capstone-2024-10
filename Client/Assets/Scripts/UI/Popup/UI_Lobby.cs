@@ -17,6 +17,7 @@ public class UI_Lobby : UI_Popup
         Btn_QuickStart,
         Btn_CreateGame,
         Btn_RefreshSession,
+        Btn_GameTutorial,
     }
     #endregion
 
