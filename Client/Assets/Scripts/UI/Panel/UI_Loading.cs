@@ -72,6 +72,7 @@ public class UI_Loading : UI_Panel
     void Update()
     {
         LoadingProgress += _loadingSpeed * Time.deltaTime;
+        _loadingBar.value = Mathf.Clamp01(LoadingProgress / .95f);
     }
 
     public IEnumerator SpawnCheck()
@@ -112,12 +113,10 @@ public class UI_Loading : UI_Panel
     {
         while (!IsDone)
         {
-            float progress = Mathf.Clamp01(LoadingProgress / .95f);
-            _loadingBar.value = progress;
+            float progress = _loadingBar.value;
 
             if (progress >= 0.9f && waitForInput)
             {
-                // _loadPromptText.text = "Press " + userPromptKey.ToString().ToUpper() + " to continue";
                 _loadingBar.value = 1;
 
                 if (IsDone && Input.GetKeyDown(userPromptKey))
@@ -138,10 +137,18 @@ public class UI_Loading : UI_Panel
         OnLoadingDone();
     }
 
+    private IEnumerator WaitProgress()
+    {
+        _loadingSpeed = 0.4f;
+        yield return new WaitUntil(() => _loadingBar.value > 0.9f);
+        yield return new WaitForSeconds(0.5f);
+        Managers.UIMng.PanelUI = null;
+        Destroy(transform.parent.gameObject);
+    }
+
     public void OnLoadingDone()
     {
         StopAllCoroutines();
-        Managers.UIMng.PanelUI = null;
-        Destroy(transform.parent.gameObject);
+        StartCoroutine(WaitProgress());
     }
 }
