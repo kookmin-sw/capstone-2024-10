@@ -30,27 +30,19 @@ public class GameEndSystem : NetworkBehaviour
 
     public async void InitAfterUIPopup()
     {
-        if (Managers.NetworkMng.IsTestScene)
+        if (Managers.NetworkMng.IsTestScene || Managers.NetworkMng.IsEndGameTriggered)
             return;
 
         if (Managers.NetworkMng.SpawnCount == Define.PLAYER_COUNT)
             return;
 
-        if (!Managers.NetworkMng.IsEndGameTriggered)
+        if (Managers.ObjectMng.MyCreature is Alien)
         {
-            if (Managers.NetworkMng.IsMaster)
-            {
-                IsGameStarted = true;
-            }
-            // 어느 한 명이라도 로딩이 되기 전에
-            if (Managers.ObjectMng.MyCreature is Alien)
-            {
-                StartCoroutine(EndAlienGame());
-            }
-            else
-            {
-                await Managers.ObjectMng.MyCrew.OnWin();
-            }
+            StartCoroutine(EndAlienGame());
+        }
+        else
+        {
+            await Managers.ObjectMng.MyCrew.OnWin();
         }
     }
 

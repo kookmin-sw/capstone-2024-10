@@ -3,14 +3,11 @@ using UnityEngine;
 using Fusion;
 using Fusion.Sockets;
 using System;
-using UnityEngine.UI;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using WebSocketSharp;
-using UnityEditor;
-using Unity.VisualScripting;
 
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks

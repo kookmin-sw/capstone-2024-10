@@ -46,6 +46,7 @@ public class UI_Loading : UI_Panel
         Bind<Slider>(typeof(Sliders));
 
         _loadingBar = Get<Slider>(Sliders.ProgressBar);
+        _loadingBar.value = 0;
         _loadPromptText = GetText(Texts.TextPrompt);
 
         waitForInput = false;
