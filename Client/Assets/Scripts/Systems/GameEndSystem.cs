@@ -1,6 +1,5 @@
 using Fusion;
 using System.Collections;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameEndSystem : NetworkBehaviour
@@ -9,6 +8,8 @@ public class GameEndSystem : NetworkBehaviour
     public int CrewNum { get; set; }
     [Networked]
     public int KilledCrewNum { get; set; } = 0;
+    [Networked]
+    public bool ShouldEndGame { get; set; } = false;
     [Networked]
     public int DroppedCrewNum { get; set; } = 0;
     [Networked]
@@ -36,13 +37,28 @@ public class GameEndSystem : NetworkBehaviour
         if (Managers.NetworkMng.SpawnCount == Define.PLAYER_COUNT)
             return;
 
+        // 마지막 크루가 로드되었을 때를 기준으로
+        if (ShouldEndGame == false)
+            RPC_EndGameRequest();
+    }
+
+    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    public void RPC_EndGameRequest()
+    {
+        ShouldEndGame = true;
+        RPC_EndGame();
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    public void RPC_EndGame()
+    {
         if (Managers.ObjectMng.MyCreature is Alien)
         {
             StartCoroutine(EndAlienGame());
         }
         else
         {
-            await Managers.ObjectMng.MyCrew.OnWin();
+            Managers.ObjectMng.MyCrew.OnWin();
         }
     }
 

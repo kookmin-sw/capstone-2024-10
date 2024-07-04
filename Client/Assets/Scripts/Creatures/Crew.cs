@@ -289,7 +289,7 @@ public class Crew : Creature
         Collider.enabled = false;
     }
 
-    public async Task OnWin()
+    public async void OnWin()
     {
         if (!HasStateAuthority || CreatureType != Define.CreatureType.Crew)
             return;

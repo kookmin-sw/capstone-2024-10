@@ -228,7 +228,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         // 로딩 중간에 에일리언 탈주 시, 에일리언이 바뀔 수 있음
         if (player != null && player.CreatureType == Define.CreatureType.Crew && Managers.GameMng.GameEndSystem != null)
         {
-            await Managers.ObjectMng.MyCrew.OnWin();
+            Managers.ObjectMng.MyCrew.OnWin();
         }
         else
         {
