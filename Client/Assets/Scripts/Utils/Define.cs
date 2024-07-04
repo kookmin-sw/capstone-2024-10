@@ -190,7 +190,7 @@ public static class Define
 
     #region Value
 
-    public const int PLAYER_COUNT = 2;
+    public const int PLAYER_COUNT = 3;
     public const int MAX_ITEM_NUM = 4;
     public const int MAX_SKILL_NUM = 4;
 

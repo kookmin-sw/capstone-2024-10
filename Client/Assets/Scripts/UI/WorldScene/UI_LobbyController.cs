@@ -166,6 +166,7 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.EXIT).SetActive(false);
         _cameraAnimator.SetFloat("Animate", 0);
         _creditController.ResetCredit();
+        StopAllCoroutines();
     }
 
     public void PlaySwoosh()

@@ -3,18 +3,16 @@ using UnityEngine;
 using Fusion;
 using Fusion.Sockets;
 using System;
-using UnityEngine.UI;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using WebSocketSharp;
-using UnityEditor;
-using Unity.VisualScripting;
 
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
+    #region Fields
     public NetworkRunner Runner { get; private set; }
     public string PlayerName { get; set; }
     public List<SessionInfo> Sessions = new List<SessionInfo>();
@@ -26,8 +24,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public int AlienPlayerCount { get; private set; } = 0;
     public int CrewPlayerCount { get; private set; } = 0;
     public int SpawnCount { get; private set; } = 0;
-    public bool IsEndGameTriggered = false;
-    public bool IsEndingTriggered { get; set; } = false;
+    public bool IsEndGameTriggered { get; set; } = false;
+    public bool IsTestScene { get; set; } = false;
 
     public int NumPlayers
     {
@@ -62,7 +60,9 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public int PrefabNum;
     public Vector3 ReadySceneSpawnPosition;
     public Define.SectorName ReadySceneSpawnSector;
+    #endregion
 
+    #region Init
     public void Init()
     {
         if (Runner == null)
@@ -87,6 +87,15 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             PlayerSystem = FindAnyObjectByType<PlayerSystem>();
             yield return new WaitForSeconds(0.1f);
         }
+    }
+    #endregion
+
+    #region Player
+
+    public class PlayerData
+    {
+        public Define.CreatureType CreatureType;
+        public Define.CrewState State;
     }
 
     public void CalculatePlayerCreatures()
@@ -136,12 +145,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         return null;
     }
 
-    public class PlayerData
-    {
-        public Define.CreatureType CreatureType;
-        public Define.CrewState State;
-    }
-
     public IEnumerator AddPlayer(PlayerRef playerRef)
     {
         SpawnCount++;
@@ -186,8 +189,9 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         else
         {
             CrewPlayerCount--;
-            if (Managers.GameMng.GameEndSystem != null)
-                Managers.GameMng.GameEndSystem.RPC_OnCrewDropped(playerRef);
+            // 게임씬에서 크루가 탈주했을 때 실행
+            if (Managers.GameMng.GameEndSystem != null && IsMaster)
+                Managers.GameMng.GameEndSystem.OnCrewDropped(playerRef);
         }
 
         Debug.Log($"Alien Count : {AlienPlayerCount}");
@@ -197,28 +201,32 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         _players.ForEach((pair) => str += pair.Second.CreatureType + " ");
         Debug.Log(str + $", Total : {_players.Count}");
     }
+    #endregion
 
+    #region Ending
     private void ShowCrewEnding()
     {
         Util.ClearUIAndSound();
         Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.8f);
         Managers.UIMng.ShowPopupUI<UI_CrewWin>();
+        IsEndGameTriggered = true;
     }
 
     public async void OnAlienDropped()
     {
-        if (Managers.NetworkMng.IsEndGameTriggered || IsEndingTriggered)
+        if (IsEndGameTriggered || IsTestScene)
             return;
 
         int cnt = 0;
         Player player = null;
+        // 로딩 중간에 에일리언 탈주 시, 스폰이 되지 않는 경우가 있음
         while (cnt++ < 6 && (player = GetPlayerObject(Runner.LocalPlayer)) == null)
         {
             await Task.Delay(500);
         }
 
         // 로딩 중간에 에일리언 탈주 시, 에일리언이 바뀔 수 있음
-        if (player != null && player.CreatureType == Define.CreatureType.Crew)
+        if (player != null && player.CreatureType == Define.CreatureType.Crew && Managers.GameMng.GameEndSystem != null)
         {
             Managers.ObjectMng.MyCrew.OnWin();
         }
@@ -227,10 +235,10 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             // Crew에 대한 종속성 없이 UI_CrewWin 호출
             ShowCrewEnding();
         }
-
-        IsEndingTriggered = true;
     }
+    #endregion
 
+    #region LobbyScene
     public async void ExitGame()
     {
         await Runner.Shutdown();
@@ -305,7 +313,9 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
         Runner.StartGame(startGameArgs);
     }
+    #endregion
 
+    #region TestScene
     private bool TryGetSceneRef(out SceneRef sceneRef)
     {
         var activeScene = SceneManager.GetActiveScene();
@@ -332,7 +342,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     protected IEnumerator StartClient(GameMode serverMode, SceneRef sceneRef = default)
     {
         var clientTask = InitializeNetworkRunner(Runner, serverMode, NetAddress.Any(), sceneRef, null);
-        IsEndGameTriggered = true;
+        IsTestScene = true;
 
         while (clientTask.IsCompleted == false)
         {
@@ -376,7 +386,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             ObjectProvider = objectProvider,
         });
     }
-
+    #endregion
 
     #region CallBack
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
@@ -431,7 +441,9 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         Debug.Log("OnSceneLoadDone");
     }
+    #endregion
 
+    #region NotUsed
     public void OnConnectFailed(NetworkRunner runner, NetAddress remoteAddress, NetConnectFailedReason reason)
     {
 
