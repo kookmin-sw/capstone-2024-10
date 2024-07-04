@@ -186,7 +186,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         else
         {
             CrewPlayerCount--;
-            if (Managers.GameMng.GameEndSystem != null)
+            if (Managers.GameMng.GameEndSystem != null && IsMaster)
                 Managers.GameMng.GameEndSystem.RPC_OnCrewDropped(playerRef);
         }
 
@@ -207,7 +207,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public async void OnAlienDropped()
     {
-        if (Managers.NetworkMng.IsEndGameTriggered || IsEndingTriggered)
+        if (IsEndGameTriggered)
             return;
 
         int cnt = 0;
@@ -218,9 +218,9 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         }
 
         // 로딩 중간에 에일리언 탈주 시, 에일리언이 바뀔 수 있음
-        if (player != null && player.CreatureType == Define.CreatureType.Crew)
+        if (player != null && player.CreatureType == Define.CreatureType.Crew && Managers.GameMng.GameEndSystem != null)
         {
-            Managers.ObjectMng.MyCrew.OnWin();
+            await Managers.ObjectMng.MyCrew.OnWin();
         }
         else
         {

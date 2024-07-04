@@ -3,6 +3,7 @@ using Data;
 using Fusion;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Threading.Tasks;
 
 public class Crew : Creature
 {
@@ -288,7 +289,7 @@ public class Crew : Creature
         Collider.enabled = false;
     }
 
-    public void OnWin()
+    public async Task OnWin()
     {
         if (!HasStateAuthority || CreatureType != Define.CreatureType.Crew)
             return;
@@ -299,6 +300,11 @@ public class Crew : Creature
         CrewSoundController.PlayEndGame();
 
         Managers.GameMng.GameEndSystem.EndCrewGame(true);
+
+        while (CrewIngameUI == null)
+        {
+            await Task.Delay(500);
+        }
 
         CrewIngameUI.HideUI();
         CrewIngameUI.EndGame();

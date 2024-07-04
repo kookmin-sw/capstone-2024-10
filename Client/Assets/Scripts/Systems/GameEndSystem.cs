@@ -113,11 +113,11 @@ public class GameEndSystem : NetworkBehaviour
         if (Managers.NetworkMng.IsEndGameTriggered)
             return;
 
-        DroppedCrewNum++;
         DroppedCrew = true;
         if (Managers.NetworkMng.GetPlayerData(playerRef).State == Define.CrewState.Alive)
         {
             CrewNum--;
+            DroppedCrewNum++;
         }
     }
 
