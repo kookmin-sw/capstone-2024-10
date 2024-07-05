@@ -192,7 +192,7 @@ public static class Define
 
     #region Value
 
-    public const int PLAYER_COUNT = 2;
+    public const int PLAYER_COUNT = 4;
     public const int MAX_ITEM_NUM = 4;
     public const int MAX_SKILL_NUM = 4;
 
@@ -202,8 +202,8 @@ public static class Define
     public const float EROSION_REDUCE_SANITY = 1f;
     public const float SIT_RECOVER_SANITY = 2f;
 
-    public const int BATTERY_CHARGE_GOAL = 2;
-    public const int USBKEY_INSERT_GOAL = 2;
+    public const int BATTERY_CHARGE_GOAL = 6;
+    public const int USBKEY_INSERT_GOAL = 3;
 
     #endregion
 }

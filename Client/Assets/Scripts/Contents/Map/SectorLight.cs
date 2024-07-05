@@ -1,0 +1,46 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class SectorLight : MonoBehaviour
+{
+    private Light _light;
+    private float _currentIntensity => _light.intensity;
+    private float _originalIntensity;
+
+    public void Init()
+    {
+        _light = GetComponent<Light>();
+        _originalIntensity = _light.intensity;
+    }
+
+    public void EnableLight()
+    {
+        StopAllCoroutines();
+        StartCoroutine(LightIntensityLerp(1, _originalIntensity));
+    }
+
+    public void DisableLight()
+    {
+        StartCoroutine(LightIntensityLerp(1, 0));
+    }
+
+    private IEnumerator LightIntensityLerp(float duration, float target)
+    {
+        var t = 0f;
+        var start = _currentIntensity;
+
+        while (t < 1)
+        {
+            t += Time.deltaTime / duration;
+
+            if (t > 1) t = 1;
+
+            _light.intensity = Mathf.Lerp(start, target, t);
+
+            yield return null;
+        }
+
+        _light.intensity = target;
+    }
+}

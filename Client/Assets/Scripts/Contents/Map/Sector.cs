@@ -13,9 +13,9 @@ public class Sector : NetworkBehaviour
 
     private List<Transform> _itemSpawnPoints = new();
     private Transform _itemParent;
-    private List<Light> _lights = new();
+    private List<SectorLight> _lights = new();
+    private List<SectorLight> _enableTargetLights = new();
     private bool _hasMyCreature;
-
 
     public void Init()
     {
@@ -24,7 +24,20 @@ public class Sector : NetworkBehaviour
             .ToList();
         _itemParent = GameObject.FindGameObjectWithTag("ItemParent").transform;
 
-        _lights = transform.GetComponentsInChildren<Light>().ToList();
+        var lights = transform.GetComponentsInChildren<Light>().ToList();
+        foreach (var l in lights)
+        {
+            var sl = l.gameObject.GetOrAddComponent<SectorLight>();
+            sl.Init();
+            _lights.Add(sl);
+        }
+
+        foreach (var l in _additionalLightEnableTargets)
+        {
+            var sl = l.gameObject.GetOrAddComponent<SectorLight>();
+            sl.Init();
+            _enableTargetLights.Add(sl);
+        }
         if (_itemParent == null) _itemParent = Managers.GameMng.MapSystem.gameObject.transform;
     }
 
@@ -67,9 +80,9 @@ public class Sector : NetworkBehaviour
             }
         }
 
-        foreach (var additionalLight in _additionalLightEnableTargets)
+        foreach (var additionalLight in _enableTargetLights)
         {
-            additionalLight.enabled = true;
+            additionalLight.EnableLight();
         }
     }
 
@@ -84,7 +97,7 @@ public class Sector : NetworkBehaviour
     {
         foreach (var sectorlight in _lights)
         {
-            sectorlight.enabled = true;
+            sectorlight.EnableLight();
         }
     }
 
@@ -92,7 +105,7 @@ public class Sector : NetworkBehaviour
     {
         foreach (var sectorlight in _lights)
         {
-            sectorlight.enabled = false;
+            sectorlight.DisableLight();
         }
     }
 

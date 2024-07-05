@@ -23,6 +23,7 @@ public class UI_LobbyController : UI_Base
         Btn_PlayCampaign,
         Btn_Settings,
         Btn_Manual,
+        Btn_Credit,
         Btn_Exit,
         Btn_No1,
         Btn_Yes,
@@ -39,6 +40,7 @@ public class UI_LobbyController : UI_Base
     #region Fields
     private Animator _cameraAnimator;
     private UI_Loading _loadingMenu;
+    private UI_CreditController _creditController;
     #endregion
 
     #region Init
@@ -54,11 +56,14 @@ public class UI_LobbyController : UI_Base
 
         #region Base
         _cameraAnimator = Camera.main.GetComponent<Animator>();
+        _creditController = FindObjectOfType<UI_CreditController>();
 
         GetButton(Buttons.Btn_PlayCampaign).onClick.AddListener(PlayCampaign);
         GetButton(Buttons.Btn_Settings).onClick.AddListener(Position2);
         GetButton(Buttons.Btn_Settings).onClick.AddListener(ReturnMenu);
         GetButton(Buttons.Btn_Settings).onClick.AddListener(PlaySwoosh);
+
+        GetButton(Buttons.Btn_Credit).onClick.AddListener(Position4);
 
         GetButton(Buttons.Btn_Exit).onClick.AddListener(AreYouSure);
         GetButton(Buttons.Btn_Manual).onClick.AddListener(Position3);
@@ -134,6 +139,13 @@ public class UI_LobbyController : UI_Base
     public void DisablePlayCampaign()
     {
         GetObject(GameObjects.PLAY).SetActive(false);
+        GetObject(GameObjects.TITLE).SetActive(true);
+    }
+    public void Position4()
+    {
+        DisablePlayCampaign();
+        _cameraAnimator.SetFloat("Animate", 3);
+        StartCoroutine(_creditController.ScrollCredits());
     }
 
     public void Position3()
@@ -153,6 +165,8 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.TITLE).SetActive(true);
         GetObject(GameObjects.EXIT).SetActive(false);
         _cameraAnimator.SetFloat("Animate", 0);
+        _creditController.ResetCredit();
+        StopAllCoroutines();
     }
 
     public void PlaySwoosh()
@@ -166,7 +180,7 @@ public class UI_LobbyController : UI_Base
         GetObject(GameObjects.TITLE).SetActive(false);
         GetObject(GameObjects.EXIT).SetActive(true);
         if (GetObject(GameObjects.EXTRAS)) GetObject(GameObjects.EXTRAS).SetActive(false);
-        DisablePlayCampaign();
+        GetObject(GameObjects.PLAY).SetActive(false);
     }
 
     public void AreYouSureMobile()

@@ -32,7 +32,7 @@ public class UI_RemainPerson : UI_Base
         else
         {
             Show();
-            GetText((int)Texts.PersonCount).text = $"{Managers.NetworkMng.CrewPlayerCount} / {Define.PLAYER_COUNT-1}";
+            GetText((int)Texts.PersonCount).text = $"{Managers.GameMng.GameEndSystem.CrewNum} / {Define.PLAYER_COUNT-1}";
         }
     }
 
