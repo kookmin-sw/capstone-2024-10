@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameScene : BaseScene
 {
@@ -34,18 +35,21 @@ public class GameScene : BaseScene
         gameEndSystem.Init();
         //UI_Ingame ingameUI = Managers.ObjectMng.MyCreature is Crew ? Managers.UIMng.ShowSceneUI<UI_CrewIngame>() : Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
         UI_Ingame ingameUI = null;
-        switch(Managers.NetworkMng.Creature)
+        switch(Managers.ObjectMng.MyCreature)
         {
-            case Define.CreatureType.Crew:
-                ingameUI = Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
+            case Crew:
+                if (SceneManager.GetActiveScene().name == "TutorialScene")
+                {
+                    ingameUI = Managers.UIMng.ShowSceneUI<UI_CrewTutorial>();
+                }
+                else
+                {
+                    ingameUI = Managers.UIMng.ShowSceneUI<UI_CrewIngame>();
+                }
                 break;
 
-            case Define.CreatureType.Alien:
+            case Alien:
                 ingameUI = Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
-                break;
-
-            case Define.CreatureType.TutoCrew:
-                ingameUI = Managers.UIMng.ShowSceneUI<UI_CrewTutorial>();
                 break;
         }
         yield return new WaitUntil(() => ingameUI.Init());
