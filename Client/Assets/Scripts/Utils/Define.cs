@@ -200,8 +200,8 @@ public static class Define
     public const float EROSION_REDUCE_SANITY = 1f;
     public const float SIT_RECOVER_SANITY = 2f;
 
-    public const int BATTERY_CHARGE_GOAL = 2;
-    public const int USBKEY_INSERT_GOAL = 2;
+    public const int BATTERY_CHARGE_GOAL = 6;
+    public const int USBKEY_INSERT_GOAL = 3;
 
     #endregion
 }

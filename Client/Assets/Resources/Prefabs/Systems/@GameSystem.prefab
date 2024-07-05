@@ -84,36 +84,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffc228bebe0243e459c3ada1e2be34bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _totalItemCount: 58
+  _totalItemCount: 50
   _itemSpawnDatas:
   - Prefab: {fileID: 2456343074442511123, guid: 651267bc0bc8c0a4fbf95c442517d389, type: 3}
-    GlobalMinCount: 17
-    GlobalMaxCount: 17
-    MaxCountPerSector: 3
+    GlobalMinCount: 13
+    GlobalMaxCount: 13
+    MaxCountPerSector: 2
   - Prefab: {fileID: 1120575333297816, guid: fc6ba6d4456b270499f734fb7ea40a86, type: 3}
-    GlobalMinCount: 9
-    GlobalMaxCount: 9
-    MaxCountPerSector: 2
-  - Prefab: {fileID: 1120575333297816, guid: f021f29582a5fa84cb725ffb8c90dd4e, type: 3}
-    GlobalMinCount: 2
-    GlobalMaxCount: 2
-    MaxCountPerSector: 1
-  - Prefab: {fileID: 1343902041442310, guid: f4237d496f5a44b4d8deae31d2d43666, type: 3}
-    GlobalMinCount: 5
-    GlobalMaxCount: 10
-    MaxCountPerSector: 2
-  - Prefab: {fileID: 1343902041442310, guid: 31d875d333a7ffa4ab3bf54dee03bf61, type: 3}
     GlobalMinCount: 8
-    GlobalMaxCount: 15
-    MaxCountPerSector: 2
-  - Prefab: {fileID: 1120575333297816, guid: e33450eb92498084b835521234b119fc, type: 3}
-    GlobalMinCount: 5
     GlobalMaxCount: 8
     MaxCountPerSector: 1
-  - Prefab: {fileID: 1343902041442310, guid: afd9f2a65616cdf49ae849562f7ac14a, type: 3}
-    GlobalMinCount: 5
+  - Prefab: {fileID: 1120575333297816, guid: f021f29582a5fa84cb725ffb8c90dd4e, type: 3}
+    GlobalMinCount: 1
+    GlobalMaxCount: 1
+    MaxCountPerSector: 1
+  - Prefab: {fileID: 1343902041442310, guid: f4237d496f5a44b4d8deae31d2d43666, type: 3}
+    GlobalMinCount: 7
     GlobalMaxCount: 7
-    MaxCountPerSector: 2
+    MaxCountPerSector: 1
+  - Prefab: {fileID: 1343902041442310, guid: 31d875d333a7ffa4ab3bf54dee03bf61, type: 3}
+    GlobalMinCount: 7
+    GlobalMaxCount: 7
+    MaxCountPerSector: 1
+  - Prefab: {fileID: 1343902041442310, guid: afd9f2a65616cdf49ae849562f7ac14a, type: 3}
+    GlobalMinCount: 7
+    GlobalMaxCount: 7
+    MaxCountPerSector: 1
+  - Prefab: {fileID: 1120575333297816, guid: e33450eb92498084b835521234b119fc, type: 3}
+    GlobalMinCount: 7
+    GlobalMaxCount: 7
+    MaxCountPerSector: 1
 --- !u!114 &7456184101988879778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,6 +150,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _CrewNum: 1
   _KilledCrewNum: 0
+  _ShouldEndGame: 0
+  _DroppedCrewNum: 0
+  _DroppedAlienNum: 0
+  _IsGameStarted: 0
+  _KilledCrew: 0
+  _DroppedCrew: 0
+  _WinedCrew: 0
 --- !u!114 &8210265563855654929
 MonoBehaviour:
   m_ObjectHideFlags: 0
