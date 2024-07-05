@@ -23,14 +23,6 @@ public class TutorialPlanSystem : NetworkBehaviour
         if (Managers.ObjectMng.MyCreature is Crew) GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
     }
 
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            EndTutorial();
-        }
-    }
-
     private void OnBatteryCharge()
     {
         if (Managers.ObjectMng.MyCreature is Alien) return;
