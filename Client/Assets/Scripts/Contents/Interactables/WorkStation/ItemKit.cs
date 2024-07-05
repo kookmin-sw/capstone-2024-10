@@ -66,6 +66,7 @@ public class ItemKit : BaseWorkStation
         IsCompleted = true;
 
         Cover.SetActive(false);
+        gameObject.SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
