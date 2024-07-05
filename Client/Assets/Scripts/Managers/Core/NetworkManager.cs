@@ -408,9 +408,32 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
                 Position = ReadySceneSpawnPosition,
                 SectorName = ReadySceneSpawnSector
             };
+            /*
             NetworkObject playerObject = Creature == Define.CreatureType.Crew ?
                 await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, false) :
                 await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPoint);
+            */
+
+            NetworkObject playerObject = null;
+            switch (Creature)
+            {
+                case Define.CreatureType.Crew:
+                    playerObject = await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, false);
+                    break;
+
+                case Define.CreatureType.Alien:
+                    playerObject = await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPoint);
+                    break;
+
+                case Define.CreatureType.TutoCrew:
+                    spawnPoint = new()
+                    {
+                        Position = GameObject.FindWithTag("Respawn").transform.position,
+                        SectorName = Define.SectorName.F1_Corridor_D
+                    };
+                    playerObject = await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, false, true);
+                    break;
+            }
 
             runner.SetPlayerObject(runner.LocalPlayer, playerObject);
 

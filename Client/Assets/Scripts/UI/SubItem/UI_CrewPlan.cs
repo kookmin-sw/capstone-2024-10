@@ -103,7 +103,7 @@ public class UI_CrewPlan : UI_Base
 
     public override bool Init()
     {
-        if (base.Init() == false)
+        if (base.Init() == false || Managers.NetworkMng.Creature == Define.CreatureType.TutoCrew)
             return false;
 
         Bind<GameObject>(typeof(GameObjects));
@@ -120,7 +120,7 @@ public class UI_CrewPlan : UI_Base
 
     public void EnableBatteryChargePlan()
     {
-        _batteryChargePlan.gameObject.SetActive(true);
+        _batteryChargePlan.gameObject.SetActive(true); 
         UpdateBatteryCount(0);
         _batteryChargePlan.SetHintText(MakeHintFromSectorName(new[] {Define.SectorName.ContainmentControlRoom, Define.SectorName.StaffAccommodation, Define.SectorName.Cafeteria}));
     }

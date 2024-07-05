@@ -9,6 +9,8 @@ public static class Define
         None,
         Crew,
         Alien,
+        TutoCrew,
+        TutoAlien,
     }
 
     public enum CrewActionType
