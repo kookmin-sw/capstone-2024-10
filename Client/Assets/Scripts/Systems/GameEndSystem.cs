@@ -135,7 +135,7 @@ public class GameEndSystem : NetworkBehaviour
         }
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void Rpc_EndCrewGame(NetworkBool isWin, PlayerRef playerRef = default)
     {
         if (isWin)
@@ -152,7 +152,7 @@ public class GameEndSystem : NetworkBehaviour
         CrewNum--;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_ResetDropCrew()
     {
         if (Managers.NetworkMng.IsTestScene)
@@ -161,7 +161,7 @@ public class GameEndSystem : NetworkBehaviour
         DroppedCrew = false;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_ResetKilledCrew()
     {
         if (Managers.NetworkMng.IsTestScene)
@@ -170,7 +170,7 @@ public class GameEndSystem : NetworkBehaviour
         KilledCrew = false;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
+    [Rpc(RpcSources.All, RpcTargets.All)]
     public void RPC_ResetWinedCrew()
     {
         if (Managers.NetworkMng.IsTestScene)
