@@ -11,7 +11,6 @@ namespace Data
         public int DataId;
         public string Name;
         public float WalkSpeed;
-        public float RunSpeed;
     }
 
     #endregion
@@ -21,10 +20,16 @@ namespace Data
     [Serializable]
     public class CrewData : CreatureData
     {
+        public float SitSpeed;
+        public float RunSpeed;
         public int MaxHp;
         public float MaxStamina;
         public float MaxSanity;
-        public float SitSpeed;
+        public float RunUseStamina;
+        public float PassiveRecoverStamina;
+        public float DamagedRecoverStamina;
+        public float ErosionReduceSanity;
+        public float SitRecoverStamina;
     }
 
     [Serializable]

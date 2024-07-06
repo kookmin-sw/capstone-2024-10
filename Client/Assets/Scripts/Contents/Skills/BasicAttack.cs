@@ -46,6 +46,6 @@ public class BasicAttack : BaseSkill
             yield return null;
         }
 
-        SkillInterrupt(1.5f);
+        SkillInterrupt(3f);
     }
 }

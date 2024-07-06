@@ -12,7 +12,7 @@ public class Bandage : BaseItem
         ItemGameObject.SetActive(false);
 
         CrewActionType = Define.CrewActionType.Bandage;
-        TotalWorkAmount = 10f;
+        TotalWorkAmount = 7f;
     }
     public override bool CheckAndUseItem()
     {

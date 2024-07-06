@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -39,7 +38,7 @@ public class UI_CreditController : UI_Base
         // 스크롤 시작 전 대기
         yield return new WaitForSeconds(1f);
 
-        while (textscroll.anchoredPosition.y < 3500f)
+        while (textscroll.anchoredPosition.y < 4000f)
         {
             textscroll.anchoredPosition += new Vector2(0, scrollSpeed * Time.deltaTime);
             yield return null; // 다음 프레임까지 대기

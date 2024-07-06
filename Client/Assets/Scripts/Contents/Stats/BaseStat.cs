@@ -9,7 +9,6 @@ public abstract class BaseStat : NetworkBehaviour
     [Networked] public NetworkString<_16> Name { get; set; }
     public float Speed { get; set; }
     public float WalkSpeed { get; set; }
-    public float RunSpeed { get; set; }
     public bool IsUnderErosion { get; set; } = false;
 
     public override void Spawned()
@@ -29,6 +28,5 @@ public abstract class BaseStat : NetworkBehaviour
         Name = creatureData.Name;
         Speed = creatureData.WalkSpeed;
         WalkSpeed = creatureData.WalkSpeed;
-        RunSpeed = creatureData.RunSpeed;
     }
 }

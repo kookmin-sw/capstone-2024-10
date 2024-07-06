@@ -14,7 +14,7 @@ public class FlashBang : BaseItem
         ItemGameObject.SetActive(false);
 
         CrewActionType = Define.CrewActionType.FlashBang;
-        TotalWorkAmount = 0.5f;
+        TotalWorkAmount = 0.4f;
     }
     public override bool CheckAndUseItem()
     {
@@ -45,7 +45,7 @@ public class FlashBang : BaseItem
         {
             foreach (var hitCollider in hitColliders)
                 if (hitCollider.gameObject.TryGetComponent(out Creature creature))
-                    creature.Rpc_ApplyBlind(ItemData.Value, 3f);
+                    creature.Rpc_ApplyBlind(ItemData.Value, 2f);
         }
     }
 }
