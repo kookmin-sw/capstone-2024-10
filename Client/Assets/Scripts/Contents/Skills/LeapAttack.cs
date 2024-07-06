@@ -60,14 +60,14 @@ public class LeapAttack : BaseSkill
         }
 
         IsMoving = false;
-        SkillInterrupt(1.5f);
+        SkillInterrupt(3f);
     }
 
     public override void FixedUpdateNetwork()
     {
         if (IsMoving)
         {
-            KCC.Move(ForwardDirection * (150f * Runner.DeltaTime), 0);
+            KCC.Move(ForwardDirection * (170f * Runner.DeltaTime), 0);
         }
     }
 }

@@ -16,7 +16,6 @@ public class RenderingSystem : NetworkBehaviour
     public Material DamageMaterial { get; protected set; }
 
     private Color _erosionColor = new Color(255.0f / 255.0f, 76.0f / 255.0f, 76.0f / 255.0f);
-    private Color _erosionColor2 = new Color(76.0f / 255.0f, 76.0f / 255.0f, 255.0f / 255.0f);
     private Color _defaultColor = new Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
 
     private float _defaultVignetteValue = 0.2f;

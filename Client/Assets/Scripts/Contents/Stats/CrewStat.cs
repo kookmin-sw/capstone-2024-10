@@ -6,13 +6,19 @@ public class CrewStat : BaseStat
 {
     CrewData CrewData => CreatureData as CrewData;
 
+    public float SitSpeed { get; set; }
+    public float RunSpeed { get; set; }
     public int Hp { get; set; }
     public int MaxHp { get; set; }
     public float Stamina { get; set; }
     public float MaxStamina { get; set; }
     public float Sanity { get; set; }
     public float MaxSanity { get; set; }
-    public float SitSpeed { get; set; }
+    public float RunUseStamina { get; set; }
+    public float PassiveRecoverStamina { get; set; }
+    public float DamagedRecoverStamina { get; set; }
+    public float ErosionReduceSanity { get; set; }
+    public float SitRecoverStamina { get; set; }
 
     public bool IsRunnable { get; set; } = true;
     public bool Exhausted { get; set; } = false;
@@ -23,13 +29,19 @@ public class CrewStat : BaseStat
     {
         base.SetStat(creatureData);
 
+        SitSpeed = CrewData.SitSpeed;
+        RunSpeed = CrewData.RunSpeed;
         Hp = CrewData.MaxHp;
         MaxHp = CrewData.MaxHp;
         Stamina = CrewData.MaxStamina;
         MaxStamina = CrewData.MaxStamina;
         Sanity = CrewData.MaxSanity;
         MaxSanity = CrewData.MaxSanity;
-        SitSpeed = CrewData.SitSpeed;
+        RunUseStamina = CrewData.RunUseStamina;
+        PassiveRecoverStamina = CrewData.PassiveRecoverStamina;
+        DamagedRecoverStamina = CrewData.DamagedRecoverStamina;
+        ErosionReduceSanity = CrewData.ErosionReduceSanity;
+        SitRecoverStamina = CrewData.SitRecoverStamina;
     }
 
     #region Event
@@ -45,9 +57,9 @@ public class CrewStat : BaseStat
         {
             Managers.GameMng.RenderingSystem.ApplyDamageEffect(Hp);
 
-            ChangeStamina(Define.DAMAGED_RECOVER_STAMINA);
+            ChangeStamina(DamagedRecoverStamina);
             DamagedBoost = true;
-            DOVirtual.DelayedCall(3.5f, () =>
+            DOVirtual.DelayedCall(6.5f, () =>
             {
                 DamagedBoost = false;
             });

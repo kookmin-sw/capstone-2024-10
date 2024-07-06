@@ -12,15 +12,7 @@ public class AlienSoundController : BaseSoundController
 
     public override void PlayMove()
     {
-        switch (CreaturePose)
-        {
-            case Define.CreaturePose.Stand:
-                Rpc_PlayFootStepSound(1.33f, 1f);
-                break;
-            case Define.CreaturePose.Run:
-                Rpc_PlayFootStepSound(2f, 1f);
-                break;
-        }
+        Rpc_PlayFootStepSound(1.33f, 0.7f);
     }
 
     public void PlaySound(Define.AlienActionType alienActionType)

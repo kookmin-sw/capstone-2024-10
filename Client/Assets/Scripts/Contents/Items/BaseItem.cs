@@ -62,14 +62,14 @@ public abstract class BaseItem
         Owner.IngameUI.WorkProgressBarUI.Hide();
         UseItemComplete();
         Owner.Inventory.RemoveItem();
-        Owner.ReturnToIdle(1f);
+        Owner.ReturnToIdle(0.2f);
     }
 
     protected void UseItemKilledInterrupt()
     {
         Owner.IngameUI.InteractInfoUI.Hide();
         Owner.IngameUI.WorkProgressBarUI.Hide();
-        Owner.ReturnToIdle(1f);
+        Owner.ReturnToIdle(0.2f);
     }
 
     protected virtual void UseItemComplete() {}

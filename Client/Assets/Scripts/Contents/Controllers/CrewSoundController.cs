@@ -15,13 +15,13 @@ public class CrewSoundController : BaseSoundController
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                Rpc_PlayFootStepSound(1.205f, 0.2f);
+                Rpc_PlayFootStepSound(1.205f, 0.1f);
                 break;
             case Define.CreaturePose.Sit:
                 Rpc_StopEffectSound();
                 break;
             case Define.CreaturePose.Run:
-                Rpc_PlayFootStepSound(2f, 1f);
+                Rpc_PlayFootStepSound(2f, 0.7f);
                 break;
         }
     }
@@ -99,7 +99,7 @@ public class CrewSoundController : BaseSoundController
                     IsChasing = true;
 
                     if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
-                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Deep Space Pulsing Signals", Define.SoundType.Bgm, volume: 0.3f);
+                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.3f);
                 }
 
                 SoundManager._audioSources[(int)Define.SoundType.Bgm].volume =
