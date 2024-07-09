@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine.Serialization;
 
 namespace Data
 {
@@ -29,7 +30,7 @@ namespace Data
         public float PassiveRecoverStamina;
         public float DamagedRecoverStamina;
         public float ErosionReduceSanity;
-        public float SitRecoverStamina;
+        public float SitRecoverSanity;
     }
 
     [Serializable]
