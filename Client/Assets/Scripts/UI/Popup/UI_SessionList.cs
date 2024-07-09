@@ -17,7 +17,7 @@ public class UI_SessionList : UI_Popup
 
         Bind<GameObject>(typeof(GameObjects));
 
-        transform.localPosition = new Vector3(220, 250, 0);
+        transform.localPosition = new Vector3(220, 300, 0);
 
         return true;
     }
