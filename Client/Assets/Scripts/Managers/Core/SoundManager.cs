@@ -65,7 +65,7 @@ public class SoundManager
             audioSource = _audioSources[(int)Define.SoundType.Effect];
             if (isOneShot)
             {
-                audioSource.PlayOneShot(audioClip);
+                audioSource.PlayOneShot(audioClip, volume);
                 return;
             }
             audioSource.loop = isLoop;

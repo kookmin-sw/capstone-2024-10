@@ -99,7 +99,7 @@ public class CrewSoundController : BaseSoundController
                     IsChasing = true;
 
                     if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
-                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.3f);
+                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Infernal Darkness", Define.SoundType.Bgm, volume: 0.3f);
                 }
 
                 SoundManager._audioSources[(int)Define.SoundType.Bgm].volume =

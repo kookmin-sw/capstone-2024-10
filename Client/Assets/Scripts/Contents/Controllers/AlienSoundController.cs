@@ -12,7 +12,7 @@ public class AlienSoundController : BaseSoundController
 
     public override void PlayMove()
     {
-        Rpc_PlayFootStepSound(1.33f, 0.7f);
+        Rpc_PlayFootStepSound(1.33f, 0.85f);
     }
 
     public void PlaySound(Define.AlienActionType alienActionType)
@@ -106,8 +106,8 @@ public class AlienSoundController : BaseSoundController
                 Ray ray = CreatureCamera.Camera.ViewportPointToRay(
                     new Vector3(i, j, CreatureCamera.Camera.nearClipPlane));
 
-                 if (i < 0.25f || j < 0.25f || i > 0.75f || j > 0.75f)
-                     Debug.DrawRay(ray.origin, ray.direction * ChasingDistance, Color.green);
+                 // if (i < 0.25f || j < 0.25f || i > 0.75f || j > 0.75f)
+                 //     Debug.DrawRay(ray.origin, ray.direction * ChasingDistance, Color.green);
 
                 if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: ChasingDistance,
                         layerMask: LayerMask.GetMask("Crew", "MapObject", "InteractableObject")))

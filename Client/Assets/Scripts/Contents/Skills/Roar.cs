@@ -19,7 +19,7 @@ public class Roar : BaseSkill
         AttackPosition = Owner.Head.transform.position + Vector3.down * 0.2f;
         while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
-            for (float i = -1.5f; i <= 1.5f && !IsHit; i += 0.2f)
+            for (float i = -2f; i <= 2f && !IsHit; i += 0.2f)
             {
                 for (float j = -1f; j <= 1f && !IsHit; j += 0.2f)
                 {

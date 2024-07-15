@@ -120,17 +120,17 @@ public class UI_CrewPlan : UI_Base
 
     public void EnableBatteryChargePlan()
     {
-        _batteryChargePlan.gameObject.SetActive(true); 
+        _batteryChargePlan.gameObject.SetActive(true);
         UpdateBatteryCount(0);
         _batteryChargePlan.SetHintText(MakeHintFromSectorName(new[] {Define.SectorName.ContainmentControlRoom, Define.SectorName.StaffAccommodation, Define.SectorName.Cafeteria}));
     }
 
     public void UpdateBatteryCount(int count)
     {
-        _batteryChargePlan.SetObjectiveText($"Insert Batteries In Battery Charger ({count}/{Define.BATTERY_CHARGE_GOAL})", true);
+        _batteryChargePlan.SetObjectiveText($"Insert Batteries in Battery Charger ({count}/{Define.BATTERY_CHARGE_GOAL})", true);
         if (count >= Define.BATTERY_CHARGE_GOAL)
         {
-            _batteryChargePlan.SetObjectiveText($"Insert Batteries In Battery Charger ({count}/{Define.BATTERY_CHARGE_GOAL})", true, true);
+            _batteryChargePlan.SetObjectiveText($"Insert Batteries in Battery Charger ({count}/{Define.BATTERY_CHARGE_GOAL})", true, true);
 
             StartCoroutine(OnBatteryChargeFinished());
         }
@@ -140,12 +140,12 @@ public class UI_CrewPlan : UI_Base
     ///
     public void UpdateUSBKeyCount(int count)
     {
-        _planA.SetObjectiveText($"Insert USB Keys In Elevator Control Computer ({count}/{Define.USBKEY_INSERT_GOAL})", true);
+        _planA.SetObjectiveText($"Insert USB Keys in Elevator Control Computer ({count}/{Define.USBKEY_INSERT_GOAL})", true);
         if (count >= Define.USBKEY_INSERT_GOAL)
         {
-            _planA.SetObjectiveText($"Insert USB Keys In Elevator Control Computer ({count}/{Define.USBKEY_INSERT_GOAL})", true, true);
+            _planA.SetObjectiveText($"Insert USB Keys in Elevator Control Computer ({count}/{Define.USBKEY_INSERT_GOAL})", true, true);
 
-            StartCoroutine(_planA.CompleteObjective("Activate The Elevator And Escape!",""));
+            StartCoroutine(_planA.CompleteObjective("Activate the Elevator and Escape!",""));
         }
     }
     ///
@@ -153,7 +153,7 @@ public class UI_CrewPlan : UI_Base
     ///
     public void OnCardkeyUsed()
     {
-        _planB.SetObjectiveText($"Use Card Key On Central Control Computer", true, true);
+        _planB.SetObjectiveText($"Use Card Key on Central Control Computer", true, true);
 
         StartCoroutine(_planB.CompleteObjective("Use Central Control Computer",
             MakeHintFromSectorName(new [] { Define.SectorName.CentralControlRoom })));
@@ -169,9 +169,9 @@ public class UI_CrewPlan : UI_Base
 
     public void OnCargoPassageOpen()
     {
-        _planB.SetObjectiveText($"Use Cargo Control Computer To Open Cargo Gate", true, true);
+        _planB.SetObjectiveText($"Use Cargo Control Computer to Open Cargo Gate", true, true);
 
-        StartCoroutine(_planB.CompleteObjective("Escape Through The Cargo Gate!", ""));
+        StartCoroutine(_planB.CompleteObjective("Escape Through the Cargo Gate!", ""));
     }
 
     private IEnumerator OnBatteryChargeFinished()
@@ -182,15 +182,15 @@ public class UI_CrewPlan : UI_Base
         yield return titleText.DOFade(0, 1f).WaitForCompletion();
 
         _batteryChargePlan.gameObject.SetActive(false);
-        titleText.SetText("Complete Any Plan To Escape!");
+        titleText.SetText("Complete Any Plan to Escape!");
         titleText.DOFade(1, 1f);
 
         _planA.gameObject.SetActive(true);
-        _planA.SetObjectiveText($"Insert USB Keys In Elevator Control Computer (0/{Define.USBKEY_INSERT_GOAL})", false);
+        _planA.SetObjectiveText($"Insert USB Keys in Elevator Control Computer (0/{Define.USBKEY_INSERT_GOAL})", false);
         _planA.SetHintText(MakeHintFromSectorName(new[] { Define.SectorName.PowerRoom, Define.SectorName.VisitingRoom }));
 
         _planB.gameObject.SetActive(true);
-        _planB.SetObjectiveText($"Use Card Key On Central Control Computer", false);
+        _planB.SetObjectiveText($"Use Card Key on Central Control Computer", false);
         _planB.SetHintText(MakeHintFromSectorName(new[] {Define.SectorName.CentralControlRoom }));
 
         GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
@@ -206,15 +206,15 @@ public class UI_CrewPlan : UI_Base
     public void EnablePlanC()
     {
         _planC.gameObject.SetActive(true);
-        _planC.SetObjectiveText($"Use Emergency Control Device To Open Panic Room", false);
+        _planC.SetObjectiveText($"Use Emergency Control Device to Open Panic Room", false);
         _planC.SetHintText(MakeHintFromSectorName(new[] { Define.SectorName.Oratory, Define.SectorName.SampleRoom }));
     }
 
     public void OnPanicRoomActivated()
     {
-        _planC.SetObjectiveText("Use Emergency Control Device To Open Panic Room", true, true);
+        _planC.SetObjectiveText("Use Emergency Control Device to Open Panic Room", true, true);
 
-        StartCoroutine(_planC.CompleteObjective("Find Open Panic Room And Enter!", "Hint: Only Two Panic Rooms Are Open"));
+        StartCoroutine(_planC.CompleteObjective("Find Open Panic Room and Escape!", "Hint: Only Two Panic Rooms are Open"));
     }
     private static string MakeHintFromSectorName(Define.SectorName[] loc)
     {

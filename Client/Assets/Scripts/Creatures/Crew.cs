@@ -173,7 +173,7 @@ public class Crew : Creature
         if (CrewStat.IsUnderErosion)
             CrewStat.ChangeSanity(-CrewStat.ErosionReduceSanity * Time.deltaTime);
         else if (CreaturePose == Define.CreaturePose.Sit)
-            CrewStat.ChangeSanity(CrewStat.SitRecoverStamina * Time.deltaTime);
+            CrewStat.ChangeSanity(CrewStat.SitRecoverSanity * Time.deltaTime);
 
         if (CreaturePose == Define.CreaturePose.Sit)
             CrewStat.ChangeStamina(CrewStat.PassiveRecoverStamina * Time.deltaTime);

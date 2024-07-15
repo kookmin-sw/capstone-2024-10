@@ -25,20 +25,27 @@ public class ElevatorControlComputer : BaseWorkStation
             return false;
         }
 
-        if (Managers.GameMng.PlanSystem.IsUSBKeyInsertFinished || !Managers.GameMng.PlanSystem.IsBatteryChargeFinished)
+        if (!Managers.GameMng.PlanSystem.IsBatteryChargeFinished)
         {
+            creature.IngameUI.ErrorTextUI.Show("Charge Batteries First");
+            return false;
+        }
+
+        if (Managers.GameMng.PlanSystem.IsUSBKeyInsertFinished)
+        {
+            creature.IngameUI.ErrorTextUI.Show("Elevators are Already Activated");
             return false;
         }
 
         if (crew.Inventory.CurrentItem is not USBKey)
         {
-            creature.IngameUI.ErrorTextUI.Show("You should have USB key on your hand");
+            creature.IngameUI.ErrorTextUI.Show("Hold USB Key on Your Hand");
             return false;
         }
 
         if (WorkerCount > 0 && Worker == null)
         {
-            creature.IngameUI.ErrorTextUI.Show("Another player is interacting");
+            creature.IngameUI.ErrorTextUI.Show("Another player is in Use");
             return false;
         }
 
@@ -74,6 +81,6 @@ public class ElevatorControlComputer : BaseWorkStation
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayCompleteSound()
     {
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Interactable/Plan_A", volume:0.5f ,isOneShot:true);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Interactable/Plan_A", volume:0.7f ,isOneShot:true);
     }
 }

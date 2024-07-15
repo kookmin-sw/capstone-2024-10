@@ -18,7 +18,7 @@ public class RenderingSystem : NetworkBehaviour
     private Color _erosionColor = new Color(255.0f / 255.0f, 76.0f / 255.0f, 76.0f / 255.0f);
     private Color _defaultColor = new Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
 
-    private float _defaultVignetteValue = 0.2f;
+    private float _defaultVignetteValue = 0.15f;
 
     private float blindValue = 15f;
     private float _damageEffectSpeed = 1.5f;
@@ -58,7 +58,7 @@ public class RenderingSystem : NetworkBehaviour
 
     public void ApplySanityEffect(float sanity)
     {
-        Vignette.intensity.value = _defaultVignetteValue + (100f - sanity) * 0.01f * 0.4f;
+        Vignette.intensity.value = _defaultVignetteValue + (100f - sanity) * 0.01f * 0.45f;
         ChromaticAberration.intensity.value = (100f - sanity) * 0.01f;
     }
 
@@ -70,7 +70,7 @@ public class RenderingSystem : NetworkBehaviour
         if (isApplying)
         {
             color = _erosionColor;
-            vignetteValue = 0.15f;
+            vignetteValue = 0f;
         }
 
         _erosionEffectTweener.Kill();
