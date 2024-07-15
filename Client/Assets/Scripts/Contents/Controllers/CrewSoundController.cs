@@ -34,16 +34,16 @@ public class CrewSoundController : BaseSoundController
                 Rpc_PlayDamagedSound();
                 break;
             case Define.CrewActionType.Dead:
-                Rpc_PlayDeadSound();
+                PlayDeadSound();
                 break;
             case Define.CrewActionType.Bandage:
                 Rpc_PlayBandageSound();
                 break;
             case Define.CrewActionType.Antipsychotic:
-                Rpc_PlayAntipsychoticSound();
+                PlayAntipsychoticSound();
                 break;
             case Define.CrewActionType.Morphine:
-                Rpc_PlayMorphineSound();
+                PlayMorphineSound();
                 break;
         }
     }
@@ -51,7 +51,7 @@ public class CrewSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayFootStepSound(float pitch, float volume)
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/FootStep", pitch, volume, isLoop: true);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/FootStep", pitch, volume, isLoop:true);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -61,10 +61,9 @@ public class CrewSoundController : BaseSoundController
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Damaged", pitch: 1f, volume: 0.5f, isLoop: false);
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.StateAuthority)]
-    protected void Rpc_PlayDeadSound()
+    protected void PlayDeadSound()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/GameOver", pitch: 1f, volume: 1f, isLoop: false);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/GameOver", Define.SoundType.Effect,  volume:1f, isOneShot: true);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -73,16 +72,14 @@ public class CrewSoundController : BaseSoundController
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Bandage", pitch: 1f, volume: 1f, isLoop: true);
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    protected void Rpc_PlayAntipsychoticSound()
+    protected void PlayAntipsychoticSound()
     {
-        Managers.SoundMng.PlayOneShotObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Antipsychotic", volume: 1f);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Antipsychotic", Define.SoundType.Effect,  volume:0.5f, isOneShot: true);
     }
 
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    protected void Rpc_PlayMorphineSound()
+    protected void PlayMorphineSound()
     {
-        Managers.SoundMng.PlayOneShotObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Morphine", volume: 1f);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Morphine", Define.SoundType.Effect,  volume:0.35f, isOneShot: true);
     }
 
     public override void CheckChasing()

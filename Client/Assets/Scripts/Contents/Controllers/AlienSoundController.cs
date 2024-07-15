@@ -22,9 +22,6 @@ public class AlienSoundController : BaseSoundController
             case Define.AlienActionType.GetBlind:
                 Rpc_PlayDamaged();
                 break;
-            case Define.AlienActionType.CrashDoor:
-                Rpc_PlayCrashDoor();
-                break;
             case Define.AlienActionType.Hit:
                 Rpc_PlayHit();
                 break;
@@ -56,12 +53,6 @@ public class AlienSoundController : BaseSoundController
     protected void Rpc_PlayDamaged()
     {
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Damaged_Alien", pitch: 1f, volume: 1f, isLoop: false);
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    protected void Rpc_PlayCrashDoor()
-    {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/CrashDoor", pitch: 1f, volume: 1f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
