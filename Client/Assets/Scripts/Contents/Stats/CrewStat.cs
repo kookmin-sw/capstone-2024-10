@@ -59,7 +59,7 @@ public class CrewStat : BaseStat
 
             ChangeStamina(DamagedRecoverStamina);
             DamagedBoost = true;
-            DOVirtual.DelayedCall(6.5f, () =>
+            DOVirtual.DelayedCall(5.5f, () =>
             {
                 DamagedBoost = false;
             });

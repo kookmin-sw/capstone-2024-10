@@ -23,7 +23,7 @@ public class ItemKit : BaseWorkStation
         CanRememberWork = false;
         IsCompleted = false;
 
-        TotalWorkAmount = 5f;
+        TotalWorkAmount = 6f;
     }
 
     public override bool IsInteractable(Creature creature)
@@ -42,7 +42,7 @@ public class ItemKit : BaseWorkStation
 
         if (WorkerCount > 0 && Worker == null)
         {
-            creature.IngameUI.ErrorTextUI.Show("Another player is interacting");
+            creature.IngameUI.ErrorTextUI.Show("Another Crew is in Use");
             return false;
         }
 
@@ -72,6 +72,6 @@ public class ItemKit : BaseWorkStation
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
-        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/ItemKit", 1f, 1f, isLoop: true);
+        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/ItemKit", 0.7f, 0.7f, isLoop: true);
     }
 }

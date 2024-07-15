@@ -14,7 +14,7 @@ public class CargoPassageControlComputer : BaseWorkStation
         CanRememberWork = true;
         IsCompleted = false;
 
-        TotalWorkAmount = 15f;
+        TotalWorkAmount = 10f;
     }
 
     public override bool IsInteractable(Creature creature)
@@ -26,8 +26,15 @@ public class CargoPassageControlComputer : BaseWorkStation
             return false;
         }
 
-        if (!Managers.GameMng.PlanSystem.IsCentralComputerWorkFinished || IsCompleted)
+        if (!Managers.GameMng.PlanSystem.IsCentralComputerWorkFinished)
         {
+            creature.IngameUI.ErrorTextUI.Show("Use Central Computer First");
+            return false;
+        }
+
+        if (Managers.GameMng.PlanSystem.IsCargoPassageOpen || IsCompleted)
+        {
+            creature.IngameUI.ErrorTextUI.Show("Cargo Gates are Already Open");
             return false;
         }
 
@@ -58,6 +65,6 @@ public class CargoPassageControlComputer : BaseWorkStation
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayCompleteSound()
     {
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Interactable/Plan_B", isOneShot:true);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Interactable/Plan_B", volume: 0.9f, isOneShot:true);
     }
 }

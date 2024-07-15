@@ -38,7 +38,7 @@ public class ElevatorKeypad : BaseWorkStation
 
         if (WorkerCount > 0 && Worker == null)
         {
-            creature.IngameUI.ErrorTextUI.Show("Another player is interacting");
+            creature.IngameUI.ErrorTextUI.Show("Another Crew is in Use");
             return false;
         }
 

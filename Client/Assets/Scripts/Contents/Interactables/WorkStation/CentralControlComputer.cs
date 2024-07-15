@@ -29,14 +29,21 @@ public class CentralControlComputer : BaseWorkStation
             return false;
         }
 
-        if (!Managers.GameMng.PlanSystem.IsBatteryChargeFinished || Managers.GameMng.PlanSystem.IsCentralComputerWorkFinished)
+        if (!Managers.GameMng.PlanSystem.IsBatteryChargeFinished)
         {
+            creature.IngameUI.ErrorTextUI.Show("Charge Batteries First");
+            return false;
+        }
+
+        if (Managers.GameMng.PlanSystem.IsCentralComputerWorkFinished)
+        {
+            creature.IngameUI.ErrorTextUI.Show("Already Used");
             return false;
         }
 
         if (!Managers.GameMng.PlanSystem.IsCardkeyUsed && crew.Inventory.CurrentItem is not CardKey)
         {
-            creature.IngameUI.ErrorTextUI.Show("You should have card key on your hand");
+            creature.IngameUI.ErrorTextUI.Show("Hold Card Key on Your Hand");
             return false;
         }
 
@@ -58,7 +65,7 @@ public class CentralControlComputer : BaseWorkStation
         {
             Managers.GameMng.PlanSystem.IsCardkeyUsed = true;
             CurrentWorkAmount = 0;
-            TotalWorkAmount = 15f;
+            TotalWorkAmount = 10f;
             CanRememberWork = true;
         }
         else

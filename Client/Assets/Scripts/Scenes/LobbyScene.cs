@@ -13,7 +13,7 @@ public class LobbyScene : BaseScene
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Black Magic", Define.SoundType.Bgm, 0.4f);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Black Magic", Define.SoundType.Bgm, 0.4f, 0.7f);
 
         int randomInt = Random.Range(1000, 9999);
         string nickname = "User-" + randomInt.ToString();

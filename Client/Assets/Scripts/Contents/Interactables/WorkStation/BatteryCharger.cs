@@ -36,13 +36,13 @@ public class BatteryCharger : BaseWorkStation
         // 로컬 필드인 Worker를 사용해서 이를 해결함. InterruptWork()에서 0.5초간의 딜레이 후 Worker를 null로 초기화함. 또한, Worker != null이라면 상호작용이 불가능하도록 하여 버그를 방지함.
         if (WorkerCount > 0 && Worker == null)
         {
-            creature.IngameUI.ErrorTextUI.Show("Another player is interacting");
+            creature.IngameUI.ErrorTextUI.Show("Another Crew is in Use");
             return false;
         }
 
         if (crew.Inventory.CurrentItem is not Battery)
         {
-            creature.IngameUI.ErrorTextUI.Show("You should have battery on your hand");
+            creature.IngameUI.ErrorTextUI.Show("Hold Battery on Your Hand");
             return false;
         }
 
@@ -77,7 +77,7 @@ public class BatteryCharger : BaseWorkStation
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayCompleteSound()
     {
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Interactable/Plan_BatteryCharge", volume:0.5f ,isOneShot:true);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Interactable/Plan_BatteryCharge", volume:0.4f ,isOneShot:true);
     }
 }
 

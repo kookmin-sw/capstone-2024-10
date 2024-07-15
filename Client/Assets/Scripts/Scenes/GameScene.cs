@@ -11,7 +11,7 @@ public class GameScene : BaseScene
         SceneType = Define.SceneType.GameScene;
 
         Managers.SoundMng.Stop(Define.SoundType.Bgm);
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Environment, volume:1f);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Space Wind 01", Define.SoundType.Environment, volume:0.3f);
 
         SettingSystem settingSystem = FindObjectOfType<SettingSystem>();
         settingSystem.Init();
