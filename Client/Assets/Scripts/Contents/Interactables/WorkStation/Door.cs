@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Fusion;
 using UnityEngine;
 
@@ -12,15 +13,17 @@ public class Door : BaseWorkStation
         }
     }
 
-    [Networked] private NetworkBool IsOpened { get; set; } = true;
+    [Networked, OnChangedRender(nameof(DisableCollider))] private NetworkBool IsOpened { get; set; } = true;
 
     private NetworkMecanimAnimator _mecanimAnimator;
+    private Collider _collider;
 
     protected override void Init()
     {
         base.Init();
 
         _mecanimAnimator = transform.GetComponent<NetworkMecanimAnimator>();
+        _collider = transform.GetComponent<Collider>();
         AudioSource = gameObject.GetComponent<AudioSource>();
 
         CrewActionType = Define.CrewActionType.OpenDoor;
@@ -125,5 +128,11 @@ public class Door : BaseWorkStation
     protected void Rpc_AlienPlaySound()
     {
         Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/Door_Crash", 1f, 1f, isLoop: false);
+    }
+
+    private void DisableCollider()
+    {
+        _collider.enabled = false;
+        DOVirtual.DelayedCall(0.3f, () => { _collider.enabled = true; });
     }
 }
