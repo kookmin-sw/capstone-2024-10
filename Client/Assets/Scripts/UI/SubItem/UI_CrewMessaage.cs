@@ -43,17 +43,17 @@ public class UI_CrewMessaage : UI_Base
             return;
         }
 
-        if (Managers.GameMng.GameEndSystem.DroppedCrew)
+        if (Managers.GameMng.GameEndSystem.IsCrewDropped)
         {
             DropMessage();
             Managers.GameMng.GameEndSystem.RPC_ResetDropCrew();
         }
-        else if (Managers.GameMng.GameEndSystem.WinedCrew)
+        else if (Managers.GameMng.GameEndSystem.IsCrewWinning)
         {
             EscapeMessage();
             Managers.GameMng.GameEndSystem.RPC_ResetWinedCrew();
         }
-        else if (Managers.GameMng.GameEndSystem.KilledCrew)
+        else if (Managers.GameMng.GameEndSystem.IsCrewKilled)
         {
             DeadMessage();
             Managers.GameMng.GameEndSystem.RPC_ResetKilledCrew();

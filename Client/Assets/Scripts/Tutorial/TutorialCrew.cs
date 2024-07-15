@@ -2,6 +2,7 @@ using UnityEngine;
 using Data;
 using Fusion;
 using UnityEngine.EventSystems;
+using Unity.VisualScripting;
 
 public class TutorialCrew : Crew
 {
@@ -10,5 +11,11 @@ public class TutorialCrew : Crew
     protected override void Init()
     {
         base.Init();
+    }
+
+    public override void OnWin()
+    {
+        CrewTutorialUI.TutorialPlanUI.SetActive(false);
+        base.OnWin();
     }
 }

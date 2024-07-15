@@ -29,6 +29,6 @@ public class UI_CrewTutorial : UI_CrewIngame
 
     public override void InitAfterNetworkSpawn(Creature creature)
     {
-        //base.InitAfterNetworkSpawn(creature);
+        // base.InitAfterNetworkSpawn(creature);
     }
 }

@@ -19,7 +19,7 @@ public class TutorialPlanSystem : NetworkBehaviour
     private void Start()
     {
         Managers.TutorialMng.TutorialPlanSystem = this;
-        Managers.NetworkMng.StartSharedClient();
+
         if (Managers.ObjectMng.MyCreature is Crew) GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
     }
 
@@ -48,7 +48,8 @@ public class TutorialPlanSystem : NetworkBehaviour
     {
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
-        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnCardkeyUsed();
+        var ui = Managers.ObjectMng.MyCrew.CrewIngameUI as UI_CrewTutorial;
+        ui.TutorialPlanUI.GetComponent<UI_TutorialPlan>().OnCardkeyUsed();
     }
 
     public void EndTutorial()

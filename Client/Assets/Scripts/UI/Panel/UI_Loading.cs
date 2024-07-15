@@ -63,6 +63,7 @@ public class UI_Loading : UI_Panel
         else if (Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.ReadyScene))
         {
             _loadingSpeed = 0.1f;
+            Managers.NetworkMng.IsGameLoading = true;
             StartCoroutine(TransitionCheck());
             StartCoroutine(OnAlienDropped());
         }
@@ -145,6 +146,7 @@ public class UI_Loading : UI_Panel
         yield return new WaitForSeconds(0.5f);
         Managers.UIMng.PanelUI = null;
         Destroy(transform.parent.gameObject);
+        Managers.NetworkMng.IsGameLoading = false;
     }
 
     public void OnLoadingDone()

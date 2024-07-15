@@ -103,7 +103,7 @@ public class UI_CrewPlan : UI_Base
 
     public override bool Init()
     {
-        if (base.Init() == false || Managers.NetworkMng.Creature == Define.CreatureType.TutoCrew)
+        if (base.Init() == false)
             return false;
 
         Bind<GameObject>(typeof(GameObjects));

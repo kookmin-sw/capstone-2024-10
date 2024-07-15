@@ -26,6 +26,10 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public int SpawnCount { get; private set; } = 0;
     public bool IsEndGameTriggered { get; set; } = false;
     public bool IsTestScene { get; set; } = false;
+    public int RoomPlayersCount { get; private set; }
+    public bool IsGameLoading {  get; set; } = false;
+
+    public Queue<Action<GameEndSystem>> EndSystemQueue = new Queue<Action<GameEndSystem>>();
 
     public int NumPlayers
     {
@@ -60,6 +64,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public int PrefabNum;
     public Vector3 ReadySceneSpawnPosition;
     public Define.SectorName ReadySceneSpawnSector;
+    public Vector3 TutorialSceneSpawnPosition;
+    public Define.SectorName TutorialSceneSpawnSector;
     #endregion
 
     #region Init
@@ -70,10 +76,16 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
         }
 
-        if (ReadySceneSpawnPosition == default)
-            ReadySceneSpawnPosition = new Vector3(34, 4, -8);
-        if (ReadySceneSpawnSector == default)
-            ReadySceneSpawnSector = Define.SectorName.Cafeteria;
+        IsGameLoading = false;
+
+        ReadySceneSpawnPosition = new Vector3(34, 4, -8);
+        ReadySceneSpawnSector = Define.SectorName.Cafeteria;
+
+        TutorialSceneSpawnPosition = new Vector3(42, 0.5f, -28);
+        TutorialSceneSpawnSector = Define.SectorName.F1_Corridor_D;
+
+        RoomPlayersCount = Define.PLAYER_COUNT;
+
         if (Creature == default)
             Creature = Define.CreatureType.Crew;
 
@@ -86,6 +98,20 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         {
             PlayerSystem = FindAnyObjectByType<PlayerSystem>();
             yield return new WaitForSeconds(0.1f);
+        }
+    }
+    #endregion
+
+    #region Update
+    private void Update()
+    {
+        if (Managers.GameMng.GameEndSystem)
+        {
+            while (EndSystemQueue.Count > 0)
+            {
+                var action = EndSystemQueue.Dequeue();
+                action.Invoke(Managers.GameMng.GameEndSystem);
+            }
         }
     }
     #endregion
@@ -186,12 +212,17 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             AlienPlayerCount--;
             OnAlienDropped();
         }
-        else
+        else if (playerData.CreatureType == Define.CreatureType.Crew)
         {
             CrewPlayerCount--;
+
             // 게임씬에서 크루가 탈주했을 때 실행
-            if (Managers.GameMng.GameEndSystem != null && IsMaster)
+            if (IsMaster && Managers.GameMng.GameEndSystem != null)
                 Managers.GameMng.GameEndSystem.OnCrewDropped(playerRef);
+
+            // 로딩 중에 크루가 탈주했을 때 실행
+            if (IsGameLoading)
+                GameEndSystem.RPC_EndGameRequest(Runner);
         }
 
         Debug.Log($"Alien Count : {AlienPlayerCount}");
@@ -335,13 +366,21 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         if (TryGetSceneRef(out var sceneRef))
         {
-            StartCoroutine(StartClient(GameMode.Shared, sceneRef));
+            StartCoroutine(StartClient(GameMode.Shared, LoadSceneMode.Additive, sceneRef));
         }
     }
 
-    protected IEnumerator StartClient(GameMode serverMode, SceneRef sceneRef = default)
+    public void StartSharedClient(Define.SceneType sceneType)
     {
-        var clientTask = InitializeNetworkRunner(Runner, serverMode, NetAddress.Any(), sceneRef, null);
+        var sceneRef = Managers.SceneMng.GetSceneRef(sceneType);
+        DefaultRoomName = "Tutorial-" + UnityEngine.Random.Range(0, 9999);
+        RoomPlayersCount = 1;
+        StartCoroutine(StartClient(GameMode.Shared, LoadSceneMode.Single, sceneRef));
+    }
+
+    protected IEnumerator StartClient(GameMode serverMode, LoadSceneMode sceneMode, SceneRef sceneRef = default)
+    {
+        var clientTask = InitializeNetworkRunner(Runner, serverMode, NetAddress.Any(), sceneRef, null, sceneMode);
         IsTestScene = true;
 
         while (clientTask.IsCompleted == false)
@@ -358,20 +397,16 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     }
 
     protected Task InitializeNetworkRunner(NetworkRunner runner, GameMode gameMode, NetAddress address, SceneRef scene, Action<NetworkRunner> onGameStarted,
-      INetworkRunnerUpdater updater = null)
+      LoadSceneMode sceneMode, INetworkRunnerUpdater updater = null)
     {
         Scene = Managers.Instance.gameObject.GetOrAddComponent<NetworkSceneManagerEx>();
 
-        var objectProvider = runner.GetComponent<INetworkObjectProvider>();
-        if (objectProvider == null)
-        {
-            objectProvider = runner.gameObject.AddComponent<NetworkObjectProviderDefault>();
-        }
+        var objectProvider = runner.gameObject.GetOrAddComponent<NetworkObjectProviderDefault>();
 
         var sceneInfo = new NetworkSceneInfo();
         if (scene.IsValid)
         {
-            sceneInfo.AddSceneRef(scene, LoadSceneMode.Additive);
+            sceneInfo.AddSceneRef(scene, sceneMode);
         }
 
         return runner.StartGame(new StartGameArgs
@@ -380,6 +415,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             Address = address,
             Scene = sceneInfo,
             SessionName = DefaultRoomName,
+            PlayerCount = RoomPlayersCount,
             OnGameStarted = onGameStarted,
             SceneManager = Scene,
             Updater = updater,
@@ -387,6 +423,29 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         });
     }
     #endregion
+
+    void SetSceneSpawnInfo(Define.SceneType sceneType, ref SpawnData spawnData)
+    {
+        switch (sceneType)
+        {
+            case Define.SceneType.TutorialScene:
+                spawnData.SpawnPoint.Position = TutorialSceneSpawnPosition;
+                spawnData.SpawnPoint.SectorName = TutorialSceneSpawnSector;
+                spawnData.CreatureType = Define.CreatureType.TutoCrew;
+                break;
+            case Define.SceneType.ReadyScene:
+                spawnData.SpawnPoint.Position = ReadySceneSpawnPosition + new Vector3(UnityEngine.Random.Range(0, 3), 0, UnityEngine.Random.Range(0, 3));
+                spawnData.SpawnPoint.SectorName = ReadySceneSpawnSector;
+                spawnData.CreatureType = Define.CreatureType.Crew;
+                break;
+            // 테스트 씬에 사용, 게임 씬은 NetworkSceneManager에서 따로 처리
+            case Define.SceneType.GameScene:
+                spawnData.SpawnPoint.Position = ReadySceneSpawnPosition + new Vector3(UnityEngine.Random.Range(0, 3), 0, UnityEngine.Random.Range(0, 3));
+                spawnData.SpawnPoint.SectorName = ReadySceneSpawnSector;
+                spawnData.CreatureType = Creature;
+                break;
+        }
+    }
 
     #region CallBack
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
@@ -397,41 +456,32 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         OnSessionUpdated?.Invoke();
     }
 
+    class SpawnData
+    {
+        public SpawnPoint.SpawnPointData SpawnPoint;
+        public Define.CreatureType CreatureType;
+    }
 
     public async void OnPlayerJoined(NetworkRunner runner, PlayerRef player)
     {
         if (player == runner.LocalPlayer)
         {
-            ReadySceneSpawnPosition += new Vector3(UnityEngine.Random.Range(0, 3), 0, UnityEngine.Random.Range(0, 3));
-            SpawnPoint.SpawnPointData spawnPoint = new()
-            {
-                Position = ReadySceneSpawnPosition,
-                SectorName = ReadySceneSpawnSector
-            };
-            /*
-            NetworkObject playerObject = Creature == Define.CreatureType.Crew ?
-                await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, false) :
-                await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPoint);
-            */
+            SpawnData spawnData = new SpawnData();
+            SetSceneSpawnInfo(Managers.SceneMng.CurrentScene.SceneType, ref spawnData);
 
             NetworkObject playerObject = null;
-            switch (Creature)
+            switch (spawnData.CreatureType)
             {
                 case Define.CreatureType.Crew:
-                    playerObject = await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, false);
+                    playerObject = await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnData.SpawnPoint, isGameScene : false);
                     break;
 
                 case Define.CreatureType.Alien:
-                    playerObject = await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPoint);
+                    playerObject = await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnData.SpawnPoint);
                     break;
 
                 case Define.CreatureType.TutoCrew:
-                    spawnPoint = new()
-                    {
-                        Position = GameObject.FindWithTag("Respawn").transform.position,
-                        SectorName = Define.SectorName.F1_Corridor_D
-                    };
-                    playerObject = await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, false, true);
+                    playerObject = await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnData.SpawnPoint, isGameScene : false, isTutorial : true);
                     break;
             }
 

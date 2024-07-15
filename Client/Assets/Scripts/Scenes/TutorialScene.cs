@@ -1,17 +1,17 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class GameScene : BaseScene
+public class TutorialScene : BaseScene
 {
     protected override void Init()
     {
         base.Init();
 
-        SceneType = Define.SceneType.GameScene;
+        SceneType = Define.SceneType.TutorialScene;
 
         Managers.SoundMng.Stop(Define.SoundType.Bgm);
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Space Wind 01", Define.SoundType.Environment, volume:0.3f);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Tone Hum", Define.SoundType.Environment, volume:1f);
 
         SettingSystem settingSystem = FindObjectOfType<SettingSystem>();
         settingSystem.Init();
@@ -33,7 +33,8 @@ public class GameScene : BaseScene
         mapSystem.Init();
         planSystem.Init();
         gameEndSystem.Init();
-        UI_Ingame ingameUI = Managers.ObjectMng.MyCreature is Crew ? Managers.UIMng.ShowSceneUI<UI_CrewIngame>() : Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
+        UI_Ingame ingameUI = Managers.UIMng.ShowSceneUI<UI_CrewTutorial>();
+
         yield return new WaitUntil(() => ingameUI.Init());
 
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
@@ -60,7 +61,6 @@ public class GameScene : BaseScene
         }
     }
 
-    // 씬이 바뀔 때 정리해야 하는 목록
     public override void Clear()
     {
     }
