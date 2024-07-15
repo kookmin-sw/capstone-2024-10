@@ -27,6 +27,9 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public bool IsEndGameTriggered { get; set; } = false;
     public bool IsTestScene { get; set; } = false;
     public int RoomPlayersCount { get; private set; }
+    public bool IsGameLoading {  get; set; } = false;
+
+    public Queue<Action<GameEndSystem>> EndSystemQueue = new Queue<Action<GameEndSystem>>();
 
     public int NumPlayers
     {
@@ -73,6 +76,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             Runner = Managers.Instance.gameObject.AddComponent<NetworkRunner>();
         }
 
+        IsGameLoading = false;
+
         ReadySceneSpawnPosition = new Vector3(34, 4, -8);
         ReadySceneSpawnSector = Define.SectorName.Cafeteria;
 
@@ -93,6 +98,20 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         {
             PlayerSystem = FindAnyObjectByType<PlayerSystem>();
             yield return new WaitForSeconds(0.1f);
+        }
+    }
+    #endregion
+
+    #region Update
+    private void Update()
+    {
+        if (Managers.GameMng.GameEndSystem)
+        {
+            while (EndSystemQueue.Count > 0)
+            {
+                var action = EndSystemQueue.Dequeue();
+                action.Invoke(Managers.GameMng.GameEndSystem);
+            }
         }
     }
     #endregion
@@ -193,12 +212,17 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             AlienPlayerCount--;
             OnAlienDropped();
         }
-        else
+        else if (playerData.CreatureType == Define.CreatureType.Crew)
         {
             CrewPlayerCount--;
+
             // 게임씬에서 크루가 탈주했을 때 실행
-            if (Managers.GameMng.GameEndSystem != null && IsMaster)
+            if (IsMaster && Managers.GameMng.GameEndSystem != null)
                 Managers.GameMng.GameEndSystem.OnCrewDropped(playerRef);
+
+            // 로딩 중에 크루가 탈주했을 때 실행
+            if (IsGameLoading)
+                GameEndSystem.RPC_EndGameRequest(Runner);
         }
 
         Debug.Log($"Alien Count : {AlienPlayerCount}");
