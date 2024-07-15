@@ -1969,11 +1969,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: "- Bandage: Recover <color=red>Hp</color> when used.\n- Antipsychotic:
     Recover <color=yellow>sanity</color> when used.\n- Morphine: When used, <color=green>stamina</color>
-    does not decrease for certain amount of time.\n- Flashbang: When used, throws
-    a flashbang. The flashbang explodes after a moment. \n   If <color=red>Alien</color>
-    gets hit by the flashbang, it'll be stunned and blinded for certain amount of
-    time.\n   <color=green>Crew</color> also gets blinded by the flashbang, but doesn't
-    get stunned."
+    does not decrease for a while.\n- Flashbang: When used, throws a flashbang. The
+    flashbang explodes after a moment. \n   Flashbang makes <color=red>Alien</color>
+    stun and blind for a while."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -5281,7 +5279,7 @@ MonoBehaviour:
   m_text: '<u><b>W, A, S, D</b></u>: Move
 
     <u><b>F</b></u>: Interact <color=yellow>(*Alien
-    can crash a closed door by interacting it) </color>
+    can destroy closed doors by interacting them) </color>
 
     <u><b>Left click</b></u>:
     Basic Attack
@@ -8530,7 +8528,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Use the doors properly to run away from the <color=red>Alien</color>.
-    \n<color=red>Alien</color> can crash a closed door, but it takes some time.\nYour
+    \n<color=red>Alien</color> can destroy closed doors only, and it takes some time.\nYour
     <color=yellow>sanity</color> and the doors will eventually run out. Cooperate
     with other crews and complete the <color=green>escape plan</color> quickly!"
   m_isRightToLeft: 0
@@ -9681,7 +9679,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Manual
+  m_text: Guide
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -10187,18 +10185,18 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: 'a. <b><u>Basic Attack</b></u>: Alien swipes forward with its claws. Crew
-    takes 1 damage if gets hit.
+    takes 1 damage on hit.
 
-    b. <b><u>Roar</b></u>: Alien shouts loudly,
-    decreasing large amount of <color=yellow>sanity</color> of every crews nearby.
+    b. <b><u>Roar</b></u>: Alien shouts loudly, decreasing
+    large amount of <color=yellow>sanity</color> of every crews nearby.
 
-    c.
-    <b><u>Cursed Howl</b></u>: Alien erodes current sector. Crews in eroded sectors
-    lose their sanity rapidly.
+    c. <b><u>Cursed
+    Howl</b></u>: Alien erodes current sector. Crews in eroded sectors lose their
+    sanity rapidly.
 
-    d. <b><u>Leap Attack</b></u>: <color=orange>Only
-    usable in eroded sectors.</color> Alien leaps forward and attacks a crew inside
-    the range. Crew takes 2 damage if gets hit.'
+    d. <b><u>Leap Attack</b></u>: <color=orange>Only usable
+    in eroded sectors.</color> Alien leaps forward and attacks a crew inside the
+    range. Crew takes 2 damage on hit.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -11336,7 +11334,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8059403537706069182
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12254,10 +12252,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Crews can acquire items by opening item kits in the map.
+  m_text: 'Crews can acquire items by opening item kits in the facility.
 
-    There are
-    two types of item - <color=#66d1ff>Plan item </color>and <color=#ffc847>Consumable
+    There
+    are two types of item - <color=#66d1ff>Plan item </color>and <color=#ffc847>Consumable
     item</color>.
 
     <color=#66d1ff>Plan items </color>are used for completing
@@ -13872,7 +13870,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &5471240106566578772
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16416,14 +16414,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Carefully choose the sector to erode. It''s crucial to make crews'' sanity
-    decrease quickly.
+  m_text: 'Erode the sectors as many as possible. It''s crucial to make crews'' sanity
+    run out.
 
-    Make crews close the doors and crash them. Crews cannot
-    use the door again.
+    You can destroy the closed doors. Crews cannot use the door again.
 
-    Time is on your side. Crews'' sanity and the doors will
-    eventually run out.
+    Time
+    is on your side. Crews'' sanity and the doors will eventually run out.
 
 '
   m_isRightToLeft: 0
@@ -17757,7 +17754,7 @@ GameObject:
   - component: {fileID: 5816304056661162773}
   - component: {fileID: 3594091854179225326}
   m_Layer: 0
-  m_Name: MANUAL
+  m_Name: GUIDE
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17844,7 +17841,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'MANUAL
+  m_text: 'GUIDE
 
 '
   m_isRightToLeft: 0

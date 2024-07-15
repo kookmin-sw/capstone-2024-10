@@ -54,7 +54,7 @@ public class Util : MonoBehaviour
     }
 
     // 대문자 앞에 띄어쓰기 추가 (첫 글자 제외)
-    public static string AddSpanceInText(string text)
+    public static string AddSpaceInText(string text)
     {
         // 언더바 제거
         text = text.Replace("_", "");

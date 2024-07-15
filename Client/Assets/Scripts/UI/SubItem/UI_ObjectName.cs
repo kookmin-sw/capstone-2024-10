@@ -23,7 +23,7 @@ public class UI_ObjectName : UI_Base
 
     public void Show(string objectName)
     {
-        GetText(Texts.Name).text = Util.AddSpanceInText(objectName);
+        GetText(Texts.Name).text = Util.AddSpaceInText(objectName);
         gameObject.SetActive(true);
     }
 
