@@ -31,11 +31,14 @@ public class UI_Lobby : UI_Popup
         GetButton((int)Buttons.Btn_QuickStart).onClick.AddListener(EnterGame);
         GetButton((int)Buttons.Btn_CreateGame).onClick.AddListener(CreateGame);
         GetButton((int)Buttons.Btn_RefreshSession).onClick.AddListener(Refresh);
+        GetButton((int)Buttons.Btn_GameTutorial).onClick.AddListener(StartTutorial);
 
         GetButton((int)Buttons.Btn_CreateGame).interactable = false;
         GetButton((int)Buttons.Btn_QuickStart).interactable = false;
+        GetButton((int)Buttons.Btn_GameTutorial).interactable = false;
         Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Btn_CreateGame).interactable = true;
         Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Btn_QuickStart).interactable = true;
+        Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Btn_GameTutorial).interactable = true;
 
         var popup = Managers.UIMng.ShowPopupUI<UI_SessionList>(parent: transform);
         popup.Init();
@@ -85,6 +88,13 @@ public class UI_Lobby : UI_Popup
     {
         Managers.UIMng.Clear();
         Managers.NetworkMng.ConnectToAnySession();
+        Managers.UIMng.ShowPanelUI<UI_Loading>();
+    }
+
+    void StartTutorial()
+    {
+        Managers.Clear();
+        Managers.NetworkMng.StartSharedClient(Define.SceneType.TutorialScene);
         Managers.UIMng.ShowPanelUI<UI_Loading>();
     }
 }

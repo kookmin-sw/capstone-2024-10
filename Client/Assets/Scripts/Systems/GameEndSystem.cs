@@ -148,7 +148,9 @@ public class GameEndSystem : NetworkBehaviour
             KilledCrew = true;
         }
 
-        Managers.NetworkMng.GetPlayerData(playerRef).State = Define.CrewState.GameEnd;
+        var pd = Managers.NetworkMng.GetPlayerData(playerRef);
+        if (pd != null)
+            pd.State = Define.CrewState.GameEnd;
         CrewNum--;
     }
 

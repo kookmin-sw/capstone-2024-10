@@ -54,7 +54,9 @@ public class Crew : Creature
 
         IsSpawned = true;
 
-        if (HasStateAuthority && Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene | (int)Define.SceneType.ReadyScene))
+        if (HasStateAuthority &&
+            Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene |
+            (int)Define.SceneType.ReadyScene | (int)Define.SceneType.TutorialScene))
         {
             StartCoroutine(Managers.SceneMng.CurrentScene.OnPlayerSpawn());
         }
@@ -289,7 +291,7 @@ public class Crew : Creature
         Collider.enabled = false;
     }
 
-    public async void OnWin()
+    public virtual async void OnWin()
     {
         if (!HasStateAuthority || CreatureType != Define.CreatureType.Crew)
             return;

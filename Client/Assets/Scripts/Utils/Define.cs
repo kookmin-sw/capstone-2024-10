@@ -80,6 +80,7 @@ public static class Define
         ReadyScene,
         LobbyScene,
         GameScene,
+        TutorialScene,
     }
 
     public enum SoundType

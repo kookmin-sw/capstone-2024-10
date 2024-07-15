@@ -9,12 +9,11 @@ public class TutorialClearPoint : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            Crew creature = other.GetComponent<Crew>();
+            TutorialCrew creature = other.GetComponent<TutorialCrew>();
             if (creature != null)
             {
-                GameObject.FindWithTag("Player").GetComponent<TutorialCrew>().CrewTutorialUI.gameObject.SetActive(false);
+                creature.OnWin();
             }
-
         }
     }
 }

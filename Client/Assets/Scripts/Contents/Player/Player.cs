@@ -94,7 +94,7 @@ public class Player : NetworkBehaviour
     {
         NetworkObject no = isAlien
             ? await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPoint)
-            : await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, true);
+            : await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, isGameScene : true);
         runner.SetPlayerObject(player, no);
     }
 }
