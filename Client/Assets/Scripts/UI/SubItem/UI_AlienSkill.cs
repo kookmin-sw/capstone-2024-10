@@ -32,7 +32,7 @@ public class UI_AlienSkill : UI_Base
         {
             if (AlienSkills[i + 1] is LeapAttack leapAttack)
             {
-                if (!leapAttack.IsErosion)
+                if (!leapAttack.IsCurrentSectorEroded)
                 {
                     imageCooldowns[i].fillAmount = 1f;
                     continue;

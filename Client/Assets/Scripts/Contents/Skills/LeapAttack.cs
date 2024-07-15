@@ -7,7 +7,7 @@ public class LeapAttack : BaseSkill
     public SimpleKCC KCC => Owner.KCC;
 
     public bool IsMoving { get; protected set; } = false;
-    public bool IsErosion => Managers.GameMng.MapSystem.Sectors[Owner.CurrentSector].IsEroded;
+    public bool IsCurrentSectorEroded => Owner.CurrentSector != Define.SectorName.None&& Managers.GameMng.MapSystem.Sectors[Owner.CurrentSector].IsEroded;
 
     public override void SetInfo(int templateId)
     {
@@ -22,7 +22,7 @@ public class LeapAttack : BaseSkill
         if (CurrentCoolTime > 0f)
             return false;
 
-        if (!IsErosion)
+        if (!IsCurrentSectorEroded)
             return false;
 
         if (SkillData.Range > 0f)
