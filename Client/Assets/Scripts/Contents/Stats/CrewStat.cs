@@ -81,7 +81,7 @@ public class CrewStat : BaseStat
         if (Stamina < 40 && !Exhausted)
         {
             Exhausted = true;
-            Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Exhaust", volume: 1f, isLoop: true);
+            Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Exhaust", volume: 0.5f, isLoop: true);
         }
         if (Stamina >= 40)
         {
