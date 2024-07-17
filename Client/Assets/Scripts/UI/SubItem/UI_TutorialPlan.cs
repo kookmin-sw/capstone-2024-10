@@ -50,7 +50,7 @@ public class UI_TutorialPlan : UI_Base
             planUseComputer.SetActive(true);
 
             planUseComputer.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>()
-                .SetText($"Get and Use Cardkey on Central Control Computer", true);
+                .SetText($"Use Card Key on Central Control Computer", true);
         }
     }
 
@@ -58,5 +58,17 @@ public class UI_TutorialPlan : UI_Base
     {
         planUseComputer.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>()
             .SetText($"Use Central Control Computer", true);
+    }
+
+    public void OnCentralComputerUsed()
+    {
+        planUseComputer.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>()
+            .SetText($"Use Cargo Gate Control Computer", true);
+    }
+
+    public void OnCargoGateComputerUsed()
+    {
+        planUseComputer.transform.GetChild(1).GetChild(0).GetComponent<TMP_Text>()
+            .SetText($"Escape Through the Cargo Gate!", true);
     }
 }
