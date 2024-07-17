@@ -62,7 +62,8 @@ public static class Extension
     {
         if (root == null) return;
 
-        root.layer = layer;
+        if (root.layer != LayerMask.NameToLayer("AlienCollision"))
+            root.layer = layer;
 
         // 모든 자식 레이어 변경
         foreach (Transform child in root.transform)

@@ -6,21 +6,71 @@ using Fusion;
 //이 스크립트가 튜토리얼 종료까지 총괄
 public class TutorialPlanSystem : NetworkBehaviour
 {
-    [Networked, OnChangedRender(nameof(OnBatteryCharge))]
-    public int BatteryChargeCount { get; set; }
+    private int _batteryChargeCount;
+    public int BatteryChargeCount
+    {
+        get => _batteryChargeCount;
+        set
+        {
+            _batteryChargeCount = value;
+            OnBatteryCharge();
+        }
+    }
     public bool IsBatteryChargeFinished { get; private set; }
 
-    [Networked, OnChangedRender(nameof(OnComputerWorkFinished))]
-    public NetworkBool IsComputerWorkFinished { get; set; }
+    private bool _isCardKeyUsed;
+    public bool IsCardKeyUsed
+    {
+        get => _isCardKeyUsed;
+        set
+        {
+            _isCardKeyUsed = value;
+            OnCardkeyUsed();
+        }
+    }
 
-    [Networked, OnChangedRender(nameof(OnCardkeyUsed))]
-    public NetworkBool IsCardkeyUsed { get; set; }
+    private bool _isCentralComputerUsed;
+    public bool IsCentralComputerUsed
+    {
+        get => _isCentralComputerUsed;
+        set
+        {
+            _isCentralComputerUsed = value;
+            OnCentralComputerUsed();
+        }
+    }
+
+    private bool _isCargoGateOpen;
+    public bool IsCargoGateOpen
+    {
+        get => _isCargoGateOpen;
+        set
+        {
+            _isCargoGateOpen = value;
+            OnCargoGateComputerUsed();
+        }
+    }
+
+    public GameObject[] BatteryCharger;
+    public GameObject[] CentralContolComputer;
+    public GameObject[] CargoPassageContolComputer;
 
     private void Start()
     {
+        Init();
+    }
+
+    private void Init()
+    {
         Managers.TutorialMng.TutorialPlanSystem = this;
 
-        if (Managers.ObjectMng.MyCreature is Crew) GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+        BatteryCharger = GameObject.FindGameObjectsWithTag("BatteryCharger");
+        CentralContolComputer = GameObject.FindGameObjectsWithTag("CentralControlComputer");
+        CargoPassageContolComputer = GameObject.FindGameObjectsWithTag("CargoPassageControlComputer");
+
+        if (Managers.ObjectMng.MyCreature is Alien) return;
+
+        BatteryCharger.SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
     }
 
     private void OnBatteryCharge()
@@ -30,18 +80,15 @@ public class TutorialPlanSystem : NetworkBehaviour
         GameObject.FindWithTag("Player").GetComponent<TutorialCrew>()
             .CrewTutorialUI.TutorialPlanUI.GetComponent<UI_TutorialPlan>().UpdateBatteryCount(BatteryChargeCount);
 
-        //TODO: DEFINE에 튜토리얼용 값 따로 추가
-        if (BatteryChargeCount == 2)
+        if (BatteryChargeCount == Define.TUTORIAL_BATTERY_CHARGE_GOAL)
         {
             IsBatteryChargeFinished = true;
+            if (Managers.ObjectMng.MyCreature is Crew)
+            {
+                BatteryCharger.SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
+                CentralContolComputer.SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+            }
         }
-    }
-
-    private void OnComputerWorkFinished()
-    {
-        if (Managers.ObjectMng.MyCreature is Alien) return;
-
-        GameObject.Find("CargoPassageGate").GetComponent<Gate>().Open();
     }
 
     private void OnCardkeyUsed()
@@ -50,6 +97,25 @@ public class TutorialPlanSystem : NetworkBehaviour
 
         var ui = Managers.ObjectMng.MyCrew.CrewIngameUI as UI_CrewTutorial;
         ui.TutorialPlanUI.GetComponent<UI_TutorialPlan>().OnCardkeyUsed();
+    }
+
+    private void OnCentralComputerUsed()
+    {
+        if (Managers.ObjectMng.MyCreature is Alien) return;
+
+        var ui = Managers.ObjectMng.MyCrew.CrewIngameUI as UI_CrewTutorial;
+        ui.TutorialPlanUI.GetComponent<UI_TutorialPlan>().OnCentralComputerUsed();
+
+        CentralContolComputer.SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
+        CargoPassageContolComputer.SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+    }
+
+    private void OnCargoGateComputerUsed()
+    {
+        if (Managers.ObjectMng.MyCreature is Alien) return;
+
+        var ui = Managers.ObjectMng.MyCrew.CrewIngameUI as UI_CrewTutorial;
+        ui.TutorialPlanUI.GetComponent<UI_TutorialPlan>().OnCargoGateComputerUsed();
     }
 
     public void EndTutorial()

@@ -13,7 +13,7 @@ public class PlanSystem : NetworkBehaviour
     public bool IsUSBKeyInsertFinished { get; private set; }
 
     [Networked, OnChangedRender(nameof(OnCardkeyUsed))]
-    public NetworkBool IsCardkeyUsed { get; set; }
+    public NetworkBool IsCardKeyUsed { get; set; }
     [Networked, OnChangedRender(nameof(OnCentralComputerWorkFinished))]
     public NetworkBool IsCentralComputerWorkFinished { get; set; }
     [Networked, OnChangedRender(nameof(OnCargoPassageOpen))]

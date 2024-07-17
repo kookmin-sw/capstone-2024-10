@@ -1,11 +1,10 @@
-using Fusion;
 using UnityEngine;
 
-public class CentralControlComputer : BaseWorkStation
+public class TutorialCentralControlComputer : BaseWorkStation
 {
-    private new string Description => Managers.GameMng.PlanSystem.IsCardKeyUsed ? "Use Central Control Computer" : "Insert Card Key";
+    private new string Description => Managers.TutorialMng.TutorialPlanSystem.IsCardKeyUsed ? "Use Central Control Computer" : "Insert Card Key";
 
-    private new Define.CrewActionType CrewActionType => Managers.GameMng.PlanSystem.IsCardKeyUsed
+    private new Define.CrewActionType CrewActionType => Managers.TutorialMng.TutorialPlanSystem.IsCardKeyUsed
         ? Define.CrewActionType.KeypadUse
         : Define.CrewActionType.Insert;
 
@@ -29,19 +28,19 @@ public class CentralControlComputer : BaseWorkStation
             return false;
         }
 
-        if (!Managers.GameMng.PlanSystem.IsBatteryChargeFinished)
+        if (!Managers.TutorialMng.TutorialPlanSystem.IsBatteryChargeFinished)
         {
             creature.IngameUI.ErrorTextUI.Show("Charge Batteries First");
             return false;
         }
 
-        if (Managers.GameMng.PlanSystem.IsCentralComputerWorkFinished)
+        if (Managers.TutorialMng.TutorialPlanSystem.IsCentralComputerUsed)
         {
             creature.IngameUI.ErrorTextUI.Show("Already Used");
             return false;
         }
 
-        if (!Managers.GameMng.PlanSystem.IsCardKeyUsed && crew.Inventory.CurrentItem is not CardKey)
+        if (!Managers.TutorialMng.TutorialPlanSystem.IsCardKeyUsed && crew.Inventory.CurrentItem is not CardKey)
         {
             creature.IngameUI.ErrorTextUI.Show("Hold Card Key on Your Hand");
             return false;
@@ -53,17 +52,16 @@ public class CentralControlComputer : BaseWorkStation
 
     protected override void WorkComplete()
     {
-        if(!Managers.GameMng.PlanSystem.IsCardKeyUsed) CrewWorker.Inventory.RemoveItem();
+        if (!Managers.TutorialMng.TutorialPlanSystem.IsCardKeyUsed) CrewWorker.Inventory.RemoveItem();
         base.WorkComplete();
     }
 
-    [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     protected override void Rpc_WorkComplete()
     {
         if (IsCompleted) return;
-        if (!Managers.GameMng.PlanSystem.IsCardKeyUsed)
+        if (!Managers.TutorialMng.TutorialPlanSystem.IsCardKeyUsed)
         {
-            Managers.GameMng.PlanSystem.IsCardKeyUsed = true;
+            Managers.TutorialMng.TutorialPlanSystem.IsCardKeyUsed = true;
             CurrentWorkAmount = 0;
             TotalWorkAmount = 10f;
             CanRememberWork = true;
@@ -71,14 +69,13 @@ public class CentralControlComputer : BaseWorkStation
         else
         {
             IsCompleted = true;
-            Managers.GameMng.PlanSystem.IsCentralComputerWorkFinished = true;
+            Managers.TutorialMng.TutorialPlanSystem.IsCentralComputerUsed = true;
         }
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
-        if (!Managers.GameMng.PlanSystem.IsCardKeyUsed) Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/Insert", 1f, 1f, isLoop: false);
+        if (!Managers.TutorialMng.TutorialPlanSystem.IsCardKeyUsed) Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/Insert", 1f, 1f, isLoop: false);
         else Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/KeypadUse", 1f, 1f, isLoop: true);
     }
 

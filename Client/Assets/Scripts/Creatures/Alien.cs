@@ -105,11 +105,11 @@ public class Alien : Creature
             if (CheckAndUseSkill(0))
                 return;
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetKeyDown(KeyCode.Q))
             if (CheckAndUseSkill(1))
                 return;
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.E))
             if (CheckAndUseSkill(2))
                 return;
 
