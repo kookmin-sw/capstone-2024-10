@@ -59,13 +59,14 @@ public class TutorialComputer : BaseWorkStation
         {
             Managers.TutorialMng.TutorialPlanSystem.IsCardkeyUsed = true;
             CurrentWorkAmount = 0;
-            TotalWorkAmount = 15f;
+            TotalWorkAmount = 10f;
             CanRememberWork = true;
         }
         else
         {
             IsCompleted = true;
             Managers.TutorialMng.TutorialPlanSystem.IsComputerWorkFinished = true;
+            Rpc_PlayCompleteSound();
         }
     }
 
@@ -74,6 +75,12 @@ public class TutorialComputer : BaseWorkStation
     {
         if (!Managers.TutorialMng.TutorialPlanSystem.IsCardkeyUsed) Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/Insert", 1f, 1f, isLoop: false);
         else Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/KeypadUse", 1f, 1f, isLoop: true);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    protected void Rpc_PlayCompleteSound()
+    {
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Interactable/Plan_B", volume: 0.9f, isOneShot:true);
     }
 
     protected override void PlayAnim()
