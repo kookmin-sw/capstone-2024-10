@@ -63,11 +63,6 @@ public class UI_SettingPanel : UI_Panel
         Bind<TMP_Dropdown>(typeof(Dropdowns));
         Bind<Slider>(typeof(Sliders));
 
-        var canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        canvas.worldCamera = transform.GetComponentInParent<Camera>();
-        canvas.planeDistance = 10f;
-
         for (int i = 0; i < Enum.GetNames(typeof(Buttons)).Length; i++)
         {
             GetButton(i).gameObject.BindEvent((e) => { PlayHover(); }, Define.UIEvent.PointerEnter);
@@ -75,7 +70,9 @@ public class UI_SettingPanel : UI_Panel
 
         GetButton(Buttons.Btn_Return).onClick.AddListener(() =>
         {
-            Destroy(transform.parent.gameObject);
+            var camera = transform.Find("UICamera");
+            Destroy(camera.gameObject);
+            Destroy(gameObject);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             if (Managers.UIMng.SceneUI != null)

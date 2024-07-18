@@ -91,17 +91,14 @@ public class UI_ManualPanel : UI_Panel
         Bind<Button>(typeof(Buttons));
         Bind<TMP_Text>(typeof(Texts));
 
-        var canvas = GetComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceCamera;
-        canvas.worldCamera = transform.GetComponentInParent<Camera>();
-        canvas.planeDistance = 10f;
-
         _crewManual = GetObject(GameObjects.CrewManual).GetOrAddComponent<UI_Manual>();
         _alienManual = GetObject(GameObjects.AlienManual).GetOrAddComponent<UI_Manual>();
 
         GetButton(Buttons.Btn_Return).onClick.AddListener(() =>
         {
-            Destroy(transform.parent.gameObject);
+            var camera = transform.Find("UICamera");
+            Destroy(camera.gameObject);
+            Destroy(gameObject);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             if (Managers.UIMng.SceneUI != null)
