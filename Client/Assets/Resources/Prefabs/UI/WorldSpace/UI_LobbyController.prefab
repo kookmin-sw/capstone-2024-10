@@ -1694,12 +1694,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<u><b>G</b></u>: Drop item on hand
+  m_text: '<u><b>G</b></u>: Drop item
 
     <u><b>Mouse Wheel or 1/2/3/4</b></u>:
-    Change item on hand
+    Change item
 
-    <u><b>Left Click</b></u>: Use Item on hand'
+    <u><b>Left Click</b></u>: Use Item'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -3851,7 +3851,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 30, y: -143}
+  m_AnchoredPosition: {x: 30, y: -109}
   m_SizeDelta: {x: -60, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &3429737803488826155
@@ -3882,10 +3882,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "There are various \"Task Objects\" in the map. \nMost of them are used
-    for completing the <color=green>escape plans</color>.\nInteract them and complete
-    the task.\n<i><color=yellow>*Note: For some tasks, crews can work together and
-    complete the task faster!</i></color>"
+  m_text: "There are various interactable \"task objects\" in the map. \nThey are
+    used for completing the <color=green>escape plans</color>.\nInteract them and
+    complete the plans.\n<i><color=yellow>*Note: For some tasks, crews can work together
+    and complete the task faster!</i></color>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -4582,7 +4582,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -0.00012207031, y: -95}
+  m_AnchoredPosition: {x: -0.00012207031, y: -62}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &4931472558956423213
@@ -14726,13 +14726,13 @@ MonoBehaviour:
   m_text: 'First of all, collect and charge the batteries.
 
     Once the battery
-    charge is done, three plans will be enabled.
+    charge is done, <color=green>three plans</color> will be enabled.
 
-    Complete any of these plans
-    in order to escape!
+    Complete
+    any of these plans in order to escape!
 
-    <color=yellow><i>*Note: Third plan is enabled when only
-    one crew is remaining.</i></color>'
+    <color=yellow><i>*Note: Third plan
+    is enabled only when one crew is remaining.</i></color>'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -17003,11 +17003,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Crews should complete <color=green> "Escape Plan" </color> and escape
-    from facility, while surviving from <color=red>Alien</color>.
+  m_text: 'Crews must complete <color=green> "Escape Plan" </color> and escape from
+    the facility, while surviving from <color=red>Alien</color>.
 
     Follow the
-    instructions displayed at the top-left of UI.
+    instructions displayed at the top-left of the ingame UI.
 
 '
   m_isRightToLeft: 0
@@ -17036,8 +17036,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33
-  m_fontSizeBase: 33
+  m_fontSize: 32
+  m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -17277,8 +17277,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4280680283
-  m_fontColor: {r: 0.35795903, g: 1, b: 0.14528298, a: 1}
+    rgba: 4278255423
+  m_fontColor: {r: 0.24770641, g: 1, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -21417,7 +21417,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5656857635699554025
 RectTransform:
   m_ObjectHideFlags: 0
@@ -24073,23 +24073,21 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Crews have <color=red>HP </color>&<color=green> Stamina</color> &<color=yellow>
-    Sanity </color>
+  m_text: 'Crew starts with 3 <color=red>HP</color>. Crew loses the game once it
+    reaches 0.
 
-    If <color=red>HP</color> reaches 0, the crew will die and
-    lose the game.
+    <color=green>Stamina</color> is used for running. Stamina recovers
+    faster when crouching.
 
-    <color=green>Stamina</color> is used for running.
+    <color=yellow>Sanity</color> is decreased by various
+    factors such as Alien''s skill.
 
-    <color=yellow>Sanity</color>
-    is decreased by various factors such as Alien''s skill.
+    As <color=yellow>Sanity</color> decreases,
+    crews get a number of penalties - decreased move speed, decreased field of view,
+    etc.
 
-    As <color=yellow>Sanity</color>
-    decreases, crews get a number of penalties - decreased move speed, decreased
-    field of view, etc.
-
-    <color=yellow>Sanity</color> can be recovered by crouching
-    or using specific item.'
+    <color=yellow>Sanity</color> can be recovered by crouching or using
+    specific item.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
