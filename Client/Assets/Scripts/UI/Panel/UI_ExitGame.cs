@@ -32,8 +32,7 @@ public class UI_ExitGame : UI_Panel
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        var camera = Managers.ResourceMng.Instantiate("Cameras/UICamera");
-        transform.SetParent(camera.transform);
+        var camera = transform.Find("UICamera").GetComponent<Camera>();
         var canvas = GetComponent<Canvas>();
         canvas.planeDistance = 10f;
         if (Managers.UIMng.SceneUI != null)
@@ -42,7 +41,8 @@ public class UI_ExitGame : UI_Panel
 
         GetButton(Buttons.Btn_Return).onClick.AddListener(() =>
         {
-            Destroy(camera);
+            Destroy(camera.gameObject);
+            Destroy(gameObject);
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             if (Managers.UIMng.SceneUI != null)
@@ -52,13 +52,13 @@ public class UI_ExitGame : UI_Panel
 
         GetButton(Buttons.Btn_Manual).onClick.AddListener(() =>
         {
-            Managers.UIMng.ShowPanelUI<UI_ManualPanel>(camera.transform);
+            Managers.UIMng.ShowPanelUI<UI_ManualPanel>();
             Destroy(gameObject);
         });
 
         GetButton(Buttons.Btn_Setting).onClick.AddListener(() =>
         {
-            Managers.UIMng.ShowPanelUI<UI_SettingPanel>(camera.transform);
+            Managers.UIMng.ShowPanelUI<UI_SettingPanel>();
             Destroy(gameObject);
         });
 

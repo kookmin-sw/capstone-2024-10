@@ -38,6 +38,7 @@ public class GameEndSystem : NetworkBehaviour
                 RPC_EndGameRequest(Managers.NetworkMng.Runner);
         }
     }
+
     public void EndGameRequest()
     {
         if (ShouldEndGame)
