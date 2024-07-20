@@ -197,15 +197,15 @@ public class Alien : Creature
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Rpc_ApplyBlind(2f, 3f);
+            Rpc_ApplyBlind(4f, 2f);
             return true;
         }
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             Managers.GameMng.GameEndSystem.Rpc_EndCrewGame(false);
             return true;
         }
-        if (Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.M))
         {
             Managers.GameMng.GameEndSystem.Rpc_EndCrewGame(true);
             return true;

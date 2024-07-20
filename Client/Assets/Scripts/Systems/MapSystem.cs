@@ -10,7 +10,7 @@ public class MapSystem : NetworkBehaviour
     {
         Managers.GameMng.MapSystem = this;
         AssignSector();
-        GetComponent<ItemSpawner>().SpawnItems();
+        GetComponent<ItemSpawner>()?.SpawnItems();
     }
 
     private void AssignSector()

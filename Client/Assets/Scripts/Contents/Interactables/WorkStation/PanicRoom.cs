@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
@@ -7,11 +5,14 @@ public class PanicRoom : BaseWorkStation
 {
     [Networked] public NetworkBool IsLocked { get; set; } = true;
 
+    [SerializeField] private Gate _gate;
     [SerializeField] private Light _entranceLight;
-    
+
     protected override void Init()
     {
         base.Init();
+
+        _gate = GetComponentInChildren<Gate>();
 
         Description = "Open panic room";
         CrewActionType = Define.CrewActionType.OpenDoor;
@@ -57,16 +58,22 @@ public class PanicRoom : BaseWorkStation
 
         WorkComplete();
         InterruptWork();
-        
+
         return true;
     }
-    
+
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
     protected override void Rpc_WorkComplete()
     {
-        GetComponentInChildren<Gate>().Open();
+        if (IsCompleted) return;
+        IsCompleted = true;
         Rpc_ChangeLightColor();
         Rpc_DisableCollider();
+    }
+
+    protected override void Rpc_PlaySound()
+    {
+
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -82,7 +89,8 @@ public class PanicRoom : BaseWorkStation
     private void Rpc_DisableCollider()
     {
         GetComponent<Collider>().enabled = false;
-    }
 
-    protected override void Rpc_PlaySound() {}
+        _gate.Open();
+        _gate.GetComponent<AudioSource>().Play();
+    }
 }

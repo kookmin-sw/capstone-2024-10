@@ -64,13 +64,21 @@ public class AlienSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayRoar()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Roar", pitch: 1.3f, volume: 0.4f, isLoop: false);
+        float volume = 0.8f;
+        if (HasStateAuthority)
+            volume *= 0.5f;
+
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Roar", pitch: 1.3f, volume, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayCursedHowl()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/CursedHowl", pitch: 1f, volume: 0.5f, isLoop: false);
+        float volume = 0.8f;
+        if (HasStateAuthority)
+            volume *= 0.5f;
+
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/CursedHowl", pitch: 1f, volume, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -82,7 +90,7 @@ public class AlienSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayHit()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack_Hit", pitch: 1f, volume: 1f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack_Hit", pitch: 1f, volume: 0.7f, isLoop: false);
     }
 
     public override void CheckChasing()
@@ -113,7 +121,7 @@ public class AlienSoundController : BaseSoundController
                             if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
                             {
                                 Managers.SoundMng.Play($"{Define.BGM_PATH}/In Captivity", Define.SoundType.Bgm,
-                                    volume: 0.5f);
+                                    volume: 0.4f);
                             }
                         }
 

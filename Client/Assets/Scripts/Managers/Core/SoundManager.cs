@@ -1,5 +1,3 @@
-using Fusion;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -63,24 +61,30 @@ public class SoundManager
         if (type == Define.SoundType.Effect)
         {
             audioSource = _audioSources[(int)Define.SoundType.Effect];
-            if (isOneShot)
-            {
-                audioSource.PlayOneShot(audioClip, volume);
-                return;
-            }
             audioSource.loop = isLoop;
         }
         else if (type == Define.SoundType.Bgm)
         {
             audioSource = _audioSources[(int)Define.SoundType.Bgm];
         }
-        else
+        else if (type == Define.SoundType.Environment)
         {
             audioSource = _audioSources[(int)Define.SoundType.Environment];
+        }
+        else if (type == Define.SoundType.Facility)
+        {
+            audioSource = _audioSources[(int)Define.SoundType.Facility];
+            audioSource.loop = isLoop;
         }
 
         if (audioSource == null)
             return;
+
+        if (isOneShot)
+        {
+            audioSource.PlayOneShot(audioClip, volume);
+            return;
+        }
 
         if (audioSource.isPlaying)
             audioSource.Stop();
@@ -112,7 +116,7 @@ public class SoundManager
 
     public void Stop(Define.SoundType type = Define.SoundType.Effect)
     {
-        AudioSource audioSource;
+        AudioSource audioSource = null;
         if (type == Define.SoundType.Bgm)
         {
             audioSource = _audioSources[(int)Define.SoundType.Bgm];
@@ -121,9 +125,13 @@ public class SoundManager
         {
             audioSource = _audioSources[(int)Define.SoundType.Environment];
         }
-        else
+        else if (type == Define.SoundType.Effect)
         {
             audioSource = _audioSources[(int)Define.SoundType.Effect];
+        }
+        else if (type == Define.SoundType.Facility)
+        {
+            audioSource = _audioSources[(int)Define.SoundType.Facility];
         }
 
         if (audioSource == null)
@@ -139,7 +147,7 @@ public class SoundManager
 
         AudioClip audioClip = null;
 
-        if (type == Define.SoundType.Bgm || type == Define.SoundType.Environment)
+        if (type == Define.SoundType.Environment || type == Define.SoundType.Facility)
         {
             audioClip = Managers.ResourceMng.Load<AudioClip>(path);
         }
@@ -160,13 +168,15 @@ public class SoundManager
 
     public bool IsPlaying(Define.SoundType type = Define.SoundType.Effect)
     {
-        AudioSource audioSource;
+        AudioSource audioSource = null;
         if (type == Define.SoundType.Bgm)
             audioSource = _audioSources[(int)Define.SoundType.Bgm];
         else if(type == Define.SoundType.Environment)
             audioSource = _audioSources[(int)Define.SoundType.Environment];
-        else
+        else if (type == Define.SoundType.Effect)
             audioSource = _audioSources[(int)Define.SoundType.Effect];
+        else if (type == Define.SoundType.Facility)
+            audioSource = _audioSources[(int)Define.SoundType.Facility];
 
         if (audioSource == null)
             return false;

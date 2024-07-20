@@ -53,13 +53,12 @@ public class ElevatorKeypad : BaseWorkStation
         IsCompleted = true;
         _elevatorDoor.GetComponent<NetworkMecanimAnimator>().Animator.SetBool("OpenParameter", true);
         Rpc_SetLayer();
+        Rpc_PlayCompleteSound();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     private void Rpc_SetLayer()
     {
-        _elevatorDoor.GetComponent<AudioSource>().Play();
-
         gameObject.SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
     }
 
@@ -67,5 +66,11 @@ public class ElevatorKeypad : BaseWorkStation
     protected override void Rpc_PlaySound()
     {
         Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/KeypadUse", 1f, 1f, isLoop: true);
+    }
+
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    protected void Rpc_PlayCompleteSound()
+    {
+        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/SFDoor_Open", 1f, 1f, isLoop: false);
     }
 }

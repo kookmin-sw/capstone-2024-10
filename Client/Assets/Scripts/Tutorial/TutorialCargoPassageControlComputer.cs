@@ -52,17 +52,10 @@ public class TutorialCargoPassageControlComputer : BaseWorkStation
             gate.gameObject.SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
             gate.Open();
         }
-
-        Rpc_PlayCompleteSound();
     }
 
     protected override void Rpc_PlaySound()
     {
         Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/KeypadUse", 1f, 1f, isLoop: true);
-    }
-
-    protected void Rpc_PlayCompleteSound()
-    {
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Interactable/Plan_B", volume: 0.9f, isOneShot:true);
     }
 }

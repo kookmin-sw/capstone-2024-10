@@ -52,19 +52,11 @@ public class CargoPassageControlComputer : BaseWorkStation
         {
             gate.Open();
         }
-
-        Rpc_PlayCompleteSound();
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
         Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/KeypadUse", 1f, 1f, isLoop: true);
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    protected void Rpc_PlayCompleteSound()
-    {
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Interactable/Plan_B", volume: 0.9f, isOneShot:true);
     }
 }
