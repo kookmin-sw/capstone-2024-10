@@ -17,7 +17,7 @@ public class CentralControlComputer : BaseWorkStation
         CanRememberWork = false;
         IsCompleted = false;
 
-        TotalWorkAmount = 2f;
+        TotalWorkAmount = 1.5f;
     }
 
     public override bool IsInteractable(Creature creature)

@@ -15,7 +15,7 @@ public class CrewSoundController : BaseSoundController
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                Rpc_PlayFootStepSound(1.205f, 0.1f);
+                Rpc_PlayFootStepSound(1.205f, 0.15f);
                 break;
             case Define.CreaturePose.Sit:
                 Rpc_StopEffectSound();
@@ -63,7 +63,7 @@ public class CrewSoundController : BaseSoundController
 
     protected void PlayDeadSound()
     {
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/GameOver", Define.SoundType.Effect,  volume:1f, isOneShot: true);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/GameOver", Define.SoundType.Effect,  volume:0.7f, isOneShot: true);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]

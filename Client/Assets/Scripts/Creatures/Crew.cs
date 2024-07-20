@@ -356,14 +356,14 @@ public class Crew : Creature
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Rpc_ApplyBlind(2f, 3f);
+            Rpc_ApplyBlind(4f, 2f);
             return true;
         }
         if (Input.GetKeyDown(KeyCode.L))
         {
             IsGameScene = true;
         }
-        if (Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.N))
         {
             OnWin();
             return true;

@@ -86,5 +86,6 @@ public class Util : MonoBehaviour
         Managers.SoundMng.Stop(Define.SoundType.Bgm);
         Managers.SoundMng.Stop(Define.SoundType.Environment);
         Managers.SoundMng.Stop(Define.SoundType.Effect);
+        Managers.SoundMng.Stop(Define.SoundType.Facility);
     }
 }

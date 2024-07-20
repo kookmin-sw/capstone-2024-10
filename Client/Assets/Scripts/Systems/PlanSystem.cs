@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using UnityEngine;
 using Fusion;
 
@@ -16,7 +14,7 @@ public class PlanSystem : NetworkBehaviour
     public NetworkBool IsCardKeyUsed { get; set; }
     [Networked, OnChangedRender(nameof(OnCentralComputerWorkFinished))]
     public NetworkBool IsCentralComputerWorkFinished { get; set; }
-    [Networked, OnChangedRender(nameof(OnCargoPassageOpen))]
+    [Networked, OnChangedRender(nameof(OnCargoGateComputerUsed))]
     public NetworkBool IsCargoPassageOpen { get; set; }
     [Networked, OnChangedRender(nameof(OnPanicRoomActivated))]
     public NetworkBool IsPanicRoomActivated { get; set; }
@@ -29,18 +27,31 @@ public class PlanSystem : NetworkBehaviour
 
     private void OnBatteryCharge()
     {
-        if (Managers.ObjectMng.MyCreature is Alien) return;
+        if (BatteryChargeCount == Define.BATTERY_CHARGE_GOAL)
+        {
+            Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_BatteryCharge", type: Define.SoundType.Facility, volume:0.4f, isLoop: false);
+        }
 
-        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateBatteryCount(BatteryChargeCount);
+        if (Managers.ObjectMng.MyCreature is Alien) return;
 
         if (BatteryChargeCount == Define.BATTERY_CHARGE_GOAL)
         {
             IsBatteryChargeFinished = true;
+            GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
+            GameObject.FindGameObjectsWithTag("CentralControlComputer").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+            GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
         }
+
+        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateBatteryCount(BatteryChargeCount);
     }
 
     private void OnUSBKeyInsert()
     {
+        if (USBKeyInsertCount == Define.USBKEY_INSERT_GOAL)
+        {
+            Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_A", type: Define.SoundType.Facility, volume:0.7f, isLoop: false);
+        }
+
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
         Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateUSBKeyCount(USBKeyInsertCount);
@@ -69,8 +80,10 @@ public class PlanSystem : NetworkBehaviour
         GameObject.FindGameObjectsWithTag("CargoPassageControlComputer").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
     }
 
-    private void OnCargoPassageOpen()
+    private void OnCargoGateComputerUsed()
     {
+        Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_B", type: Define.SoundType.Facility, volume: 0.9f, isOneShot:true);
+
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
         Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnCargoPassageOpen();
@@ -96,5 +109,4 @@ public class PlanSystem : NetworkBehaviour
         GameObject.FindGameObjectsWithTag("EmergencyControlDevice").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
         GameObject.FindGameObjectsWithTag("PanicRoom").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
     }
-
 }

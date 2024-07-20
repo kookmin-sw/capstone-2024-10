@@ -15,7 +15,7 @@ public class EmergencyControlDevice : BaseWorkStation
         CanRememberWork = true;
         IsCompleted = false;
 
-        TotalWorkAmount = 10f;
+        TotalWorkAmount = 2f;
     }
 
     public override bool IsInteractable(Creature creature)
@@ -50,20 +50,18 @@ public class EmergencyControlDevice : BaseWorkStation
         Managers.GameMng.PlanSystem.IsPanicRoomActivated = true;
         List<GameObject> panicRooms = GameObject.FindGameObjectsWithTag("PanicRoom").ToList();
 
-        Debug.Log(panicRooms.Count);
         foreach (var room in panicRooms)
         {
             room.GetComponent<PanicRoom>().Rpc_ChangeLightColor();
         }
-        PanicRoom unlockedPanicRoom = panicRooms[Random.Range(0, panicRooms.Count)].GetComponent<PanicRoom>();
-        panicRooms.Remove(unlockedPanicRoom.gameObject);
-        PanicRoom unlockedPanicRoom2 = panicRooms[Random.Range(0, panicRooms.Count)].GetComponent<PanicRoom>();
 
-        Debug.Log("Unlocked :" + unlockedPanicRoom.name);
-        Debug.Log("Unlocked :" + unlockedPanicRoom2.name);
-
-        unlockedPanicRoom.IsLocked = false;
-        unlockedPanicRoom2.IsLocked = false;
+        for (int i = 0; i < Define.OPEN_PANIC_ROOM; i++)
+        {
+            PanicRoom unlockedPanicRoom = panicRooms[Random.Range(0, panicRooms.Count)].GetComponent<PanicRoom>();
+            panicRooms.Remove(unlockedPanicRoom.gameObject);
+            Debug.Log("Unlocked :" + unlockedPanicRoom.name);
+            unlockedPanicRoom.IsLocked = false;
+        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]

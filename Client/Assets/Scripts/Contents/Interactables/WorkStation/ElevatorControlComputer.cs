@@ -13,7 +13,7 @@ public class ElevatorControlComputer : BaseWorkStation
         CanRememberWork = false;
         IsCompleted = false;
 
-        TotalWorkAmount = 2f;
+        TotalWorkAmount = 1.5f;
     }
 
     public override bool IsInteractable(Creature creature)
@@ -65,22 +65,11 @@ public class ElevatorControlComputer : BaseWorkStation
     {
         CurrentWorkAmount = 0;
         Managers.GameMng.PlanSystem.USBKeyInsertCount++;
-
-        if (Managers.GameMng.PlanSystem.USBKeyInsertCount == Define.USBKEY_INSERT_GOAL)
-        {
-            Rpc_PlayCompleteSound();
-        }
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
         Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/Insert", 1f, 1f, isLoop: false);
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    protected void Rpc_PlayCompleteSound()
-    {
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Interactable/Plan_A", volume:0.7f ,isOneShot:true);
     }
 }

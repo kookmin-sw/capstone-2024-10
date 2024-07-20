@@ -88,6 +88,7 @@ public static class Define
         Bgm,
         Environment,
         Effect,
+        Facility,
         MaxCount,
     }
 
@@ -188,17 +189,19 @@ public static class Define
     public const string ITEM_PATH = "Items";
     public const string BGM_PATH = "Sounds/Bgms";
     public const string EFFECT_PATH = "Sounds/Effects";
+    public const string FACILITY_PATH = "Sounds/Facilities";
 
     #endregion
 
     #region Value
 
-    public const int PLAYER_COUNT = 4;
+    public const int PLAYER_COUNT = 2;
     public const int MAX_ITEM_NUM = 4;
     public const int MAX_SKILL_NUM = 4;
 
-    public const int BATTERY_CHARGE_GOAL = 6;
-    public const int USBKEY_INSERT_GOAL = 4;
+    public const int BATTERY_CHARGE_GOAL = 1;
+    public const int USBKEY_INSERT_GOAL = 1;
+    public const int OPEN_PANIC_ROOM = 5;
     public const int TUTORIAL_BATTERY_CHARGE_GOAL = 2;
 
     #endregion

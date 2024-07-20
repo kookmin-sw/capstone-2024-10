@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 
-//이 스크립트가 튜토리얼 종료까지 총괄
 public class TutorialPlanSystem : NetworkBehaviour
 {
     private int _batteryChargeCount;
@@ -75,10 +72,12 @@ public class TutorialPlanSystem : NetworkBehaviour
 
     private void OnBatteryCharge()
     {
-        if (Managers.ObjectMng.MyCreature is Alien) return;
+        if (BatteryChargeCount == Define.TUTORIAL_BATTERY_CHARGE_GOAL)
+        {
+            Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_BatteryCharge", type: Define.SoundType.Facility, volume:0.4f, isLoop: false);
+        }
 
-        GameObject.FindWithTag("Player").GetComponent<TutorialCrew>()
-            .CrewTutorialUI.TutorialPlanUI.GetComponent<UI_TutorialPlan>().UpdateBatteryCount(BatteryChargeCount);
+        if (Managers.ObjectMng.MyCreature is Alien) return;
 
         if (BatteryChargeCount == Define.TUTORIAL_BATTERY_CHARGE_GOAL)
         {
@@ -89,6 +88,9 @@ public class TutorialPlanSystem : NetworkBehaviour
                 CentralContolComputer.SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
             }
         }
+
+        GameObject.FindWithTag("Player").GetComponent<TutorialCrew>()
+            .CrewTutorialUI.TutorialPlanUI.GetComponent<UI_TutorialPlan>().UpdateBatteryCount(BatteryChargeCount);
     }
 
     private void OnCardkeyUsed()
@@ -112,6 +114,8 @@ public class TutorialPlanSystem : NetworkBehaviour
 
     private void OnCargoGateComputerUsed()
     {
+        Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_B", type: Define.SoundType.Facility, volume: 0.9f, isOneShot:true);
+
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
         var ui = Managers.ObjectMng.MyCrew.CrewIngameUI as UI_CrewTutorial;

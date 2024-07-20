@@ -193,10 +193,6 @@ public class UI_CrewPlan : UI_Base
         _planB.SetObjectiveText($"Use Card Key on Central Control Computer", false);
         _planB.SetHintText(MakeHintFromSectorName(new[] {Define.SectorName.CentralControlRoom }));
 
-        GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
-        GameObject.FindGameObjectsWithTag("CentralControlComputer").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
-        GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
-
         if (Managers.GameMng.GameEndSystem.CrewNum == 1)
         {
             Managers.GameMng.PlanSystem.EnablePlanC();
