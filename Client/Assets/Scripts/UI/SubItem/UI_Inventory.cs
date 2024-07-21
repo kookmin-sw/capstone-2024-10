@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Data;
 using DG.Tweening;
 using TMPro;
 using Unity.VisualScripting;
@@ -15,6 +16,10 @@ public class UI_Inventory : UI_Base
         InventoryBox2,
         InventoryBox3,
 
+    }
+    enum Texts
+    {
+        ItemName,
     }
 
     public enum GameObjects
@@ -32,6 +37,7 @@ public class UI_Inventory : UI_Base
 
         Bind<Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));
+        Bind<TMP_Text>(typeof(Texts));
 
         ItemList = new List<GameObject>(Define.MAX_ITEM_NUM);
 
@@ -90,5 +96,22 @@ public class UI_Inventory : UI_Base
                 break;
         }
 
+    }
+
+    public void ShowItemName(int itemId)
+    {
+        if (itemId == -1)
+        {
+            GetText(Texts.ItemName).text = "";
+            return;
+        }
+
+        foreach (var itemData in Managers.DataMng.ItemDataDict)
+        {
+            if (itemData.Value.DataId == itemId)
+            {
+                GetText(Texts.ItemName).text = itemData.Value.Name;
+            }
+        }
     }
 }

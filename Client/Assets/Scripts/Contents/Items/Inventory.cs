@@ -71,6 +71,7 @@ public class Inventory: NetworkBehaviour
         {
             ItemInventory[CurrentItemIdx] = itemId;
             Owner.CrewIngameUI.InventoryUI.Show(CurrentItemIdx, itemId);
+            Owner.CrewIngameUI.InventoryUI.ShowItemName(itemId);
             Rpc_ShowItem(itemId);
             return;
         }
@@ -81,6 +82,7 @@ public class Inventory: NetworkBehaviour
             {
                 ItemInventory[i] = itemId;
                 Owner.CrewIngameUI.InventoryUI.Show(i, itemId);
+                Owner.CrewIngameUI.InventoryUI.ShowItemName(itemId);
                 return;
             }
         }
@@ -152,6 +154,7 @@ public class Inventory: NetworkBehaviour
             Rpc_ShowItem(ItemInventory[idx]);
 
         Owner.CrewIngameUI.InventoryUI.Highlight(idx);
+        Owner.CrewIngameUI.InventoryUI.ShowItemName(ItemInventory[idx]);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
