@@ -3,20 +3,21 @@ using UnityEngine;
 
 public class ItemKit : BaseWorkStation
 {
-    [Header("Item")]
+    [Header("ItemId")]
     [SerializeField] private int _itemId;
 
     public Transform Transform { get; protected set; }
 
-    public GameObject Cover { get; protected set; }
+    public ItemKitCover Cover { get; protected set; }
 
     protected override void Init()
     {
         base.Init();
 
-        Cover = Util.FindChild(gameObject, "Cover", true);
         Transform = gameObject.GetComponent<Transform>();
-        AudioSource = gameObject.GetComponent<AudioSource>();
+
+        Cover = Util.FindChild(gameObject, "Cover", true).GetComponent<ItemKitCover>();
+        Cover.ItemKit = this;
 
         Description = "Open ItemKit";
         CrewActionType = Define.CrewActionType.OpenItemKit;
@@ -65,7 +66,7 @@ public class ItemKit : BaseWorkStation
             return;
         IsCompleted = true;
 
-        Cover.SetActive(false);
+        Cover.gameObject.SetActive(false);
         gameObject.SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
     }
 
