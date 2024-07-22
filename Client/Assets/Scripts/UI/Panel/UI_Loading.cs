@@ -47,21 +47,12 @@ public class UI_Loading : UI_Panel
         Bind<TMP_Text>(typeof(Texts));
         Bind<Slider>(typeof(Sliders));
 
-        string[] textForTip =
-        {
-            "Crew: Crouch to pick up an item from the floor.",
-            "Crew: When chased by an alien, shut the door to delay the alien's pursuit.",
-            "Crew: Crouch to restore stamina and sanity gauges.",
-            "Crew: Running makes your footsteps louder.",
-            "Crew: When attacked, your running speed increases momentarily.",
-            "Alien: Use the \"Roar\" skill to slow down the crew, then chase after them.",
-        };
 
         _loadingBar = Get<Slider>(Sliders.ProgressBar);
         _loadingBar.value = 0;
         _loadPromptText = GetText(Texts.TextPrompt);
         _tip = GetText(Texts.Content);
-        _tip.text = textForTip[Random.Range(0, textForTip.Length)];
+        _tip.text = Define.TEXT_FOR_TIP[Random.Range(0, Define.TEXT_FOR_TIP.Length)];
 
         waitForInput = false;
         LoadingProgress = 0.0f;

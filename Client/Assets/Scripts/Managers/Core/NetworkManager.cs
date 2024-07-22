@@ -66,6 +66,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public Define.SectorName ReadySceneSpawnSector;
     public Vector3 TutorialSceneSpawnPosition;
     public Define.SectorName TutorialSceneSpawnSector;
+    public Vector3 TestSceneSpawnPosition;
+    public Define.SectorName TestSceneSpawnSector;
     #endregion
 
     #region Init
@@ -81,8 +83,11 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         ReadySceneSpawnPosition = new Vector3(34, 4, -8);
         ReadySceneSpawnSector = Define.SectorName.Cafeteria;
 
-        TutorialSceneSpawnPosition = new Vector3(42, 0.5f, -28);
+        TutorialSceneSpawnPosition = new Vector3(42, 0, -28);
         TutorialSceneSpawnSector = Define.SectorName.F1_Corridor_D;
+
+        TestSceneSpawnPosition = new Vector3(1.2f, 0, 0);
+        TestSceneSpawnSector = Define.SectorName.F1_Corridor_A;
 
         RoomPlayersCount = Define.PLAYER_COUNT;
 
@@ -438,10 +443,10 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
                 spawnData.SpawnPoint.SectorName = ReadySceneSpawnSector;
                 spawnData.CreatureType = Define.CreatureType.Crew;
                 break;
-            // 테스트 씬에 사용, 게임 씬은 NetworkSceneManager에서 따로 처리
+            // 테스트 씬만 사용, 본 게임의 게임 씬은 NetworkSceneManager에서 처리
             case Define.SceneType.GameScene:
-                spawnData.SpawnPoint.Position = ReadySceneSpawnPosition + new Vector3(UnityEngine.Random.Range(0, 3), 0, UnityEngine.Random.Range(0, 3));
-                spawnData.SpawnPoint.SectorName = ReadySceneSpawnSector;
+                spawnData.SpawnPoint.Position = TestSceneSpawnPosition + new Vector3(UnityEngine.Random.Range(0, 3), 0, UnityEngine.Random.Range(0, 3));
+                spawnData.SpawnPoint.SectorName = TestSceneSpawnSector;
                 spawnData.CreatureType = Creature;
                 break;
         }

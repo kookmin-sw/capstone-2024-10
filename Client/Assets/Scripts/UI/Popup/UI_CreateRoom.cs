@@ -33,7 +33,7 @@ public class UI_CreateRoom : UI_Popup
         if (base.Init() == false)
             return false;
 
-        transform.localPosition = new Vector3(47, 227, 0);
+        transform.localPosition = new Vector3(47, 317, 0);
 
         Bind<Button>(typeof(Buttons));
         Bind<TMP_InputField>(typeof(InputFields));

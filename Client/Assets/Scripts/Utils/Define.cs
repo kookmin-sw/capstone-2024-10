@@ -199,6 +199,17 @@ public static class Define
     public const int MAX_ITEM_NUM = 4;
     public const int MAX_SKILL_NUM = 4;
 
+    public const float EXIT_TIME = 10.0f;
+    public static string[] TEXT_FOR_TIP =
+    {
+        "Crew: Crouch to pick up an item from the floor.",
+        "Crew: When chased by an alien, shut the door to delay the alien's pursuit.",
+        "Crew: Crouch to restore stamina and sanity gauges.",
+        "Crew: Running makes your footsteps louder.",
+        "Crew: When attacked, your running speed increases momentarily.",
+        "Alien: Use the \"Roar\" skill to slow down the crew, then chase after them.",
+    };
+
     public const int BATTERY_CHARGE_GOAL = 1;
     public const int USBKEY_INSERT_GOAL = 1;
     public const int OPEN_PANIC_ROOM = 5;
