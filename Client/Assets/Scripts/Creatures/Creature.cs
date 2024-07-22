@@ -151,7 +151,7 @@ public abstract class Creature : NetworkBehaviour
 
     protected virtual void OnUpdate()
     {
-        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned || IngameUI == null)
             return;
 
         HandleInput();
@@ -160,7 +160,7 @@ public abstract class Creature : NetworkBehaviour
 
     protected virtual void OnLateUpdate()
     {
-        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned || IngameUI == null)
             return;
 
         CreatureCamera.UpdateCameraAngle();
@@ -183,6 +183,11 @@ public abstract class Creature : NetworkBehaviour
         CameraRotationY = Quaternion.Euler(0f, CreatureCamera.transform.rotation.eulerAngles.y, 0);
         Direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
         Velocity = (CameraRotationY * Direction).normalized;
+
+        if (Input.GetKey(KeyCode.Tab))
+            IngameUI.MapUI.Show();
+        else
+            IngameUI.MapUI.Hide();
     }
 
     protected void UpdateByState()

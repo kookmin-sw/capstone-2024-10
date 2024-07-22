@@ -4,25 +4,26 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_ManualController : UI_Base
+public class UI_GuideController : UI_Base
 {
     private UI_LobbyController _controller;
-    private UI_Manual _currentManual;
-    private UI_Manual _crewManual;
-    private UI_Manual _alienManual;
+    private Dictionary<GuideNames, UI_Guide> _guides = new(); // 모든 가이드 목록
+    private UI_Guide _currentGuide;
     private int _currentPage = 0;
 
-    enum GameObjects
+    enum GuideNames
     {
-        CrewManual,
-        AlienManual,
+        CrewGuide,
+        AlienGuide,
+        Map,
     }
 
     enum Buttons
     {
         Btn_Return,
-        Btn_CrewManual,
-        Btn_AlienManual,
+        Btn_CrewGuide,
+        Btn_AlienGuide,
+        Btn_Map,
         Btn_NextPage,
         Btn_PrevPage,
     }
@@ -32,8 +33,8 @@ public class UI_ManualController : UI_Base
         CurrentPage,
     }
 
-
-    private class UI_Manual : UI_Base
+    // 가이드 1개를 나타내는 클래스
+    private class UI_Guide : UI_Base
     {
         public List<GameObject> Pages { get; set; } = new();
 
@@ -42,22 +43,15 @@ public class UI_ManualController : UI_Base
             Pages,
         }
 
-        public override bool Init()
+        public new void Init()
         {
-            if (!base.Init())
-                return false;
-
             Bind<GameObject>(typeof(Manual_GameObjects));
 
-            if (Pages.Count == 0)
+            // 가이드 페이지 등록
+            for (int i = 0; i < GetObject(Manual_GameObjects.Pages).transform.childCount; i++)
             {
-                for (int i = 0; i < GetObject(Manual_GameObjects.Pages).transform.childCount; i++)
-                {
-                    Pages.Add(GetObject(Manual_GameObjects.Pages).transform.GetChild(i).gameObject);
-                }
+                Pages.Add(GetObject(Manual_GameObjects.Pages).transform.GetChild(i).gameObject);
             }
-
-            return true;
         }
 
         public void Show()
@@ -73,12 +67,10 @@ public class UI_ManualController : UI_Base
 
         public void SetPage(int pageNum)
         {
-
             foreach (var page in Pages)
             {
                 page.SetActive(false);
             }
-
             Pages[pageNum].SetActive(true);
         }
     }
@@ -88,53 +80,52 @@ public class UI_ManualController : UI_Base
         if (!base.Init())
             return false;
 
-        Bind<GameObject>(typeof(GameObjects));
+        Bind<GameObject>(typeof(GuideNames));
         Bind<Button>(typeof(Buttons));
         Bind<TMP_Text>(typeof(Texts));
 
         _controller = FindObjectOfType<UI_LobbyController>();
-        _crewManual = GetObject(GameObjects.CrewManual).GetOrAddComponent<UI_Manual>();
-        _alienManual = GetObject(GameObjects.AlienManual).GetOrAddComponent<UI_Manual>();
+        _guides.Add(GuideNames.CrewGuide, GetObject(GuideNames.CrewGuide).GetOrAddComponent<UI_Guide>());
+        _guides.Add(GuideNames.AlienGuide, GetObject(GuideNames.AlienGuide).GetOrAddComponent<UI_Guide>());
+        _guides.Add(GuideNames.Map, GetObject(GuideNames.Map).GetOrAddComponent<UI_Guide>());
 
         GetButton(Buttons.Btn_Return).gameObject.BindEvent((e) => { _controller.Position1(); }, Define.UIEvent.Click);
-        GetButton(Buttons.Btn_CrewManual).onClick.AddListener(ShowCrewManual);
-        GetButton(Buttons.Btn_AlienManual).onClick.AddListener(ShowAlienManual);
+        GetButton(Buttons.Btn_CrewGuide).onClick.AddListener(()=>ShowGuide(GuideNames.CrewGuide));
+        GetButton(Buttons.Btn_AlienGuide).onClick.AddListener(() => ShowGuide(GuideNames.AlienGuide));
+        GetButton(Buttons.Btn_Map).onClick.AddListener(() => ShowGuide(GuideNames.Map));
         GetButton(Buttons.Btn_NextPage).onClick.AddListener(NextPage);
         GetButton(Buttons.Btn_PrevPage).onClick.AddListener(PrevPage);
 
-        _crewManual.Init();
-        _alienManual.Init();
+        foreach (var guide in _guides.Values)
+        {
+            guide.Init();
+            guide.Hide();
+        }
 
-        ShowCrewManual();
+        _currentGuide = _guides[GuideNames.CrewGuide];
+        ShowGuide(GuideNames.CrewGuide);
 
         return true;
     }
 
-    private void ShowCrewManual()
+    private void ShowGuide(GuideNames guideName)
     {
-        _alienManual.Hide();
-        _crewManual.Show();
-        _currentManual = _crewManual;
-        _currentPage = 0;
-        UpdateCurrentPageText();
-    }
+        var guide = _guides[guideName];
 
-    private void ShowAlienManual()
-    {
-        _crewManual.Hide();
-        _alienManual.Show();
-        _currentManual = _alienManual;
+        _currentGuide.Hide();
+        guide.Show();
+        _currentGuide = guide;
         _currentPage = 0;
         UpdateCurrentPageText();
     }
 
     private void NextPage()
     {
-        if (_currentPage + 1 >= _currentManual.Pages.Count)
+        if (_currentPage + 1 >= _currentGuide.Pages.Count)
             return;
 
         _currentPage++;
-        _currentManual.SetPage(_currentPage);
+        _currentGuide.SetPage(_currentPage);
         UpdateCurrentPageText();
     }
 
@@ -144,13 +135,13 @@ public class UI_ManualController : UI_Base
             return;
 
         _currentPage--;
-        _currentManual.SetPage(_currentPage);
+        _currentGuide.SetPage(_currentPage);
         UpdateCurrentPageText();
     }
 
     private void UpdateCurrentPageText()
     {
-        GetText(Texts.CurrentPage).text = $"Page {_currentPage + 1}/{_currentManual.Pages.Count}";
+        GetText(Texts.CurrentPage).text = $"Page {_currentPage + 1}/{_currentGuide.Pages.Count}";
     }
 
 }

@@ -202,12 +202,15 @@ public static class Define
     public const float EXIT_TIME = 10.0f;
     public static string[] TEXT_FOR_TIP =
     {
-        "Crew: Crouch to pick up an item from the floor.",
-        "Crew: When chased by an alien, shut the door to delay the alien's pursuit.",
-        "Crew: Crouch to restore stamina and sanity gauges.",
-        "Crew: Running makes your footsteps louder.",
-        "Crew: When attacked, your running speed increases momentarily.",
-        "Alien: Use the \"Roar\" skill to slow down the crew, then chase after them.",
+        "Crew: Crouch to pick up the items on the floor.",
+        "Crew: Close the doors to run away from the alien.",
+        "Crew: You can recover sanity by crouching.",
+        "Crew: Crouching makes your stamina recover faster.",
+        "Crew: While running, your footstep sound becomes much louder.",
+        "Crew: While crouching, your footstep doesn't make any sound.",
+        "Crew: After being attacked by the alien, your speed significantly increases for a short moment.",
+        "Alien: Use the \"Roar\" skill to slow down the crews.",
+        "Alien: Destroy the closed doors so that crews cannot use them again.",
     };
 
     public const int BATTERY_CHARGE_GOAL = 1;
