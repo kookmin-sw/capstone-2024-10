@@ -10,6 +10,7 @@ public class UI_Ingame : UI_Scene
     public UI_ObjectName ObjectNameUI { get; private set; }
     public UI_RemainPerson RemainPersonUI { get; private set; }
     public UI_CrewMessaage CrewMessageUI { get; private set; }
+    public UI_Map MapUI { get; private set; }
     public Canvas Canvas { get; protected set; }
     public Camera Camera { get; protected set; }
 
@@ -22,6 +23,7 @@ public class UI_Ingame : UI_Scene
         UI_ObjectName,
         UI_RemainPerson,
         UI_CrewMessage,
+        UI_Map,
     }
 
     public override bool Init()
@@ -37,6 +39,7 @@ public class UI_Ingame : UI_Scene
         ObjectNameUI = Get<UI_Base>(SubItemUIs.UI_ObjectName) as UI_ObjectName;
         RemainPersonUI = Get<UI_Base>(SubItemUIs.UI_RemainPerson) as UI_RemainPerson;
         CrewMessageUI = Get<UI_Base>(SubItemUIs.UI_CrewMessage) as UI_CrewMessaage;
+        MapUI = Get<UI_Base>(SubItemUIs.UI_Map) as UI_Map;
 
         return true;
     }
@@ -45,6 +48,7 @@ public class UI_Ingame : UI_Scene
     {
         Creature = creature;
         CurrentSectorUI.SetSector(Creature.CurrentSector);
+        MapUI.Hide();
     }
 
     public void EndGame()
@@ -67,7 +71,7 @@ public class UI_Ingame : UI_Scene
         Canvas.worldCamera = Camera;
     }
 
-    public void HideUi()
+    private void HideUi()
     {
         WorkProgressBarUI.Hide();
         InteractInfoUI.Hide();
