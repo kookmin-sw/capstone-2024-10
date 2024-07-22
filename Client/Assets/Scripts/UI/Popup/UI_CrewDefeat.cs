@@ -22,7 +22,7 @@ public class UI_CrewDefeat : UI_Popup
     private CanvasGroup CanvasGroup;
     private Coroutine FadeCor;
     private float accumTime = 0f;
-    private float _exitTime = 6f;
+    private float _exitTime = Define.EXIT_TIME + 1;
 
     public override bool Init()
     {
