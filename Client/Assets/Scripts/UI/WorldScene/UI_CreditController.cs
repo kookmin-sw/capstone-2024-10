@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class UI_CreditController : UI_Base
 {
     private UI_LobbyController _controller;
-    private float scrollSpeed = 150f;
+    private float scrollSpeed = 80f;
     private RectTransform textscroll;
+    private Coroutine CoScrollCredits;
 
     enum Buttons
     {
@@ -39,14 +40,22 @@ public class UI_CreditController : UI_Base
         return true;
     }
 
-    public IEnumerator ScrollCredits()
+    public void StartScrollCredits()
+    {
+        if (CoScrollCredits != null)
+            StopCoroutine(CoScrollCredits);
+
+        CoScrollCredits = StartCoroutine(nameof(ScrollCredits));
+    }
+
+    private IEnumerator ScrollCredits()
     {
         // 스크롤 시작 전 대기
         yield return new WaitForSeconds(1f);
 
         while (textscroll.anchoredPosition.y < 6000f)
         {
-            textscroll.anchoredPosition += new Vector2(0, scrollSpeed * Time.deltaTime);
+            textscroll.anchoredPosition += new Vector2(0f, scrollSpeed * Time.deltaTime);
             yield return null; // 다음 프레임까지 대기
         }
 
@@ -54,6 +63,7 @@ public class UI_CreditController : UI_Base
 
     public void ResetCredit()
     {
-        textscroll.anchoredPosition = new Vector2(0, -900f);
+        StopCoroutine(CoScrollCredits);
+        textscroll.anchoredPosition = new Vector2(0f, 0f);
     }
 }
