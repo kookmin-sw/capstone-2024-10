@@ -114,4 +114,10 @@ public class UI_Inventory : UI_Base
             }
         }
     }
+
+    public void RemoveItemName()
+    {
+        GetText(Texts.ItemName).text = "";
+        return;
+    }
 }
