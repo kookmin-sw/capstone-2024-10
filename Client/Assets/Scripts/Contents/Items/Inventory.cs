@@ -95,7 +95,7 @@ public class Inventory: NetworkBehaviour
 
         Rpc_HideItem(ItemInventory[CurrentItemIdx]);
         Owner.CrewIngameUI.InventoryUI.Hide(CurrentItemIdx);
-
+        Owner.CrewIngameUI.InventoryUI.RemoveItemName();
         int itemId = CurrentItem.DataId;
         ItemInventory[CurrentItemIdx] = -1;
 
