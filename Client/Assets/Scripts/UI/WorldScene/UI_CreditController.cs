@@ -63,7 +63,8 @@ public class UI_CreditController : UI_Base
 
     public void ResetCredit()
     {
-        StopCoroutine(CoScrollCredits);
+        if (CoScrollCredits != null)
+            StopCoroutine(CoScrollCredits);
         textscroll.anchoredPosition = new Vector2(0f, 0f);
     }
 }
