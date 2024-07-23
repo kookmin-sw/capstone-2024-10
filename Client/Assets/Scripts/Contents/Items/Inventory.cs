@@ -110,6 +110,7 @@ public class Inventory: NetworkBehaviour
         if (!CurrentItem.CheckAndUseItem())
             return false;
 
+        Owner.CrewIngameUI.InventoryUI.RemoveItemName();
         return true;
     }
 
@@ -128,7 +129,7 @@ public class Inventory: NetworkBehaviour
 
         NetworkObject no = Managers.ObjectMng.SpawnItemObject(RemoveItem(), Owner.Head.transform.position + Owner.Head.transform.forward, true);
         //no.transform.SetParent(gameObject.transform);
-
+        Owner.CrewIngameUI.InventoryUI.RemoveItemName();
         return true;
     }
 
