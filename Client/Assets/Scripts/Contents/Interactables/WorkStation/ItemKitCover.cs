@@ -9,7 +9,7 @@ public class ItemKitCover : BaseWorkStation
 
     public override bool Interact(Creature creature)
     {
-        return ItemKit.IsInteractable(creature);
+        return ItemKit.Interact(creature);
     }
 
     protected override void Rpc_WorkComplete() { }
