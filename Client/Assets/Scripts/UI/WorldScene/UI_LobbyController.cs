@@ -145,7 +145,7 @@ public class UI_LobbyController : UI_Base
     {
         DisablePlayCampaign();
         _cameraAnimator.SetFloat("Animate", 3);
-        StartCoroutine(_creditController.ScrollCredits());
+        _creditController.StartScrollCredits();
     }
 
     public void Position3()

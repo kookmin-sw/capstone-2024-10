@@ -213,9 +213,9 @@ public static class Define
         "Alien: Destroy the closed doors so that crews cannot use them again.",
     };
 
-    public const int BATTERY_CHARGE_GOAL = 1;
-    public const int USBKEY_INSERT_GOAL = 1;
-    public const int OPEN_PANIC_ROOM = 5;
+    public const int BATTERY_CHARGE_GOAL = 7;
+    public const int USBKEY_INSERT_GOAL = 4;
+    public const int OPEN_PANIC_ROOM = 2;
     public const int TUTORIAL_BATTERY_CHARGE_GOAL = 2;
 
     #endregion

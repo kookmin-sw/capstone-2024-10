@@ -29,7 +29,7 @@ public class UI_Introduction : UI_Panel
     public void StartFade()
     {
         Sequence sequence = DOTween.Sequence();
-        sequence.AppendInterval(2.0f);
+        sequence.AppendInterval(2.5f);
         sequence.Append(group.DOFade(0.0f, 2.0f).SetEase(Ease.OutQuint));
         sequence.Append(GetImage(Images.Background).DOFade(0.0f, 0.5f).SetEase(Ease.OutQuint));
         sequence.OnComplete(() => onFinished.Invoke());
