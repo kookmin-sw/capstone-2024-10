@@ -18,6 +18,11 @@ public class UI_StartGame : UI_Popup
         ReadyCount,
     }
 
+    enum GameObjects
+    {
+        ReadySignal,
+    }
+
     public override bool Init()
     {
         if (base.Init() == false)
@@ -25,9 +30,11 @@ public class UI_StartGame : UI_Popup
 
         Bind<Button>(typeof(Buttons));
         Bind<TMP_Text>(typeof(Texts));
+        Bind<GameObject>(typeof(GameObjects));
 
         GetButton((int)Buttons.ReadyGame).onClick.AddListener(ReadyGame);
         GetButton((int)Buttons.ExitGame).onClick.AddListener(ExitGame);
+        GetObject((int)GameObjects.ReadySignal).SetActive(false);
 
         SetInfo(0);
         StartCoroutine(Reserve());
@@ -40,6 +47,7 @@ public class UI_StartGame : UI_Popup
         if (Input.GetButtonDown("Submit"))
         {
             SimulateButtonClick(GetButton((int)Buttons.ReadyGame));
+            GetObject((int)GameObjects.ReadySignal).SetActive(true);
         }
     }
 
@@ -54,6 +62,7 @@ public class UI_StartGame : UI_Popup
         yield return new WaitUntil(() => Managers.NetworkMng.PlayerSystem != null);
         Managers.NetworkMng.PlayerSystem.OnReadyCountUpdated += () => SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
         SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
+        
     }
 
     public void ReadyGame()
