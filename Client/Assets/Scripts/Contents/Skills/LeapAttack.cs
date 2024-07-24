@@ -67,7 +67,7 @@ public class LeapAttack : BaseSkill
     {
         if (IsMoving)
         {
-            KCC.Move(ForwardDirection * (170f * Runner.DeltaTime), 0);
+            KCC.Move(ForwardDirection * (180f * Runner.DeltaTime), 0);
         }
     }
 }

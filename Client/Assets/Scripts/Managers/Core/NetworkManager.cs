@@ -243,7 +243,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     private void ShowCrewEnding()
     {
         Util.ClearUIAndSound();
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.8f);
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.7f);
         Managers.UIMng.ShowPopupUI<UI_CrewWin>();
         IsEndGameTriggered = true;
     }

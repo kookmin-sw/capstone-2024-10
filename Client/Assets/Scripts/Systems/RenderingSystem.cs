@@ -15,12 +15,12 @@ public class RenderingSystem : NetworkBehaviour
 
     public Material DamageMaterial { get; protected set; }
 
-    private Color _erosionColor = new Color(255.0f / 255.0f, 76.0f / 255.0f, 76.0f / 255.0f);
+    private Color _erosionColor = new Color(255.0f / 255.0f, 90.0f / 255.0f, 90.0f / 255.0f);
     private Color _defaultColor = new Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
 
     private float _defaultVignetteValue = 0.15f;
 
-    private float blindValue = 15f;
+    private float _blindValue = 15f;
     private float _damageEffectSpeed = 1.5f;
 
     private Tweener _erosionEffectTweener;
@@ -86,7 +86,7 @@ public class RenderingSystem : NetworkBehaviour
     public void ApplyBlindEffect(float blindTime, float backTime)
     {
         _blindEffectTweener.Kill();
-        ColorAdjustments.postExposure.value = blindValue;
+        ColorAdjustments.postExposure.value = _blindValue;
 
         DOVirtual.DelayedCall(blindTime, () =>
         {

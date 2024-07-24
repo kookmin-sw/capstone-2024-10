@@ -28,13 +28,12 @@ public class CargoPassageControlComputer : BaseWorkStation
 
         if (!Managers.GameMng.PlanSystem.IsCentralComputerWorkFinished)
         {
-            creature.IngameUI.ErrorTextUI.Show("Use Central Computer First");
             return false;
         }
 
         if (Managers.GameMng.PlanSystem.IsCargoPassageOpen || IsCompleted)
         {
-            creature.IngameUI.ErrorTextUI.Show("Cargo Gates are Already Open");
+            creature.IngameUI.ErrorTextUI.Show("Already Used");
             return false;
         }
 

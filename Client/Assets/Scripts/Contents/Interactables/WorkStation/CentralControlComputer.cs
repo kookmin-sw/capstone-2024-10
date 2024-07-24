@@ -31,7 +31,6 @@ public class CentralControlComputer : BaseWorkStation
 
         if (!Managers.GameMng.PlanSystem.IsBatteryChargeFinished)
         {
-            creature.IngameUI.ErrorTextUI.Show("Charge Batteries First");
             return false;
         }
 

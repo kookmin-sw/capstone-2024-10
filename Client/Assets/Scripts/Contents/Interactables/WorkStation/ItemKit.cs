@@ -73,6 +73,6 @@ public class ItemKit : BaseWorkStation
     [Rpc(RpcSources.All, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
-        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/ItemKit", 0.7f, 0.7f, isLoop: true);
+        Managers.SoundMng.PlayObjectAudio(AudioSource, $"{Define.EFFECT_PATH}/Interactable/ItemKit", 0.7f, 0.9f, isLoop: true);
     }
 }

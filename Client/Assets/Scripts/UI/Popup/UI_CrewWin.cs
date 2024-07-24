@@ -37,7 +37,7 @@ public class UI_CrewWin : UI_Popup
         CanvasGroup = GetComponent<CanvasGroup>();
         StartFadeIn();
 
-        GetText(Texts.Text3).text = $"Automatically exit after {Mathf.Floor(_exitTime)} seconds";
+        GetText(Texts.Text3).text = $"Automatically leave after {Mathf.Floor(_exitTime)} seconds";
         StartCoroutine(CountDownToExit());
 
         return true;
@@ -50,7 +50,7 @@ public class UI_CrewWin : UI_Popup
         {
             if (Mathf.Floor(t) != Mathf.Floor(_exitTime))
             {
-                GetText(Texts.Text3).text = $"Automatically exit after {Mathf.Floor(t)} seconds";
+                GetText(Texts.Text3).text = $"Automatically leave after {Mathf.Floor(t)} seconds";
             }
             _exitTime = t;
             yield return null;

@@ -27,8 +27,14 @@ public class EmergencyControlDevice : BaseWorkStation
             return false;
         }
 
-        if (!Managers.GameMng.PlanSystem.IsBatteryChargeFinished || Managers.GameMng.PlanSystem.IsPanicRoomActivated)
+        if (!Managers.GameMng.PlanSystem.IsBatteryChargeFinished)
         {
+            return false;
+        }
+
+        if (Managers.GameMng.PlanSystem.IsPanicRoomActivated)
+        {
+            creature.IngameUI.ErrorTextUI.Show("Already Used");
             return false;
         }
 
