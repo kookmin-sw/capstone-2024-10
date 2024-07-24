@@ -27,7 +27,6 @@ public class ElevatorControlComputer : BaseWorkStation
 
         if (!Managers.GameMng.PlanSystem.IsBatteryChargeFinished)
         {
-            creature.IngameUI.ErrorTextUI.Show("Charge Batteries First");
             return false;
         }
 

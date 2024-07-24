@@ -33,7 +33,7 @@ public class BasicAttack : BaseSkill
         {
             if (CurrentSkillAmount > 0.3f && CurrentSkillAmount < 0.6f && !IsHit)
             {
-                for (float i = -0.3f; i <= 0.3f && !IsHit; i += 0.2f)
+                for (float i = -0.5f; i <= 0.5f && !IsHit; i += 0.2f)
                 {
                     for (float j = -1f; j <= 1f && !IsHit; j += 0.2f)
                     {

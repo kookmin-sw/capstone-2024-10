@@ -67,6 +67,7 @@ public class UI_LobbyController : UI_Base
 
         GetButton(Buttons.Btn_Exit).onClick.AddListener(AreYouSure);
         GetButton(Buttons.Btn_Manual).onClick.AddListener(Position3);
+        GetButton(Buttons.Btn_Manual).onClick.AddListener(PlaySwoosh);
         GetButton(Buttons.Btn_No1).onClick.AddListener(ReturnMenu);
         GetButton(Buttons.Btn_PlayCampaign).onClick.AddListener(PlayCampaign);
         GetButton(Buttons.Btn_Return).onClick.AddListener(Position1);
@@ -171,7 +172,7 @@ public class UI_LobbyController : UI_Base
 
     public void PlaySwoosh()
     {
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/UI/Click2");
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/UI/Click2", Define.SoundType.Facility, isOneShot:true);
     }
 
     // Are You Sure - Quit Panel Pop Up
