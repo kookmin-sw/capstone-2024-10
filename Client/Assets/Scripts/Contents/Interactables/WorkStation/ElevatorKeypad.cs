@@ -28,6 +28,7 @@ public class ElevatorKeypad : BaseWorkStation
 
         if (IsCompleted)
         {
+            creature.IngameUI.ErrorTextUI.Show("Already Used");
             return false;
         }
 

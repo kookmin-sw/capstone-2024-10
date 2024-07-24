@@ -5353,7 +5353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e11b68cfa65e85444a9b9ff196f29a34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DefaultRoomName: Test2
+  DefaultRoomName: Test
   Creature: 1
   PrefabNum: 0
   ReadySceneSpawnPosition: {x: 1.2, y: 0, z: 0}
@@ -9397,8 +9397,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 200, y: 0}
-  m_SizeDelta: {x: 400, y: 500}
+  m_AnchoredPosition: {x: 249.52698, y: 0}
+  m_SizeDelta: {x: 500, y: 500}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1711679962
 MonoBehaviour:
@@ -9437,10 +9437,12 @@ MonoBehaviour:
 
     Blind => K
 
-    Stat
-    System On => L
+    Crew
+    Stat System On => L
 
-    Clear => Z'
+    Win => N
+
+    Alien Defeat => M'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fb95a38d28008ae49b65cd3da2dfc97b, type: 2}
   m_sharedMaterial: {fileID: -8701900407955875807, guid: fb95a38d28008ae49b65cd3da2dfc97b, type: 2}

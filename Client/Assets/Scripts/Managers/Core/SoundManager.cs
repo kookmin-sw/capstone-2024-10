@@ -104,7 +104,7 @@ public class SoundManager
             audioSource.Stop();
 
         audioSource.pitch = pitch;
-        audioSource.volume = volume * CustomAudioVolume(Define.SoundType.Environment);
+        audioSource.volume = volume * CustomAudioVolume(Define.SoundType.Effect);
         audioSource.clip = Managers.SoundMng.GetOrAddAudioClip(path);
 
         if (audioSource.clip == null)
