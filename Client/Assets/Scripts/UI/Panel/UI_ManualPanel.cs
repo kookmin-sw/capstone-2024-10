@@ -9,12 +9,14 @@ public class UI_ManualPanel : UI_Panel
     private UI_Manual _currentManual;
     private UI_Manual _crewManual;
     private UI_Manual _alienManual;
+    private UI_Manual _mapManual;
     private int _currentPage = 0;
 
     enum GameObjects
     {
         CrewManual,
         AlienManual,
+        MapManual,
     }
 
     enum Buttons
@@ -22,6 +24,7 @@ public class UI_ManualPanel : UI_Panel
         Btn_Return,
         Btn_CrewManual,
         Btn_AlienManual,
+        Btn_MapManual,
         Btn_NextPage,
         Btn_PrevPage,
     }
@@ -93,6 +96,7 @@ public class UI_ManualPanel : UI_Panel
 
         _crewManual = GetObject(GameObjects.CrewManual).GetOrAddComponent<UI_Manual>();
         _alienManual = GetObject(GameObjects.AlienManual).GetOrAddComponent<UI_Manual>();
+        _mapManual = GetObject(GameObjects.MapManual).GetOrAddComponent<UI_Manual>();
 
         GetButton(Buttons.Btn_Return).onClick.AddListener(() =>
         {
@@ -107,11 +111,13 @@ public class UI_ManualPanel : UI_Panel
         });
         GetButton(Buttons.Btn_CrewManual).onClick.AddListener(ShowCrewManual);
         GetButton(Buttons.Btn_AlienManual).onClick.AddListener(ShowAlienManual);
+        GetButton(Buttons.Btn_MapManual).onClick.AddListener(ShowMapManual);
         GetButton(Buttons.Btn_NextPage).onClick.AddListener(NextPage);
         GetButton(Buttons.Btn_PrevPage).onClick.AddListener(PrevPage);
 
         _crewManual.Init();
         _alienManual.Init();
+        _mapManual.Init();
 
         ShowCrewManual();
 
@@ -122,6 +128,7 @@ public class UI_ManualPanel : UI_Panel
     {
         _alienManual.Hide();
         _crewManual.Show();
+        _mapManual.Hide();
         _currentManual = _crewManual;
         _currentPage = 0;
         UpdateCurrentPageText();
@@ -130,8 +137,19 @@ public class UI_ManualPanel : UI_Panel
     private void ShowAlienManual()
     {
         _crewManual.Hide();
+        _mapManual.Hide();
         _alienManual.Show();
         _currentManual = _alienManual;
+        _currentPage = 0;
+        UpdateCurrentPageText();
+    }
+
+    private void ShowMapManual()
+    {
+        _crewManual.Hide();
+        _alienManual.Hide();
+        _mapManual.Show();
+        _currentManual = _mapManual;
         _currentPage = 0;
         UpdateCurrentPageText();
     }
