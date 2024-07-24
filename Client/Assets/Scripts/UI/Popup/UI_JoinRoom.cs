@@ -42,7 +42,7 @@ public class UI_JoinRoom : UI_Popup
         Bind<TMP_InputField>(typeof(InputFields));
         Bind<TMP_Text>(typeof(Texts));
 
-        transform.localPosition = new Vector3(47, 227, 0);
+        transform.localPosition = new Vector3(47, 317, 0);
 
         InputPassword = Get<TMP_InputField>((int)InputFields.Password);
         _warning = Get<TMP_Text>((int)Texts.Warning);
@@ -51,6 +51,7 @@ public class UI_JoinRoom : UI_Popup
         {
             JoinGame();
         });
+
         Get<Button>((int)Buttons.Btn_No).onClick.AddListener(() =>
         {
             ClosePopupUI();

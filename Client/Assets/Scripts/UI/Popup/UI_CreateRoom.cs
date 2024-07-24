@@ -66,8 +66,12 @@ public class UI_CreateRoom : UI_Popup
     public void CreateGame()
     {
         Managers.UIMng.Clear();
-        string name = RoomName.text.IsNullOrEmpty() ? RoomNamePlaceholder.text : RoomName.text;
-        Managers.NetworkMng.CreateSession(name, Password.text);
+        string roomName = RoomName.text.Trim();
+
+        // 입력 가능 글자 14글자로 제한
+        roomName = roomName.IsNullOrEmpty() ? RoomNamePlaceholder.text : roomName.Substring(0, 14);
+
+        Managers.NetworkMng.CreateSession(roomName, Password.text);
         Managers.UIMng.ShowPanelUI<UI_Loading>();
     }
 }
