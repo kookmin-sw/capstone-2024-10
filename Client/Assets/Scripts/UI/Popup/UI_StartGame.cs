@@ -20,6 +20,7 @@ public class UI_StartGame : UI_Popup
 
     enum GameObjects
     {
+        NotReadySignal,
         ReadySignal,
     }
 
@@ -47,6 +48,7 @@ public class UI_StartGame : UI_Popup
         if (Input.GetButtonDown("Submit"))
         {
             SimulateButtonClick(GetButton((int)Buttons.ReadyGame));
+            GetObject((int)GameObjects.NotReadySignal).SetActive(false);
             GetObject((int)GameObjects.ReadySignal).SetActive(true);
         }
     }
