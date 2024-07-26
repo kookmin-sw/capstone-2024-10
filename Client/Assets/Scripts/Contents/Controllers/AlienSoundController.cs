@@ -1,5 +1,3 @@
-using System.Collections;
-using DG.Tweening;
 using Fusion;
 using UnityEngine;
 
@@ -14,7 +12,7 @@ public class AlienSoundController : BaseSoundController
 
     public override void PlayMove()
     {
-        Rpc_PlayFootStepSound(1.33f, 0.6f);
+        Rpc_PlayFootStepSound(1.33f, 0.7f);
     }
 
     public void PlaySound(Define.AlienActionType alienActionType)
@@ -46,7 +44,7 @@ public class AlienSoundController : BaseSoundController
     protected void Rpc_PlayFootStepSound(float pitch, float volume)
     {
         if (HasStateAuthority)
-            volume *= 0.5f;
+            volume *= 0.2f;
 
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/FootStep_Alien", pitch, volume, isLoop: true);
     }
@@ -124,12 +122,6 @@ public class AlienSoundController : BaseSoundController
                             {
                                 Managers.SoundMng.Play($"{Define.BGM_PATH}/In Captivity", Define.SoundType.Bgm,
                                     volume: 0.4f);
-
-                                _chasingTweener.Kill();
-                                _chasingTweener = DOVirtual.Float(0f, 10f, 10f, value =>
-                                {
-                                    Creature.BaseStat.WalkSpeed = Creature.CreatureData.WalkSpeed + value;
-                                });
                             }
                         }
                         return;
@@ -142,20 +134,5 @@ public class AlienSoundController : BaseSoundController
             StartCoroutine(CheckNotChasing(7f));
 
         IsChasing = false;
-    }
-
-    protected override IEnumerator CheckNotChasing(float time)
-    {
-        float currentChasingTime = 0f;
-        while (currentChasingTime < time)
-        {
-            currentChasingTime += Time.deltaTime;
-            yield return null;
-        }
-
-        StartCoroutine(StopChasing());
-
-        _chasingTweener.Kill();
-        Creature.BaseStat.WalkSpeed = Creature.CreatureData.WalkSpeed;
     }
 }
