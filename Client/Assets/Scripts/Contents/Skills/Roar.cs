@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 public class Roar : BaseSkill
@@ -9,6 +10,16 @@ public class Roar : BaseSkill
 
         ReadySkillActionType = Define.AlienActionType.ReadyRoar;
         SkillActionType = Define.AlienActionType.Roar;
+    }
+
+    public override void ReadySkill()
+    {
+        base.ReadySkill();
+
+        DOVirtual.Float(0, SkillData.Range, SkillData.TotalReadySkillAmount, value =>
+        {
+            Owner.RoarRangeIndicator.transform.localScale = new Vector3(1f, 1f, value);
+        });
     }
 
     protected override IEnumerator ProgressSkill()

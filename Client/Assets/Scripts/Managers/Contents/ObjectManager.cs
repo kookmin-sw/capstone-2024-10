@@ -52,11 +52,11 @@ public class ObjectManager
         return no;
     }
 
-    public NetworkObject SpawnItemObject(int itemDataId, Vector3 spawnPosition, bool isGettable)
+    public NetworkObject SpawnItemObject(int itemDataId, Vector3 spawnPosition, Quaternion spawnRotation, bool isGettable)
     {
         string className = Managers.DataMng.ItemDataDict[itemDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.ITEM_OBJECT_PATH}/{className}");
-        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition);
+        NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition, spawnRotation);
 
         BaseItemObject item = no.GetComponent<BaseItemObject>();
         item.SetInfo(isGettable);
