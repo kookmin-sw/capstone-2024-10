@@ -38,7 +38,7 @@ public class UI_CrewDefeat : UI_Popup
         StartFadeIn();
 
         GetText(Texts.Text3).text = $"Automatically leave after {Mathf.Floor(_exitTime)} seconds";
-        //StartCoroutine(CountDownToExit());
+        StartCoroutine(CountDownToExit());
 
         return true;
     }

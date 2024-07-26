@@ -55,7 +55,7 @@ public class CrewStat : BaseStat
 
         if (value < 0)
         {
-            //Managers.GameMng.RenderingSystem.ApplyDamageEffect(Hp);
+            Managers.GameMng.RenderingSystem.ApplyDamageEffect(Hp);
 
             ChangeStamina(DamagedRecoverStamina);
             DamagedBoost = true;

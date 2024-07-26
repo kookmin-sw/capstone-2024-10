@@ -1,3 +1,5 @@
+using System.Collections;
+using DG.Tweening;
 using Fusion;
 using UnityEngine;
 
@@ -12,7 +14,7 @@ public class AlienSoundController : BaseSoundController
 
     public override void PlayMove()
     {
-        Rpc_PlayFootStepSound(1.33f, 0.85f);
+        Rpc_PlayFootStepSound(1.33f, 0.6f);
     }
 
     public void PlaySound(Define.AlienActionType alienActionType)
@@ -58,13 +60,13 @@ public class AlienSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayBasicAttack()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 1f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 0.9f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayRoar()
     {
-        float volume = 0.8f;
+        float volume = 0.7f;
         if (HasStateAuthority)
             volume *= 0.5f;
 
@@ -74,7 +76,7 @@ public class AlienSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayCursedHowl()
     {
-        float volume = 0.8f;
+        float volume = 0.7f;
         if (HasStateAuthority)
             volume *= 0.5f;
 
@@ -84,13 +86,13 @@ public class AlienSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayLeapAttack()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 1f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 0.9f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayHit()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack_Hit", pitch: 1f, volume: 0.7f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack_Hit", pitch: 1f, volume: 0.6f, isLoop: false);
     }
 
     public override void CheckChasing()
@@ -122,9 +124,14 @@ public class AlienSoundController : BaseSoundController
                             {
                                 Managers.SoundMng.Play($"{Define.BGM_PATH}/In Captivity", Define.SoundType.Bgm,
                                     volume: 0.4f);
+
+                                _chasingTweener.Kill();
+                                _chasingTweener = DOVirtual.Float(0f, 10f, 10f, value =>
+                                {
+                                    Creature.BaseStat.WalkSpeed = Creature.CreatureData.WalkSpeed + value;
+                                });
                             }
                         }
-
                         return;
                     }
                 }
@@ -135,5 +142,20 @@ public class AlienSoundController : BaseSoundController
             StartCoroutine(CheckNotChasing(7f));
 
         IsChasing = false;
+    }
+
+    protected override IEnumerator CheckNotChasing(float time)
+    {
+        float currentChasingTime = 0f;
+        while (currentChasingTime < time)
+        {
+            currentChasingTime += Time.deltaTime;
+            yield return null;
+        }
+
+        StartCoroutine(StopChasing());
+
+        _chasingTweener.Kill();
+        Creature.BaseStat.WalkSpeed = Creature.CreatureData.WalkSpeed;
     }
 }

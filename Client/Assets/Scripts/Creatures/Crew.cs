@@ -23,7 +23,7 @@ public class Crew : Creature
 
             _creaturePose = value;
 
-            MoveCameraByPose();
+            //MoveCameraByPose();
 
             if (CreatureState == Define.CreatureState.Move)
                 BaseSoundController.PlayMove();
@@ -88,6 +88,7 @@ public class Crew : Creature
         base.OnUpdate();
 
         UpdateStat();
+        MoveCameraByPose();
     }
 
     protected override void HandleInput()
@@ -343,12 +344,13 @@ public class Crew : Creature
     protected void MoveCameraByPose()
     {
         Transform cameraTransform = CreatureCamera.transform;
-        float to = 0f;
+        float to = 0.2f;
 
-        if (CreaturePose == Define.CreaturePose.Stand)
-            to = 0.2f;
+        if ((CreaturePose == Define.CreaturePose.Sit && CreatureState == Define.CreatureState.Idle)
+        || CreaturePose == Define.CreaturePose.Run)
+            to = 0f;
 
-        DOVirtual.Float(cameraTransform.localPosition.y, to, 1f, value =>
+        DOVirtual.Float(cameraTransform.localPosition.y, to, 0.7f, value =>
         {
             Vector3 pos = cameraTransform.localPosition;
             pos.y = value;

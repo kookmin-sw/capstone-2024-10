@@ -215,6 +215,11 @@ public class Alien : Creature
             Managers.GameMng.GameEndSystem.EndGame();
             return true;
         }
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            Debug.Log(BaseStat.Speed);
+            return true;
+        }
 
         return false;
     }

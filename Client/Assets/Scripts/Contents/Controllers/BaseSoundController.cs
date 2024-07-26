@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using Fusion;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ public abstract class BaseSoundController : NetworkBehaviour
 
     public bool IsChasing { get; protected set; } = false;
     public float ChasingDistance { get; protected set; }
+
+    protected Tweener _chasingTweener;
 
     public override void Spawned()
     {
@@ -48,7 +51,7 @@ public abstract class BaseSoundController : NetworkBehaviour
 
     public abstract void CheckChasing();
 
-    protected IEnumerator CheckNotChasing(float time)
+    protected virtual IEnumerator CheckNotChasing(float time)
     {
         float currentChasingTime = 0f;
         while (currentChasingTime < time)
