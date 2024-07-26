@@ -352,7 +352,7 @@ public class Crew : Creature
         {
             Vector3 pos = cameraTransform.localPosition;
             pos.y = value;
-            pos.z = value - 0.2f;
+            pos.z = (value - 0.2f) * 1.5f;
             cameraTransform.localPosition = pos;
         });
     }

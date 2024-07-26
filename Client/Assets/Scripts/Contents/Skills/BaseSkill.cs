@@ -131,7 +131,7 @@ public abstract class BaseSkill : NetworkBehaviour
         }
     }
 
-    public void SkillInterrupt(float hitDelayTime)
+    public virtual void SkillInterrupt(float hitDelayTime)
     {
         StopAllCoroutines();
 

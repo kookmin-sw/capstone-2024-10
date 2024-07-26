@@ -16,9 +16,9 @@ public class Roar : BaseSkill
     {
         base.ReadySkill();
 
-        DOVirtual.Float(0, SkillData.Range, SkillData.TotalReadySkillAmount, value =>
+        DOVirtual.Float(0, SkillData.Range * 0.6f, SkillData.TotalReadySkillAmount, value =>
         {
-            Owner.RoarRangeIndicator.transform.localScale = new Vector3(1f, 1f, value);
+            Owner.RoarRangeIndicator.transform.localScale = new Vector3(1f, 1.6f, value);
         });
     }
 
@@ -62,5 +62,12 @@ public class Roar : BaseSkill
                 Owner.SkillController.Skills[2].CurrentCoolTime -= 20f;
             }
         }
+    }
+
+    public override void SkillInterrupt(float hitDelayTime)
+    {
+        base.SkillInterrupt(hitDelayTime);
+
+        Owner.RoarRangeIndicator.transform.localScale = new Vector3(1f, 1.6f, 0f);
     }
 }

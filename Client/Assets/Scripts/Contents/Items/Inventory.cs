@@ -128,8 +128,7 @@ public class Inventory: NetworkBehaviour
             return false;
         }
 
-        NetworkObject no = Managers.ObjectMng.SpawnItemObject(RemoveItem(), Owner.Head.transform.position + Owner.Head.transform.forward, Quaternion.identity,true);
-        //no.transform.SetParent(gameObject.transform);
+        NetworkObject no = Managers.ObjectMng.SpawnItemObject(RemoveItem(), Owner.Head.transform.position + Owner.Head.transform.forward, Random.rotation,true);
         Owner.CrewIngameUI.InventoryUI.RemoveItemName();
         return true;
     }
@@ -141,9 +140,8 @@ public class Inventory: NetworkBehaviour
             if (ItemInventory[i] == -1)
                 continue;
 
-            //NetworkObject no = Managers.ObjectMng.SpawnItemObject(ItemInventory[i], Owner.Head.transform.position + Owner.Head.transform.forward + Owner.CameraRotationY * new Vector3(i * 0.5f - 0.75f, 0f, 0f), Random.rotation, true);
-
             NetworkObject no = Managers.ObjectMng.SpawnItemObject(ItemInventory[i], Owner.Head.transform.position + Owner.Head.transform.up, Random.rotation, true);
+
             yield return new WaitForSeconds(0.01f);
         }
     }
