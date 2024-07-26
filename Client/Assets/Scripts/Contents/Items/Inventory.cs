@@ -1,8 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.Serialization;
 using Fusion;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Inventory: NetworkBehaviour
 {
@@ -127,20 +128,21 @@ public class Inventory: NetworkBehaviour
             return false;
         }
 
-        NetworkObject no = Managers.ObjectMng.SpawnItemObject(RemoveItem(), Owner.Head.transform.position + Owner.Head.transform.forward, true);
-        //no.transform.SetParent(gameObject.transform);
+        NetworkObject no = Managers.ObjectMng.SpawnItemObject(RemoveItem(), Owner.Head.transform.position + Owner.Head.transform.forward, Random.rotation,true);
         Owner.CrewIngameUI.InventoryUI.RemoveItemName();
         return true;
     }
 
-    public void OnDefeat()
+    public IEnumerator OnDefeat()
     {
         for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
         {
             if (ItemInventory[i] == -1)
                 continue;
 
-            NetworkObject no = Managers.ObjectMng.SpawnItemObject(ItemInventory[i], Owner.Head.transform.position + Owner.Head.transform.forward + Owner.CameraRotationY * new Vector3(i * 0.5f - 0.75f, 0f, 0f), true);
+            NetworkObject no = Managers.ObjectMng.SpawnItemObject(ItemInventory[i], Owner.Head.transform.position + Owner.Head.transform.up, Random.rotation, true);
+
+            yield return new WaitForSeconds(0.01f);
         }
     }
 
