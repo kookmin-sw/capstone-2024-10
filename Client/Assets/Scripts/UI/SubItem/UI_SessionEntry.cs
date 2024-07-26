@@ -85,9 +85,18 @@ public class UI_SessionEntry : UI_Base
         }
         else
         {
-            Managers.UIMng.Clear();
-            Managers.NetworkMng.ConnectToSession(_session.Name, null);
-            Managers.UIMng.ShowPanelUI<UI_Loading>();
+            bool result = await Managers.NetworkMng.ConnectToSession(_session.Name, null);
+            if (result)
+            {
+                Managers.Clear();
+                Managers.UIMng.ShowPanelUI<UI_Loading>();
+            }
+            else
+            {
+                Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
+                var lobby = Managers.UIMng.PeekPopupUI<UI_Lobby>();
+                Managers.UIMng.ShowPopupUI<UI_Warning>(parent : lobby.transform);
+            }
         }
     }
 }

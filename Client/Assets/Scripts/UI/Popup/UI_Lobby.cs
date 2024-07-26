@@ -59,12 +59,12 @@ public class UI_Lobby : UI_Popup
         }
     }
 
-    void Refresh()
+    public void Refresh()
     {
         StartCoroutine(RefreshWait());
     }
 
-    IEnumerator RefreshWait()
+    private IEnumerator RefreshWait()
     {
         Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
         var popup = Managers.UIMng.ShowPopupUI<UI_SessionList>(parent : transform);
@@ -76,7 +76,7 @@ public class UI_Lobby : UI_Popup
         GetButton((int)Buttons.Btn_RefreshSession).interactable = true;
     }
 
-    void CreateGame()
+    private void CreateGame()
     {
         Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
         var popup = Managers.UIMng.ShowPopupUI<UI_CreateRoom>(parent: transform);
@@ -84,14 +84,23 @@ public class UI_Lobby : UI_Popup
         popup.SetInfo();
     }
 
-    void EnterGame()
+    private async void EnterGame()
     {
-        Managers.UIMng.Clear();
-        Managers.NetworkMng.ConnectToAnySession();
-        Managers.UIMng.ShowPanelUI<UI_Loading>();
+        bool result = await Managers.NetworkMng.ConnectToAnySession();
+        if (result)
+        {
+            Managers.Clear();
+            Managers.UIMng.ShowPanelUI<UI_Loading>();
+        }
+        else
+        {
+            Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
+            var lobby = Managers.UIMng.PeekPopupUI<UI_Lobby>();
+            Managers.UIMng.ShowPopupUI<UI_Warning>(parent : lobby.transform);
+        }
     }
 
-    void StartTutorial()
+    private void StartTutorial()
     {
         Managers.Clear();
         Managers.NetworkMng.StartSharedClient(Define.SceneType.TutorialScene);

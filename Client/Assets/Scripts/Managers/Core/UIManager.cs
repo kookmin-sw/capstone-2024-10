@@ -12,9 +12,9 @@ public class UIManager
     /// <summary>
     /// UI Canvas가 배치되는 순서
     /// </summary>
-    int _order = 10;
+    private int _order = 10;
 
-    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
+    private static Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     public UI_Scene SceneUI { get; set; }
 
     public UI_Panel PanelUI { get; set; }

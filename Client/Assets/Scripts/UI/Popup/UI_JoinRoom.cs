@@ -50,6 +50,7 @@ public class UI_JoinRoom : UI_Popup
         Get<Button>((int)Buttons.Btn_Yes).onClick.AddListener(() =>
         {
             JoinGame();
+            ClosePopupUI();
         });
 
         Get<Button>((int)Buttons.Btn_No).onClick.AddListener(() =>
@@ -69,7 +70,7 @@ public class UI_JoinRoom : UI_Popup
         _password = password;
     }
 
-    public void JoinGame()
+    public async void JoinGame()
     {
         if (!string.IsNullOrEmpty(_password) && _password != InputPassword.text)
         {
@@ -77,9 +78,17 @@ public class UI_JoinRoom : UI_Popup
             return;
         }
 
-        Managers.NetworkMng.ConnectToSession(_roomName, null);
-
-        ClosePopupUI();
-        Managers.UIMng.ShowPanelUI<UI_Loading>();
+        bool result = await Managers.NetworkMng.ConnectToSession(_roomName, null);
+        if (result)
+        {
+            Managers.Clear();
+            Managers.UIMng.ShowPanelUI<UI_Loading>();
+        }
+        else
+        {
+            Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
+            var lobby = Managers.UIMng.PeekPopupUI<UI_Lobby>();
+            Managers.UIMng.ShowPopupUI<UI_Warning>(parent : lobby.transform);
+        }
     }
 }

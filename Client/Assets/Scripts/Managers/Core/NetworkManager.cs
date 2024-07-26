@@ -288,7 +288,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Runner.JoinSessionLobby(SessionLobby.Shared);
     }
 
-    public void CreateSession(string name, string password)
+    public async Task<bool> CreateSession(string name, string password)
     {
         if (name.IsNullOrEmpty())
         {
@@ -296,10 +296,10 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             name = "Room-" + randomInt.ToString();
         }
 
-        ConnectToSession(name, password);
+        return await ConnectToSession(name, password);
     }
 
-    public void ConnectToAnySession()
+    public async Task<bool> ConnectToAnySession()
     {
         // 비밀번호가 없는 세션만 찾아서 입장
         List<SessionInfo> enterable = new List<SessionInfo>();
@@ -313,21 +313,20 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
         if (enterable.Count == 0)
         {
-            CreateSession(null, null);
-            return;
+            return await CreateSession(null, null);
         }
 
         int  count = enterable.Count;
         int rand = UnityEngine.Random.Range(0, count);
         string sessionName = enterable[rand].Name;
-        ConnectToSession(sessionName, null);
+        return await ConnectToSession(sessionName, null);
     }
 
-    public void ConnectToSession(string sessionName, string password)
+    public async Task<bool> ConnectToSession(string sessionName, string password)
     {
         NetworkSceneInfo scene = new NetworkSceneInfo();
         scene.AddSceneRef(Managers.SceneMng.GetSceneRef(Define.SceneType.ReadyScene));
-        Managers.Clear();
+        // Managers.Clear();
         Scene = Managers.Instance.gameObject.GetOrAddComponent<NetworkSceneManagerEx>();
 
         StartGameArgs startGameArgs = new StartGameArgs()
@@ -347,7 +346,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             };
         }
 
-        Runner.StartGame(startGameArgs);
+        StartGameResult result = await Runner.StartGame(startGameArgs);
+        return result.Ok;
     }
     #endregion
 

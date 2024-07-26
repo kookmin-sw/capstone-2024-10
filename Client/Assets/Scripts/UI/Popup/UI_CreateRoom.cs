@@ -63,15 +63,24 @@ public class UI_CreateRoom : UI_Popup
         Password.text = "";
     }
 
-    public void CreateGame()
+    public async void CreateGame()
     {
-        Managers.UIMng.Clear();
         string roomName = RoomName.text.Trim();
 
         // 입력 가능 글자 14글자로 제한
         roomName = roomName.IsNullOrEmpty() ? RoomNamePlaceholder.text : roomName.Substring(0, 14);
 
-        Managers.NetworkMng.CreateSession(roomName, Password.text);
-        Managers.UIMng.ShowPanelUI<UI_Loading>();
+        bool result = await Managers.NetworkMng.CreateSession(roomName, Password.text);
+        if (result)
+        {
+            Managers.Clear();
+            Managers.UIMng.ShowPanelUI<UI_Loading>();
+        }
+        else
+        {
+            Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
+            var lobby = Managers.UIMng.PeekPopupUI<UI_Lobby>();
+            Managers.UIMng.ShowPopupUI<UI_Warning>(parent : lobby.transform);
+        }
     }
 }
