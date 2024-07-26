@@ -96,11 +96,11 @@ public class CrewSoundController : BaseSoundController
                     IsChasing = true;
 
                     if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
-                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Infernal Darkness", Define.SoundType.Bgm, volume: 0.3f);
+                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Infernal Darkness", Define.SoundType.Bgm, volume: 0.2f);
                 }
 
                 SoundManager._audioSources[(int)Define.SoundType.Bgm].volume =
-                    -0.045f * (alien.Transform.position - Creature.Transform.position).magnitude + 1.1f;
+                    -0.05f * (alien.Transform.position - Creature.Transform.position).magnitude + 1.2f;
                 return;
             }
         }

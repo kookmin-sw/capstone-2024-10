@@ -54,7 +54,7 @@ public abstract class BaseSkill : NetworkBehaviour
         return true;
     }
 
-    public void ReadySkill()
+    public virtual void ReadySkill()
     {
         Owner.IngameUI.WorkProgressBarUI.Show(SkillData.Name, CurrentReadySkillAmount, SkillData.TotalReadySkillAmount);
         Owner.CreatureState = Define.CreatureState.Use;
@@ -131,7 +131,7 @@ public abstract class BaseSkill : NetworkBehaviour
         }
     }
 
-    public void SkillInterrupt(float hitDelayTime)
+    public virtual void SkillInterrupt(float hitDelayTime)
     {
         StopAllCoroutines();
 

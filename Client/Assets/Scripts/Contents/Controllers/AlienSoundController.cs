@@ -12,7 +12,7 @@ public class AlienSoundController : BaseSoundController
 
     public override void PlayMove()
     {
-        Rpc_PlayFootStepSound(1.33f, 0.85f);
+        Rpc_PlayFootStepSound(1.33f, 0.7f);
     }
 
     public void PlaySound(Define.AlienActionType alienActionType)
@@ -44,7 +44,7 @@ public class AlienSoundController : BaseSoundController
     protected void Rpc_PlayFootStepSound(float pitch, float volume)
     {
         if (HasStateAuthority)
-            volume *= 0.5f;
+            volume *= 0.2f;
 
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/FootStep_Alien", pitch, volume, isLoop: true);
     }
@@ -58,23 +58,23 @@ public class AlienSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayBasicAttack()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 1f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 0.9f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayRoar()
     {
-        float volume = 0.8f;
+        float volume = 0.7f;
         if (HasStateAuthority)
             volume *= 0.5f;
 
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Roar", pitch: 1.3f, volume, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Roar", pitch: 1f, volume, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayCursedHowl()
     {
-        float volume = 0.8f;
+        float volume = 0.7f;
         if (HasStateAuthority)
             volume *= 0.5f;
 
@@ -84,13 +84,13 @@ public class AlienSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayLeapAttack()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 1f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack", pitch: 1f, volume: 0.9f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayHit()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack_Hit", pitch: 1f, volume: 0.7f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/Attack_Hit", pitch: 1f, volume: 0.6f, isLoop: false);
     }
 
     public override void CheckChasing()
@@ -124,7 +124,6 @@ public class AlienSoundController : BaseSoundController
                                     volume: 0.4f);
                             }
                         }
-
                         return;
                     }
                 }

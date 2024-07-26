@@ -2,8 +2,8 @@ using UnityEngine;
 using Data;
 using Fusion;
 using UnityEngine.EventSystems;
-using System.Collections;
 using System.Threading.Tasks;
+using DG.Tweening;
 
 public class Crew : Creature
 {
@@ -13,6 +13,22 @@ public class Crew : Creature
 
     public CrewData CrewData => CreatureData as CrewData;
     public CrewStat CrewStat => (CrewStat)BaseStat;
+    public override Define.CreaturePose CreaturePose
+    {
+        get => _creaturePose;
+        set
+        {
+            if (_creaturePose == value || BaseSoundController == null)
+                return;
+
+            _creaturePose = value;
+
+            //MoveCameraByPose();
+
+            if (CreatureState == Define.CreatureState.Move)
+                BaseSoundController.PlayMove();
+        }
+    }
     public CrewAnimController CrewAnimController => (CrewAnimController)BaseAnimController;
     public CrewSoundController CrewSoundController => (CrewSoundController)BaseSoundController;
     public Inventory Inventory { get; protected set; }
@@ -72,6 +88,7 @@ public class Crew : Creature
         base.OnUpdate();
 
         UpdateStat();
+        MoveCameraByPose();
     }
 
     protected override void HandleInput()
@@ -133,7 +150,9 @@ public class Crew : Creature
         if (Input.GetKeyDown(KeyCode.C))
         {
             if (CreaturePose != Define.CreaturePose.Sit)
+            {
                 CreaturePose = Define.CreaturePose.Sit;
+            }
             else
                 CreaturePose = Define.CreaturePose.Stand;
             return;
@@ -276,19 +295,13 @@ public class Crew : Creature
 
         CrewAnimController.PlayAnim(Define.CrewActionType.Dead);
         CrewSoundController.StopAllSound();
-        CrewSoundController.PlaySound(Define.CrewActionType.Dead);
+        CrewSoundController.PlayEndGame(true);
 
         CrewIngameUI.HideUI();
         Managers.GameMng.GameEndSystem.EndCrewGame(false);
 
-        Rpc_OnDefeat();
-        Inventory.OnDefeat();
-    }
-
-    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_OnDefeat()
-    {
-        Collider.enabled = false;
+        Rpc_OnDisable(12f);
+        StartCoroutine(Inventory.OnDefeat());
     }
 
     public virtual async void OnWin()
@@ -311,16 +324,40 @@ public class Crew : Creature
         CrewIngameUI.HideUI();
         CrewIngameUI.EndGame();
 
-        Rpc_OnWin();
+        Rpc_OnDisable();
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_OnWin()
+    public void Rpc_OnDisable(float time = 0f)
     {
-        gameObject.SetActive(false);
+        Collider.enabled = false;
+        KCCCollider.enabled = false;
+
+        DOVirtual.DelayedCall(time, () =>
+        {
+            gameObject.SetActive(false);
+        });
     }
 
     #endregion
+
+    protected void MoveCameraByPose()
+    {
+        Transform cameraTransform = CreatureCamera.transform;
+        float to = 0.2f;
+
+        if ((CreaturePose == Define.CreaturePose.Sit && CreatureState == Define.CreatureState.Idle)
+        || CreaturePose == Define.CreaturePose.Run)
+            to = 0f;
+
+        DOVirtual.Float(cameraTransform.localPosition.y, to, 0.7f, value =>
+        {
+            Vector3 pos = cameraTransform.localPosition;
+            pos.y = value;
+            pos.z = (value - 0.2f) * 1.5f;
+            cameraTransform.localPosition = pos;
+        });
+    }
 
     protected override bool TestInputs()
     {

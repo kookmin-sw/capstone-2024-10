@@ -75,9 +75,12 @@ public abstract class BaseSoundController : NetworkBehaviour
 
     #region EndGame
 
-    public void PlayEndGame()
+    public void PlayEndGame(bool isDead = false)
     {
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.7f);
+        if (isDead)
+            Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/GameOver", Define.SoundType.Effect,  volume:0.7f);
+        else
+            Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.7f);
     }
 
     #endregion

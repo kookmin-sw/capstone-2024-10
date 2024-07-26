@@ -42,6 +42,7 @@ public abstract class BaseItem
         Owner.IngameUI.InteractInfoUI.Show("Cancel");
         Owner.IngameUI.WorkProgressBarUI.Show("Use " + ItemData.Name, 0f, TotalWorkAmount);
 
+        _useItemTweener.Kill();
         _useItemTweener = DOVirtual.Float(0, TotalWorkAmount, TotalWorkAmount, value =>
         {
             if (Owner.CreatureState != Define.CreatureState.Use)

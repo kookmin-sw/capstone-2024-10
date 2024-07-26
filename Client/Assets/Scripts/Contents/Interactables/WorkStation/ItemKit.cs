@@ -54,7 +54,7 @@ public class ItemKit : BaseWorkStation
 
     protected override void WorkComplete()
     {
-        NetworkObject no = Managers.ObjectMng.SpawnItemObject(_itemId, Transform.position + Transform.up * 0.1f, true);
+        NetworkObject no = Managers.ObjectMng.SpawnItemObject(_itemId, Transform.position + Transform.up * 0.1f, Quaternion.identity, true);
 
         Rpc_WorkComplete();
     }
