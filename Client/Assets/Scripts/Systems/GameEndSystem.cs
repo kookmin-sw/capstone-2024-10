@@ -9,56 +9,82 @@ public class GameEndSystem : NetworkBehaviour
     [Networked]
     public int KilledCrewNum { get; set; } = 0;
     [Networked]
-    public bool ShouldEndGame { get; set; } = false;
+    public NetworkBool ShouldEndGame { get; set; } = false;
     [Networked]
     public int DroppedCrewNum { get; set; } = 0;
     [Networked]
-    public bool IsGameStarted { get; set; } = false;
+    public NetworkBool IsGameStarted { get; set; } = false;
     [Networked]
-    public bool IsCrewKilled { get; set; } = false;
+    public NetworkBool IsCrewKilled { get; set; } = false;
     [Networked]
-    public bool IsCrewDropped { get; set; } = false;
+    public NetworkBool IsCrewDropped { get; set; } = false;
     [Networked]
-    public bool IsCrewWinning { get; set; } = false;
+    public NetworkBool IsCrewWinning { get; set; } = false;
+    [Networked]
+    public int LoadedPlayerNum { get; set; } = 0;
+    public float ElapsedTime { get; set; } = 0f;
+    [Networked]
+    public NetworkBool LoadingDone { get; set; } = false;
 
     public void Init()
     {
         Managers.GameMng.GameEndSystem = this;
         CrewNum = Define.PLAYER_COUNT - 1;
-    }
 
-    public void InitAfterUIPopup()
-    {
         if (Managers.NetworkMng.IsTestScene || Managers.NetworkMng.IsEndGameTriggered)
             return;
 
-        if (Managers.NetworkMng.SpawnCount != Define.PLAYER_COUNT)
-        {
-            if (ShouldEndGame == false)
-                RPC_EndGameRequest(Managers.NetworkMng.Runner);
-        }
+        if (Managers.NetworkMng.IsMaster)
+            StartCoroutine(WaitLoadingAlarm());
+
+        StartCoroutine(SendLoadingAlarm());
     }
 
-    public void EndGameRequest()
+    private IEnumerator WaitLoadingAlarm()
     {
-        if (ShouldEndGame)
-            return;
+        while (LoadedPlayerNum < Define.PLAYER_COUNT)
+        {
+            ElapsedTime += Time.deltaTime;
 
-        ShouldEndGame = true;
-        RPC_EndGame(Managers.NetworkMng.Runner);
+            if (ElapsedTime > Define.GAME_WAIT_TIME)
+            {
+                RPC_EndGame(Managers.NetworkMng.Runner);
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        LoadingDone = true;
+    }
+
+    private IEnumerator SendLoadingAlarm()
+    {
+        while (Managers.NetworkMng.IsGameLoading == true)
+        {
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        RPC_LoadingAlarm(Managers.NetworkMng.Runner);
+    }
+
+    public void LoadingAlarm()
+    {
+        LoadedPlayerNum++;
     }
 
     [Rpc]
-    public static void RPC_EndGameRequest(NetworkRunner runner)
+    public static void RPC_LoadingAlarm(NetworkRunner runner)
     {
         if (!Managers.NetworkMng.IsMaster)
             return;
 
-        Managers.NetworkMng.EndSystemQueue.Enqueue((system) => system.EndGameRequest());
+        Managers.NetworkMng.EndSystemQueue.Enqueue((system) => system.LoadingAlarm());
     }
 
     public void EndGame()
     {
+        Managers.UIMng.BlockLoadingUI(false);
         if (Managers.ObjectMng.MyCreature is Alien)
         {
             StartCoroutine(EndAlienGame());

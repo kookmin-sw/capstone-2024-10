@@ -37,17 +37,11 @@ public class TutorialScene : BaseScene
 
         yield return new WaitUntil(() => ingameUI.Init());
 
+        Managers.UIMng.BlockLoadingUI(false);
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
 
-        gameEndSystem.InitAfterUIPopup();
-
-        var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
-        // 테스트 씬은 로딩 UI를 띄우지 않음
-        if (loadingUI != null)
-        {
-            loadingUI.OnMapLoadComplete();
-        }
+        Managers.UIMng.OnMapLoadComplete();
     }
 
     private void Update()

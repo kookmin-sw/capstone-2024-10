@@ -218,7 +218,10 @@ public class UIManager
             return;
 
         UI_Popup popup = _popupStack.Pop();
-        Managers.ResourceMng.Destroy(popup.gameObject);
+        if (popup != null && popup.gameObject != null)
+        {
+            Managers.ResourceMng.Destroy(popup.gameObject);
+        }
         popup = null;
         _order--;
     }
@@ -249,6 +252,26 @@ public class UIManager
     public void ActivatePopupUI(bool active)
     {
         _popupStack.ToList().ForEach(x => x.gameObject.SetActive(active));
+    }
+
+    public void BlockLoadingUI(bool toggle)
+    {
+        var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
+        // 테스트 씬은 로딩 UI를 띄우지 않음
+        if (loadingUI != null)
+        {
+            loadingUI.BlockLoading(toggle);
+        }
+    }
+
+    public void OnMapLoadComplete()
+    {
+        var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
+        // 테스트 씬은 로딩 UI를 띄우지 않음
+        if (loadingUI != null)
+        {
+            loadingUI.OnMapLoadComplete();
+        }
     }
 
     /// <summary>

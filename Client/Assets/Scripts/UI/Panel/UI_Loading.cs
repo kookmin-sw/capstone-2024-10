@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -30,6 +29,8 @@ public class UI_Loading : UI_Panel
     public bool IsMapLoaded { get; private set; } = false;
     public bool IsDone { get; private set; } = false;
     public float LoadingProgress { get; private set; } = 0.0f;
+    private bool _blockLoading { get; set; } = false;
+    private bool _testLoading { get; set; } = false;
 
     public override bool Init()
     {
@@ -67,6 +68,7 @@ public class UI_Loading : UI_Panel
         }
         else if (Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.ReadyScene))
         {
+            _blockLoading = true;
             _loadingSpeed = 0.1f;
             Managers.NetworkMng.IsGameLoading = true;
             StartCoroutine(TransitionCheck());
@@ -80,6 +82,12 @@ public class UI_Loading : UI_Panel
     {
         LoadingProgress += _loadingSpeed * Time.deltaTime;
         _loadingBar.value = Mathf.Clamp01(LoadingProgress / .95f);
+
+        // 테스트 용
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            _testLoading = true;
+        }
     }
 
     public IEnumerator SpawnCheck()
@@ -102,13 +110,17 @@ public class UI_Loading : UI_Panel
 
     public IEnumerator TransitionCheck()
     {
-        yield return new WaitUntil(() => Managers.NetworkMng.CurrentPlayState == PlayerSystem.PlayState.Transition);
-        yield return new WaitUntil(() => Managers.NetworkMng.CurrentPlayState != PlayerSystem.PlayState.Transition);
+        yield return new WaitUntil(() => Managers.NetworkMng.CurrentPlayState == PlayerSystem.PlayState.Game);
         yield return new WaitUntil(() => Managers.ObjectMng.MyCreature != null);
         yield return new WaitUntil(() => Managers.ObjectMng.MyCreature.IsSpawned);
         yield return new WaitUntil(() => IsMapLoaded);
         yield return new WaitForSeconds(2.0f);
         IsDone = true;
+    }
+
+    public void BlockLoading(bool toggle)
+    {
+        _blockLoading = toggle;
     }
 
     public void OnMapLoadComplete()
@@ -149,6 +161,8 @@ public class UI_Loading : UI_Panel
         _loadingSpeed = 0.4f;
         yield return new WaitUntil(() => _loadingBar.value > 0.9f);
         yield return new WaitForSeconds(0.5f);
+        yield return new WaitUntil(() => _blockLoading == false);
+        yield return new WaitUntil(() => _testLoading == false);
         Managers.UIMng.PanelUI = null;
         Destroy(transform.parent.gameObject);
         Managers.NetworkMng.IsGameLoading = false;

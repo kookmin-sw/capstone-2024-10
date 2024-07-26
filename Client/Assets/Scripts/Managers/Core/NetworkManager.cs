@@ -224,10 +224,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
             // 게임씬에서 크루가 탈주했을 때 실행
             if (IsMaster && Managers.GameMng.GameEndSystem != null)
                 Managers.GameMng.GameEndSystem.OnCrewDropped(playerRef);
-
-            // 로딩 중에 크루가 탈주했을 때 실행
-            if (IsGameLoading)
-                GameEndSystem.RPC_EndGameRequest(Runner);
         }
 
         Debug.Log($"Alien Count : {AlienPlayerCount}");
