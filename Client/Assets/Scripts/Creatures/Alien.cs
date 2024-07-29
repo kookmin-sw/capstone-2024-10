@@ -63,6 +63,7 @@ public class Alien : Creature
             StartCoroutine(Managers.SceneMng.CurrentScene.OnPlayerSpawn());
         }
 
+        Managers.GameMng.RenderingSystem.SetAlienOutlinePassVolume();
         IsSpawned = true;
     }
 

@@ -22,7 +22,7 @@ public class PlanSystem : NetworkBehaviour
     public void Init()
     {
         Managers.GameMng.PlanSystem = this;
-        if (Managers.ObjectMng.MyCreature is Crew) GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+        GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
     }
 
     private void OnBatteryCharge()
@@ -30,19 +30,13 @@ public class PlanSystem : NetworkBehaviour
         if (BatteryChargeCount == Define.BATTERY_CHARGE_GOAL)
         {
             Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_BatteryCharge", type: Define.SoundType.Facility, volume:0.4f, isLoop: false);
-        }
-
-        if (Managers.ObjectMng.MyCreature is Alien) return;
-
-        if (BatteryChargeCount == Define.BATTERY_CHARGE_GOAL)
-        {
             IsBatteryChargeFinished = true;
             GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
-            GameObject.FindGameObjectsWithTag("CentralControlComputer").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
-            GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+            GameObject.FindGameObjectsWithTag("CentralControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+            GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
         }
 
-        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateBatteryCount(BatteryChargeCount);
+        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.UpdateBatteryCount(BatteryChargeCount);
     }
 
     private void OnUSBKeyInsert()
@@ -50,63 +44,52 @@ public class PlanSystem : NetworkBehaviour
         if (USBKeyInsertCount == Define.USBKEY_INSERT_GOAL)
         {
             Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_A", type: Define.SoundType.Facility, volume:0.7f, isLoop: false);
-        }
-
-        if (Managers.ObjectMng.MyCreature is Alien) return;
-
-        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.UpdateUSBKeyCount(USBKeyInsertCount);
-
-        if (USBKeyInsertCount == Define.USBKEY_INSERT_GOAL)
-        {
             IsUSBKeyInsertFinished = true;
             GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
-            GameObject.FindGameObjectsWithTag("ElevatorKeypad").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+            GameObject.FindGameObjectsWithTag("ElevatorKeypad").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
         }
+
+        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.UpdateUSBKeyCount(USBKeyInsertCount);
+
     }
 
     private void OnCardkeyUsed()
     {
-        if (Managers.ObjectMng.MyCreature is Alien) return;
-
-        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnCardkeyUsed();
+        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.OnCardkeyUsed();
     }
 
     private void OnCentralComputerWorkFinished()
     {
-        if (Managers.ObjectMng.MyCreature is Alien) return;
-
-        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnCentralControlComputerWorkFinished();
         GameObject.FindGameObjectsWithTag("CentralControlComputer").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
-        GameObject.FindGameObjectsWithTag("CargoPassageControlComputer").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+        GameObject.FindGameObjectsWithTag("CargoPassageControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+
+        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.OnCentralControlComputerWorkFinished();
     }
 
     private void OnCargoGateComputerUsed()
     {
         Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_B", type: Define.SoundType.Facility, volume: 0.9f, isOneShot:true);
 
-        if (Managers.ObjectMng.MyCreature is Alien) return;
-
-        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnCargoPassageOpen();
         GameObject.FindGameObjectsWithTag("CargoPassageControlComputer").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
-        GameObject.FindGameObjectsWithTag("CargoPassageGate").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+        GameObject.FindGameObjectsWithTag("CargoPassageGate").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+
+        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.OnCargoPassageOpen();
     }
 
     public void EnablePlanC()
     {
-        if (Managers.ObjectMng.MyCreature is Alien) return;
-
         if (!IsBatteryChargeFinished) return;
 
-        GameObject.FindGameObjectsWithTag("EmergencyControlDevice").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
-        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.EnablePlanC();
+        GameObject.FindGameObjectsWithTag("EmergencyControlDevice").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+
+        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.EnablePlanC();
     }
 
     private void OnPanicRoomActivated()
     {
-        if (Managers.ObjectMng.MyCreature is Alien) return;
-
-        Managers.ObjectMng.MyCrew.CrewIngameUI.PlanUI.OnPanicRoomActivated();
         GameObject.FindGameObjectsWithTag("EmergencyControlDevice").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
-        GameObject.FindGameObjectsWithTag("PanicRoom").SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+        GameObject.FindGameObjectsWithTag("PanicRoom").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+
+        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.OnPanicRoomActivated();
     }
 }

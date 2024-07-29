@@ -67,7 +67,7 @@ public class TutorialPlanSystem : NetworkBehaviour
 
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
-        BatteryCharger.SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+        BatteryCharger.SetLayerRecursive(LayerMask.NameToLayer("PlanTarget      "));
     }
 
     private void OnBatteryCharge()
@@ -85,7 +85,7 @@ public class TutorialPlanSystem : NetworkBehaviour
             if (Managers.ObjectMng.MyCreature is Crew)
             {
                 BatteryCharger.SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
-                CentralContolComputer.SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+                CentralContolComputer.SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
             }
         }
 
@@ -109,7 +109,7 @@ public class TutorialPlanSystem : NetworkBehaviour
         ui.TutorialPlanUI.GetComponent<UI_TutorialPlan>().OnCentralComputerUsed();
 
         CentralContolComputer.SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
-        CargoPassageContolComputer.SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+        CargoPassageContolComputer.SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
     }
 
     private void OnCargoGateComputerUsed()

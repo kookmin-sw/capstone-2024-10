@@ -98,7 +98,7 @@ MonoBehaviour:
     - rid: 1152800680719679495
       type: {class: DrawRenderersCustomPass, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
       data:
-        m_Name: Custom Pass
+        m_Name: OutlineObject
         enabled: 1
         targetColorBuffer: 1
         targetDepthBuffer: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
         renderQueueType: 2
         layerMask:
           serializedVersion: 2
-          m_Bits: 4096
+          m_Bits: 36864
         sortingCriteria: -1
         overrideMode: 1
         overrideMaterial: {fileID: 2100000, guid: 3ba263ebdf14fd94ab5ee6fac1404790, type: 2}
@@ -134,7 +134,7 @@ MonoBehaviour:
     - rid: 1152800680719679496
       type: {class: FullScreenCustomPass, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
       data:
-        m_Name: Custom Pass
+        m_Name: Outline
         enabled: 1
         targetColorBuffer: 0
         targetDepthBuffer: 0
@@ -171,7 +171,7 @@ MonoBehaviour:
     - rid: 2836041126369296384
       type: {class: FullScreenCustomPass, ns: UnityEngine.Rendering.HighDefinition, asm: Unity.RenderPipelines.HighDefinition.Runtime}
       data:
-        m_Name: Custom Pass
+        m_Name: DamageEffect
         enabled: 1
         targetColorBuffer: 0
         targetDepthBuffer: 0
