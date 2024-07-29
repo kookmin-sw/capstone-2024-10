@@ -260,7 +260,7 @@ public class UIManager
         // 테스트 씬은 로딩 UI를 띄우지 않음
         if (loadingUI != null)
         {
-            loadingUI.BlockLoading(toggle);
+            loadingUI.IsWaitingForPlayers = toggle;
         }
     }
 
@@ -270,7 +270,7 @@ public class UIManager
         // 테스트 씬은 로딩 UI를 띄우지 않음
         if (loadingUI != null)
         {
-            loadingUI.OnMapLoadComplete();
+            loadingUI.IsMapLoaded = true;
         }
     }
 

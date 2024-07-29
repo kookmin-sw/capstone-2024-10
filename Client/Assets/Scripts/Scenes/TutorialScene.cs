@@ -37,11 +37,11 @@ public class TutorialScene : BaseScene
 
         yield return new WaitUntil(() => ingameUI.Init());
 
-        Managers.UIMng.BlockLoadingUI(false);
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
 
         Managers.UIMng.OnMapLoadComplete();
+        Managers.UIMng.BlockLoadingUI(false);
     }
 
     private void Update()

@@ -15,11 +15,11 @@ public class UI_Map : UI_Base
 
     public void Show()
     {
-        gameObject.SetActive(true);
+        gameObject?.SetActive(true);
     }
 
     public void Hide()
     {
-        gameObject.SetActive(false);
+        gameObject?.SetActive(false);
     }
 }

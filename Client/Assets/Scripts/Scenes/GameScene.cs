@@ -34,14 +34,16 @@ public class GameScene : BaseScene
         planSystem.Init();
         gameEndSystem.Init();
         UI_Ingame ingameUI = Managers.ObjectMng.MyCreature is Crew ? Managers.UIMng.ShowSceneUI<UI_CrewIngame>() : Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
-        yield return new WaitUntil(() => ingameUI.Init());
-        yield return new WaitUntil(() => Managers.GameMng.GameEndSystem.LoadingDone);
 
-        Managers.UIMng.BlockLoadingUI(false);
+        yield return new WaitUntil(() => ingameUI.Init());
+
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
-
         Managers.UIMng.OnMapLoadComplete();
+
+        yield return new WaitUntil(() => Managers.GameMng.GameEndSystem.AreAllPlayersLoaded);
+
+        Managers.UIMng.BlockLoadingUI(false);
     }
 
     private void Update()

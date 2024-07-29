@@ -24,7 +24,7 @@ public class GameEndSystem : NetworkBehaviour
     public int LoadedPlayerNum { get; set; } = 0;
     public float ElapsedTime { get; set; } = 0f;
     [Networked]
-    public NetworkBool LoadingDone { get; set; } = false;
+    public bool AreAllPlayersLoaded { get; set; } = false;
 
     public void Init()
     {
@@ -48,6 +48,7 @@ public class GameEndSystem : NetworkBehaviour
 
             if (ElapsedTime > Define.GAME_WAIT_TIME)
             {
+                AreAllPlayersLoaded = true;
                 RPC_EndGame(Managers.NetworkMng.Runner);
                 yield break;
             }
@@ -55,7 +56,7 @@ public class GameEndSystem : NetworkBehaviour
             yield return null;
         }
 
-        LoadingDone = true;
+        AreAllPlayersLoaded = true;
     }
 
     private IEnumerator SendLoadingAlarm()
@@ -84,7 +85,6 @@ public class GameEndSystem : NetworkBehaviour
 
     public void EndGame()
     {
-        Managers.UIMng.BlockLoadingUI(false);
         if (Managers.ObjectMng.MyCreature is Alien)
         {
             StartCoroutine(EndAlienGame());
@@ -108,6 +108,7 @@ public class GameEndSystem : NetworkBehaviour
 
         if (!Managers.NetworkMng.IsEndGameTriggered)
         {
+            Managers.UIMng.Clear();
             if (isWin)
             {
                 Managers.UIMng.ShowPopupUI<UI_CrewWin>();
@@ -132,6 +133,7 @@ public class GameEndSystem : NetworkBehaviour
 
         if (!Managers.NetworkMng.IsEndGameTriggered)
         {
+            Managers.UIMng.Clear();
             if (KilledCrewNum + DroppedCrewNum >= Define.PLAYER_COUNT - 1)
             {
                 Managers.UIMng.ShowPopupUI<UI_AlienWin>();
