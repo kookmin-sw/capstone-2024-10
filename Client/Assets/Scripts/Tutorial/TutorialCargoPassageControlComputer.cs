@@ -49,7 +49,7 @@ public class TutorialCargoPassageControlComputer : BaseWorkStation
 
         foreach (var gate in _cargoPassageGates)
         {
-            gate.gameObject.SetLayerRecursive(LayerMask.NameToLayer("InteractableObject"));
+            gate.gameObject.SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
             gate.Open();
         }
     }

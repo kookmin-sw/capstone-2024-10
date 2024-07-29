@@ -139,6 +139,23 @@ public class RenderingSystem : NetworkBehaviour
         }
     }
 
+    public void SetAlienOutlinePassVolume()
+    {
+        CustomPassVolume[] volumes = GetComponents<CustomPassVolume>();
+
+        foreach (var volume in volumes)
+        {
+            foreach (var pass in volume.customPasses)
+            {
+                if (pass is DrawRenderersCustomPass dr && dr.name == "OutlineObject")
+                {
+                    dr.depthCompareFunction = CompareFunction.Disabled;
+                    dr.layerMask = LayerMask.GetMask("PlanTargetObject");
+                }
+            }
+        }
+    }
+
     #endregion
 }
 
