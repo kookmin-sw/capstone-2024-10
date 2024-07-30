@@ -9,8 +9,6 @@ public class GameEndSystem : NetworkBehaviour
     [Networked]
     public int KilledCrewNum { get; set; } = 0;
     [Networked]
-    public bool ShouldEndGame { get; set; } = false;
-    [Networked]
     public int DroppedCrewNum { get; set; } = 0;
     [Networked]
     public bool IsGameStarted { get; set; } = false;
@@ -20,48 +18,74 @@ public class GameEndSystem : NetworkBehaviour
     public bool IsCrewDropped { get; set; } = false;
     [Networked]
     public bool IsCrewWinning { get; set; } = false;
+    [Networked]
+    public int LoadedPlayerNum { get; set; } = 0;
+    public float ElapsedTime { get; set; } = 0f;
+    [Networked]
+    public bool AreAllPlayersLoaded { get; set; } = false;
 
     public void Init()
     {
         Managers.GameMng.GameEndSystem = this;
         CrewNum = Define.PLAYER_COUNT - 1;
-    }
 
-    public void InitAfterUIPopup()
-    {
         if (Managers.NetworkMng.IsTestScene || Managers.NetworkMng.IsEndGameTriggered)
             return;
 
-        if (Managers.NetworkMng.SpawnCount != Define.PLAYER_COUNT)
-        {
-            if (ShouldEndGame == false)
-                RPC_EndGameRequest(Managers.NetworkMng.Runner);
-        }
+        if (Managers.NetworkMng.IsMaster)
+            StartCoroutine(WaitLoadingAlarm());
+
+        StartCoroutine(SendLoadingAlarm());
     }
 
-    public void EndGameRequest()
+    private IEnumerator WaitLoadingAlarm()
     {
-        if (ShouldEndGame)
-            return;
+        while (LoadedPlayerNum < Define.PLAYER_COUNT)
+        {
+            ElapsedTime += Time.deltaTime;
 
-        ShouldEndGame = true;
-        RPC_EndGame(Managers.NetworkMng.Runner);
+            if (ElapsedTime > Define.GAME_WAIT_TIME && Managers.NetworkMng.SpawnCount < Define.PLAYER_COUNT)
+            {
+                AreAllPlayersLoaded = true;
+                RPC_EndGame(Managers.NetworkMng.Runner);
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        AreAllPlayersLoaded = true;
+    }
+
+    private IEnumerator SendLoadingAlarm()
+    {
+        while (Managers.NetworkMng.IsGameLoading == true)
+        {
+            yield return new WaitForSeconds(0.2f);
+        }
+
+        RPC_LoadingAlarm(Managers.NetworkMng.Runner);
+    }
+
+    public void LoadingAlarm()
+    {
+        LoadedPlayerNum++;
     }
 
     [Rpc]
-    public static void RPC_EndGameRequest(NetworkRunner runner)
+    public static void RPC_LoadingAlarm(NetworkRunner runner)
     {
         if (!Managers.NetworkMng.IsMaster)
             return;
 
-        Managers.NetworkMng.EndSystemQueue.Enqueue((system) => system.EndGameRequest());
+        Managers.NetworkMng.EndSystemQueue.Enqueue((system) => system.LoadingAlarm());
     }
 
     public void EndGame()
     {
         if (Managers.ObjectMng.MyCreature is Alien)
         {
-            StartCoroutine(EndAlienGame());
+            EndAlienGame();
         }
         else
         {
@@ -84,11 +108,11 @@ public class GameEndSystem : NetworkBehaviour
         {
             if (isWin)
             {
-                Managers.UIMng.ShowPopupUI<UI_CrewWin>();
+                Managers.UIMng.ShowPanelUI<UI_CrewWin>(parent : Managers.UIMng.Root.transform);
             }
             else
             {
-                Managers.UIMng.ShowPopupUI<UI_CrewDefeat>();
+                Managers.UIMng.ShowPanelUI<UI_CrewDefeat>(parent : Managers.UIMng.Root.transform);
             }
 
             Managers.NetworkMng.IsEndGameTriggered = true;
@@ -97,10 +121,10 @@ public class GameEndSystem : NetworkBehaviour
         Rpc_EndCrewGame(isWin, Runner.LocalPlayer);
     }
 
-    public IEnumerator EndAlienGame()
+    public void EndAlienGame()
     {
         if (Managers.ObjectMng.MyCreature is not Alien alien)
-            yield break;
+            return;
 
         ShowCursor();
 
@@ -108,26 +132,24 @@ public class GameEndSystem : NetworkBehaviour
         {
             if (KilledCrewNum + DroppedCrewNum >= Define.PLAYER_COUNT - 1)
             {
-                Managers.UIMng.ShowPopupUI<UI_AlienWin>();
+                Managers.UIMng.ShowPanelUI<UI_AlienWin>(parent : Managers.UIMng.Root.transform);
             }
             else
             {
-                Managers.UIMng.ShowPopupUI<UI_AlienDefeat>();
+                Managers.UIMng.ShowPanelUI<UI_AlienDefeat>(parent : Managers.UIMng.Root.transform);
             }
 
             Managers.NetworkMng.IsEndGameTriggered = true;
         }
 
-        yield return new WaitUntil(() => alien);
-
-        StartCoroutine(alien.OnGameEnd());
+        alien.OnGameEnd();
     }
 
     public void OnCrewNumChanged()
     {
         if (CrewNum <= 0)
         {
-            StartCoroutine(EndAlienGame());
+            EndAlienGame();
         }
 
         if (CrewNum == 1)

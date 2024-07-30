@@ -1,9 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class UI_Map : UI_Base
+public class UI_RaycastBlock : UI_Popup
 {
     public override bool Init()
     {
@@ -11,15 +11,5 @@ public class UI_Map : UI_Base
             return false;
 
         return true;
-    }
-
-    public void Show()
-    {
-        gameObject?.SetActive(true);
-    }
-
-    public void Hide()
-    {
-        gameObject?.SetActive(false);
     }
 }

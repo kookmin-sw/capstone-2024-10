@@ -12,9 +12,9 @@ public class UIManager
     /// <summary>
     /// UI Canvas가 배치되는 순서
     /// </summary>
-    int _order = 10;
+    private int _order = 10;
 
-    Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
+    private static Stack<UI_Popup> _popupStack = new Stack<UI_Popup>();
     public UI_Scene SceneUI { get; set; }
 
     public UI_Panel PanelUI { get; set; }
@@ -218,7 +218,10 @@ public class UIManager
             return;
 
         UI_Popup popup = _popupStack.Pop();
-        Managers.ResourceMng.Destroy(popup.gameObject);
+        if (popup != null && popup.gameObject != null)
+        {
+            Managers.ResourceMng.Destroy(popup.gameObject);
+        }
         popup = null;
         _order--;
     }
@@ -249,6 +252,26 @@ public class UIManager
     public void ActivatePopupUI(bool active)
     {
         _popupStack.ToList().ForEach(x => x.gameObject.SetActive(active));
+    }
+
+    public void BlockLoadingUI(bool toggle)
+    {
+        var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
+        // 테스트 씬은 로딩 UI를 띄우지 않음
+        if (loadingUI != null)
+        {
+            loadingUI.IsWaitingForPlayers = toggle;
+        }
+    }
+
+    public void OnMapLoadComplete()
+    {
+        var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
+        // 테스트 씬은 로딩 UI를 띄우지 않음
+        if (loadingUI != null)
+        {
+            loadingUI.IsMapLoaded = true;
+        }
     }
 
     /// <summary>

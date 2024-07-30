@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class SoundManager
 {
@@ -189,6 +190,31 @@ public class SoundManager
         return Mathf.Exp(_audioVolume[(int)soundType]);
     }
 
+    public Define.VolumeType GetVolumeType(Define.SoundType soundType)
+    {
+        int volumeType = -1;
+
+        switch (soundType)
+        {
+            case Define.SoundType.Bgm:
+                volumeType = (int)Define.VolumeType.BgmVolume;
+                break;
+            case Define.SoundType.Environment:
+                volumeType = (int)Define.VolumeType.EnvVolume;
+                break;
+            case Define.SoundType.Effect:
+                volumeType = (int)Define.VolumeType.EffVolume;
+                break;
+            case Define.SoundType.Facility:
+                volumeType = (int)Define.VolumeType.EffVolume;
+                break;
+        }
+
+        Assert.IsTrue(volumeType != -1);
+
+        return (Define.VolumeType) volumeType;
+    }
+
     public void UpdateVolume()
     {
         Define.VolumeType volumeType = Define.VolumeType.MasterVolume;
@@ -196,7 +222,7 @@ public class SoundManager
 
         for (int i = 0; i < _audioSources.Length; i++)
         {
-            volumeType = (Define.VolumeType)i;
+            volumeType = GetVolumeType((Define.SoundType)i);
             float volume = Mathf.Log(PlayerPrefs.GetFloat(volumeType.ToString(), 1f));
             float prev = _audioVolume[i];
             _audioVolume[i] = volume + masterVolume;

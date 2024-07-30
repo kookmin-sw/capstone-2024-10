@@ -28,11 +28,6 @@ public class UI_SessionEntry : UI_Base
         RoomName,
         PlayerCount,
     }
-
-    public enum GameObjects
-    {
-        LockIcon,
-    }
     #endregion
 
     private SessionInfo _session;
@@ -45,11 +40,9 @@ public class UI_SessionEntry : UI_Base
         Bind<Button>(typeof(Buttons));
         Bind<Image>(typeof(Images));
         Bind<TMP_Text>(typeof(Texts));
-        Bind<GameObject>(typeof(GameObjects));
 
         transform.localScale = Vector3.one;
         transform.localPosition = Vector3.zero;
-        GetObject(GameObjects.LockIcon).gameObject.SetActive(false);
         GetButton(Buttons.JoinButton).onClick.AddListener(JoinSession);
 
         return true;
@@ -59,12 +52,18 @@ public class UI_SessionEntry : UI_Base
     {
         yield return null;
         _session = args.session;
+
+        string roomName = _session.Name;
         if (_session.Properties.TryGetValue("password", out SessionProperty password) && password != "")
         {
-            GetObject(GameObjects.LockIcon).gameObject.SetActive(true);
+            roomName = "<sprite=0>   " + roomName;
+        }
+        else
+        {
+            roomName = "       " + roomName;
         }
 
-        GetText(Texts.RoomName).text = _session.Name;
+        GetText(Texts.RoomName).text = roomName;
         GetText(Texts.PlayerCount).text = _session.PlayerCount + "/" + _session.MaxPlayers;
         if (_session.IsOpen == false || _session.PlayerCount >= _session.MaxPlayers)
         {
@@ -82,13 +81,25 @@ public class UI_SessionEntry : UI_Base
         {
             Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
             var popup = Managers.UIMng.ShowPopupUI<UI_JoinRoom>(parent: Managers.UIMng.PeekPopupUI<UI_Lobby>().transform);
-            popup.SetInfo(GetText(Texts.RoomName).text, password);
+            popup.SetInfo(_session.Name, password);
         }
         else
         {
-            Managers.UIMng.Clear();
-            Managers.NetworkMng.ConnectToSession(GetText(Texts.RoomName).text, null);
-            Managers.UIMng.ShowPanelUI<UI_Loading>();
+            Managers.UIMng.ShowPopupUI<UI_RaycastBlock>();
+            bool result = await Managers.NetworkMng.ConnectToSession(_session.Name, null);
+            Managers.UIMng.ClosePopupUI();
+
+            if (result)
+            {
+                Managers.Clear();
+                Managers.UIMng.ShowPanelUI<UI_Loading>();
+            }
+            else
+            {
+                Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
+                var lobby = Managers.UIMng.PeekPopupUI<UI_Lobby>();
+                Managers.UIMng.ShowPopupUI<UI_Warning>(parent : lobby.transform);
+            }
         }
     }
 }

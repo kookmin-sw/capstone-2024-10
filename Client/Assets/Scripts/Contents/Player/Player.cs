@@ -1,12 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Fusion;
 using System;
-using ExitGames.Client.Photon;
-using UnityEngine.SceneManagement;
-using System.Threading.Tasks;
-using UnityEngine.UIElements;
 
 public class Player : NetworkBehaviour
 {

@@ -42,7 +42,7 @@ public class UI_JoinRoom : UI_Popup
         Bind<TMP_InputField>(typeof(InputFields));
         Bind<TMP_Text>(typeof(Texts));
 
-        transform.localPosition = new Vector3(47, 227, 0);
+        transform.localPosition = new Vector3(47, 317, 0);
 
         InputPassword = Get<TMP_InputField>((int)InputFields.Password);
         _warning = Get<TMP_Text>((int)Texts.Warning);
@@ -50,7 +50,9 @@ public class UI_JoinRoom : UI_Popup
         Get<Button>((int)Buttons.Btn_Yes).onClick.AddListener(() =>
         {
             JoinGame();
+            ClosePopupUI();
         });
+
         Get<Button>((int)Buttons.Btn_No).onClick.AddListener(() =>
         {
             ClosePopupUI();
@@ -68,7 +70,7 @@ public class UI_JoinRoom : UI_Popup
         _password = password;
     }
 
-    public void JoinGame()
+    public async void JoinGame()
     {
         if (!string.IsNullOrEmpty(_password) && _password != InputPassword.text)
         {
@@ -76,9 +78,17 @@ public class UI_JoinRoom : UI_Popup
             return;
         }
 
-        Managers.NetworkMng.ConnectToSession(_roomName, null);
-
-        ClosePopupUI();
-        Managers.UIMng.ShowPanelUI<UI_Loading>();
+        bool result = await Managers.NetworkMng.ConnectToSession(_roomName, null);
+        if (result)
+        {
+            Managers.Clear();
+            Managers.UIMng.ShowPanelUI<UI_Loading>();
+        }
+        else
+        {
+            Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
+            var lobby = Managers.UIMng.PeekPopupUI<UI_Lobby>();
+            Managers.UIMng.ShowPopupUI<UI_Warning>(parent : lobby.transform);
+        }
     }
 }

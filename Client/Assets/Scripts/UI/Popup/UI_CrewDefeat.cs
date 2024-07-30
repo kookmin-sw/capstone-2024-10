@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_CrewDefeat : UI_Popup
+public class UI_CrewDefeat : UI_Panel
 {
     enum Buttons
     {

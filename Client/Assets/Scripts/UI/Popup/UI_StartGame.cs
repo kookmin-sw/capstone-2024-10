@@ -1,3 +1,4 @@
+using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -16,6 +17,7 @@ public class UI_StartGame : UI_Popup
     enum Texts
     {
         ReadyCount,
+        RoomName,
     }
 
     enum GameObjects
@@ -85,7 +87,9 @@ public class UI_StartGame : UI_Popup
 
     public void SetInfo(int count)
     {
-        GetText((int)Texts.ReadyCount).text = $"{count} / {Define.PLAYER_COUNT}";
+        GetText(Texts.ReadyCount).text = $"{count} / {Define.PLAYER_COUNT}";
+        SessionInfo info = Managers.NetworkMng.Runner.SessionInfo;
+        GetText(Texts.RoomName).text = info.Name;
     }
 
     private void OnDestroy()

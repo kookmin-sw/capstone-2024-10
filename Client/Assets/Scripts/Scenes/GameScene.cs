@@ -34,19 +34,16 @@ public class GameScene : BaseScene
         planSystem.Init();
         gameEndSystem.Init();
         UI_Ingame ingameUI = Managers.ObjectMng.MyCreature is Crew ? Managers.UIMng.ShowSceneUI<UI_CrewIngame>() : Managers.UIMng.ShowSceneUI<UI_AlienIngame>();
+
         yield return new WaitUntil(() => ingameUI.Init());
 
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
+        Managers.UIMng.OnMapLoadComplete();
 
-        gameEndSystem.InitAfterUIPopup();
+        yield return new WaitUntil(() => Managers.GameMng.GameEndSystem.AreAllPlayersLoaded);
 
-        var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
-        // 테스트 씬은 로딩 UI를 띄우지 않음
-        if (loadingUI != null)
-        {
-            loadingUI.OnMapLoadComplete();
-        }
+        Managers.UIMng.BlockLoadingUI(false);
     }
 
     private void Update()

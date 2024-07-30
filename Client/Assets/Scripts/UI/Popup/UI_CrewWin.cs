@@ -1,11 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_CrewWin : UI_Popup
+public class UI_CrewWin : UI_Panel
 {
     enum Buttons
     {
@@ -48,6 +46,12 @@ public class UI_CrewWin : UI_Popup
         float t = -1;
         while ((t = _exitTime - Time.deltaTime) > 0)
         {
+            if (Managers.UIMng.SceneUI != null)
+            {
+                Destroy(Managers.UIMng.SceneUI.gameObject);
+                Managers.UIMng.SceneUI = null;
+            }
+
             if (Mathf.Floor(t) != Mathf.Floor(_exitTime))
             {
                 GetText(Texts.Text3).text = $"Automatically leave after {Mathf.Floor(t)} seconds";

@@ -40,14 +40,8 @@ public class TutorialScene : BaseScene
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
 
-        gameEndSystem.InitAfterUIPopup();
-
-        var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
-        // 테스트 씬은 로딩 UI를 띄우지 않음
-        if (loadingUI != null)
-        {
-            loadingUI.OnMapLoadComplete();
-        }
+        Managers.UIMng.OnMapLoadComplete();
+        Managers.UIMng.BlockLoadingUI(false);
     }
 
     private void Update()

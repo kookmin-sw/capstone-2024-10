@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,9 +26,11 @@ public class UI_Loading : UI_Panel
     public bool loadingMap = false;
     private TMP_Text _tip;
 
-    public bool IsMapLoaded { get; private set; } = false;
+    public bool IsMapLoaded { get; set; } = false;
     public bool IsDone { get; private set; } = false;
     public float LoadingProgress { get; private set; } = 0.0f;
+    public bool IsWaitingForPlayers { get; set; } = false;
+    private bool _testLoading { get; set; } = false;
 
     public override bool Init()
     {
@@ -69,6 +70,7 @@ public class UI_Loading : UI_Panel
         {
             _loadingSpeed = 0.1f;
             Managers.NetworkMng.IsGameLoading = true;
+            IsWaitingForPlayers = true;
             StartCoroutine(TransitionCheck());
             StartCoroutine(OnAlienDropped());
         }
@@ -80,6 +82,12 @@ public class UI_Loading : UI_Panel
     {
         LoadingProgress += _loadingSpeed * Time.deltaTime;
         _loadingBar.value = Mathf.Clamp01(LoadingProgress / .95f);
+
+        // 테스트 용
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            _testLoading = !_testLoading;
+        }
     }
 
     public IEnumerator SpawnCheck()
@@ -91,29 +99,24 @@ public class UI_Loading : UI_Panel
 
     public IEnumerator OnAlienDropped()
     {
-        while (Managers.NetworkMng.AlienPlayerCount >= 1)
+        while (Managers.NetworkMng.SpawnCount == Define.PLAYER_COUNT)
         {
             yield return new WaitForSeconds(0.1f);
         }
 
         Managers.NetworkMng.OnAlienDropped();
         IsDone = true;
+        IsWaitingForPlayers = false;
     }
 
     public IEnumerator TransitionCheck()
     {
-        yield return new WaitUntil(() => Managers.NetworkMng.CurrentPlayState == PlayerSystem.PlayState.Transition);
-        yield return new WaitUntil(() => Managers.NetworkMng.CurrentPlayState != PlayerSystem.PlayState.Transition);
+        yield return new WaitUntil(() => Managers.NetworkMng.CurrentPlayState == PlayerSystem.PlayState.Game);
         yield return new WaitUntil(() => Managers.ObjectMng.MyCreature != null);
         yield return new WaitUntil(() => Managers.ObjectMng.MyCreature.IsSpawned);
         yield return new WaitUntil(() => IsMapLoaded);
         yield return new WaitForSeconds(2.0f);
         IsDone = true;
-    }
-
-    public void OnMapLoadComplete()
-    {
-        IsMapLoaded = true;
     }
 
     public IEnumerator LoadAsynchronously()
@@ -149,14 +152,19 @@ public class UI_Loading : UI_Panel
         _loadingSpeed = 0.4f;
         yield return new WaitUntil(() => _loadingBar.value > 0.9f);
         yield return new WaitForSeconds(0.5f);
+
+        Managers.NetworkMng.IsGameLoading = false;
+
+        yield return new WaitUntil(() => IsWaitingForPlayers == false);
+        yield return new WaitUntil(() => _testLoading == false);
+
+        StopAllCoroutines();
         Managers.UIMng.PanelUI = null;
         Destroy(transform.parent.gameObject);
-        Managers.NetworkMng.IsGameLoading = false;
     }
 
     public void OnLoadingDone()
     {
-        StopAllCoroutines();
         StartCoroutine(WaitProgress());
     }
 }
