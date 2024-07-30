@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_AlienDefeat : UI_Popup
+public class UI_AlienDefeat : UI_Panel
 {
     enum Buttons
     {

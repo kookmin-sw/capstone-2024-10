@@ -195,6 +195,8 @@ public static class Define
 
     #region Value
 
+    public const float GAME_WAIT_TIME = 10.0f;
+
     public const int PLAYER_COUNT = 4;
     public const int MAX_ITEM_NUM = 4;
     public const int MAX_SKILL_NUM = 4;

@@ -85,7 +85,7 @@ public class GameEndSystem : NetworkBehaviour
     {
         if (Managers.ObjectMng.MyCreature is Alien)
         {
-            StartCoroutine(EndAlienGame());
+            EndAlienGame();
         }
         else
         {
@@ -106,14 +106,13 @@ public class GameEndSystem : NetworkBehaviour
 
         if (!Managers.NetworkMng.IsEndGameTriggered)
         {
-            Managers.UIMng.Clear();
             if (isWin)
             {
-                Managers.UIMng.ShowPopupUI<UI_CrewWin>();
+                Managers.UIMng.ShowPanelUI<UI_CrewWin>(parent : Managers.UIMng.Root.transform);
             }
             else
             {
-                Managers.UIMng.ShowPopupUI<UI_CrewDefeat>();
+                Managers.UIMng.ShowPanelUI<UI_CrewDefeat>(parent : Managers.UIMng.Root.transform);
             }
 
             Managers.NetworkMng.IsEndGameTriggered = true;
@@ -122,29 +121,26 @@ public class GameEndSystem : NetworkBehaviour
         Rpc_EndCrewGame(isWin, Runner.LocalPlayer);
     }
 
-    public IEnumerator EndAlienGame()
+    public void EndAlienGame()
     {
         if (Managers.ObjectMng.MyCreature is not Alien alien)
-            yield break;
+            return;
 
         ShowCursor();
 
         if (!Managers.NetworkMng.IsEndGameTriggered)
         {
-            Managers.UIMng.Clear();
             if (KilledCrewNum + DroppedCrewNum >= Define.PLAYER_COUNT - 1)
             {
-                Managers.UIMng.ShowPopupUI<UI_AlienWin>();
+                Managers.UIMng.ShowPanelUI<UI_AlienWin>(parent : Managers.UIMng.Root.transform);
             }
             else
             {
-                Managers.UIMng.ShowPopupUI<UI_AlienDefeat>();
+                Managers.UIMng.ShowPanelUI<UI_AlienDefeat>(parent : Managers.UIMng.Root.transform);
             }
 
             Managers.NetworkMng.IsEndGameTriggered = true;
         }
-
-        yield return new WaitUntil(() => alien);
 
         alien.OnGameEnd();
     }
@@ -153,7 +149,7 @@ public class GameEndSystem : NetworkBehaviour
     {
         if (CrewNum <= 0)
         {
-            StartCoroutine(EndAlienGame());
+            EndAlienGame();
         }
 
         if (CrewNum == 1)

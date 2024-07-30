@@ -99,7 +99,7 @@ public class UI_Loading : UI_Panel
 
     public IEnumerator OnAlienDropped()
     {
-        while (Managers.NetworkMng.AlienPlayerCount >= 1)
+        while (Managers.NetworkMng.SpawnCount == Define.PLAYER_COUNT)
         {
             yield return new WaitForSeconds(0.1f);
         }

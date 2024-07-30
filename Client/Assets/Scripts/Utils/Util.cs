@@ -75,6 +75,12 @@ public class Util : MonoBehaviour
             Destroy(Managers.UIMng.SceneUI.gameObject);
         }
 
+        if (Managers.UIMng.PanelUI is UI_Loading)
+        {
+            Destroy(Managers.UIMng.PanelUI.gameObject);
+            Managers.UIMng.PanelUI = null;
+        }
+
         Managers.UIMng.Clear();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

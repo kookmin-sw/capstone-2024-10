@@ -215,7 +215,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         if (playerData.CreatureType == Define.CreatureType.Alien)
         {
             AlienPlayerCount--;
-            OnAlienDropped();
+            if (IsGameLoading == false)
+                OnAlienDropped();
         }
         else if (playerData.CreatureType == Define.CreatureType.Crew)
         {
@@ -240,7 +241,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         Util.ClearUIAndSound();
         Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.7f);
-        Managers.UIMng.ShowPopupUI<UI_CrewWin>();
+        Managers.UIMng.ShowPanelUI<UI_CrewWin>(Managers.UIMng.Root.transform);
         IsEndGameTriggered = true;
     }
 
