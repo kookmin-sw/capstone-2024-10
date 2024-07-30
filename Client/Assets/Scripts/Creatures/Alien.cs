@@ -4,6 +4,7 @@ using Data;
 using Fusion;
 using UnityEngine.EventSystems;
 using System.Collections;
+using System.Threading.Tasks;
 
 public class Alien : Creature
 {
@@ -172,17 +173,18 @@ public class Alien : Creature
         ReturnToIdle(blindTime);
     }
 
-    public IEnumerator OnGameEnd()
+    public async void OnGameEnd()
     {
         if (!HasStateAuthority || !IsSpawned)
-            yield break;
-
-        yield return new WaitUntil(() => AlienSoundController != null);
+            return;
 
         AlienSoundController.StopAllSound();
         AlienSoundController.PlayEndGame();
 
-        yield return new WaitUntil(() => AlienIngameUI != null);
+        while (AlienIngameUI == null)
+        {
+            await Task.Delay(500);
+        }
 
         AlienIngameUI.HideUI();
         AlienIngameUI.EndGame();

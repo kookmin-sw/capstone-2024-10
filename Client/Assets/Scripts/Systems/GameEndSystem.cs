@@ -9,17 +9,15 @@ public class GameEndSystem : NetworkBehaviour
     [Networked]
     public int KilledCrewNum { get; set; } = 0;
     [Networked]
-    public NetworkBool ShouldEndGame { get; set; } = false;
-    [Networked]
     public int DroppedCrewNum { get; set; } = 0;
     [Networked]
-    public NetworkBool IsGameStarted { get; set; } = false;
+    public bool IsGameStarted { get; set; } = false;
     [Networked]
-    public NetworkBool IsCrewKilled { get; set; } = false;
+    public bool IsCrewKilled { get; set; } = false;
     [Networked]
-    public NetworkBool IsCrewDropped { get; set; } = false;
+    public bool IsCrewDropped { get; set; } = false;
     [Networked]
-    public NetworkBool IsCrewWinning { get; set; } = false;
+    public bool IsCrewWinning { get; set; } = false;
     [Networked]
     public int LoadedPlayerNum { get; set; } = 0;
     public float ElapsedTime { get; set; } = 0f;
@@ -46,7 +44,7 @@ public class GameEndSystem : NetworkBehaviour
         {
             ElapsedTime += Time.deltaTime;
 
-            if (ElapsedTime > Define.GAME_WAIT_TIME)
+            if (ElapsedTime > Define.GAME_WAIT_TIME && Managers.NetworkMng.SpawnCount < Define.PLAYER_COUNT)
             {
                 AreAllPlayersLoaded = true;
                 RPC_EndGame(Managers.NetworkMng.Runner);
@@ -148,7 +146,7 @@ public class GameEndSystem : NetworkBehaviour
 
         yield return new WaitUntil(() => alien);
 
-        StartCoroutine(alien.OnGameEnd());
+        alien.OnGameEnd();
     }
 
     public void OnCrewNumChanged()

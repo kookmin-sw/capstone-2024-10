@@ -85,7 +85,10 @@ public class UI_SessionEntry : UI_Base
         }
         else
         {
+            Managers.UIMng.ShowPopupUI<UI_RaycastBlock>();
             bool result = await Managers.NetworkMng.ConnectToSession(_session.Name, null);
+            Managers.UIMng.ClosePopupUI();
+
             if (result)
             {
                 Managers.Clear();

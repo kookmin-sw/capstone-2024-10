@@ -2,6 +2,7 @@ using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using WebSocketSharp;
 
 public class UI_SessionList : UI_Popup
 {
@@ -22,7 +23,7 @@ public class UI_SessionList : UI_Popup
         return true;
     }
 
-    public void RefreshSessionLIst()
+    public void RefreshSessionLIst(string keyword = "")
     {
         foreach (Transform child in GetObject((int)GameObjects.RoomContent).transform)
         {
@@ -33,6 +34,9 @@ public class UI_SessionList : UI_Popup
         {
             if (session.IsVisible)
             {
+                if (!keyword.IsNullOrEmpty() && !session.Name.Contains(keyword))
+                    continue;
+
                 UI_SessionEntry entry = Managers.UIMng.MakeSubItem<UI_SessionEntry>(GetObject((int)GameObjects.RoomContent).transform);
                 var args = new SessionEntryArgs()
                 {

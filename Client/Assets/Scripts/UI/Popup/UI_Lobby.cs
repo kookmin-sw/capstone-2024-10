@@ -18,6 +18,12 @@ public class UI_Lobby : UI_Popup
         Btn_CreateGame,
         Btn_RefreshSession,
         Btn_GameTutorial,
+        SearchIcon,
+    }
+
+    public enum Inputs
+    {
+        Search,
     }
     #endregion
 
@@ -27,15 +33,15 @@ public class UI_Lobby : UI_Popup
             return false;
 
         Bind<Button>(typeof(Buttons));
+        Bind<TMP_InputField>(typeof(Inputs));
 
         GetButton((int)Buttons.Btn_QuickStart).onClick.AddListener(EnterGame);
         GetButton((int)Buttons.Btn_CreateGame).onClick.AddListener(CreateGame);
         GetButton((int)Buttons.Btn_RefreshSession).onClick.AddListener(Refresh);
+        GetButton((int)Buttons.SearchIcon).onClick.AddListener(Refresh);
         GetButton((int)Buttons.Btn_GameTutorial).onClick.AddListener(StartTutorial);
 
-        GetButton((int)Buttons.Btn_CreateGame).interactable = false;
-        GetButton((int)Buttons.Btn_QuickStart).interactable = false;
-        GetButton((int)Buttons.Btn_GameTutorial).interactable = false;
+        EnableUIInteraction(false);
         Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Btn_CreateGame).interactable = true;
         Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Btn_QuickStart).interactable = true;
         Managers.NetworkMng.OnSessionUpdated += () => GetButton((int)Buttons.Btn_GameTutorial).interactable = true;
@@ -71,9 +77,16 @@ public class UI_Lobby : UI_Popup
         popup.Init();
 
         GetButton((int)Buttons.Btn_RefreshSession).interactable = false;
-        popup.RefreshSessionLIst();
+        popup.RefreshSessionLIst(Get<TMP_InputField>(Inputs.Search).text.Trim());
         yield return new WaitForSeconds(1f);
         GetButton((int)Buttons.Btn_RefreshSession).interactable = true;
+    }
+
+    private void EnableUIInteraction(bool toggle)
+    {
+        GetButton((int)Buttons.Btn_CreateGame).interactable = toggle;
+        GetButton((int)Buttons.Btn_QuickStart).interactable = toggle;
+        GetButton((int)Buttons.Btn_GameTutorial).interactable = toggle;
     }
 
     private void CreateGame()
@@ -86,7 +99,10 @@ public class UI_Lobby : UI_Popup
 
     private async void EnterGame()
     {
+        Managers.UIMng.ShowPopupUI<UI_RaycastBlock>();
         bool result = await Managers.NetworkMng.ConnectToAnySession();
+        Managers.UIMng.ClosePopupUI();
+
         if (result)
         {
             Managers.Clear();
