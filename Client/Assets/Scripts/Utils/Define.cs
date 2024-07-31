@@ -26,7 +26,8 @@ public static class Define
         FlashBang,
         Bandage,
         Antipsychotic,
-        Morphine,
+        Adrenaline,
+        GameEnd,
     }
 
     public enum AlienActionType
@@ -43,6 +44,7 @@ public static class Define
         ReadyLeapAttack,
         LeapAttack,
         HitDelay,
+        GameEnd,
     }
 
     public enum SectorName

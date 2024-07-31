@@ -2,20 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO; 
+using System.IO;
 
 public class CaptureItem : MonoBehaviour
 {
-    public Camera Camera;
     public RenderTexture rt;
-    public Image image;
-    public GameObject item;
     public int idx;
 
     private void Start()
     {
-        Camera = Camera.main;
-        idx = 0;
     }
 
     public void Create()
@@ -33,17 +28,12 @@ public class CaptureItem : MonoBehaviour
 
         yield return null;
 
-        var data = texture.EncodeToPNG();
-        string name = idx.ToString();
-        string extention = ".png";
-        string path = $"Assets/Resources/Images/";
-        idx++;
-        Debug.Log(path);
+        string path = $"Assets/Resources/Images";
 
         if (!Directory.Exists(path))
             Directory.CreateDirectory(path);
 
-        File.WriteAllBytes(path + name + extention, data);
+        File.WriteAllBytes($"{path}/{++idx}.png", texture.EncodeToPNG());
 
         yield return null;
     }

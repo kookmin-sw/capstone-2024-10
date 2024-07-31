@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-public class Morphine : BaseItem
+public class Adrenaline : BaseItem
 {
     public override void SetInfo(int templateId, Crew owner)
     {
@@ -23,7 +23,7 @@ public class Morphine : BaseItem
 
     protected override void UseItem()
     {
-        Owner.CrewSoundController.PlaySound(Define.CrewActionType.Morphine);
+        Owner.CrewSoundController.PlaySound(Define.CrewActionType.Adrenaline);
 
         Owner.CrewStat.Doped = true;
 

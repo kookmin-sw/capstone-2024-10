@@ -111,11 +111,12 @@ namespace Data
         public string Name;
         public float CoolTime;
         public float Range;
+        public float Width;
+        public float Height;
         public int Damage;
         public float SanityDamage;
         public float TotalSkillAmount;
         public float TotalReadySkillAmount;
-
     }
 
     [Serializable]

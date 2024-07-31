@@ -16,7 +16,7 @@ public class Alien : Creature
     public AlienSoundController AlienSoundController => (AlienSoundController)BaseSoundController;
     public SkillController SkillController { get; protected set; }
 
-    public RoarRangeIndicator RoarRangeIndicator { get; protected set; }
+    public GameObject RoarRangeIndicator { get; protected set; }
 
     public UI_AlienIngame AlienIngameUI => IngameUI as UI_AlienIngame;
 
@@ -48,7 +48,8 @@ public class Alien : Creature
         CreatureCamera.transform.localPosition = new Vector3(0.1f, 0.6f, 0f);
         CreatureCamera.SetInfo(this);
 
-        RoarRangeIndicator = Util.FindChild(gameObject, "RoarRangeIndicator").GetComponent<RoarRangeIndicator>();
+        RoarRangeIndicator = Util.FindChild(gameObject, "RoarRangeIndicator");
+        RoarRangeIndicator.transform.localScale = new Vector3(0f, 0f, 0f);
 
         AlienStat.SetStat(AlienData);
 
@@ -179,7 +180,7 @@ public class Alien : Creature
             return;
 
         AlienSoundController.StopAllSound();
-        AlienSoundController.PlayEndGame();
+        AlienSoundController.PlaySound(Define.AlienActionType.GameEnd);
 
         while (AlienIngameUI == null)
         {
