@@ -27,9 +27,17 @@ public abstract class BaseSoundController : NetworkBehaviour
 
     public abstract void PlayMove();
 
+    public void PlayEndSound()
+    {
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.7f);
+    }
+
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     public void Rpc_StopEffectSound()
     {
+        if (!Creature || !CreatureAudioSource)
+            return;
+
         if (CreatureAudioSource.isPlaying)
             CreatureAudioSource.Stop();
     }
@@ -69,18 +77,6 @@ public abstract class BaseSoundController : NetworkBehaviour
         }
 
         Managers.SoundMng.Stop(Define.SoundType.Bgm);
-    }
-
-    #endregion
-
-    #region EndGame
-
-    public void PlayEndGame(bool isDead = false)
-    {
-        if (isDead)
-            Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/GameOver", Define.SoundType.Effect,  volume:0.7f);
-        else
-            Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.7f);
     }
 
     #endregion

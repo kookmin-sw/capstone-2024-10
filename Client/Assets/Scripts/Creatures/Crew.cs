@@ -295,7 +295,7 @@ public class Crew : Creature
 
         CrewAnimController.PlayAnim(Define.CrewActionType.Dead);
         CrewSoundController.StopAllSound();
-        CrewSoundController.PlayEndGame(true);
+        CrewSoundController.PlaySound(Define.CrewActionType.Dead);
 
         CrewIngameUI.HideUI();
         Managers.GameMng.GameEndSystem.EndCrewGame(false);
@@ -312,7 +312,7 @@ public class Crew : Creature
         CreatureState = Define.CreatureState.Idle;
 
         CrewSoundController.StopAllSound();
-        CrewSoundController.PlayEndGame();
+        CrewSoundController.PlaySound(Define.CrewActionType.GameEnd);
 
         Managers.GameMng.GameEndSystem.EndCrewGame(true);
 

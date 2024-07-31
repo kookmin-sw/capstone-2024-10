@@ -34,7 +34,7 @@ public class CrewSoundController : BaseSoundController
                 Rpc_PlayDamagedSound();
                 break;
             case Define.CrewActionType.Dead:
-                PlayDeadSound();
+                Rpc_PlayDeadSound();
                 break;
             case Define.CrewActionType.Bandage:
                 Rpc_PlayBandageSound();
@@ -42,8 +42,11 @@ public class CrewSoundController : BaseSoundController
             case Define.CrewActionType.Antipsychotic:
                 PlayAntipsychoticSound();
                 break;
-            case Define.CrewActionType.Morphine:
+            case Define.CrewActionType.Adrenaline:
                 PlayMorphineSound();
+                break;
+            case Define.CrewActionType.GameEnd:
+                PlayEndSound();
                 break;
         }
     }
@@ -61,9 +64,18 @@ public class CrewSoundController : BaseSoundController
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Damaged", pitch: 1f, volume: 0.5f, isLoop: false);
     }
 
-    protected void PlayDeadSound()
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
+    protected void Rpc_PlayDeadSound()
     {
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/GameOver", Define.SoundType.Effect,  volume:0.7f, isOneShot: true);
+        string effect = "GameOver";
+        float volume = 0.7f;
+        if (!HasStateAuthority)
+        {
+            effect = "GameOver2";
+            volume *= 0.85f;
+        }
+
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/{effect}", Define.SoundType.Effect, pitch: 1f, volume);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
