@@ -46,11 +46,12 @@ public class PlanSystem : NetworkBehaviour
             Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_A", type: Define.SoundType.Facility, volume:0.7f, isLoop: false);
             IsUSBKeyInsertFinished = true;
             GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
-            GameObject.FindGameObjectsWithTag("ElevatorKeypad").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+
+            if (Managers.ObjectMng.MyCreature is Crew) GameObject.FindGameObjectsWithTag("ElevatorKeypad").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+            else GameObject.FindGameObjectsWithTag("ElevatorDoor").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
         }
 
         if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.UpdateUSBKeyCount(USBKeyInsertCount);
-
     }
 
     private void OnCardkeyUsed()
@@ -88,8 +89,15 @@ public class PlanSystem : NetworkBehaviour
     private void OnPanicRoomActivated()
     {
         GameObject.FindGameObjectsWithTag("EmergencyControlDevice").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
-        GameObject.FindGameObjectsWithTag("PanicRoom").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
 
-        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.OnPanicRoomActivated();
+        if (Managers.ObjectMng.MyCreature is Crew crew)
+        {
+            crew.CrewIngameUI.PlanUI.OnPanicRoomActivated();
+            GameObject.FindGameObjectsWithTag("PanicRoom").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+        }
+        else
+        {
+            GameObject.FindGameObjectsWithTag("PanicRoomDoor").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+        }
     }
 }
