@@ -68,6 +68,6 @@ public class Roar : BaseSkill
     {
         base.SkillInterrupt(hitDelayTime);
 
-        Owner.RoarRangeIndicator.transform.localScale = new Vector3(1f, 1.6f, 0f);
+        Owner.RoarRangeIndicator.transform.localScale = new Vector3(0f, 0f, 0f);
     }
 }
