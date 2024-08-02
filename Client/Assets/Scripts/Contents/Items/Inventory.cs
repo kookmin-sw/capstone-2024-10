@@ -140,7 +140,7 @@ public class Inventory: NetworkBehaviour
             if (ItemInventory[i] == -1)
                 continue;
 
-            NetworkObject no = Managers.ObjectMng.SpawnItemObject(ItemInventory[i], Owner.Head.transform.position + Owner.Head.transform.up, Random.rotation, true);
+            NetworkObject no = Managers.ObjectMng.SpawnItemObject(ItemInventory[i], Owner.Head.transform.position, Random.rotation, true);
 
             yield return new WaitForSeconds(0.01f);
         }
