@@ -29,7 +29,7 @@ public class PlanSystem : NetworkBehaviour
     {
         if (BatteryChargeCount == Define.BATTERY_CHARGE_GOAL)
         {
-            Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_BatteryCharge", type: Define.SoundType.Facility, volume:0.4f, isLoop: false);
+            Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_BatteryCharge", type: Define.SoundType.Facility, volume:0.4f, isOneShot:true);
             IsBatteryChargeFinished = true;
             GameObject.FindGameObjectsWithTag("BatteryCharger").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
             GameObject.FindGameObjectsWithTag("CentralControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
@@ -43,7 +43,7 @@ public class PlanSystem : NetworkBehaviour
     {
         if (USBKeyInsertCount == Define.USBKEY_INSERT_GOAL)
         {
-            Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_A", type: Define.SoundType.Facility, volume:0.7f, isLoop: false);
+            Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_A", type: Define.SoundType.Facility, volume:0.7f, isOneShot:true);
             IsUSBKeyInsertFinished = true;
             GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
 

@@ -7,7 +7,7 @@ public abstract class BaseItemObject : NetworkBehaviour, IInteractable
     public ItemData ItemData => Managers.DataMng.ItemDataDict[DataId];
     public string Description => $"Take {ItemData.Name}";
 
-    [Networked] public NetworkBool IsGettable { get; set; }
+    [Networked] public NetworkBool IsGettable { get; set; } = true;
 
     public override void Spawned()
     {

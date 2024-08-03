@@ -72,10 +72,10 @@ public class CrewSoundController : BaseSoundController
         if (!HasStateAuthority)
         {
             effect = "GameOver2";
-            volume *= 0.85f;
+            volume *= 0.8f;
         }
 
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/{effect}", Define.SoundType.Effect, pitch: 1f, volume);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/{effect}", Define.SoundType.Effect, pitch: 1f, volume, isOneShot:true);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
