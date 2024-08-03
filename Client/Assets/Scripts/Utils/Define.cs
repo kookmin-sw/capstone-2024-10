@@ -207,18 +207,18 @@ public static class Define
     public static string[] TEXT_FOR_TIP =
     {
         "Crew: Crouch to pick up the items on the floor.",
-        "Crew: Close the doors to run away from the alien.",
+        "Crew: Close the door to run away from the alien.",
         "Crew: You can recover sanity by crouching.",
         "Crew: Crouching makes your stamina recover faster.",
-        "Crew: While running, your footstep sound becomes much louder.",
-        "Crew: While crouching, your footstep doesn't make any sound.",
-        "Crew: After being attacked by the alien, your speed significantly increases for a short moment.",
-        "Alien: Use the \"Roar\" skill to slow down the crews.",
-        "Alien: Destroy the closed doors so that crews cannot use them again.",
+        "Crew: While running, your footsteps becomes much louder.",
+        "Crew: While crouching, your footsteps don't make any sound.",
+        "Crew: After being attacked by the alien, your speed briefly increases significantly.",
+        "Alien: Use the \"Roar\" skill to slow down the crew.",
+        "Alien: Destroy the closed doors so the crew can't use them again.",
     };
 
-    public const int BATTERY_CHARGE_GOAL = 7;
-    public const int USBKEY_INSERT_GOAL = 4;
+    public const int BATTERY_CHARGE_GOAL = 6;
+    public const int USBKEY_INSERT_GOAL = 5;
     public const int OPEN_PANIC_ROOM = 2;
     public const int TUTORIAL_BATTERY_CHARGE_GOAL = 2;
 

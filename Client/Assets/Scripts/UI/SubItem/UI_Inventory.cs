@@ -53,6 +53,8 @@ public class UI_Inventory : UI_Base
 
         Highlight(0);
 
+        RemoveItemName();
+
         return true;
     }
 
@@ -118,6 +120,5 @@ public class UI_Inventory : UI_Base
     public void RemoveItemName()
     {
         GetText(Texts.ItemName).text = "";
-        return;
     }
 }

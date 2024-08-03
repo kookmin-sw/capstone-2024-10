@@ -74,7 +74,7 @@ public class TutorialPlanSystem : NetworkBehaviour
     {
         if (BatteryChargeCount == Define.TUTORIAL_BATTERY_CHARGE_GOAL)
         {
-            Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_BatteryCharge", type: Define.SoundType.Facility, volume:0.4f, isLoop: false);
+            Managers.SoundMng.Play($"{Define.FACILITY_PATH}/Plan_BatteryCharge", type: Define.SoundType.Facility, volume:0.4f, isOneShot:true);
         }
 
         if (Managers.ObjectMng.MyCreature is Alien) return;
