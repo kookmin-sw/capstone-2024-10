@@ -8,7 +8,7 @@ public class Door : BaseWorkStation
     {
         get
         {
-            if (Managers.ObjectMng.MyCreature is Alien) return "Crash Door";
+            if (Managers.ObjectMng.MyCreature is Alien) return "Destroy Door";
             return IsOpened ? "Close" : "Open";
         }
     }
@@ -17,6 +17,7 @@ public class Door : BaseWorkStation
 
     private NetworkMecanimAnimator _mecanimAnimator;
     private Collider _collider;
+    private OcclusionPortal _occlusionPortal;
 
     protected override void Init()
     {
@@ -25,6 +26,8 @@ public class Door : BaseWorkStation
         _mecanimAnimator = transform.GetComponent<NetworkMecanimAnimator>();
         _collider = transform.GetComponent<Collider>();
         AudioSource = gameObject.GetComponent<AudioSource>();
+        _occlusionPortal = transform.parent.GetComponent<OcclusionPortal>();
+        _occlusionPortal.open = true;
 
         CrewActionType = Define.CrewActionType.OpenDoor;
         CanRememberWork = false;
@@ -115,6 +118,7 @@ public class Door : BaseWorkStation
     private void Rpc_AlienWorkComplete()
     {
         gameObject.SetActive(false);
+        _occlusionPortal.open = true;
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -133,6 +137,12 @@ public class Door : BaseWorkStation
     private void DisableCollider()
     {
         _collider.enabled = false;
-        DOVirtual.DelayedCall(0.3f, () => { _collider.enabled = true; });
+        if (IsOpened) _occlusionPortal.open = true;
+
+        DOVirtual.DelayedCall(0.5f, () =>
+        {
+            _collider.enabled = true;
+            if (!IsOpened) _occlusionPortal.open = false;
+        });
     }
 }

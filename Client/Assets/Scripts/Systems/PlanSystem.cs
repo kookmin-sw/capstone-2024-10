@@ -95,9 +95,9 @@ public class PlanSystem : NetworkBehaviour
             crew.CrewIngameUI.PlanUI.OnPanicRoomActivated();
             GameObject.FindGameObjectsWithTag("PanicRoom").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
         }
-        else
-        {
-            GameObject.FindGameObjectsWithTag("PanicRoomDoor").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
-        }
+        //else
+        //{
+        //    GameObject.FindGameObjectsWithTag("PanicRoomDoor").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
+        //}
     }
 }

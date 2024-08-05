@@ -27,7 +27,7 @@ public class BatteryCharger : BaseWorkStation
 
         if (Managers.GameMng.PlanSystem.IsBatteryChargeFinished)
         {
-            creature.IngameUI.ErrorTextUI.Show("Battery Charge Completed");
+            creature.IngameUI.ErrorTextUI.Show("Battery Charge is Already Completed");
             return false;
         }
 

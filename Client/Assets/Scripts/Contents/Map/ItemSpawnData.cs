@@ -10,6 +10,7 @@ public struct ItemSpawnData
     public int GlobalMinCount;
     public int GlobalMaxCount;
     public int MaxCountPerSector;
+    [Tooltip("해당 아이템을 스폰하지 않을 섹터")] public Define.SectorName[] ExcludedSectors;
 
     public bool Validate()
     {

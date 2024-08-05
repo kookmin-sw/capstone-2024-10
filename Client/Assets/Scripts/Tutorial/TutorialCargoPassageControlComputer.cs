@@ -7,7 +7,7 @@ public class TutorialCargoPassageControlComputer : BaseWorkStation
     {
         base.Init();
 
-        Description ="Open Cargo Gate";
+        Description ="Open Cargo Passage Gate";
         CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;
@@ -27,13 +27,11 @@ public class TutorialCargoPassageControlComputer : BaseWorkStation
 
         if (!Managers.TutorialMng.TutorialPlanSystem.IsCentralComputerUsed)
         {
-            creature.IngameUI.ErrorTextUI.Show("Use Central Computer First");
             return false;
         }
 
         if (Managers.TutorialMng.TutorialPlanSystem.IsCargoGateOpen || IsCompleted)
         {
-            creature.IngameUI.ErrorTextUI.Show("Cargo Gates are Already Open");
             return false;
         }
 

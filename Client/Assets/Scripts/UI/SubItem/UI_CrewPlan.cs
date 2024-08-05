@@ -163,15 +163,15 @@ public class UI_CrewPlan : UI_Base
     {
         _planB.SetObjectiveText($"Use Central Control Computer", true, true);
 
-        StartCoroutine(_planB.CompleteObjective("Use Cargo Control Computer To Open Cargo Gate",
+        StartCoroutine(_planB.CompleteObjective("Use Cargo Passage Control Computer to Open the Gate",
             MakeHintFromSectorName(new[] { Define.SectorName.CargoControlRoom, Define.SectorName.DirectorOffice})));
     }
 
     public void OnCargoPassageOpen()
     {
-        _planB.SetObjectiveText($"Use Cargo Control Computer to Open Cargo Gate", true, true);
+        _planB.SetObjectiveText($"Use Cargo Passage Control Computer to Open the Gate", true, true);
 
-        StartCoroutine(_planB.CompleteObjective("Escape Through the Cargo Gate!", ""));
+        StartCoroutine(_planB.CompleteObjective("Escape Through the Cargo Passage!", ""));
     }
 
     private IEnumerator OnBatteryChargeFinished()
@@ -182,7 +182,7 @@ public class UI_CrewPlan : UI_Base
         yield return titleText.DOFade(0, 1f).WaitForCompletion();
 
         _batteryChargePlan.gameObject.SetActive(false);
-        titleText.SetText("Complete Any Plan to Escape!");
+        titleText.SetText("Complete Any Plan And Escape!");
         titleText.DOFade(1, 1f);
 
         _planA.gameObject.SetActive(true);
@@ -203,14 +203,14 @@ public class UI_CrewPlan : UI_Base
     {
         _planC.gameObject.SetActive(true);
         _planC.SetObjectiveText($"Use Emergency Control Device to Open Panic Room", false);
-        _planC.SetHintText(MakeHintFromSectorName(new[] { Define.SectorName.Oratory, Define.SectorName.SampleRoom }));
+        _planC.SetHintText(MakeHintFromSectorName(new[] { Define.SectorName.SampleRoom }));
     }
 
     public void OnPanicRoomActivated()
     {
         _planC.SetObjectiveText("Use Emergency Control Device to Open Panic Room", true, true);
 
-        StartCoroutine(_planC.CompleteObjective("Find Open Panic Room and Escape!", "Hint: Only Two Panic Rooms are Open"));
+        StartCoroutine(_planC.CompleteObjective("Find Open Panic Room and Enter!", "Hint: Only Two Panic Rooms are Open"));
     }
     private static string MakeHintFromSectorName(Define.SectorName[] loc)
     {

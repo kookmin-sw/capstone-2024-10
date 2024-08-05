@@ -34,7 +34,6 @@ public class EmergencyControlDevice : BaseWorkStation
 
         if (Managers.GameMng.PlanSystem.IsPanicRoomActivated)
         {
-            creature.IngameUI.ErrorTextUI.Show("Already Used");
             return false;
         }
 
