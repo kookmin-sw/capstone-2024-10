@@ -6,15 +6,17 @@ using UnityEngine;
 public class Sector : NetworkBehaviour
 {
     [SerializeField] private Define.SectorName _sectorName;
-    [SerializeField] private Define.SectorName[] _lightEnableTargetSectors;
-    [SerializeField] private Light[] _additionalLightEnableTargets;
+    [SerializeField] private Define.SectorName[] _lightEnableTargetSectors; // 섹터에 진입 시, 빛을 활성화할 섹터 목록
+    [SerializeField] private Light[] _additionalLightEnableTargets; // 섹터에 진입 시, 활성화할 빛 목록 (특정 섹터 전체의 빛을 활성화한다면 _lightEnableTargetSectors 사용)
     public Define.SectorName SectorName => _sectorName;
     [Networked] public NetworkBool IsEroded { get; set; } = false;
 
     private List<Transform> _itemSpawnPoints = new();
     private Transform _itemParent;
+
     private List<SectorLight> _lights = new();
     private List<SectorLight> _enableTargetLights = new();
+
     private bool _hasMyCreature;
 
     public void Init()
@@ -24,6 +26,7 @@ public class Sector : NetworkBehaviour
             .ToList();
         _itemParent = GameObject.FindGameObjectWithTag("ItemParent").transform;
 
+        // 섹터의 모든 빛에 SectorLight 부착
         var lights = transform.GetComponentsInChildren<Light>().ToList();
         foreach (var l in lights)
         {
@@ -38,6 +41,7 @@ public class Sector : NetworkBehaviour
             sl.Init();
             _enableTargetLights.Add(sl);
         }
+
         if (_itemParent == null) _itemParent = Managers.GameMng.MapSystem.gameObject.transform;
     }
 
@@ -68,6 +72,7 @@ public class Sector : NetworkBehaviour
         if (IsEroded)
             creature.Rpc_ApplyErosion(true);
 
+        // 주변 섹터의 빛만 활성화
         foreach (var sector in Managers.GameMng.MapSystem.Sectors.Keys)
         {
             if (_lightEnableTargetSectors.Contains(sector))

@@ -8,7 +8,7 @@ public class CargoPassageControlComputer : BaseWorkStation
     {
         base.Init();
 
-        Description ="Open Cargo Gate";
+        Description ="Open Cargo Passage Gate";
         CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;
@@ -33,7 +33,6 @@ public class CargoPassageControlComputer : BaseWorkStation
 
         if (Managers.GameMng.PlanSystem.IsCargoPassageOpen || IsCompleted)
         {
-            creature.IngameUI.ErrorTextUI.Show("Already Used");
             return false;
         }
 

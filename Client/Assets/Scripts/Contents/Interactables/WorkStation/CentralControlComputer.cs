@@ -36,7 +36,6 @@ public class CentralControlComputer : BaseWorkStation
 
         if (Managers.GameMng.PlanSystem.IsCentralComputerWorkFinished)
         {
-            creature.IngameUI.ErrorTextUI.Show("Already Used");
             return false;
         }
 

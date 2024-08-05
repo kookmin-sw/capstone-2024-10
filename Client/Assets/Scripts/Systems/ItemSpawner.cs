@@ -16,8 +16,8 @@ public class ItemSpawner : NetworkBehaviour
         if(!Runner.IsSharedModeMasterClient) return;
 
         int totalCount = 0;
-        Dictionary<ItemSpawnData, int> totalItemCount = new();
-        Dictionary<Define.SectorName, Dictionary<ItemSpawnData, int>> itemPerSectorCount = new();
+        Dictionary<ItemSpawnData, int> totalItemCount = new(); // 아이템 별 스폰된 개수
+        Dictionary<Define.SectorName, Dictionary<ItemSpawnData, int>> itemPerSectorCount = new(); // 섹터 별 생성된 아이템 수
         List<Define.SectorName> availableSectors = new(Sectors.Keys);
         List<ItemSpawnData> itemSpawnData = new(_itemSpawnDatas);
 
@@ -67,14 +67,16 @@ public class ItemSpawner : NetworkBehaviour
 
         bool TrySpawnItem(ItemSpawnData data)
         {
+            // 아이템을 스폰할 섹터 선택
             if(!TrySelectSector(data, out Define.SectorName selectedSector)) return false;
 
+            // 섹터의 아이템 스폰 포인트에 아이템 스폰. 남은 스폰 포인트가 없을 시 다른 섹터 선택 시도
             while (!Sectors[selectedSector].SpawnItem(data.Prefab))
             {
                 availableSectors.Remove(selectedSector);
                 if (availableSectors.Count == 0)
                 {
-                    Debug.LogWarning("Cannot spawn more items: no more available sectors");
+                    Debug.LogWarning("Unable to spawn more items: no more available sectors");
                     return false;
                 }
                 if (!TrySelectSector(data, out selectedSector)) return false;
@@ -93,6 +95,11 @@ public class ItemSpawner : NetworkBehaviour
         {
             List<Define.SectorName> availableSectorsCopy = new(availableSectors);
 
+            foreach (var excludeSector in data.ExcludedSectors)
+            {
+                availableSectorsCopy.Remove(excludeSector);
+            }
+
             selectedSector = Define.SectorName.None;
 
             // Item의 섹터 당 개수 제한을 고려하여 섹터 선택
@@ -106,7 +113,7 @@ public class ItemSpawner : NetworkBehaviour
 
                 availableSectorsCopy.Remove(selectedSector);
             }
-            Debug.LogWarning($"{data.Prefab.name}: Could not select sector!");
+            Debug.LogWarning($"{data.Prefab.name}: Could not select sector to spawn this item!");
             return false;
         }
     }
