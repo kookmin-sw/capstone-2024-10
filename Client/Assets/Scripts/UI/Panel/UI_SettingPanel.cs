@@ -5,7 +5,7 @@ using TMPro;
 using System;
 using System.IO;
 
-public class UI_SettingPanel : UI_Panel
+public class UI_SettingPanel : UI_CameraPanel
 {
     #region Enums
     enum GameObjects
@@ -70,14 +70,7 @@ public class UI_SettingPanel : UI_Panel
 
         GetButton(Buttons.Btn_Return).onClick.AddListener(() =>
         {
-            var camera = transform.Find("UICamera");
-            Destroy(camera.gameObject);
-            Destroy(gameObject);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            if (Managers.UIMng.SceneUI != null)
-                Managers.UIMng.SceneUI.gameObject.SetActive(true);
-            Managers.UIMng.ActivatePopupUI(true);
+            ClosePanelUI();
         });
 
         GetButton(Buttons.Btn_Game).gameObject.BindEvent((e) => { GamePanel(); }, Define.UIEvent.Click);
@@ -128,11 +121,11 @@ public class UI_SettingPanel : UI_Panel
         }
 
         // check vsync
-        if (QualitySettings.vSyncCount == 0)
+        if (Managers.GameMng.SettingSystem.VSycn == 0)
         {
             GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "off";
         }
-        else if (QualitySettings.vSyncCount == 1)
+        else if (Managers.GameMng.SettingSystem.VSycn == 1)
         {
             GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "on";
         }

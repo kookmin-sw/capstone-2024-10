@@ -32,7 +32,7 @@ public class SettingSystem : MonoBehaviour
         Width = PlayerPrefs.GetInt("ScreenWidth", 1920);
         Height = PlayerPrefs.GetInt("ScreenHeight", 1080);
         Quality = PlayerPrefs.GetInt("Textures", 1);
-        VSycn = PlayerPrefs.GetInt("VSycn", 0);
+        VSycn = PlayerPrefs.GetInt("VSync", 0);
     }
 
     private void SetQuality(int index)
@@ -70,7 +70,7 @@ public class SettingSystem : MonoBehaviour
     public void SetVSync(int vsync)
     {
         VSycn = vsync;
-        PlayerPrefs.SetInt("VSycn", vsync);
+        PlayerPrefs.SetInt("VSync", vsync);
         QualitySettings.vSyncCount = vsync;
     }
 }

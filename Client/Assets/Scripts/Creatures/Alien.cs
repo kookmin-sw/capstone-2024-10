@@ -187,6 +187,7 @@ public class Alien : Creature
             await Task.Delay(500);
         }
 
+        Managers.UIMng.ClosePanelUI<UI_CameraPanel>();
         AlienIngameUI.HideUI();
         AlienIngameUI.EndGame();
 

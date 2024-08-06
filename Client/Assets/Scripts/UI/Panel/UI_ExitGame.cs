@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_ExitGame : UI_Panel
+public class UI_ExitGame : UI_CameraPanel
 {
     #region Enums
     public enum Buttons
@@ -41,13 +41,7 @@ public class UI_ExitGame : UI_Panel
 
         GetButton(Buttons.Btn_Return).onClick.AddListener(() =>
         {
-            Destroy(camera.gameObject);
-            Destroy(gameObject);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            if (Managers.UIMng.SceneUI != null)
-                Managers.UIMng.SceneUI.gameObject.SetActive(true);
-            Managers.UIMng.ActivatePopupUI(true);
+            ClosePanelUI();
         });
 
         GetButton(Buttons.Btn_Manual).onClick.AddListener(() =>

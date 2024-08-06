@@ -298,6 +298,7 @@ public class Crew : Creature
         CrewSoundController.PlaySound(Define.CrewActionType.Dead);
 
         CrewIngameUI.HideUI();
+        Managers.UIMng.ClosePanelUI<UI_CameraPanel>();
         Managers.GameMng.GameEndSystem.EndCrewGame(false);
 
         Rpc_OnDisable(12f);
@@ -314,6 +315,7 @@ public class Crew : Creature
         CrewSoundController.StopAllSound();
         CrewSoundController.PlaySound(Define.CrewActionType.GameEnd);
 
+        Managers.UIMng.ClosePanelUI<UI_CameraPanel>();
         Managers.GameMng.GameEndSystem.EndCrewGame(true);
 
         while (CrewIngameUI == null)

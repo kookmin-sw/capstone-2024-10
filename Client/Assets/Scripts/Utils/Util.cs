@@ -70,18 +70,8 @@ public class Util : MonoBehaviour
 
     public static void ClearAllUI()
     {
-        if (Managers.UIMng.SceneUI != null)
-        {
-            Destroy(Managers.UIMng.SceneUI.gameObject);
-        }
-
-        if (Managers.UIMng.PanelUI is UI_Loading)
-        {
-            Destroy(Managers.UIMng.PanelUI.gameObject);
-            Managers.UIMng.PanelUI = null;
-        }
-
         Managers.UIMng.Clear();
+        Managers.UIMng.ClosePanelUI<UI_Loading>();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }

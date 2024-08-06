@@ -100,14 +100,7 @@ public class UI_ManualPanel : UI_Panel
 
         GetButton(Buttons.Btn_Return).onClick.AddListener(() =>
         {
-            var camera = transform.Find("UICamera");
-            Destroy(camera.gameObject);
-            Destroy(gameObject);
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-            if (Managers.UIMng.SceneUI != null)
-                Managers.UIMng.SceneUI.gameObject.SetActive(true);
-            Managers.UIMng.ActivatePopupUI(true);
+            ClosePanelUI();
         });
         GetButton(Buttons.Btn_CrewManual).onClick.AddListener(ShowCrewManual);
         GetButton(Buttons.Btn_AlienManual).onClick.AddListener(ShowAlienManual);

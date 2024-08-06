@@ -1,7 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class UI_Panel : UI_Base
 {
     public override bool Init()
@@ -11,5 +8,10 @@ public class UI_Panel : UI_Base
 
         Managers.UIMng.SetCanvas(gameObject, false);
         return true;
+    }
+
+    public virtual void ClosePanelUI()
+    {
+        Destroy(gameObject);
     }
 }
