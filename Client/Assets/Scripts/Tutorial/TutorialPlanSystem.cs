@@ -67,7 +67,7 @@ public class TutorialPlanSystem : NetworkBehaviour
 
         if (Managers.ObjectMng.MyCreature is Alien) return;
 
-        BatteryCharger.SetLayerRecursive(LayerMask.NameToLayer("PlanTarget      "));
+        BatteryCharger.SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
     }
 
     private void OnBatteryCharge()

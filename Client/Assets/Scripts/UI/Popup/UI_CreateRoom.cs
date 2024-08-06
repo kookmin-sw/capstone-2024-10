@@ -67,8 +67,7 @@ public class UI_CreateRoom : UI_Popup
     {
         string roomName = RoomName.text.Trim();
 
-        // 입력 가능 글자 14글자로 제한
-        roomName = roomName.IsNullOrEmpty() ? RoomNamePlaceholder.text : roomName.Substring(0, 14);
+        roomName = roomName.IsNullOrEmpty() ? RoomNamePlaceholder.text : roomName.Substring(0, Mathf.Min(roomName.Length, 16));
 
         Managers.UIMng.ShowPopupUI<UI_RaycastBlock>();
         bool result = await Managers.NetworkMng.CreateSession(roomName, Password.text);

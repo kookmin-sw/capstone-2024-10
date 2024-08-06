@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameScene : BaseScene
 {
@@ -41,7 +40,7 @@ public class GameScene : BaseScene
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
         Managers.UIMng.OnMapLoadComplete();
 
-        yield return new WaitUntil(() => Managers.GameMng.GameEndSystem.AreAllPlayersLoaded);
+        yield return new WaitUntil(() => Managers.NetworkMng.Runner.IsRunning && Managers.GameMng.GameEndSystem.AreAllPlayersLoaded);
 
         Managers.UIMng.BlockLoadingUI(false);
     }
@@ -57,9 +56,9 @@ public class GameScene : BaseScene
         }
     }
 
-    // 씬이 바뀔 때 정리해야 하는 목록
     public override void Clear()
     {
+        StopAllCoroutines();
     }
 
     private void OnApplicationQuit()

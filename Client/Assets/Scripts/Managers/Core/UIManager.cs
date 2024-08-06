@@ -1,7 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
 
 /// <summary>
@@ -254,6 +252,33 @@ public class UIManager
         _popupStack.ToList().ForEach(x => x.gameObject.SetActive(active));
     }
 
+    public void ClosePanelUI()
+    {
+        if (PanelUI != null)
+        {
+            PanelUI.ClosePanelUI();
+            PanelUI = null;
+        }
+    }
+
+    public void ClosePanelUI<T>() where T : UI_Panel
+    {
+        if (PanelUI != null && PanelUI is T)
+        {
+            PanelUI.ClosePanelUI();
+            PanelUI = null;
+        }
+    }
+
+    public void CloseSceneUI<T>() where T : UI_Scene
+    {
+        if (SceneUI != null && SceneUI is T)
+        {
+            Object.Destroy(SceneUI.gameObject);
+            SceneUI = null;
+        }
+    }
+
     public void BlockLoadingUI(bool toggle)
     {
         var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
@@ -280,6 +305,11 @@ public class UIManager
     public void Clear()
     {
         CloseAllPopupUI();
+        if (SceneUI != null)
+        {
+            Object.Destroy(SceneUI.gameObject);
+            SceneUI = null;
+        }
         SceneUI = null;
     }
 }

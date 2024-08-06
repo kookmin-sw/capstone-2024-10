@@ -121,11 +121,11 @@ public class UI_SettingController : UI_Base
         }
 
         // check vsync
-        if (QualitySettings.vSyncCount == 0)
+        if (Managers.GameMng.SettingSystem.VSycn == 0)
         {
             GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "off";
         }
-        else if (QualitySettings.vSyncCount == 1)
+        else if (Managers.GameMng.SettingSystem.VSycn == 1)
         {
             GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "on";
         }
