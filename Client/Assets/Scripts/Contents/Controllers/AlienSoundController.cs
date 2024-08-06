@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class AlienSoundController : BaseSoundController
 {
+    public float ChasingValue { get; protected set; }
+
     protected override void Init()
     {
         base.Init();
@@ -113,6 +115,8 @@ public class AlienSoundController : BaseSoundController
         if (!HasStateAuthority || !Creature.IsSpawned)
             return;
 
+        IsChasing = false;
+
         for (float i = 0.2f; i < 0.9f; i += 0.1f)
         {
             for (float j = 0.2f; j < 0.9f; j += 0.1f)
@@ -120,34 +124,43 @@ public class AlienSoundController : BaseSoundController
                 Ray ray = CreatureCamera.Camera.ViewportPointToRay(
                     new Vector3(i, j, CreatureCamera.Camera.nearClipPlane));
 
-                 // if (i < 0.25f || j < 0.25f || i > 0.75f || j > 0.75f)
-                 //     Debug.DrawRay(ray.origin, ray.direction * ChasingDistance, Color.green);
-
-                if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: ChasingDistance,
-                        layerMask: LayerMask.GetMask("Crew", "MapObject", "InteractableObject")))
+                if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: ChasingDistance, layerMask: LayerMask.GetMask("Crew", "MapObject", "InteractableObject")))
                 {
                     if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
                     {
-                        if (!IsChasing)
-                        {
-                            StopAllCoroutines();
-                            IsChasing = true;
-
-                            if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
-                            {
-                                Managers.SoundMng.Play($"{Define.BGM_PATH}/In Captivity", Define.SoundType.Bgm,
-                                    volume: 0.4f);
-                            }
-                        }
-                        return;
+                        IsChasing = true;
                     }
                 }
+
+                // if (i < 0.25f || j < 0.25f || i > 0.75f || j > 0.75f)
+                //     Debug.DrawRay(ray.origin, ray.direction * ChasingDistance, Color.green);
             }
         }
+    }
 
+    public override void UpdateChasingValue()
+    {
         if (IsChasing)
-            StartCoroutine(CheckNotChasing(7f));
+            ChasingValue = Mathf.Clamp(ChasingValue + 100f * Time.deltaTime, 0f, 100f);
+        else
+            ChasingValue = Mathf.Clamp(ChasingValue - 15f * Time.deltaTime, 0f, 100f);
 
-        IsChasing = false;
+        if (ChasingValue >= 100f)
+        {
+            BgmAudioSource.volume = 0.4f;
+            if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
+            {
+                Managers.SoundMng.Play($"{Define.BGM_PATH}/In Captivity", Define.SoundType.Bgm, volume: 0.4f);
+            }
+        }
+        else if (ChasingValue <= 0f)
+        {
+            BgmAudioSource.volume -= 0.3f * Time.deltaTime;
+
+            if (BgmAudioSource.volume <= 0f)
+                Managers.SoundMng.Stop(Define.SoundType.Bgm);
+        }
+
+        Debug.Log(ChasingValue);
     }
 }
