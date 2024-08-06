@@ -25,6 +25,8 @@ public class CrewStat : BaseStat
     public bool Doped { get; set; } = false;
     public bool DamagedBoost { get; set; } = false;
 
+    private Tween _damagedBoostTween;
+
     public override void SetStat(CreatureData creatureData)
     {
         base.SetStat(creatureData);
@@ -59,7 +61,9 @@ public class CrewStat : BaseStat
 
             ChangeStamina(DamagedRecoverStamina);
             DamagedBoost = true;
-            DOVirtual.DelayedCall(5.5f, () =>
+            
+            _damagedBoostTween.Kill();
+            _damagedBoostTween = DOVirtual.DelayedCall(5.5f, () =>
             {
                 DamagedBoost = false;
             });

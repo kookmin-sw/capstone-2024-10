@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class CrewSoundController : BaseSoundController
 {
+    public float ChasingBgmVolume { get; protected set; }
     protected override void Init()
     {
         base.Init();
 
-        ChasingDistance = 20f;
+        ChasingDistance = 25f;
     }
 
     public override void PlayMove()
@@ -43,7 +44,7 @@ public class CrewSoundController : BaseSoundController
                 PlayAntipsychoticSound();
                 break;
             case Define.CrewActionType.Adrenaline:
-                PlayMorphineSound();
+                PlayAdrenalineSound();
                 break;
             case Define.CrewActionType.GameEnd:
                 PlayEndSound();
@@ -89,37 +90,45 @@ public class CrewSoundController : BaseSoundController
         Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Antipsychotic", Define.SoundType.Effect,  volume:0.5f, isOneShot: true);
     }
 
-    protected void PlayMorphineSound()
+    protected void PlayAdrenalineSound()
     {
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Morphine", Define.SoundType.Effect,  volume:0.35f, isOneShot: true);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Adrenaline", Define.SoundType.Effect,  volume:0.35f, isOneShot: true);
     }
 
     public override void CheckChasing()
     {
+        if (!HasStateAuthority || !Creature.IsSpawned)
+            return;
+
+        IsChasing = false;
+
         Collider[] hitColliders = new Collider[1];
-        if (Physics.OverlapBoxNonAlloc(CreatureCamera.Transform.position, new Vector3(ChasingDistance, 1f, ChasingDistance),
-                hitColliders, Quaternion.identity, LayerMask.GetMask("Alien")) > 0)
+        if (Physics.OverlapBoxNonAlloc(CreatureCamera.Transform.position, new Vector3(ChasingDistance, 1f, ChasingDistance), hitColliders, Quaternion.identity, LayerMask.GetMask("Alien")) > 0)
         {
             if (hitColliders[0].gameObject.TryGetComponent(out Alien alien))
             {
-                if (!IsChasing)
-                {
-                    StopAllCoroutines();
-                    IsChasing = true;
-
-                    if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
-                        Managers.SoundMng.Play($"{Define.BGM_PATH}/Infernal Darkness", Define.SoundType.Bgm, volume: 0.2f);
-                }
-
-                SoundManager._audioSources[(int)Define.SoundType.Bgm].volume =
-                    -0.05f * (alien.Transform.position - Creature.Transform.position).magnitude + 1.2f;
-                return;
+                IsChasing = true;
+                ChasingBgmVolume = -0.04f * (alien.Transform.position - Creature.Transform.position).magnitude + 1.3f;
             }
         }
+    }
 
+    public override void UpdateChasingValue()
+    {
         if (IsChasing)
-            StartCoroutine(CheckNotChasing(2f));
+        {
+            if (!Managers.SoundMng.IsPlaying(Define.SoundType.Bgm))
+            {
+                Managers.SoundMng.Play($"{Define.BGM_PATH}/Infernal Darkness", Define.SoundType.Bgm, volume: ChasingBgmVolume);
+            }
+            BgmAudioSource.volume = ChasingBgmVolume;
+        }
+        else
+        {
+            BgmAudioSource.volume -= 0.3f * Time.deltaTime;
 
-        IsChasing = false;
+            if (BgmAudioSource.volume <= 0f)
+                Managers.SoundMng.Stop(Define.SoundType.Bgm);
+        }
     }
 }

@@ -159,6 +159,7 @@ public abstract class Creature : NetworkBehaviour
 
         HandleInput();
         BaseSoundController.CheckChasing();
+        BaseSoundController.UpdateChasingValue();
     }
 
     protected virtual void OnLateUpdate()

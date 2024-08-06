@@ -84,11 +84,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffc228bebe0243e459c3ada1e2be34bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _totalItemCount: 39
+  _totalItemCount: 40
   _itemSpawnDatas:
   - Prefab: {fileID: 2456343074442511123, guid: 651267bc0bc8c0a4fbf95c442517d389, type: 3}
-    GlobalMinCount: 12
-    GlobalMaxCount: 12
+    GlobalMinCount: 13
+    GlobalMaxCount: 13
     MaxCountPerSector: 1
     ExcludedSectors: 0d0000000e0000000e0000001400000015000000
   - Prefab: {fileID: 470332895390581698, guid: a24bee852908bf04b8ef6749384a2830, type: 3}
@@ -99,6 +99,11 @@ MonoBehaviour:
   - Prefab: {fileID: 470332895390581698, guid: 8112fcc7f7d151949bd18672398a1769, type: 3}
     GlobalMinCount: 1
     GlobalMaxCount: 1
+    MaxCountPerSector: 1
+    ExcludedSectors: 
+  - Prefab: {fileID: 470332895390581698, guid: 5733ece60af51784d856c3a9e7934f73, type: 3}
+    GlobalMinCount: 4
+    GlobalMaxCount: 4
     MaxCountPerSector: 1
     ExcludedSectors: 
   - Prefab: {fileID: 470332895390581698, guid: cc40b5b84e107324ba132505764788f0, type: 3}
@@ -112,11 +117,6 @@ MonoBehaviour:
     MaxCountPerSector: 1
     ExcludedSectors: 
   - Prefab: {fileID: 1343902041442310, guid: a815814a11f5b1a48a30ded555839ba1, type: 3}
-    GlobalMinCount: 4
-    GlobalMaxCount: 4
-    MaxCountPerSector: 1
-    ExcludedSectors: 
-  - Prefab: {fileID: 1343902041442310, guid: 8d7e82dc86fe3b54999297cdfc904ecb, type: 3}
     GlobalMinCount: 4
     GlobalMaxCount: 4
     MaxCountPerSector: 1
