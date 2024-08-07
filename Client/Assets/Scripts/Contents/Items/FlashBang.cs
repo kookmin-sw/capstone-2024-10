@@ -14,7 +14,6 @@ public class FlashBang : BaseItem
         ItemGameObject.SetActive(false);
 
         CrewActionType = Define.CrewActionType.FlashBang;
-        TotalWorkAmount = 0.4f;
     }
     public override bool CheckAndUseItem()
     {
@@ -28,7 +27,7 @@ public class FlashBang : BaseItem
         no.GetComponent<BoxCollider>().enabled = false;
         no.GetComponent<Rigidbody>().AddForce(Owner.CreatureCamera.Transform.forward * 800f);
 
-        DOVirtual.DelayedCall(1.5f, () =>
+        DOVirtual.DelayedCall(ItemData.Duration, () =>
         {
             no.GetComponent<FlashBangObject>().Rpc_PlaySound();
             no.GetComponent<FlashBangObject>().Rpc_Explode();
@@ -45,7 +44,7 @@ public class FlashBang : BaseItem
         {
             foreach (var hitCollider in hitColliders)
                 if (hitCollider.gameObject.TryGetComponent(out Creature creature))
-                    creature.Rpc_ApplyBlind(ItemData.Value, 2f);
+                    creature.Rpc_ApplyBlind(ItemData.Value, 1f);
         }
     }
 }

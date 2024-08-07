@@ -11,7 +11,6 @@ public class ElevatorKeypad : BaseWorkStation
 
         Description = "Activate Elevator";
         CrewActionType = Define.CrewActionType.KeypadUse;
-        AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;
         IsCompleted = false;
 

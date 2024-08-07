@@ -16,8 +16,6 @@ public abstract class BaseItem
 
     private Tweener _useItemTweener;
 
-    public float TotalWorkAmount { get; protected set; }
-
     public virtual void SetInfo(int templateId, Crew owner)
     {
         DataId = templateId;
@@ -40,10 +38,10 @@ public abstract class BaseItem
 
         Owner.IngameUI.InteractInfoUI.Hide();
         Owner.IngameUI.InteractInfoUI.Show("Cancel");
-        Owner.IngameUI.WorkProgressBarUI.Show("Use " + ItemData.Name, 0f, TotalWorkAmount);
+        Owner.IngameUI.WorkProgressBarUI.Show("Use " + ItemData.Name, 0f, ItemData.TotalUseAmount);
 
         _useItemTweener.Kill();
-        _useItemTweener = DOVirtual.Float(0, TotalWorkAmount, TotalWorkAmount, value =>
+        _useItemTweener = DOVirtual.Float(0, ItemData.TotalUseAmount, ItemData.TotalUseAmount, value =>
         {
             if (Owner.CreatureState != Define.CreatureState.Use)
                 _useItemTweener.Kill();

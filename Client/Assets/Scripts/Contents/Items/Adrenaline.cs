@@ -27,7 +27,7 @@ public class Adrenaline : BaseItem
 
         Owner.CrewStat.Doped = true;
 
-        DOVirtual.DelayedCall(ItemData.Value, () =>
+        DOVirtual.DelayedCall(ItemData.Duration, () =>
         {
             Owner.CrewStat.Doped = false;
         });

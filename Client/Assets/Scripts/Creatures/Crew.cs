@@ -395,7 +395,7 @@ public class Crew : Creature
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Rpc_ApplyBlind(3.5f, 2f);
+            Rpc_ApplyBlind(3.5f, 1f);
             return true;
         }
         if (Input.GetKeyDown(KeyCode.L))

@@ -120,6 +120,8 @@ public class TutorialPlanSystem : NetworkBehaviour
 
         var ui = Managers.ObjectMng.MyCrew.CrewIngameUI as UI_CrewTutorial;
         ui.TutorialPlanUI.GetComponent<UI_TutorialPlan>().OnCargoGateComputerUsed();
+
+        CargoPassageContolComputer.SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
     }
 
     public void EndTutorial()
