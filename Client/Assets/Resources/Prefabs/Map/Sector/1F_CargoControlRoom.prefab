@@ -210,6 +210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sectorName: 17
   _lightEnableTargetSectors: 11000000100000000300000004000000050000000f000000
+  _additionalLightEnableTargets: []
   _IsEroded:
     _value: 0
 --- !u!114 &-3778320720504054751
@@ -3681,7 +3682,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1082344813002917919, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.746
+      value: 0.092
       objectReference: {fileID: 0}
     - target: {fileID: 4147105165212534097, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
       propertyPath: m_Range
@@ -3694,6 +3695,14 @@ PrefabInstance:
     - target: {fileID: 5699570727563120365, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
       propertyPath: m_Intensity
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699570727563120365, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: useVolumetric
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699570727563120365, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: m_VolumetricDimmer
+      value: 0.72
       objectReference: {fileID: 0}
     - target: {fileID: 5799464802957010726, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
       propertyPath: m_LocalScale.y

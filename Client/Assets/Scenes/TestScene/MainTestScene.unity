@@ -2074,7 +2074,7 @@ Transform:
   m_GameObject: {fileID: 586516956}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 49.92582, y: 6, z: -9.917241}
+  m_LocalPosition: {x: 49.92582, y: 6, z: -7.4072957}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2110,7 +2110,7 @@ MonoBehaviour:
       rangeCompressionFactor: 1
     influence:
       m_Shape: 0
-      m_BoxSize: {x: 14.936813, y: 5, z: 13.88452}
+      m_BoxSize: {x: 14.936813, y: 5, z: 18.904411}
       m_BoxBlendDistancePositive: {x: 1, y: 1, z: 1}
       m_BoxBlendDistanceNegative: {x: 1, y: 1, z: 1}
       m_BoxBlendNormalDistancePositive: {x: 0, y: 0, z: 0}
@@ -2502,7 +2502,7 @@ ReflectionProbe:
   m_TimeSlicingMode: 0
   m_Resolution: 128
   m_UpdateFrequency: 0
-  m_BoxSize: {x: 14.936813, y: 5, z: 13.88452}
+  m_BoxSize: {x: 14.936813, y: 5, z: 18.904411}
   m_BoxOffset: {x: 0, y: 0, z: 0}
   m_NearClip: 0.3
   m_FarClip: 1000
@@ -2520,17 +2520,6 @@ ReflectionProbe:
   m_UseOcclusionCulling: 1
   m_Importance: 1
   m_CustomBakedTexture: {fileID: 0}
---- !u!114 &612230284 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1365848139817194913, guid: 5231a4bab55a19a4b9326cb5ecc5b6c7, type: 3}
-  m_PrefabInstance: {fileID: 1629368059}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24cfc6e99c449f544875835b95495463, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &653778740
 GameObject:
   m_ObjectHideFlags: 0
@@ -4140,96 +4129,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Entries:
-  - id: 0
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 1
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 2
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 3
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 4
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 5
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 6
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 7
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 8
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 9
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 10
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 11
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 12
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 13
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 14
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 15
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 16
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 17
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 18
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 19
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 20
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 21
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 22
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 23
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 24
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 25
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 26
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 27
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 28
-    category: 0
-    gameObject: {fileID: 0}
-  - id: 29
-    category: 0
-    gameObject: {fileID: 0}
   - id: 30
     category: 0
     gameObject: {fileID: 118287624}
@@ -5394,7 +5293,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultRoomName: Test
-  Creature: 2
+  Creature: 1
   PrefabNum: 0
   ReadySceneSpawnPosition: {x: 1.2, y: 0, z: 0}
   ReadySceneSpawnSector: 1
@@ -9483,9 +9382,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3288454277507541476, guid: 5231a4bab55a19a4b9326cb5ecc5b6c7, type: 3}
+      propertyPath: SortKey
+      value: 904562280
+      objectReference: {fileID: 0}
     - target: {fileID: 4061364146369713168, guid: 5231a4bab55a19a4b9326cb5ecc5b6c7, type: 3}
       propertyPath: m_Name
       value: Map
+      objectReference: {fileID: 0}
+    - target: {fileID: 5573680597120778144, guid: 5231a4bab55a19a4b9326cb5ecc5b6c7, type: 3}
+      propertyPath: SortKey
+      value: 3503305323
       objectReference: {fileID: 0}
     - target: {fileID: 7865775579036726535, guid: 5231a4bab55a19a4b9326cb5ecc5b6c7, type: 3}
       propertyPath: m_LocalPosition.x
@@ -10966,7 +10873,7 @@ PrefabInstance:
     - target: {fileID: 3018535702451637719, guid: 60892950cd4c5ca47be4f4ffb0ddc5ef, type: 3}
       propertyPath: _cargoPassageGates.Array.data[0]
       value: 
-      objectReference: {fileID: 612230284}
+      objectReference: {fileID: 0}
     - target: {fileID: 3018535702451637719, guid: 60892950cd4c5ca47be4f4ffb0ddc5ef, type: 3}
       propertyPath: _cargoPassageGates.Array.data[1]
       value: 
