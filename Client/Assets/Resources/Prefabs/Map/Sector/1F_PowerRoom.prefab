@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 3118487997368254299}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0.7071068, w: 0}
-  m_LocalPosition: {x: 0.655, y: 2.289, z: 3.471}
+  m_LocalPosition: {x: 0.655, y: 2.289, z: 3.76}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45,7 +45,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.7957747
+  m_Intensity: 2.8642619
   m_Range: 5
   m_SpotAngle: 179
   m_InnerSpotAngle: 1
@@ -93,7 +93,7 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 7.79}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 0
-  m_ShadowRadius: 0.5
+  m_ShadowRadius: 1
   m_ShadowAngle: 0
 --- !u!114 &7952464312213375622
 MonoBehaviour:
@@ -107,7 +107,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a68c43fe1f2a47cfa234b5eeaa98012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Intensity: 10
+  m_Intensity: 35.993378
   m_EnableSpotReflector: 1
   m_LuxAtDistance: 1
   m_InnerSpotPercent: 100
@@ -123,7 +123,7 @@ MonoBehaviour:
   m_ShapeWidth: 2.3
   m_ShapeHeight: 0.17
   m_AspectRatio: 3.44
-  m_ShapeRadius: 0.5
+  m_ShapeRadius: 1
   m_SoftnessScale: 1
   m_UseCustomSpotLightShadowCone: 0
   m_CustomSpotLightShadowCone: 1
@@ -204,7 +204,7 @@ MonoBehaviour:
   m_ShadowVariant: 0
   m_ShadowPrecision: 0
   useOldInspector: 0
-  useVolumetric: 1
+  useVolumetric: 0
   featuresFoldout: 1
   m_AreaLightEmissiveMeshShadowCastingMode: 0
   m_AreaLightEmissiveMeshMotionVectorGenerationMode: 0
@@ -3345,7 +3345,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 108679540842066046, guid: 86b80002c35e25340ba30284fd29dfcc, type: 3}
       propertyPath: m_Intensity
-      value: 4.774648
+      value: 6.3661976
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4795,8 +4795,32 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 122038419918138369}
     m_Modifications:
+    - target: {fileID: 1082344813002917919, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.121
+      objectReference: {fileID: 0}
+    - target: {fileID: 4147105165212534097, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: m_Intensity
+      value: 0.39788735
+      objectReference: {fileID: 0}
+    - target: {fileID: 4147105165212534097, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: m_ShadowRadius
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 4147105165212534097, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
       propertyPath: m_Shadows.m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699570727563120365, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: m_Intensity
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699570727563120365, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: m_ShapeRadius
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699570727563120365, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: useVolumetric
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5799464802957010726, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
@@ -6253,8 +6277,24 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 122038419918138369}
     m_Modifications:
+    - target: {fileID: 1082344813002917919, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.053
+      objectReference: {fileID: 0}
+    - target: {fileID: 4147105165212534097, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: m_ShadowRadius
+      value: 0.1
+      objectReference: {fileID: 0}
     - target: {fileID: 4147105165212534097, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
       propertyPath: m_Shadows.m_Type
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699570727563120365, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: m_ShapeRadius
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5699570727563120365, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
+      propertyPath: useVolumetric
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5799464802957010726, guid: 63bc6bcba19d9eb4eac52c8d75e0ff7b, type: 3}
