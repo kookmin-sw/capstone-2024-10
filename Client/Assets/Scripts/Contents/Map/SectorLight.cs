@@ -17,11 +17,13 @@ public class SectorLight : MonoBehaviour
     public void EnableLight()
     {
         StopAllCoroutines();
+        _light.enabled = true;
         StartCoroutine(LightIntensityLerp(1, _originalIntensity));
     }
 
     public void DisableLight()
     {
+        StopAllCoroutines();
         StartCoroutine(LightIntensityLerp(1, 0));
     }
 
@@ -42,5 +44,6 @@ public class SectorLight : MonoBehaviour
         }
 
         _light.intensity = target;
+        if (target == 0) _light.enabled = false;
     }
 }
