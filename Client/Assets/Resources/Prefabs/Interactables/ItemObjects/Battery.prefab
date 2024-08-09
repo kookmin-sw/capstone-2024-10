@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7184293002251953831}
   - component: {fileID: 3413183914992265744}
   - component: {fileID: -7702958466600193355}
-  - component: {fileID: 2844739255016114788}
+  - component: {fileID: 6151375425238609963}
   - component: {fileID: -267722509344493219}
   m_Layer: 12
   m_Name: Battery
@@ -107,8 +107,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.2, y: 0.3, z: 0.2}
-  m_Center: {x: 0, y: 0.15, z: 0}
+  m_Size: {x: 0.2, y: 0.25, z: 0.2}
+  m_Center: {x: 0, y: 0.12, z: 0}
 --- !u!54 &3413183914992265744
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -153,9 +153,9 @@ MonoBehaviour:
   Flags: 131073
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 2844739255016114788}
+  - {fileID: 6151375425238609963}
   - {fileID: -267722509344493219}
---- !u!114 &2844739255016114788
+--- !u!114 &6151375425238609963
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -164,13 +164,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 2456343074442511123}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncScale: 1
   SyncParent: 1
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  _interpolationTarget: {fileID: 0}
+  UsePreciseRotation: 1
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
 --- !u!114 &-267722509344493219
 MonoBehaviour:
   m_ObjectHideFlags: 0

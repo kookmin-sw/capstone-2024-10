@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -4137592863339429202}
   - component: {fileID: 1470845872464762809}
   - component: {fileID: -6832284251826897679}
-  - component: {fileID: -5984378107576644765}
+  - component: {fileID: -9058098838518428565}
   - component: {fileID: 7093731990367453988}
   m_Layer: 12
   m_Name: USBKey
@@ -102,9 +102,9 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: -5984378107576644765}
+  - {fileID: -9058098838518428565}
   - {fileID: 7093731990367453988}
---- !u!114 &-5984378107576644765
+--- !u!114 &-9058098838518428565
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,13 +113,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 5744863153179321896}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncScale: 1
   SyncParent: 1
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  _interpolationTarget: {fileID: 0}
+  UsePreciseRotation: 1
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
 --- !u!114 &7093731990367453988
 MonoBehaviour:
   m_ObjectHideFlags: 0

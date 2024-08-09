@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6992341383682037256}
   - component: {fileID: 8035689126617575885}
   - component: {fileID: 7461427461015112033}
-  - component: {fileID: 3864210128913469367}
+  - component: {fileID: -4363774275560753690}
   - component: {fileID: 7492542670985599051}
   m_Layer: 12
   m_Name: CardKey
@@ -56,8 +56,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.19, y: 0.1, z: 0.17}
-  m_Center: {x: 0, y: 0.048, z: 0}
+  m_Size: {x: 0.19, y: 0.05, z: 0.17}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &8035689126617575885
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -102,9 +102,9 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 3864210128913469367}
+  - {fileID: -4363774275560753690}
   - {fileID: 7492542670985599051}
---- !u!114 &3864210128913469367
+--- !u!114 &-4363774275560753690
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -113,13 +113,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 593542545141281283}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 158639473, guid: e725a070cec140c4caffb81624c8c787, type: 3}
+  m_Script: {fileID: 11500000, guid: 0a591d221a634417e9827eb58e17de84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   SyncScale: 1
   SyncParent: 1
-  _autoAOIOverride: 1
-  DisableSharedModeInterpolation: 0
+  _interpolationTarget: {fileID: 0}
+  UsePreciseRotation: 1
+  UseRenderSleepThresholds: 1
+  RenderThresholds:
+    UseEnergy: 1
+    Position: 0.01
+    Rotation: 0.01
+    Scale: 0.01
 --- !u!114 &7492542670985599051
 MonoBehaviour:
   m_ObjectHideFlags: 0
