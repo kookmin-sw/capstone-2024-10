@@ -4023,7 +4023,6 @@ GameObject:
   - component: {fileID: 8614260937218564903}
   - component: {fileID: 8116869899631609378}
   - component: {fileID: 1776954801589423893}
-  - component: {fileID: 1219912940951620041}
   - component: {fileID: 7788641848354921943}
   - component: {fileID: 1159789451374336956}
   - component: {fileID: 3481139796060111435}
@@ -4280,7 +4279,6 @@ MonoBehaviour:
   Flags: 262145
   NestedObjects: []
   NetworkedBehaviours:
-  - {fileID: 1219912940951620041}
   - {fileID: 7788641848354921943}
   - {fileID: 1159789451374336956}
   - {fileID: 3481139796060111435}
@@ -4288,24 +4286,6 @@ MonoBehaviour:
   - {fileID: 6863542818628881618}
   - {fileID: 4056629614810544686}
   - {fileID: 3536199005971014557}
---- !u!114 &1219912940951620041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5822390824890227150}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 506319458, guid: e725a070cec140c4caffb81624c8c787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Animator: {fileID: 4683045929126957167}
-  TotalWords: 7
-  ApplyTiming: 0
-  SyncSettings: 127
-  StateHashes: 000000005775fad1d53ab6541ae6174d48bc6864b2ed7d60709fbcc277967513f3b5a3fc82d2bc13691134eec9ac5f0cd33d65e64b00cd4dee442af2336e528eb1211e0b090767418d24b1aec39b60c2803553c1
-  TriggerHashes: 00000000
 --- !u!114 &7788641848354921943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4401,6 +4381,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c90107803cc4911a76bf5b4b67d2094, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _CreaturePose: 0
   _XParameter: 0
   _ZParameter: 0
   _SpeedParameter: 0
