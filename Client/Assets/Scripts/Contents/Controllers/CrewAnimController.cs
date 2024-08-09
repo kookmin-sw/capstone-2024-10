@@ -28,10 +28,10 @@ public class CrewAnimController : BaseAnimController
             {
                 case Define.CreaturePose.Stand:
                 case Define.CreaturePose.Run:
-                    SitParameter = Lerp(SitParameter, 0f, Time.deltaTime * 3f);
+                    SitParameter = Lerp(SitParameter, 0f, Time.deltaTime * 5f);
                     break;
                 case Define.CreaturePose.Sit:
-                    SitParameter = Lerp(SitParameter, 1f, Time.deltaTime * 3f);
+                    SitParameter = Lerp(SitParameter, 1f, Time.deltaTime * 5f);
                     break;
             }
 
@@ -67,17 +67,17 @@ public class CrewAnimController : BaseAnimController
             {
                 case Define.CreaturePose.Stand:
                     SetFloat("Z", ZParameter);
-                    SitParameter = Lerp(SitParameter, 0f, Time.deltaTime * 3f);
+                    SitParameter = Lerp(SitParameter, 0f, Time.deltaTime * 5f);
                     SpeedParameter = Lerp(SpeedParameter, 1f, Time.deltaTime * 5f);
                     break;
                 case Define.CreaturePose.Sit:
                     SetFloat("Z", ZParameter);
-                    SitParameter = Lerp(SitParameter, 1f, Time.deltaTime * 3f);
+                    SitParameter = Lerp(SitParameter, 1f, Time.deltaTime * 5f);
                     SpeedParameter = Lerp(SpeedParameter, 1f, Time.deltaTime * 5f);
                     break;
                 case Define.CreaturePose.Run:
                     SetFloat("Z", ZParameter * 1.8f);
-                    SitParameter = Lerp(SitParameter, 0f, Time.deltaTime * 3f);
+                    SitParameter = Lerp(SitParameter, 0f, Time.deltaTime * 5f);
                     SpeedParameter = Lerp(SpeedParameter, 2f, Time.deltaTime * 5f);
                     break;
             }
