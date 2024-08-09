@@ -1,30 +1,82 @@
+using Fusion;
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class AlienAnimController : BaseAnimController
 {
+    #region Field
+    [Networked] bool GetBlind { get; set; }
+    [Networked] bool BasicAttack { get; set; }
+    [Networked] bool CrashDoor { get; set; }
+    [Networked] bool ReadyRoar { get; set; }
+    [Networked] bool Roar { get; set; }
+    [Networked] bool CursedHowl { get; set; }
+    [Networked] bool LeapAttack { get; set; }
+    [Networked] bool ReadyLeapAttack {  get; set; }
+    [Networked] bool HitDelay { get; set; }
+    #endregion
+
     #region Update
 
     public override void PlayIdle()
     {
-        XParameter = Lerp(XParameter, 0f, Runner.DeltaTime * 5f);
-        ZParameter = Lerp(ZParameter, 0f, Runner.DeltaTime * 5f);
-        SpeedParameter = Lerp(SpeedParameter, 0f, Runner.DeltaTime * 5f);
+        if (HasStateAuthority)
+        {
+            XParameter = Lerp(XParameter, 0f, Time.deltaTime * 5f);
+            ZParameter = Lerp(ZParameter, 0f, Time.deltaTime * 5f);
+            SpeedParameter = Lerp(SpeedParameter, 0f, Time.deltaTime * 5f);
 
-        SetParameterFalse();
-        SetFloat("X", XParameter);
-        SetFloat("Z", ZParameter);
-        SetFloat("Speed", SpeedParameter);
+            SetParameterFalse();
+            SetFloat("X", XParameter);
+            SetFloat("Z", ZParameter);
+            SetFloat("Speed", SpeedParameter);
+        }
+        else
+        {
+            SetParameterFalse();
+            var interpolator = new NetworkBehaviourBufferInterpolator(this);
+            SetFloat("Z", interpolator.Float(nameof(ZParameter)));
+            SetFloat("X", interpolator.Float(nameof(XParameter)));
+            SetFloat("Speed", interpolator.Float(nameof(SpeedParameter)));
+        }
     }
 
     public override void PlayMove()
     {
-        XParameter = Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5f);
-        ZParameter = Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5f);
+        if (HasStateAuthority)
+        {
+            XParameter = Lerp(XParameter, Creature.Direction.x, Time.deltaTime * 5f);
+            ZParameter = Lerp(ZParameter, Creature.Direction.z, Time.deltaTime * 5f);
 
-        SetFloat("Z", ZParameter);
-        SpeedParameter = Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5f);
+            SetFloat("Z", ZParameter);
+            SpeedParameter = Lerp(SpeedParameter, 1f, Time.deltaTime * 5f);
 
-        SetParameterFalse();
-        SetFloat("X", XParameter);
-        SetFloat("Speed", SpeedParameter);
+            SetParameterFalse();
+            SetFloat("X", XParameter);
+            SetFloat("Speed", SpeedParameter);
+        }
+        else
+        {
+            SetParameterFalse();
+            var interpolator = new NetworkBehaviourBufferInterpolator(this);
+            SetFloat("Z", interpolator.Float(nameof(ZParameter)));
+            SetFloat("X", interpolator.Float(nameof(XParameter)));
+            SetFloat("Speed", interpolator.Float(nameof(SpeedParameter)));
+        }
+    }
+
+    public override void PlayAction()
+    {
+        SetBool("GetBlind", GetBlind);
+        SetBool("BasicAttack", BasicAttack);
+        SetBool("CrashDoor", CrashDoor);
+        SetBool("ReadyRoar", ReadyRoar);
+        SetBool("Roar", Roar);
+        SetBool("CursedHowl", CursedHowl);
+        SetBool("LeapAttack", LeapAttack);
+        SetBool("ReadyLeapAttack", ReadyLeapAttack);
+        SetBool("HitDelay", HitDelay);
     }
 
     #endregion
@@ -70,67 +122,79 @@ public class AlienAnimController : BaseAnimController
 
     public void PlayGetBlind()
     {
-        SetBool("GetBlind", true);
+        GetBlind = true;
     }
 
     public void PlayCrashDoor()
     {
-        SetBool("CrashDoor", true);
+        CrashDoor = true;
     }
 
     public void PlayBasicAttack()
     {
-        SetBool("BasicAttack", true);
+        BasicAttack = true;
     }
 
     public void PlayReadyRoar()
     {
-        SetBool("ReadyRoar", true);
+        ReadyRoar = true;
     }
 
     public void PlayRoar()
     {
-        SetBool("Roar", true);
+        Roar = true;
     }
 
     public void PlayReadyCursedHowl()
     {
-        SetBool("ReadyRoar", true);
+        ReadyRoar = true;
     }
 
     public void PlayCursedHowl()
     {
-        SetBool("CursedHowl", true);
+        CursedHowl = true;
     }
 
     public void PlayReadyLeapAttack()
     {
-        SetBool("ReadyLeapAttack", true);
+        ReadyLeapAttack = true;
     }
 
     public void PlayLeapAttack()
     {
-        SetBool("LeapAttack", true);
+        LeapAttack = true;
     }
 
     public void PlayHitDelay()
     {
-        SetBool("HitDelay", true);
+        HitDelay = true;
     }
 
     #endregion
 
     protected override void SetParameterFalse()
     {
-        SetBool("GetBlind", false);
-        SetBool("BasicAttack", false);
-        SetBool("CrashDoor", false);
-        SetBool("ReadyRoar", false);
-        SetBool("Roar", false);
-        SetBool("CursedHowl", false);
-        SetBool("LeapAttack", false);
-        SetBool("ReadyRoar", false);
-        SetBool("ReadyLeapAttack", false);
-        SetBool("HitDelay", false);
+        if (HasStateAuthority)
+        {
+            GetBlind = false;
+            BasicAttack = false;
+            CrashDoor = false;
+            ReadyRoar = false;
+            Roar = false;
+            CursedHowl = false;
+            LeapAttack = false;
+            ReadyLeapAttack = false;
+            HitDelay = false;
+        }
+
+        SetBool("GetBlind", GetBlind);
+        SetBool("BasicAttack", BasicAttack);
+        SetBool("CrashDoor", CrashDoor);
+        SetBool("ReadyRoar", ReadyRoar);
+        SetBool("Roar", Roar);
+        SetBool("CursedHowl", CursedHowl);
+        SetBool("LeapAttack", LeapAttack);
+        SetBool("ReadyLeapAttack", ReadyLeapAttack);
+        SetBool("HitDelay", HitDelay);
     }
 }

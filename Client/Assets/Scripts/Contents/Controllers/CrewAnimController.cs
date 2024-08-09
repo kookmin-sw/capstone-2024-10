@@ -1,65 +1,115 @@
+using DG.Tweening;
 using Fusion;
+using System;
+using UnityEngine;
 
 public class CrewAnimController : BaseAnimController
 {
+    #region Field
     [Networked] public float SitParameter { get; set; }
+    [Networked] bool KeypadUse { get; set; }
+    [Networked] bool OpenItemKit { get; set; }
+    [Networked] bool OpenDoor { get; set; }
+    [Networked] bool ChargeBattery { get; set; }
+    [Networked] bool Insert { get; set; }
+    [Networked] bool Throw { get; set; }
+    [Networked] bool Damaged { get; set; }
+    [Networked] bool Bandage { get; set; }
+    [Networked] bool IsDead { get; set; }
+    #endregion
 
     #region Update
 
     public override void PlayIdle()
     {
-        switch (CreaturePose)
+        if (HasStateAuthority)
         {
-            case Define.CreaturePose.Stand:
-            case Define.CreaturePose.Run:
-                SitParameter = Lerp(SitParameter, 0f, Runner.DeltaTime * 5f);
-                break;
-            case Define.CreaturePose.Sit:
-                SitParameter = Lerp(SitParameter, 1f, Runner.DeltaTime * 5f);
-                break;
+            switch (CreaturePose)
+            {
+                case Define.CreaturePose.Stand:
+                case Define.CreaturePose.Run:
+                    SitParameter = Lerp(SitParameter, 0f, Time.deltaTime * 3f);
+                    break;
+                case Define.CreaturePose.Sit:
+                    SitParameter = Lerp(SitParameter, 1f, Time.deltaTime * 3f);
+                    break;
+            }
+
+            XParameter = Lerp(XParameter, 0f, Time.deltaTime * 5f);
+            ZParameter = Lerp(ZParameter, 0f, Time.deltaTime * 5f);
+            SpeedParameter = Lerp(SpeedParameter, 0f, Time.deltaTime * 5f);
+
+            SetParameterFalse();
+            SetFloat("X", XParameter);
+            SetFloat("Z", ZParameter);
+            SetFloat("SitParameter", SitParameter);
+            SetFloat("Speed", SpeedParameter);
         }
-
-        XParameter = Lerp(XParameter, 0f, Runner.DeltaTime * 5f);
-        ZParameter = Lerp(ZParameter, 0f, Runner.DeltaTime * 5f);
-        SpeedParameter = Lerp(SpeedParameter, 0f, Runner.DeltaTime * 5f);
-
-        SetParameterFalse();
-        SetFloat("X", XParameter);
-        SetFloat("Z", ZParameter);
-        SetFloat("SitParameter", SitParameter);
-        SetFloat("Speed", SpeedParameter);
+        else
+        {
+            SetParameterFalse();
+            var interpolator = new NetworkBehaviourBufferInterpolator(this);
+            SetFloat("Z", interpolator.Float(nameof(ZParameter)));
+            SetFloat("X", interpolator.Float(nameof(XParameter)));
+            SetFloat("SitParameter", interpolator.Float(nameof(SitParameter)));
+            SetFloat("Speed", interpolator.Float(nameof(SpeedParameter)));
+        }
     }
 
     public override void PlayMove()
     {
-        XParameter = Lerp(XParameter, Creature.Direction.x, Runner.DeltaTime * 5f);
-        ZParameter = Lerp(ZParameter, Creature.Direction.z, Runner.DeltaTime * 5f);
-
-        switch (CreaturePose)
+        if (HasStateAuthority)
         {
-            case Define.CreaturePose.Stand:
-                SetFloat("Z", ZParameter);
-                SitParameter = Lerp(SitParameter, 0f, Runner.DeltaTime * 5f);
-                SpeedParameter = Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5f);
-                break;
-            case Define.CreaturePose.Sit:
-                SetFloat("Z", ZParameter);
-                SitParameter = Lerp(SitParameter, 1f, Runner.DeltaTime * 5f);
-                SpeedParameter = Lerp(SpeedParameter, 1f, Runner.DeltaTime * 5f);
-                break;
-            case Define.CreaturePose.Run:
-                SetFloat("Z", ZParameter * 1.8f);
-                SitParameter = Lerp(SitParameter, 0f, Runner.DeltaTime * 5f);
-                SpeedParameter = Lerp(SpeedParameter, 2f, Runner.DeltaTime * 5f);
-                break;
-        }
+            XParameter = Lerp(XParameter, Creature.Direction.x, Time.deltaTime * 5f);
+            ZParameter = Lerp(ZParameter, Creature.Direction.z, Time.deltaTime * 5f);
 
-        SetParameterFalse();
-        SetFloat("X", XParameter);
-        SetFloat("SitParameter", SitParameter);
-        SetFloat("Speed", SpeedParameter);
+            switch (CreaturePose)
+            {
+                case Define.CreaturePose.Stand:
+                    SetFloat("Z", ZParameter);
+                    SitParameter = Lerp(SitParameter, 0f, Time.deltaTime * 3f);
+                    SpeedParameter = Lerp(SpeedParameter, 1f, Time.deltaTime * 5f);
+                    break;
+                case Define.CreaturePose.Sit:
+                    SetFloat("Z", ZParameter);
+                    SitParameter = Lerp(SitParameter, 1f, Time.deltaTime * 3f);
+                    SpeedParameter = Lerp(SpeedParameter, 1f, Time.deltaTime * 5f);
+                    break;
+                case Define.CreaturePose.Run:
+                    SetFloat("Z", ZParameter * 1.8f);
+                    SitParameter = Lerp(SitParameter, 0f, Time.deltaTime * 3f);
+                    SpeedParameter = Lerp(SpeedParameter, 2f, Time.deltaTime * 5f);
+                    break;
+            }
+
+            SetParameterFalse();
+            SetFloat("X", XParameter);
+            SetFloat("SitParameter", SitParameter);
+            SetFloat("Speed", SpeedParameter);
+        }
+        else
+        {
+            SetParameterFalse();
+            var interpolator = new NetworkBehaviourBufferInterpolator(this);
+            SetFloat("Z", interpolator.Float(nameof(ZParameter)));
+            SetFloat("X", interpolator.Float(nameof(XParameter)));
+            SetFloat("SitParameter", interpolator.Float(nameof(SitParameter)));
+            SetFloat("Speed", interpolator.Float(nameof(SpeedParameter)));
+        }
     }
 
+    public override void PlayAction()
+    {
+        SetBool("KeypadUse", KeypadUse);
+        SetBool("OpenItemKit", OpenItemKit);
+        SetBool("OpenDoor", OpenDoor);
+        SetBool("ChargeBattery", ChargeBattery);
+        SetBool("Insert", Insert);
+        SetBool("Throw", Throw);
+        SetBool("Damaged", Damaged);
+        SetBool("Bandage", Bandage);
+        SetBool("IsDead", IsDead);
+    }
     #endregion
 
     #region Play
@@ -100,60 +150,72 @@ public class CrewAnimController : BaseAnimController
 
     public void PlayDamaged()
     {
-        SetBool("Damaged", true);
+        Damaged = true;
     }
 
     public void PlayDead()
     {
-        SetBool("IsDead", true);
+        IsDead = true;
     }
 
     public void PlayKeypadUse()
     {
-        SetBool("KeypadUse", true);
+        KeypadUse = true;
     }
 
     public void PlayOpenItemKit()
     {
-        SetBool("OpenItemKit", true);
+        OpenItemKit = true;
     }
 
     public void PlayOpenDoor()
     {
-        SetBool("OpenDoor", true);
+        OpenDoor = true;
     }
 
     public void PlayChargeBattery()
     {
-        SetBool("ChargeBattery", true);
+        ChargeBattery = true;
     }
 
     public void PlayInsert()
     {
-        SetBool("Insert", true);
+        Insert = true;
     }
 
     public void PlayThrow()
     {
-        SetBool("Throw", true);
+        Throw = true;
     }
 
     public void PlayBandage()
     {
-        SetBool("Bandage", true);
+        Bandage = true;
     }
 
     #endregion
 
     protected override void SetParameterFalse()
     {
-        SetBool("KeypadUse", false);
-        SetBool("OpenItemKit", false);
-        SetBool("OpenDoor", false);
-        SetBool("ChargeBattery", false);
-        SetBool("Insert", false);
-        SetBool("Throw", false);
-        SetBool("Damaged", false);
-        SetBool("Bandage", false);
+        if (HasStateAuthority)
+        {
+            KeypadUse = false;
+            OpenItemKit = false;
+            OpenDoor = false;
+            ChargeBattery = false;
+            Insert = false;
+            Throw = false;
+            Damaged = false;
+            Bandage = false;
+        }
+
+        SetBool("KeypadUse", KeypadUse);
+        SetBool("OpenItemKit", OpenItemKit);
+        SetBool("OpenDoor", OpenDoor);
+        SetBool("ChargeBattery", ChargeBattery);
+        SetBool("Insert", Insert);
+        SetBool("Throw", Throw);
+        SetBool("Damaged", Damaged);
+        SetBool("Bandage", Bandage);
     }
 }
