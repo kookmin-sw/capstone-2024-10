@@ -1136,8 +1136,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.1
-  m_Height: 2.85
+  m_Radius: 1.15
+  m_Height: 3.3
   m_Direction: 1
   m_Center: {x: 0, y: 1.425, z: 0}
 --- !u!82 &268809720184150372
@@ -1314,7 +1314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Animator: {fileID: 8694943018821805677}
-  TotalWords: 4
+  TotalWords: 6
   ApplyTiming: 0
   SyncSettings: -1
   StateHashes: 000000005775fad1d53ab654dae5fc967fa11b293c9dc5edd75e4d10dede26c18c8459e8fd7f1c12cecc392513b27f7020015a47e05aa2880b992a75bf551917a252de505d6823aa47f919405218bea44889844e
@@ -1344,9 +1344,9 @@ MonoBehaviour:
     ProxyInterpolationMode: 0
     TeleportThreshold: 1
     AntiJitterDistance: {x: 0.025, y: 0.01}
-    CompressNetworkPosition: 0
-    ForcePredictedLookRotation: 0
-    StepHeight: 0.5
+    CompressNetworkPosition: 1
+    ForcePredictedLookRotation: 1
+    StepHeight: 0.4
     StepDepth: 0.2
     StepSpeed: 1
     StepMinPushBack: 0.5

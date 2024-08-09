@@ -29,7 +29,12 @@ public class ItemKit : BaseWorkStation
 
     public override bool IsInteractable(Creature creature)
     {
-        if (!base.IsInteractable(creature)) return false;
+        creature.IngameUI.ErrorTextUI.Hide();
+        creature.IngameUI.InteractInfoUI.Hide();
+
+        if (Worker != null) return false;
+
+        if (creature.CreatureState == Define.CreatureState.Interact) return false;
 
         if (creature is not Crew)
         {
