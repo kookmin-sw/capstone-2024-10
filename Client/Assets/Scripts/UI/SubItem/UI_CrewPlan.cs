@@ -164,7 +164,7 @@ public class UI_CrewPlan : UI_Base
         _planB.SetObjectiveText($"Use Central Control Computer", true, true);
 
         StartCoroutine(_planB.CompleteObjective("Use Cargo Passage Control Computer to Open the Gate",
-            MakeHintFromSectorName(new[] { Define.SectorName.CargoControlRoom, Define.SectorName.DirectorOffice})));
+            MakeHintFromSectorName(new[] { Define.SectorName.CargoControlRoom})));
     }
 
     public void OnCargoPassageOpen()

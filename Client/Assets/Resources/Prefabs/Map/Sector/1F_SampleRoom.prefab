@@ -531,6 +531,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _sectorName: 15
   _lightEnableTargetSectors: 0f000000050000000300000011000000
+  _additionalLightEnableTargets: []
   _IsEroded:
     _value: 0
 --- !u!114 &1145023235402561685
@@ -547,7 +548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SortKey: 2963755349
   ObjectInterest: 1
-  Flags: 1
+  Flags: 262145
   NestedObjects:
   - {fileID: 8005341671737880273}
   NetworkedBehaviours:
@@ -2174,10 +2175,6 @@ PrefabInstance:
       value: Fan
       objectReference: {fileID: 0}
     - target: {fileID: 4199916329550996, guid: 86b80002c35e25340ba30284fd29dfcc, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4199916329550996, guid: 86b80002c35e25340ba30284fd29dfcc, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.696167
       objectReference: {fileID: 0}
@@ -2216,14 +2213,6 @@ PrefabInstance:
     - target: {fileID: 4199916329550996, guid: 86b80002c35e25340ba30284fd29dfcc, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 108679540842066046, guid: 86b80002c35e25340ba30284fd29dfcc, type: 3}
-      propertyPath: m_Intensity
-      value: 3.1830988
-      objectReference: {fileID: 0}
-    - target: {fileID: 2961377583469700656, guid: 86b80002c35e25340ba30284fd29dfcc, type: 3}
-      propertyPath: m_Intensity
-      value: 40
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

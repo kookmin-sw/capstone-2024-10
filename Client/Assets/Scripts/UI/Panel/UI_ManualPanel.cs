@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_ManualPanel : UI_Panel
+public class UI_ManualPanel : UI_CameraPanel
 {
     private UI_Manual _currentManual;
     private UI_Manual _crewManual;
