@@ -3,11 +3,10 @@ using UnityEngine;
 
 public abstract class BaseAnimController : NetworkBehaviour
 {
-    public NetworkMecanimAnimator NetworkAnim { get; protected set; }
-
+    public Animator Animator { get; protected set; }
     public Creature Creature { get; protected set; }
     public Define.CreatureState CreatureState => Creature.CreatureState;
-    public Define.CreaturePose CreaturePose => Creature.CreaturePose;
+    [Networked] public Define.CreaturePose CreaturePose { get; set; }
 
     [Networked] public float XParameter { get; set; }
     [Networked] public float ZParameter { get; set; }
@@ -20,15 +19,24 @@ public abstract class BaseAnimController : NetworkBehaviour
 
     protected virtual void Init()
     {
-        NetworkAnim = gameObject.GetComponent<NetworkMecanimAnimator>();
         Creature = gameObject.GetComponent<Creature>();
+        Animator = gameObject.GetComponent<Animator>();
     }
 
     #region Update
+    public override void FixedUpdateNetwork()
+    {
+        if (HasStateAuthority)
+        {
+            CreaturePose = Creature.CreaturePose;
+        }
+    }
 
     public abstract void PlayIdle();
 
     public abstract void PlayMove();
+
+    public abstract void PlayAction();
 
     #endregion
 
@@ -36,17 +44,17 @@ public abstract class BaseAnimController : NetworkBehaviour
 
     protected void SetTrigger(string parameter)
     {
-        NetworkAnim.SetTrigger(parameter);
+        Animator.SetTrigger(parameter);
     }
 
     protected void SetBool(string parameter, bool value)
     {
-        NetworkAnim.Animator.SetBool(parameter, value);
+        Animator.SetBool(parameter, value);
     }
 
     protected void SetFloat(string parameter, float value)
     {
-        NetworkAnim.Animator.SetFloat(parameter, value);
+        Animator.SetFloat(parameter, value);
     }
 
     protected float Lerp(float start, float end, float time)

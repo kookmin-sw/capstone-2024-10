@@ -15,8 +15,8 @@ public abstract class Creature : NetworkBehaviour
     public CreatureData CreatureData { get; protected set; }
     [Networked] public Define.CreatureType CreatureType { get; set; }
 
-    protected Define.CreatureState _creatureState;
-    protected Define.CreaturePose _creaturePose;
+    [Networked] protected Define.CreatureState _creatureState { get; set; }
+    [Networked] protected Define.CreaturePose _creaturePose { get; set; }
     protected Define.SectorName _currentSector;
 
     public Define.CreatureState CreatureState
@@ -176,6 +176,15 @@ public abstract class Creature : NetworkBehaviour
             return;
 
         UpdateByState();
+    }
+
+    public override void Render()
+    {
+        BaseAnimController.PlayAction();
+
+        if (CreatureState == Define.CreatureState.Dead)
+            return;
+
         ApplyAnimation();
     }
 
