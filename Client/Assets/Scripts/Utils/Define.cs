@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public static class Define
 {
     #region Type
@@ -215,15 +213,15 @@ public static class Define
 
     public static string[] TEXT_FOR_TIP =
     {
-        "Crew: Crouch to pick up the items on the floor.",
-        "Crew: Close the door to run away from the alien.",
+        "Crew: Crouch to pick up the things on the floor.",
+        "Crew: Close the door to run away from Stalker.",
         "Crew: You can recover sanity by crouching.",
         "Crew: Crouching makes your stamina recover faster.",
-        "Crew: While running, your footsteps becomes much louder.",
-        "Crew: While crouching, your footsteps don't make any sound.",
-        "Crew: After being attacked by the alien, your speed briefly increases significantly.",
-        "Alien: Use the \"Roar\" skill to slow down the crew.",
-        "Alien: Destroy the closed doors so the crew can't use them again.",
+        "Crew: While Running, Your footsteps become much louder.",
+        "Crew: While Crouching, Your footsteps disappear.",
+        "Crew: After being attacked by Stalker, your speed increases for a moment.",
+        "Stalker: Use the \"Roar\" skill to slow down the crew.",
+        "Stalker: Destroy the closed door so the crew can never use it again.",
     };
 
     #endregion

@@ -31,7 +31,7 @@ public class Door : BaseWorkStation
         CrewActionType = Define.CrewActionType.OpenDoor;
         CanRememberWork = false;
 
-        TotalWorkAmount = 1.5f; // only for alien crashing door
+        TotalWorkAmount = 1.9f; // only for alien crashing door
     }
 
     public override bool IsInteractable(Creature creature)
