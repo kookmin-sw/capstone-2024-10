@@ -348,15 +348,13 @@ public class Crew : Creature
         Transform cameraTransform = CreatureCamera.transform;
         float to = 0.2f;
 
-        if ((CreaturePose == Define.CreaturePose.Sit && CreatureState == Define.CreatureState.Idle)
-        || CreaturePose == Define.CreaturePose.Run)
-            to = 0f;
+        if (CreaturePose == Define.CreaturePose.Sit || CreaturePose == Define.CreaturePose.Run)
+            to = 0.08f;
 
-        DOVirtual.Float(cameraTransform.localPosition.y, to, 0.7f, value =>
+        DOVirtual.Float(cameraTransform.localPosition.y, to, 0.4f, value =>
         {
             Vector3 pos = cameraTransform.localPosition;
             pos.y = value;
-            pos.z = (value - 0.2f) * 1.5f;
             cameraTransform.localPosition = pos;
         });
     }
@@ -395,7 +393,7 @@ public class Crew : Creature
         }
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Rpc_ApplyBlind(3.5f, 2f);
+            Rpc_ApplyBlind(3.5f, 1f);
             return true;
         }
         if (Input.GetKeyDown(KeyCode.L))

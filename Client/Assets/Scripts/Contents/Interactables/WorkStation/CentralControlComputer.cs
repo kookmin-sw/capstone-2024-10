@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class CentralControlComputer : BaseWorkStation
 {
-    private new string Description => Managers.GameMng.PlanSystem.IsCardKeyUsed ? "Use Central Control Computer" : "Insert Card Key";
-
     private new Define.CrewActionType CrewActionType => Managers.GameMng.PlanSystem.IsCardKeyUsed
         ? Define.CrewActionType.KeypadUse
         : Define.CrewActionType.Insert;
@@ -13,6 +11,7 @@ public class CentralControlComputer : BaseWorkStation
     {
         base.Init();
 
+        Description = "Insert Card Key";
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = false;
         IsCompleted = false;
@@ -62,6 +61,7 @@ public class CentralControlComputer : BaseWorkStation
         if (!Managers.GameMng.PlanSystem.IsCardKeyUsed)
         {
             Managers.GameMng.PlanSystem.IsCardKeyUsed = true;
+            Description = "Use Central Control Computer";
             CurrentWorkAmount = 0;
             TotalWorkAmount = 10f;
             CanRememberWork = true;

@@ -3,7 +3,6 @@ using UnityEngine;
 using Data;
 using Fusion;
 using UnityEngine.EventSystems;
-using System.Collections;
 using System.Threading.Tasks;
 
 public class Alien : Creature
@@ -206,7 +205,7 @@ public class Alien : Creature
     {
         if (Input.GetKeyDown(KeyCode.K))
         {
-            Rpc_ApplyBlind(3.5f, 2f);
+            Rpc_ApplyBlind(3.5f, 1f);
             return true;
         }
         if (Input.GetKeyDown(KeyCode.N))

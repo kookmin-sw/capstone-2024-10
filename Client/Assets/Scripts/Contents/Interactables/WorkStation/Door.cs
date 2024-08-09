@@ -25,7 +25,6 @@ public class Door : BaseWorkStation
 
         _mecanimAnimator = transform.GetComponent<NetworkMecanimAnimator>();
         _collider = transform.GetComponent<Collider>();
-        AudioSource = gameObject.GetComponent<AudioSource>();
         _occlusionPortal = transform.parent.GetComponent<OcclusionPortal>();
         _occlusionPortal.open = true;
 

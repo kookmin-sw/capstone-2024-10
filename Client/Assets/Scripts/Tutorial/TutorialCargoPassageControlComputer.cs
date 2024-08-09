@@ -7,7 +7,7 @@ public class TutorialCargoPassageControlComputer : BaseWorkStation
     {
         base.Init();
 
-        Description ="Open Cargo Passage Gate";
+        Description = "Open Cargo Passage Gate";
         CrewActionType = Define.CrewActionType.KeypadUse;
         AudioSource = gameObject.GetComponent<AudioSource>();
         CanRememberWork = true;

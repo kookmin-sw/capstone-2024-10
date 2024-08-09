@@ -14,10 +14,14 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     [Networked] protected float CurrentWorkAmount { get; set; } = 0f;
     [Networked] protected float TotalWorkAmount { get; set; }
     [Networked] protected bool CanRememberWork { get; set; }
-    protected string Description { get; set; }
-
     [Networked] protected int WorkerCount { get; set; }
     [Networked] protected NetworkBool IsCompleted { get; set; } = false;
+    [Networked] protected NetworkString<_64> NetworkDescription { get; set; }
+    protected string Description
+    {
+        get => NetworkDescription.ToString();
+        set => NetworkDescription = value;
+    }
 
     #endregion
 

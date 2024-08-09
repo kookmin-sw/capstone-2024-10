@@ -83,6 +83,8 @@ namespace Data
         public int DataId;
         public string Name;
         public float Value;
+        public float Duration;
+        public float TotalUseAmount;
     }
 
     [Serializable]
