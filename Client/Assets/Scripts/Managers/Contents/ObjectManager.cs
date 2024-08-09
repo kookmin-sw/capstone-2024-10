@@ -56,6 +56,8 @@ public class ObjectManager
     {
         string className = Managers.DataMng.ItemDataDict[itemDataId].Name;
         NetworkObject prefab = Managers.ResourceMng.Load<NetworkObject>($"{Define.ITEM_OBJECT_PATH}/{className}");
+        if (prefab.TryGetComponent(out FlashBangObject obj))
+            spawnRotation = Quaternion.LookRotation(new Vector3(0f, 0f, 90f));
         NetworkObject no = Managers.NetworkMng.Runner.Spawn(prefab, spawnPosition, spawnRotation);
 
         BaseItemObject item = no.GetComponent<BaseItemObject>();

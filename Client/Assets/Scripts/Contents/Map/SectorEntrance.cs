@@ -9,7 +9,7 @@ public class SectorEntrance : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.TryGetComponent<Creature>(out var creature))
+        if (other.TryGetComponent(out Creature creature))
         {
             if (Managers.ObjectMng.MyCreature != creature) return;
 
