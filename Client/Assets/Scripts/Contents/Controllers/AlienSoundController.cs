@@ -160,7 +160,5 @@ public class AlienSoundController : BaseSoundController
             if (BgmAudioSource.volume <= 0f)
                 Managers.SoundMng.Stop(Define.SoundType.Bgm);
         }
-
-        Debug.Log(ChasingValue);
     }
 }

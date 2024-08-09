@@ -752,6 +752,7 @@ Transform:
   - {fileID: 7957409035705669022}
   - {fileID: 6931800233135154062}
   - {fileID: 7509653866046590758}
+  - {fileID: 2850531887843556470}
   m_Father: {fileID: 6491473544176005436}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6366428909262155704
@@ -4705,6 +4706,10 @@ PrefabInstance:
     - target: {fileID: 4623271259057360338, guid: 1772b9601cec99f4b9ced76f070ea5c2, type: 3}
       propertyPath: m_Name
       value: 2F_Corridor_A
+      objectReference: {fileID: 0}
+    - target: {fileID: 5890205984770477685, guid: 1772b9601cec99f4b9ced76f070ea5c2, type: 3}
+      propertyPath: m_Intensity
+      value: 2.387324
       objectReference: {fileID: 0}
     - target: {fileID: 7030881829091506616, guid: 1772b9601cec99f4b9ced76f070ea5c2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9972,11 +9977,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 273208844532027740, guid: 0754c19ac0264d045a4a25cc96195ff2, type: 3}
   m_PrefabInstance: {fileID: 2613704448958344490}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5660157718123769587 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7694775092742898649, guid: 0754c19ac0264d045a4a25cc96195ff2, type: 3}
-  m_PrefabInstance: {fileID: 2613704448958344490}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2617438073647696458
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13587,7 +13587,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3655826771146576122, guid: f6860e33d6b718a498d9afd78ee2f276, type: 3}
       propertyPath: m_Intensity
-      value: 7.957747
+      value: 6.3661976
       objectReference: {fileID: 0}
     - target: {fileID: 6117238314703156082, guid: f6860e33d6b718a498d9afd78ee2f276, type: 3}
       propertyPath: m_Name
@@ -17664,6 +17664,10 @@ PrefabInstance:
       propertyPath: Flags
       value: 262145
       objectReference: {fileID: 0}
+    - target: {fileID: 1145023235402561685, guid: 9e655b9593592b342b3ed54032a0a0c2, type: 3}
+      propertyPath: SortKey
+      value: 3503305323
+      objectReference: {fileID: 0}
     - target: {fileID: 1525701424894010502, guid: 9e655b9593592b342b3ed54032a0a0c2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 22.75
@@ -17707,6 +17711,10 @@ PrefabInstance:
     - target: {fileID: 2223426504992462877, guid: 9e655b9593592b342b3ed54032a0a0c2, type: 3}
       propertyPath: m_Name
       value: 1F_SampleRoom
+      objectReference: {fileID: 0}
+    - target: {fileID: 8005341671737880273, guid: 9e655b9593592b342b3ed54032a0a0c2, type: 3}
+      propertyPath: SortKey
+      value: 904562280
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
