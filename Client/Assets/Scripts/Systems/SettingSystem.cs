@@ -8,8 +8,7 @@ public class SettingSystem : MonoBehaviour
     public int Width = 1920;
     public int Height = 1080;
     public bool Fullscreen = true;
-    public float XSensitivity = 1.0f;
-    public float YSensitivity = 1.0f;
+    public float Sensitivity = 1.0f;
     private int _quality = 1;
     public int VSycn = 0;
     public int Quality
@@ -27,8 +26,7 @@ public class SettingSystem : MonoBehaviour
     {
         Managers.GameMng.SettingSystem = this;
 
-        XSensitivity = PlayerPrefs.GetFloat("XSensitivity", 1.0f);
-        YSensitivity = PlayerPrefs.GetFloat("YSensitivity", 1.0f);
+        Sensitivity = PlayerPrefs.GetFloat("Sensitivity", 1.0f);
         Width = PlayerPrefs.GetInt("ScreenWidth", 1920);
         Height = PlayerPrefs.GetInt("ScreenHeight", 1080);
         Quality = PlayerPrefs.GetInt("Textures", 1);
@@ -55,16 +53,10 @@ public class SettingSystem : MonoBehaviour
         Screen.SetResolution(Width, Height, Fullscreen);
     }
 
-    public void SetXSensitivity(float sliderValueXSensitivity)
+    public void SetMouseSensitivity(float sliderValueSensitivity)
     {
-        XSensitivity = sliderValueXSensitivity;
-        PlayerPrefs.SetFloat("XSensitivity", sliderValueXSensitivity);
-    }
-
-    public void SetYSensitivity(float sliderValueYSensitivity)
-    {
-        YSensitivity = sliderValueYSensitivity;
-        PlayerPrefs.SetFloat("YSensitivity", sliderValueYSensitivity);
+        Sensitivity = sliderValueSensitivity;
+        PlayerPrefs.SetFloat("Sensitivity", sliderValueSensitivity);
     }
 
     public void SetVSync(int vsync)

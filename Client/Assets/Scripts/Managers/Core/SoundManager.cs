@@ -7,6 +7,24 @@ public class SoundManager
     public static AudioSource[] _audioSources = new AudioSource[(int)Define.SoundType.MaxCount];
     public float[] _audioVolume = new float[(int)Define.SoundType.MaxCount];
     public Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
+    private bool _mute = false;
+    public bool Mute
+    {
+        get
+        {
+            return _mute;
+        }
+        set
+        {
+            if (_mute != value)
+            {
+                if (value)
+                    MuteOn();
+                else
+                    MuteOff();
+            }
+        }
+    }
 
     public void Init()
     {
@@ -213,6 +231,29 @@ public class SoundManager
         Assert.IsTrue(volumeType != -1);
 
         return (Define.VolumeType) volumeType;
+    }
+
+    public void MuteOn()
+    {
+        _mute = true;
+        float masterVolume = Mathf.Log(0.001f);
+
+        for (int i = 0; i < _audioSources.Length; i++)
+        {
+            var volumeType = GetVolumeType((Define.SoundType)i);
+            float volume = Mathf.Log(PlayerPrefs.GetFloat(volumeType.ToString(), 1f));
+            float prev = _audioVolume[i];
+            _audioVolume[i] = volume + masterVolume;
+            volume = _audioVolume[i] - prev;
+            volume = _audioSources[i].volume * Mathf.Exp(volume);
+            _audioSources[i].volume = volume;
+        }
+    }
+
+    public void MuteOff()
+    {
+        _mute = false;
+        UpdateVolume();
     }
 
     public void UpdateVolume()

@@ -43,8 +43,7 @@ public class UI_SettingController : UI_Base
 
     enum Sliders
     {
-        SensitivityXSlider,
-        SensitivityYSlider,
+        SensitivitySlider,
         MusicSlider,
         EnvMusicSlider,
         EffMusicSlider,
@@ -86,8 +85,7 @@ public class UI_SettingController : UI_Base
         Get<Slider>(Sliders.EffMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.EffVolume, Sliders.EffMusicSlider); });
         Get<Slider>(Sliders.EnvMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.EnvVolume, Sliders.EnvMusicSlider); });
 
-        Get<Slider>(Sliders.SensitivityXSlider).gameObject.BindEvent((e) => { SensitivityXSlider(); }, Define.UIEvent.Drag);
-        Get<Slider>(Sliders.SensitivityYSlider).gameObject.BindEvent((e) => { SensitivityYSlider(); }, Define.UIEvent.Drag);
+        Get<Slider>(Sliders.SensitivitySlider).gameObject.BindEvent((e) => { SensitivitySlider(); }, Define.UIEvent.Drag);
         GetButton(Buttons.FullScreen_Btn).gameObject.BindEvent((e) => { FullScreen(); }, Define.UIEvent.Click);
         GetButton(Buttons.VSync_Btn).gameObject.BindEvent((e) => { vsync(); }, Define.UIEvent.Click);
         GetButton(Buttons.TextureLow_Btn).gameObject.BindEvent((e) => { TexturesLow(); }, Define.UIEvent.Click);
@@ -100,8 +98,7 @@ public class UI_SettingController : UI_Base
         Get<Slider>(Sliders.EnvMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.EnvVolume.ToString());
         Get<Slider>(Sliders.MusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.MasterVolume.ToString());
 
-        Get<Slider>(Sliders.SensitivityXSlider).value = Managers.GameMng.SettingSystem.XSensitivity;
-        Get<Slider>(Sliders.SensitivityYSlider).value = Managers.GameMng.SettingSystem.YSensitivity;
+        Get<Slider>(Sliders.SensitivitySlider).value = Managers.GameMng.SettingSystem.Sensitivity;
 
 
         var dropdown = Get<TMP_Dropdown>(Dropdowns.Dropdown);
@@ -113,21 +110,21 @@ public class UI_SettingController : UI_Base
         // check full screen
         if (Screen.fullScreen == true)
         {
-            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "on";
+            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "On";
         }
         else if (Screen.fullScreen == false)
         {
-            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "off";
+            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "Off";
         }
 
         // check vsync
         if (Managers.GameMng.SettingSystem.VSycn == 0)
         {
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "off";
+            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "Off";
         }
         else if (Managers.GameMng.SettingSystem.VSycn == 1)
         {
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "on";
+            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "On";
         }
 
         // check texture quality
@@ -211,12 +208,12 @@ public class UI_SettingController : UI_Base
     {
         if (Screen.fullScreen == true)
         {
-            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "off";
+            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "Off";
             Managers.GameMng.SettingSystem.SetFullScreen(false);
         }
         else if (Screen.fullScreen == false)
         {
-            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "on";
+            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "On";
             Managers.GameMng.SettingSystem.SetFullScreen(true);
         }
     }
@@ -229,14 +226,9 @@ public class UI_SettingController : UI_Base
         Debug.Log($"{field}: {PlayerPrefs.GetFloat(field)}");
     }
 
-    public void SensitivityXSlider()
+    public void SensitivitySlider()
     {
-        Managers.GameMng.SettingSystem.SetXSensitivity(Get<Slider>(Sliders.SensitivityXSlider).value);
-    }
-
-    public void SensitivityYSlider()
-    {
-        Managers.GameMng.SettingSystem.SetYSensitivity(Get<Slider>(Sliders.SensitivityYSlider).value);
+        Managers.GameMng.SettingSystem.SetMouseSensitivity(Get<Slider>(Sliders.SensitivitySlider).value);
     }
 
     public void vsync()
@@ -244,12 +236,12 @@ public class UI_SettingController : UI_Base
         if (Managers.GameMng.SettingSystem.VSycn == 0)
         {
             Managers.GameMng.SettingSystem.SetVSync(1);
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "on";
+            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "On";
         }
         else if (Managers.GameMng.SettingSystem.VSycn == 1)
         {
             Managers.GameMng.SettingSystem.SetVSync(0);
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "off";
+            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "Off";
         }
     }
 
