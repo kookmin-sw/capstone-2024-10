@@ -30,7 +30,7 @@ public class UI_Loading : UI_Panel
     public bool IsDone { get; private set; } = false;
     public float LoadingProgress { get; private set; } = 0.0f;
     public bool IsWaitingForPlayers { get; set; } = false;
-    private bool _testLoading { get; set; } = false;
+    // private bool _testLoading { get; set; } = false;
 
     public override bool Init()
     {
@@ -83,11 +83,12 @@ public class UI_Loading : UI_Panel
         LoadingProgress += _loadingSpeed * Time.deltaTime;
         _loadingBar.value = Mathf.Clamp01(LoadingProgress / .95f);
 
-        // 테스트 용
+        /* 테스트 용
         if (Input.GetKeyDown(KeyCode.V))
         {
             _testLoading = !_testLoading;
         }
+        */
     }
 
     public IEnumerator SpawnCheck()
@@ -156,7 +157,7 @@ public class UI_Loading : UI_Panel
         Managers.NetworkMng.IsGameLoading = false;
 
         yield return new WaitUntil(() => IsWaitingForPlayers == false);
-        yield return new WaitUntil(() => _testLoading == false);
+        // yield return new WaitUntil(() => _testLoading == false);
 
         StopAllCoroutines();
         Managers.UIMng.PanelUI = null;

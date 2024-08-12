@@ -18,15 +18,6 @@ public class StartManager
 
     public string SAVEDATA_PATH;
 
-    public Player Player { get; set; }
-    public List<Player> AllPlayers
-    {
-        get
-        {
-            return Managers.NetworkMng.Runner.GetAllBehaviours<Player>();
-        }
-    }
-
     public Dictionary<string, SessionProperty> SessionProperty { get; protected set; }
 
     public void Init()

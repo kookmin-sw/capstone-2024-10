@@ -18,6 +18,7 @@ public class UI_StartGame : UI_Popup
     {
         ReadyCount,
         RoomName,
+        UserName,
     }
 
     enum GameObjects
@@ -64,6 +65,8 @@ public class UI_StartGame : UI_Popup
     private IEnumerator Reserve()
     {
         yield return new WaitUntil(() => Managers.NetworkMng.PlayerSystem != null);
+        yield return new WaitUntil(() => Managers.NetworkMng.Player != null);
+
         Managers.NetworkMng.PlayerSystem.OnReadyCountUpdated += () => SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
         SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
         
@@ -71,13 +74,13 @@ public class UI_StartGame : UI_Popup
 
     public void ReadyGame()
     {
-        if (Managers.StartMng.Player == null)
+        if (Managers.NetworkMng.Player == null)
         {
             Debug.Log("Player is null");
             return;
         }
 
-        Managers.StartMng.Player.GetReady();
+        Managers.NetworkMng.Player.GetReady();
     }
 
     public void ExitGame()
@@ -90,6 +93,11 @@ public class UI_StartGame : UI_Popup
         GetText(Texts.ReadyCount).text = $"{count} / {Define.PLAYER_COUNT}";
         SessionInfo info = Managers.NetworkMng.Runner.SessionInfo;
         GetText(Texts.RoomName).text = info.Name;
+
+        if (Managers.NetworkMng.Player != null && Managers.NetworkMng.Runner.IsRunning)
+        {
+            GetText(Texts.UserName).text = Managers.NetworkMng.Player.PlayerName.Value;
+        }
     }
 
     private void OnDestroy()
