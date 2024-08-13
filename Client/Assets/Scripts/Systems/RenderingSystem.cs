@@ -9,6 +9,7 @@ public class RenderingSystem : NetworkBehaviour
 {
     public Volume Volume { get; protected set; }
     public VolumeProfile VolumeProfile => Volume.sharedProfile;
+    public Exposure Exposure { get; protected set; }
     public Fog Fog { get; protected set; }
     public ChromaticAberration ChromaticAberration { get; protected set; }
     public ColorAdjustments ColorAdjustments { get; protected set; }
@@ -19,7 +20,8 @@ public class RenderingSystem : NetworkBehaviour
     private Color _erosionColor = new Color(255.0f / 255.0f, 90.0f / 255.0f, 90.0f / 255.0f);
     private Color _defaultColor = new Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
 
-    private float _defaultFogMeanFreePath = 6f;
+    private float _defaultFixedExposure = -2.9f;
+    private float _defaultFogMeanFreePath = 5.5f;
     private float _defaultVignetteIntensity = 0.15f;
 
     private float _blindValue = 15f;
@@ -40,6 +42,8 @@ public class RenderingSystem : NetworkBehaviour
 
         Volume = GetComponent<Volume>();
 
+        if (VolumeProfile.TryGet<Exposure>(out var exposure))
+            Exposure = exposure;
         if (VolumeProfile.TryGet<Fog>(out var fog))
             Fog = fog;
         if (VolumeProfile.TryGet<ChromaticAberration>(out var chromaticAberration))
@@ -51,6 +55,7 @@ public class RenderingSystem : NetworkBehaviour
 
         DamageMaterial = Managers.ResourceMng.Load<Material>("Materials/DamageMaterial");
 
+        Exposure.fixedExposure.value =_defaultFixedExposure;
         Fog.meanFreePath.value =_defaultFogMeanFreePath;
         ChromaticAberration.intensity.value = 0f;
         ColorAdjustments.postExposure.value = 0f;
@@ -64,7 +69,7 @@ public class RenderingSystem : NetworkBehaviour
 
     public void ApplySanityEffect(float sanity)
     {
-        Vignette.intensity.value = _defaultVignetteIntensity + (100f - sanity) * 0.01f * 0.4f;
+        Vignette.intensity.value = _defaultVignetteIntensity + (100f - sanity) * 0.01f * 0.45f;
         ChromaticAberration.intensity.value = (100f - sanity) * 0.01f;
     }
 
