@@ -1026,9 +1026,9 @@ MonoBehaviour:
   Width: 1920
   Height: 1080
   Fullscreen: 1
-  XSensitivity: 1
-  YSensitivity: 1
   VSycn: 0
+  Sensitivity: 1
+  mixer: {fileID: 24100000, guid: 73b7dd3d1a890e84abc64b97151c4148, type: 2}
 --- !u!4 &458281189
 Transform:
   m_ObjectHideFlags: 0
@@ -5180,7 +5180,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _sectorName: 0
-  _IsErosion:
+  _lightEnableTargetSectors: 
+  _additionalLightEnableTargets: []
+  _IsEroded:
     _value: 0
 --- !u!1001 &3357952709748126278
 PrefabInstance:

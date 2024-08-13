@@ -76,14 +76,14 @@ public class UI_SettingPanel : UI_CameraPanel
         GetButton(Buttons.Btn_Controls).gameObject.BindEvent((e) => { ControlsPanel(); }, Define.UIEvent.Click);
         GetButton(Buttons.Btn_Video).gameObject.BindEvent((e) => { VideoPanel(); }, Define.UIEvent.Click);
 
-        Get<Slider>(Sliders.MusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.MasterVolume, Sliders.MusicSlider); }, Define.UIEvent.Drag);
-        Get<Slider>(Sliders.BgmMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.BgmVolume, Sliders.BgmMusicSlider); }, Define.UIEvent.Drag);
-        Get<Slider>(Sliders.EffMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.EffVolume, Sliders.EffMusicSlider); }, Define.UIEvent.Drag);
-        Get<Slider>(Sliders.EnvMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.EnvVolume, Sliders.EnvMusicSlider); }, Define.UIEvent.Drag);
-        Get<Slider>(Sliders.MusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.MasterVolume, Sliders.MusicSlider); });
-        Get<Slider>(Sliders.BgmMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.BgmVolume, Sliders.BgmMusicSlider); });
-        Get<Slider>(Sliders.EffMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.EffVolume, Sliders.EffMusicSlider); });
-        Get<Slider>(Sliders.EnvMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.EnvVolume, Sliders.EnvMusicSlider); });
+        Get<Slider>(Sliders.MusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Master, Sliders.MusicSlider); }, Define.UIEvent.Drag);
+        Get<Slider>(Sliders.BgmMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Bgm, Sliders.BgmMusicSlider); }, Define.UIEvent.Drag);
+        Get<Slider>(Sliders.EffMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Effect, Sliders.EffMusicSlider); }, Define.UIEvent.Drag);
+        Get<Slider>(Sliders.EnvMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Environment, Sliders.EnvMusicSlider); }, Define.UIEvent.Drag);
+        Get<Slider>(Sliders.MusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Master, Sliders.MusicSlider); });
+        Get<Slider>(Sliders.BgmMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Bgm, Sliders.BgmMusicSlider); });
+        Get<Slider>(Sliders.EffMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Effect, Sliders.EffMusicSlider); });
+        Get<Slider>(Sliders.EnvMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Environment, Sliders.EnvMusicSlider); });
 
         Get<Slider>(Sliders.SensitivitySlider).gameObject.BindEvent((e) => { SensitivitySlider(); }, Define.UIEvent.Drag);
         GetButton(Buttons.FullScreen_Btn).gameObject.BindEvent((e) => { FullScreen(); }, Define.UIEvent.Click);
@@ -93,10 +93,10 @@ public class UI_SettingPanel : UI_CameraPanel
         GetButton(Buttons.TextureHigh_Btn).gameObject.BindEvent((e) => { TexturesHigh(); }, Define.UIEvent.Click);
 
         // check slider values
-        Get<Slider>(Sliders.BgmMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.BgmVolume.ToString());
-        Get<Slider>(Sliders.EffMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.EffVolume.ToString());
-        Get<Slider>(Sliders.EnvMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.EnvVolume.ToString());
-        Get<Slider>(Sliders.MusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.MasterVolume.ToString());
+        Get<Slider>(Sliders.BgmMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Bgm.ToString());
+        Get<Slider>(Sliders.EffMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Effect.ToString());
+        Get<Slider>(Sliders.EnvMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Environment.ToString());
+        Get<Slider>(Sliders.MusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Master.ToString());
 
         Get<Slider>(Sliders.SensitivitySlider).value = Managers.GameMng.SettingSystem.Sensitivity;
 
@@ -224,10 +224,8 @@ public class UI_SettingPanel : UI_CameraPanel
 
     private void MusicSlider(Define.VolumeType volumeType, Sliders sliderType)
     {
-        string field = volumeType.ToString();
-        PlayerPrefs.SetFloat(field, Get<Slider>(sliderType).value);
+        Managers.GameMng.SettingSystem.SetMusicVolume(volumeType, Get<Slider>(sliderType).value);
         Managers.SoundMng.UpdateVolume();
-        Debug.Log($"{field}: {PlayerPrefs.GetFloat(field)}");
     }
 
     public void SensitivitySlider()

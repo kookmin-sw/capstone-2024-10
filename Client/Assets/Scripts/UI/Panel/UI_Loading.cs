@@ -44,6 +44,7 @@ public class UI_Loading : UI_Panel
         canvas.sortingOrder = 20;
 
         DontDestroyOnLoad(transform.parent.gameObject);
+        Managers.SoundMng.MuteOn();
 
         Bind<TMP_Text>(typeof(Texts));
         Bind<Slider>(typeof(Sliders));
@@ -161,6 +162,7 @@ public class UI_Loading : UI_Panel
 
         StopAllCoroutines();
         Managers.UIMng.PanelUI = null;
+        Managers.SoundMng.MuteOff();
         Destroy(transform.parent.gameObject);
     }
 
