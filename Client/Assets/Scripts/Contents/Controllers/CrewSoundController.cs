@@ -1,5 +1,6 @@
 using Fusion;
 using UnityEngine;
+using UnityEngine.ProBuilder;
 
 public class CrewSoundController : BaseSoundController
 {
@@ -16,13 +17,13 @@ public class CrewSoundController : BaseSoundController
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                Rpc_PlayFootStepSound(1.205f, 0.15f);
+                Rpc_PlayFootStepSound(1.205f, 0.045f, 10f);
                 break;
             case Define.CreaturePose.Sit:
                 Rpc_StopEffectSound();
                 break;
             case Define.CreaturePose.Run:
-                Rpc_PlayFootStepSound(2f, 0.9f);
+                Rpc_PlayFootStepSound(2f, 0.7f);
                 break;
         }
     }
@@ -49,31 +50,33 @@ public class CrewSoundController : BaseSoundController
             case Define.CrewActionType.GameEnd:
                 PlayEndSound();
                 break;
+            case Define.CrewActionType.Exhaust:
+                PlayExhaust();
+                break;
         }
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    protected void Rpc_PlayFootStepSound(float pitch, float volume)
+    protected void Rpc_PlayFootStepSound(float pitch, float volume, float maxDistance = 20f)
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/FootStep", pitch, volume, isLoop:true);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/FootStep", pitch, volume, isLoop:true, maxDistance: maxDistance);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayDamagedSound()
     {
-        CreatureAudioSource.loop = false;
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Damaged", pitch: 1f, volume: 0.5f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Damaged", pitch: 1f, volume: 0.3f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayDeadSound()
     {
         string effect = "GameOver";
-        float volume = 0.7f;
+        float volume = 0.5f;
         if (!HasStateAuthority)
         {
             effect = "GameOver2";
-            volume *= 0.8f;
+            volume = 0.5f;
         }
 
         Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/{effect}", Define.SoundType.Facility, pitch: 1f, volume, isOneShot:true);
@@ -82,7 +85,7 @@ public class CrewSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayBandageSound()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Bandage", pitch: 1f, volume: 1f, isLoop: true);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Bandage", pitch: 1f, volume: 0.7f, isLoop: true);
     }
 
     protected void PlayAntipsychoticSound()
@@ -93,6 +96,12 @@ public class CrewSoundController : BaseSoundController
     protected void PlayAdrenalineSound()
     {
         Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Adrenaline", Define.SoundType.Effect,  volume:0.35f, isOneShot: true);
+    }
+
+    protected void PlayExhaust()
+    {
+        Managers.SoundMng.Stop(Define.SoundType.Effect);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Exhaust", Define.SoundType.Effect, volume: 0.5f, isOneShot: true);
     }
 
     public override void CheckChasing()
@@ -108,7 +117,7 @@ public class CrewSoundController : BaseSoundController
             if (hitColliders[0].gameObject.TryGetComponent(out Alien alien))
             {
                 IsChasing = true;
-                ChasingBgmVolume = -0.04f * (alien.Transform.position - Creature.Transform.position).magnitude + 1.3f;
+                ChasingBgmVolume = Mathf.Clamp(-0.044f * (alien.Transform.position - Creature.Transform.position).magnitude + 1.4f, 0f, 1f) ;
             }
         }
     }

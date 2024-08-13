@@ -1,3 +1,4 @@
+using System.Collections;
 using Data;
 using DG.Tweening;
 using UnityEngine;
@@ -59,9 +60,14 @@ public class CrewStat : BaseStat
         {
             Managers.GameMng.RenderingSystem.ApplyDamageEffect(Hp);
 
-            ChangeStamina(DamagedRecoverStamina);
+            if (Stamina < 60f)
+                ChangeStamina(60f - Stamina);
+
+            if (Sanity < 60f)
+                ChangeSanity(60f - Sanity);
+
             DamagedBoost = true;
-            
+
             _damagedBoostTween.Kill();
             _damagedBoostTween = DOVirtual.DelayedCall(5.5f, () =>
             {
@@ -81,18 +87,6 @@ public class CrewStat : BaseStat
             IsRunnable = true;
         else if (Stamina <= 0)
             IsRunnable = false;
-
-        if (Stamina < 40 && !Exhausted)
-        {
-            Exhausted = true;
-            Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Exhaust", volume: 0.5f, isLoop: true);
-        }
-        if (Stamina >= 40)
-        {
-            if (Exhausted)
-                Exhausted = false;
-            Managers.SoundMng.Stop();
-        }
     }
 
     public void ChangeSanity(float value)
@@ -100,6 +94,22 @@ public class CrewStat : BaseStat
         if (!HasStateAuthority)
             return;
 
+        StartCoroutine(ProgressChangeSanity(value));
+    }
+
+    public IEnumerator ProgressChangeSanity(float value)
+    {
+        float elapsedTime = 0f;
+        while (elapsedTime <= 0.5f)
+        {
+            elapsedTime += Time.deltaTime;
+            ApplySanity(value * 2f *Time.deltaTime);
+            yield return null;
+        }
+    }
+
+    public void ApplySanity(float value)
+    {
         Sanity = Mathf.Clamp(Sanity + value, 0, MaxSanity);
 
         float ratio = 0.7f + Sanity * 0.003f;

@@ -20,9 +20,9 @@ public class RenderingSystem : NetworkBehaviour
     private Color _erosionColor = new Color(255.0f / 255.0f, 90.0f / 255.0f, 90.0f / 255.0f);
     private Color _defaultColor = new Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
 
-    private float _defaultFixedExposure = -2.9f;
+    private float _defaultFixedExposure = -3f;
     private float _defaultFogMeanFreePath = 5.5f;
-    private float _defaultVignetteIntensity = 0.15f;
+    private float _defaultVignetteIntensity = 0.1f;
 
     private float _blindValue = 15f;
     private float _damageEffectSpeed = 1.5f;
@@ -30,6 +30,7 @@ public class RenderingSystem : NetworkBehaviour
     private Tweener _erosionEffectTweener;
     private Tweener _erosionEffectTweener2;
     private Tweener _blindEffectTweener;
+    private Tweener _damageEffectTweener;
 
     public override void Spawned()
     {
@@ -69,21 +70,19 @@ public class RenderingSystem : NetworkBehaviour
 
     public void ApplySanityEffect(float sanity)
     {
-        Vignette.intensity.value = _defaultVignetteIntensity + (100f - sanity) * 0.01f * 0.45f;
-        ChromaticAberration.intensity.value = (100f - sanity) * 0.01f;
+        Vignette.intensity.value = _defaultVignetteIntensity + (100f - sanity) * 0.01f * 0.5f;
+        //ChromaticAberration.intensity.value = (100f - sanity) * 0.01f;
     }
 
     public void ApplyErosionEffect(bool isApplying)
     {
         Color color = _defaultColor;
         float fogMeanFreePath = _defaultFogMeanFreePath;
-        float vignetteIntensity = _defaultVignetteIntensity;
 
         if (isApplying)
         {
             color = _erosionColor;
             fogMeanFreePath = 10f;
-            vignetteIntensity = 0f;
         }
 
         _erosionEffectTweener.Kill();
@@ -99,8 +98,6 @@ public class RenderingSystem : NetworkBehaviour
             {
                 Fog.meanFreePath.value = value;
             });
-
-            Vignette.intensity.value = vignetteIntensity;
         }
     }
 
@@ -136,6 +133,21 @@ public class RenderingSystem : NetworkBehaviour
             ratio = 1f;
 
         StartCoroutine(ProgressDamageEffect(ratio));
+
+        if (hp >= 3)
+            return;
+
+        _damageEffectTweener.Kill();
+        ChromaticAberration.intensity.value = 100f;
+
+        DOVirtual.DelayedCall(5.5f, () =>
+        {
+            _damageEffectTweener.Kill();
+            _damageEffectTweener = DOVirtual.Float(ChromaticAberration.intensity.value, 0f, 1f, value =>
+            {
+                ChromaticAberration.intensity.value = value;
+            });
+        });
     }
 
     private IEnumerator ProgressDamageEffect(float intensity)

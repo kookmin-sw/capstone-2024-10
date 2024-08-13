@@ -76,7 +76,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         {
             if (Worker.CreatureState != Define.CreatureState.Interact)
             {
-                InterruptWork();
+                InterruptWork(true);
                 yield break;
             }
 
@@ -91,11 +91,13 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         WorkComplete();
     }
 
-    protected void InterruptWork()
+    protected void InterruptWork(bool isForce = false)
     {
         StopAllCoroutines();
         Worker.IngameUI.WorkProgressBarUI.Hide();
-        Worker.ReturnToIdle(0f);
+
+        if (!isForce)
+            Worker.ReturnToIdle(0f);
 
         Rpc_RemoveWorker();
         if (AudioSource != null) Rpc_StopSound();

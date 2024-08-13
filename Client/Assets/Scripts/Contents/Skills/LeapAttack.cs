@@ -43,7 +43,7 @@ public class LeapAttack : BaseSkill
         {
             if (CurrentSkillAmount < SkillData.TotalSkillAmount - 0.5f && !IsHit)
             {
-                AttackPosition = Owner.Head.transform.position + Vector3.down * 0.2f;
+                AttackPosition = Owner.Transform.position + Vector3.up * 1.5f;
                 for (float i = -SkillData.Width; i <= SkillData.Width && !IsHit; i += 0.2f)
                 {
                     for (float j = -SkillData.Height; j <= SkillData.Height && !IsHit; j += 0.2f)

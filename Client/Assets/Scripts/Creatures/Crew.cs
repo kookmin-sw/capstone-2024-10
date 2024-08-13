@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using Data;
 using Fusion;
@@ -37,6 +38,8 @@ public class Crew : Creature
 
     public GameObject RightHand { get; protected set; }
     public GameObject LeftHand { get; protected set; }
+
+    private Tweener _OnDamagedTweener;
 
     #endregion
 
@@ -275,6 +278,9 @@ public class Crew : Creature
         CrewAnimController.PlayAnim(Define.CrewActionType.Damaged);
         CrewSoundController.PlaySound(Define.CrewActionType.Damaged);
         ReturnToIdle(0.5f);
+
+
+        CrewSoundController.PlaySound(Define.CrewActionType.Exhaust);
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
