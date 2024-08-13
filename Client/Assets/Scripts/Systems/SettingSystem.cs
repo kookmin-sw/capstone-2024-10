@@ -2,14 +2,14 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class SettingSystem : MonoBehaviour
 {
-    public int Width = 1920;
-    public int Height = 1080;
-    public bool Fullscreen = true;
-    public float XSensitivity = 1.0f;
-    public float YSensitivity = 1.0f;
+    #region Screen
+    public int Width { get; set; } = 1920;
+    public int Height { get; set; } = 1080;
+    public bool Fullscreen { get; set; } = true;
     private int _quality = 1;
     public int VSycn = 0;
     public int Quality
@@ -22,13 +22,17 @@ public class SettingSystem : MonoBehaviour
             _quality = value;
         }
     }
+    #endregion
+
+    #region Input
+    public float Sensitivity = 1.0f;
+    #endregion
 
     public void Init()
     {
         Managers.GameMng.SettingSystem = this;
 
-        XSensitivity = PlayerPrefs.GetFloat("XSensitivity", 1.0f);
-        YSensitivity = PlayerPrefs.GetFloat("YSensitivity", 1.0f);
+        Sensitivity = PlayerPrefs.GetFloat("Sensitivity", 1.0f);
         Width = PlayerPrefs.GetInt("ScreenWidth", 1920);
         Height = PlayerPrefs.GetInt("ScreenHeight", 1080);
         Quality = PlayerPrefs.GetInt("Textures", 1);
@@ -38,6 +42,13 @@ public class SettingSystem : MonoBehaviour
     private void SetQuality(int index)
     {
         QualitySettings.globalTextureMipmapLimit = 3 - index;
+    }
+
+    public void SetMusicVolume(Define.VolumeType volumeType, float value)
+    {
+        string field = volumeType.ToString();
+        PlayerPrefs.SetFloat(field, value);
+        Debug.Log($"{field}: {PlayerPrefs.GetFloat(field)}");
     }
 
     public void SetResolution(int width, int height)
@@ -55,16 +66,10 @@ public class SettingSystem : MonoBehaviour
         Screen.SetResolution(Width, Height, Fullscreen);
     }
 
-    public void SetXSensitivity(float sliderValueXSensitivity)
+    public void SetMouseSensitivity(float sliderValueSensitivity)
     {
-        XSensitivity = sliderValueXSensitivity;
-        PlayerPrefs.SetFloat("XSensitivity", sliderValueXSensitivity);
-    }
-
-    public void SetYSensitivity(float sliderValueYSensitivity)
-    {
-        YSensitivity = sliderValueYSensitivity;
-        PlayerPrefs.SetFloat("YSensitivity", sliderValueYSensitivity);
+        Sensitivity = sliderValueSensitivity;
+        PlayerPrefs.SetFloat("Sensitivity", sliderValueSensitivity);
     }
 
     public void SetVSync(int vsync)

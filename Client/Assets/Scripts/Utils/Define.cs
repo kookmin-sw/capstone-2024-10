@@ -94,10 +94,11 @@ public static class Define
 
     public enum VolumeType
     {
-        BgmVolume,
-        EnvVolume,
-        EffVolume,
-        MasterVolume,
+        Master,
+        Bgm,
+        Environment,
+        Effect,
+        MaxCount,
     }
 
     #endregion
@@ -190,6 +191,7 @@ public static class Define
     public const string BGM_PATH = "Sounds/Bgms";
     public const string EFFECT_PATH = "Sounds/Effects";
     public const string FACILITY_PATH = "Sounds/Facilities";
+    public static string AUDIO_MIXER_PATH = "Sounds/AudioMixer";
 
     #endregion
 

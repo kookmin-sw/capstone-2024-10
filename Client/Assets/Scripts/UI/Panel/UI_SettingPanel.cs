@@ -43,8 +43,7 @@ public class UI_SettingPanel : UI_CameraPanel
 
     enum Sliders
     {
-        SensitivityXSlider,
-        SensitivityYSlider,
+        SensitivitySlider,
         MusicSlider,
         EnvMusicSlider,
         EffMusicSlider,
@@ -77,17 +76,16 @@ public class UI_SettingPanel : UI_CameraPanel
         GetButton(Buttons.Btn_Controls).gameObject.BindEvent((e) => { ControlsPanel(); }, Define.UIEvent.Click);
         GetButton(Buttons.Btn_Video).gameObject.BindEvent((e) => { VideoPanel(); }, Define.UIEvent.Click);
 
-        Get<Slider>(Sliders.MusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.MasterVolume, Sliders.MusicSlider); }, Define.UIEvent.Drag);
-        Get<Slider>(Sliders.BgmMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.BgmVolume, Sliders.BgmMusicSlider); }, Define.UIEvent.Drag);
-        Get<Slider>(Sliders.EffMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.EffVolume, Sliders.EffMusicSlider); }, Define.UIEvent.Drag);
-        Get<Slider>(Sliders.EnvMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.EnvVolume, Sliders.EnvMusicSlider); }, Define.UIEvent.Drag);
-        Get<Slider>(Sliders.MusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.MasterVolume, Sliders.MusicSlider); });
-        Get<Slider>(Sliders.BgmMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.BgmVolume, Sliders.BgmMusicSlider); });
-        Get<Slider>(Sliders.EffMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.EffVolume, Sliders.EffMusicSlider); });
-        Get<Slider>(Sliders.EnvMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.EnvVolume, Sliders.EnvMusicSlider); });
+        Get<Slider>(Sliders.MusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Master, Sliders.MusicSlider); }, Define.UIEvent.Drag);
+        Get<Slider>(Sliders.BgmMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Bgm, Sliders.BgmMusicSlider); }, Define.UIEvent.Drag);
+        Get<Slider>(Sliders.EffMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Effect, Sliders.EffMusicSlider); }, Define.UIEvent.Drag);
+        Get<Slider>(Sliders.EnvMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Environment, Sliders.EnvMusicSlider); }, Define.UIEvent.Drag);
+        Get<Slider>(Sliders.MusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Master, Sliders.MusicSlider); });
+        Get<Slider>(Sliders.BgmMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Bgm, Sliders.BgmMusicSlider); });
+        Get<Slider>(Sliders.EffMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Effect, Sliders.EffMusicSlider); });
+        Get<Slider>(Sliders.EnvMusicSlider).gameObject.BindEvent((e) => { MusicSlider(Define.VolumeType.Environment, Sliders.EnvMusicSlider); });
 
-        Get<Slider>(Sliders.SensitivityXSlider).gameObject.BindEvent((e) => { SensitivityXSlider(); }, Define.UIEvent.Drag);
-        Get<Slider>(Sliders.SensitivityYSlider).gameObject.BindEvent((e) => { SensitivityYSlider(); }, Define.UIEvent.Drag);
+        Get<Slider>(Sliders.SensitivitySlider).gameObject.BindEvent((e) => { SensitivitySlider(); }, Define.UIEvent.Drag);
         GetButton(Buttons.FullScreen_Btn).gameObject.BindEvent((e) => { FullScreen(); }, Define.UIEvent.Click);
         GetButton(Buttons.VSync_Btn).gameObject.BindEvent((e) => { vsync(); }, Define.UIEvent.Click);
         GetButton(Buttons.TextureLow_Btn).gameObject.BindEvent((e) => { TexturesLow(); }, Define.UIEvent.Click);
@@ -95,14 +93,12 @@ public class UI_SettingPanel : UI_CameraPanel
         GetButton(Buttons.TextureHigh_Btn).gameObject.BindEvent((e) => { TexturesHigh(); }, Define.UIEvent.Click);
 
         // check slider values
-        Get<Slider>(Sliders.BgmMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.BgmVolume.ToString());
-        Get<Slider>(Sliders.EffMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.EffVolume.ToString());
-        Get<Slider>(Sliders.EnvMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.EnvVolume.ToString());
-        Get<Slider>(Sliders.MusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.MasterVolume.ToString());
+        Get<Slider>(Sliders.BgmMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Bgm.ToString());
+        Get<Slider>(Sliders.EffMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Effect.ToString());
+        Get<Slider>(Sliders.EnvMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Environment.ToString());
+        Get<Slider>(Sliders.MusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Master.ToString());
 
-        Get<Slider>(Sliders.SensitivityXSlider).value = Managers.GameMng.SettingSystem.XSensitivity;
-        Get<Slider>(Sliders.SensitivityYSlider).value = Managers.GameMng.SettingSystem.YSensitivity;
-
+        Get<Slider>(Sliders.SensitivitySlider).value = Managers.GameMng.SettingSystem.Sensitivity;
 
         var dropdown = Get<TMP_Dropdown>(Dropdowns.Dropdown);
         dropdown.onValueChanged.AddListener((int value) =>
@@ -113,21 +109,21 @@ public class UI_SettingPanel : UI_CameraPanel
         // check full screen
         if (Screen.fullScreen == true)
         {
-            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "on";
+            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "On";
         }
         else if (Screen.fullScreen == false)
         {
-            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "off";
+            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "Off";
         }
 
         // check vsync
         if (Managers.GameMng.SettingSystem.VSycn == 0)
         {
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "off";
+            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "Off";
         }
         else if (Managers.GameMng.SettingSystem.VSycn == 1)
         {
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "on";
+            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "On";
         }
 
         // check texture quality
@@ -216,32 +212,25 @@ public class UI_SettingPanel : UI_CameraPanel
     {
         if (Screen.fullScreen == true)
         {
-            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "off";
+            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "Off";
             Managers.GameMng.SettingSystem.SetFullScreen(false);
         }
         else if (Screen.fullScreen == false)
         {
-            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "on";
+            GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "On";
             Managers.GameMng.SettingSystem.SetFullScreen(true);
         }
     }
 
     private void MusicSlider(Define.VolumeType volumeType, Sliders sliderType)
     {
-        string field = volumeType.ToString();
-        PlayerPrefs.SetFloat(field, Get<Slider>(sliderType).value);
+        Managers.GameMng.SettingSystem.SetMusicVolume(volumeType, Get<Slider>(sliderType).value);
         Managers.SoundMng.UpdateVolume();
-        Debug.Log($"{field}: {PlayerPrefs.GetFloat(field)}");
     }
 
-    public void SensitivityXSlider()
+    public void SensitivitySlider()
     {
-        Managers.GameMng.SettingSystem.SetXSensitivity(Get<Slider>(Sliders.SensitivityXSlider).value);
-    }
-
-    public void SensitivityYSlider()
-    {
-        Managers.GameMng.SettingSystem.SetYSensitivity(Get<Slider>(Sliders.SensitivityYSlider).value);
+        Managers.GameMng.SettingSystem.SetMouseSensitivity(Get<Slider>(Sliders.SensitivitySlider).value);
     }
 
     public void vsync()
@@ -249,12 +238,12 @@ public class UI_SettingPanel : UI_CameraPanel
         if (Managers.GameMng.SettingSystem.VSycn == 0)
         {
             Managers.GameMng.SettingSystem.SetVSync(1);
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "on";
+            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "On";
         }
         else if (Managers.GameMng.SettingSystem.VSycn == 1)
         {
             Managers.GameMng.SettingSystem.SetVSync(0);
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "off";
+            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "Off";
         }
     }
 

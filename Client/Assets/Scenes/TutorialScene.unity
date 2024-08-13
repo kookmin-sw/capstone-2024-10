@@ -771,21 +771,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6419352827352035619, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
   m_PrefabInstance: {fileID: 2981817491508463974}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &674269545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 674269537}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 936d0a5c4bc6fc848804805826c96254, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BatteryCharger: []
-  CentralContolComputer: []
-  CargoPassageContolComputer: []
 --- !u!4 &715126553 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4275698116916540, guid: 68615fcf1489c0847af4caef5f07e486, type: 3}
@@ -1677,17 +1662,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 68615fcf1489c0847af4caef5f07e486, type: 3}
---- !u!114 &1208385361 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3928836982233390386, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
-  m_PrefabInstance: {fileID: 2981817491508463974}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b02fa0f558aa21540949c69f7e8ccf9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &1224444220 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4275698116916540, guid: 68615fcf1489c0847af4caef5f07e486, type: 3}
@@ -5039,9 +5013,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4704297354454387191, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
-      propertyPath: m_Enabled
-      value: 0
+    - target: {fileID: 1472962072034908797, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
+      propertyPath: SortKey
+      value: 2891600209
       objectReference: {fileID: 0}
     - target: {fileID: 6419352827352035619, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
       propertyPath: m_Name
@@ -5050,10 +5024,6 @@ PrefabInstance:
     - target: {fileID: 7207966761359428766, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
       propertyPath: SortKey
       value: 184175800
-      objectReference: {fileID: 0}
-    - target: {fileID: 7207966761359428766, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
-      propertyPath: NetworkedBehaviours.Array.size
-      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 7207966761359428766, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
       propertyPath: NetworkedBehaviours.Array.data[1]
@@ -5066,15 +5036,7 @@ PrefabInstance:
     - target: {fileID: 7207966761359428766, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
       propertyPath: NetworkedBehaviours.Array.data[3]
       value: 
-      objectReference: {fileID: 674269545}
-    - target: {fileID: 7207966761359428766, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
-      propertyPath: NetworkedBehaviours.Array.data[4]
-      value: 
-      objectReference: {fileID: 1208385361}
-    - target: {fileID: 7207966761359428766, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
-      propertyPath: NetworkedBehaviours.Array.data[5]
-      value: 
-      objectReference: {fileID: 1208385361}
+      objectReference: {fileID: 2981817491508463977}
     m_RemovedComponents:
     - {fileID: 4704297354454387191, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
     m_RemovedGameObjects: []
@@ -5082,7 +5044,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 6419352827352035619, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 674269545}
+      addedObject: {fileID: 2981817491508463977}
   m_SourcePrefab: {fileID: 100100000, guid: 8c3e932a4b53f7b438cd670dfcf114e6, type: 3}
 --- !u!114 &2981817491508463975 stripped
 MonoBehaviour:
@@ -5106,6 +5068,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c160b5c6947d1e34ea6fe249fb97cea6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2981817491508463977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674269537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 936d0a5c4bc6fc848804805826c96254, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BatteryCharger: []
+  CentralContolComputer: []
+  CargoPassageContolComputer: []
 --- !u!23 &3073190518377729936
 MeshRenderer:
   m_ObjectHideFlags: 0
