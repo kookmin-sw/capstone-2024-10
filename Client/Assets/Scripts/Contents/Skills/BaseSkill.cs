@@ -112,7 +112,7 @@ public abstract class BaseSkill : NetworkBehaviour
         });
     }
 
-    protected virtual void DecideHit(float x, float y)
+    protected void DecideHit(float x, float y)
     {
         Ray ray = new Ray(AttackPosition + Owner.CameraRotationY * new Vector3(x, y, 0f), ForwardDirection);
 

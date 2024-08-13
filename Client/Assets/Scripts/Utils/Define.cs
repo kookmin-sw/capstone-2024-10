@@ -26,6 +26,7 @@ public static class Define
         Antipsychotic,
         Adrenaline,
         GameEnd,
+        Exhaust,
     }
 
     public enum AlienActionType

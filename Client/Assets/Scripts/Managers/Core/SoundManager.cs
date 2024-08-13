@@ -47,7 +47,7 @@ public class SoundManager
                 GameObject go = new GameObject { name = soundNames[i] };
                 _audioSources[i] = go.AddComponent<AudioSource>();
                 var type = (Define.SoundType)i;
-                
+
                 if (AudioMixerGroups.TryGetValue(type, out var mixer))
                 {
                     _audioSources[i].outputAudioMixerGroup = mixer;
@@ -56,7 +56,7 @@ public class SoundManager
                 {
                     Debug.Log("Can't find outputAudioMixerGroup");
                 }
-                
+
                 go.transform.parent = root.transform;
             }
 
@@ -127,7 +127,8 @@ public class SoundManager
     }
 
     public void PlayObjectAudio(AudioSource audioSource, string path,
-                                float pitch = 1.0f, float volume = 1.0f, bool isLoop = false, Define.SoundType soundType = Define.SoundType.Facility)
+        float pitch = 1.0f, float volume = 1.0f, bool isLoop = false,
+        Define.SoundType soundType = Define.SoundType.Facility, float maxDistance = 20f)
     {
         if (audioSource == null)
             return;

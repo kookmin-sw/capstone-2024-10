@@ -28,7 +28,7 @@ public class BasicAttack : BaseSkill
         PlayAnim(false);
         PlaySound();
 
-        AttackPosition = Owner.Head.transform.position + Vector3.down * 0.2f;
+        AttackPosition = Owner.Transform.position + Vector3.up * 1.5f;
         while (CurrentSkillAmount < SkillData.TotalSkillAmount)
         {
             if (CurrentSkillAmount > 0.3f && CurrentSkillAmount < 0.6f && !IsHit)
