@@ -22,11 +22,21 @@ public class Antipsychotic : BaseItem
     {
         Owner.CrewSoundController.PlaySound(Define.CrewActionType.Antipsychotic);
 
-        DOVirtual.Float(0, 0, ItemData.Duration, value =>
+        Sequence s = DOTween.Sequence();
+
+        for (int i = 0; i < ItemData.Duration; i++)
         {
-            Owner.CrewStat.ChangeSanity(ItemData.Value / ItemData.Duration * Time.deltaTime);
-        });
+            s.AppendCallback(ChangeSanity);
+            s.AppendInterval(1.0f);
+        }
+
+        s.Play();
 
         Owner.Inventory.RemoveItem();
+    }
+
+    protected void ChangeSanity()
+    {
+        Owner.CrewStat.ChangeSanity(ItemData.Value / ItemData.Duration);
     }
 }

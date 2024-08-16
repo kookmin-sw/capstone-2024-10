@@ -143,7 +143,7 @@ public class RenderingSystem : NetworkBehaviour
         DOVirtual.DelayedCall(5.5f, () =>
         {
             _damageEffectTweener.Kill();
-            _damageEffectTweener = DOVirtual.Float(ChromaticAberration.intensity.value, 0f, 1f, value =>
+            _damageEffectTweener = DOVirtual.Float(ChromaticAberration.intensity.value, 0f, 2f, value =>
             {
                 ChromaticAberration.intensity.value = value;
             });

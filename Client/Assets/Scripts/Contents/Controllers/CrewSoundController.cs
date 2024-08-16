@@ -65,7 +65,7 @@ public class CrewSoundController : BaseSoundController
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected void Rpc_PlayDamagedSound()
     {
-        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Damaged", pitch: 1f, volume: 0.3f, isLoop: false);
+        Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Crew/Damaged", pitch: 1f, volume: 0.35f, isLoop: false);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
@@ -101,7 +101,7 @@ public class CrewSoundController : BaseSoundController
     protected void PlayExhaust()
     {
         Managers.SoundMng.Stop(Define.SoundType.Effect);
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Exhaust", Define.SoundType.Effect, volume: 0.5f, isOneShot: true);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Exhaust", Define.SoundType.Effect, volume: 0.6f, isOneShot: true);
     }
 
     public override void CheckChasing()
