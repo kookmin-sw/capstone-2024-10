@@ -45,6 +45,25 @@ public class Roar : BaseSkill
         SkillInterrupt(0f);
     }
 
+    protected override void DecideHit(float x, float y)
+    {
+        Ray ray = new Ray(AttackPosition + Owner.CameraRotationY * new Vector3(x, y, 0f), ForwardDirection);
+
+        Debug.DrawRay(ray.origin, ray.direction * SkillData.Range, Color.red);
+
+        if (Physics.Raycast(ray, out RaycastHit rayHit, maxDistance: SkillData.Range,
+                layerMask: LayerMask.GetMask("Crew", "MapObject", "InteractableObject")))
+        {
+            if (rayHit.transform.gameObject.TryGetComponent(out Crew crew))
+            {
+                IsHit = true;
+                crew.Rpc_OnDamaged(SkillData.Damage);
+                crew.Rpc_OnSanityDamaged(SkillData.SanityDamage);
+                Owner.SkillController.Skills[2].CurrentCoolTime -= 20f;
+            }
+        }
+    }
+
     public override void SkillInterrupt(float hitDelayTime)
     {
         base.SkillInterrupt(hitDelayTime);
