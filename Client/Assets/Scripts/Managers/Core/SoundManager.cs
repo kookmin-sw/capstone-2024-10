@@ -9,7 +9,7 @@ public class SoundManager
 {
     public static AudioSource[] _audioSources = new AudioSource[(int)Define.SoundType.MaxCount];
     private static AudioMixerGroup[] _audioMixerGroups;
-    public static Dictionary<Define.SoundType, AudioMixerGroup> AudioMixerGroups = new();
+    public static Dictionary<Define.SoundType, AudioMixerGroup> AudioMixerGroups;
     public static Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
     public static AudioMixer Mixer;
 
@@ -26,6 +26,7 @@ public class SoundManager
             if (Mixer == null)
                 return;
 
+            AudioMixerGroups = new();
             _audioMixerGroups = Mixer.FindMatchingGroups("Master");
 
             for (int i = 0; i < (int)Define.SoundType.MaxCount; i++)
