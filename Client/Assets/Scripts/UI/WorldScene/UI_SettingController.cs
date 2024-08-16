@@ -93,10 +93,10 @@ public class UI_SettingController : UI_Base
         GetButton(Buttons.TextureHigh_Btn).gameObject.BindEvent((e) => { TexturesHigh(); }, Define.UIEvent.Click);
 
         // check slider values
-        Get<Slider>(Sliders.BgmMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Bgm.ToString());
-        Get<Slider>(Sliders.EffMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Effect.ToString());
-        Get<Slider>(Sliders.EnvMusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Environment.ToString());
-        Get<Slider>(Sliders.MusicSlider).value = PlayerPrefs.GetFloat(Define.VolumeType.Master.ToString());
+        Get<Slider>(Sliders.BgmMusicSlider).value = Managers.GameMng.SettingSystem.GetMusicVolume(Define.VolumeType.Bgm);
+        Get<Slider>(Sliders.EffMusicSlider).value = Managers.GameMng.SettingSystem.GetMusicVolume(Define.VolumeType.Effect);
+        Get<Slider>(Sliders.EnvMusicSlider).value = Managers.GameMng.SettingSystem.GetMusicVolume(Define.VolumeType.Environment);
+        Get<Slider>(Sliders.MusicSlider).value = Managers.GameMng.SettingSystem.GetMusicVolume(Define.VolumeType.Master);
 
         Get<Slider>(Sliders.SensitivitySlider).value = Managers.GameMng.SettingSystem.Sensitivity;
 
