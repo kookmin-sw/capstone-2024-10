@@ -452,7 +452,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
                 break;
             // 테스트 씬만 사용, 본 게임의 게임 씬은 NetworkSceneManager에서 처리
             case Define.SceneType.GameScene:
-                spawnData.SpawnPoint.Position = TestSceneSpawnPosition + new Vector3(UnityEngine.Random.Range(0, 3), 0, UnityEngine.Random.Range(0, 3));
+                spawnData.SpawnPoint.Position = TestSceneSpawnPosition;
                 spawnData.SpawnPoint.SectorName = TestSceneSpawnSector;
                 spawnData.CreatureType = Creature;
                 break;
