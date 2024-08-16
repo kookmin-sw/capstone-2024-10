@@ -44,6 +44,12 @@ public class SettingSystem : MonoBehaviour
         QualitySettings.globalTextureMipmapLimit = 3 - index;
     }
 
+    public float GetMusicVolume(Define.VolumeType volumeType)
+    {
+        string field = volumeType.ToString();
+        return PlayerPrefs.GetFloat(field, 1.0f);
+    }
+
     public void SetMusicVolume(Define.VolumeType volumeType, float value)
     {
         string field = volumeType.ToString();
