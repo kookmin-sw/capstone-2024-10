@@ -39,7 +39,8 @@ public class Crew : Creature
     public GameObject RightHand { get; protected set; }
     public GameObject LeftHand { get; protected set; }
 
-    private Tweener _OnDamagedTweener;
+    private Tweener _onDamagedTweener;
+    private Tween _damagedTween;
 
     #endregion
 
@@ -279,8 +280,11 @@ public class Crew : Creature
         CrewSoundController.PlaySound(Define.CrewActionType.Damaged);
         ReturnToIdle(0.5f);
 
-
-        CrewSoundController.PlaySound(Define.CrewActionType.Exhaust);
+        _damagedTween.Kill();
+        _damagedTween = DOVirtual.DelayedCall(0.3f, () =>
+        {
+            CrewSoundController.PlaySound(Define.CrewActionType.Exhaust);
+        });
     }
 
     [Rpc(RpcSources.All, RpcTargets.StateAuthority)]
