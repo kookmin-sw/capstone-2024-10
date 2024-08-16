@@ -245,16 +245,17 @@ public class SoundManager
 
     public void MuteOn()
     {
-        var volumeType = Define.VolumeType.Master;
-        float volume = Mathf.Log10(0.0001f) * 20;
-        Mixer.SetFloat(volumeType.ToString(), volume);
+        for (int i = 0; i < (int)Define.VolumeType.MaxCount; i++)
+        {
+            var volumeType = (Define.VolumeType)i;
+            float volume = Mathf.Log10(0.0001f) * 20;
+            Mixer.SetFloat(volumeType.ToString(), volume);
+        }
     }
 
     public void MuteOff()
     {
-        var volumeType = Define.VolumeType.Master;
-        float volume = Mathf.Log10(PlayerPrefs.GetFloat(volumeType.ToString(), 1f)) * 20;
-        Mixer.SetFloat(volumeType.ToString(), volume);
+        UpdateVolume();
     }
 
     public void UpdateVolume()
