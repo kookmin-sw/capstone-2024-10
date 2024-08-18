@@ -54,17 +54,14 @@ public class CreatureCamera : MonoBehaviour
         }
 
         // 마우스 입력을 받아와 회전 각도 계산
-        float mouseX = Input.GetAxis("Mouse X") * Managers.GameMng.SettingSystem.Sensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * Managers.GameMng.SettingSystem.Sensitivity;
+        float mouseX = Input.GetAxis("Mouse X") * Managers.GameMng.SettingSystem.Sensitivity * Time.deltaTime * 30;
+        float mouseY = Input.GetAxis("Mouse Y") * Managers.GameMng.SettingSystem.Sensitivity * Time.deltaTime * 30;
         CurrentAngle += mouseX * MouseSensitivity; //좌우 회전 값 계산
         XRotation -= mouseY * MouseSensitivity; // 상하 회전 값 계산
 
         CurrentAngle = Mathf.Repeat(CurrentAngle, 360f);    // 각도를 0부터 360도 사이로 유지
         XRotation = Mathf.Clamp(XRotation, -60f, 60f);  // 상하 회전 범위를 -90도에서 90도로 제한
-    }
 
-    public void ApplyCameraAngle()
-    {
         Quaternion rotation = Quaternion.Euler(XRotation, CurrentAngle, 0);
         Transform.rotation = rotation; // 카메라 회전 적용
 
