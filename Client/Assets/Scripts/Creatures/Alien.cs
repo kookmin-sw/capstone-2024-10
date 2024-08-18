@@ -70,12 +70,12 @@ public class Alien : Creature
 
     #region Update
 
-    protected override void OnLateUpdate()
+    public override void FixedUpdateNetwork()
     {
         if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
             return;
 
-        base.OnLateUpdate();
+        base.FixedUpdateNetwork();
 
         if (HasStateAuthority)
             Head.transform.localScale = Vector3.zero;

@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 {
     private SceneRef _loadedScene = SceneRef.None;
+    private BaseScene _baseScene;
 
     public override void Shutdown()
     {
@@ -55,7 +56,7 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
                     }
     
                     // Mater client: alien & Other clients: crew
-                    Player.RPC_SpawnPlayer(Managers.NetworkMng.Runner, player, spawnPoint, player == Runner.LocalPlayer);
+                    RPC_SpawnPlayer(Managers.NetworkMng.Runner, player, spawnPoint, player == Runner.LocalPlayer);
                 }
             }
         }
@@ -64,5 +65,14 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
             if (Runner.IsSharedModeMasterClient)
                 Managers.NetworkMng.CurrentPlayState = PlayerSystem.PlayState.Ready;
         }
+    }
+
+    [Rpc]
+    public static async void RPC_SpawnPlayer(NetworkRunner runner, [RpcTarget] PlayerRef player, SpawnPoint.SpawnPointData spawnPoint, bool isAlien)
+    {
+        NetworkObject no = isAlien
+            ? await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPoint)
+            : await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, isGameScene : true);
+        runner.SetPlayerObject(player, no);
     }
 }

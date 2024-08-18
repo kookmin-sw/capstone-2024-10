@@ -61,7 +61,10 @@ public class CreatureCamera : MonoBehaviour
 
         CurrentAngle = Mathf.Repeat(CurrentAngle, 360f);    // 각도를 0부터 360도 사이로 유지
         XRotation = Mathf.Clamp(XRotation, -60f, 60f);  // 상하 회전 범위를 -90도에서 90도로 제한
+    }
 
+    public void ApplyCameraAngle()
+    {
         Quaternion rotation = Quaternion.Euler(XRotation, CurrentAngle, 0);
         Transform.rotation = rotation; // 카메라 회전 적용
 

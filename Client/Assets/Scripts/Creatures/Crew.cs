@@ -95,6 +95,11 @@ public class Crew : Creature
         MoveCameraByPose();
     }
 
+    public override void FixedUpdateNetwork()
+    {
+        base.FixedUpdateNetwork();
+    }
+
     protected override void HandleInput()
     {
         if (EventSystem.current.IsPointerOverGameObject())

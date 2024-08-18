@@ -147,11 +147,6 @@ public abstract class Creature : NetworkBehaviour
         OnUpdate();
     }
 
-    private void LateUpdate()
-    {
-        OnLateUpdate();
-    }
-
     protected virtual void OnUpdate()
     {
         if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned || IngameUI == null)
@@ -162,20 +157,17 @@ public abstract class Creature : NetworkBehaviour
         BaseSoundController.UpdateChasingValue();
     }
 
-    protected virtual void OnLateUpdate()
-    {
-        if (!CreatureCamera || !HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned || IngameUI == null)
-            return;
-
-        CreatureCamera.UpdateCameraAngle();
-    }
-
     public override void FixedUpdateNetwork()
     {
         if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
             return;
 
         UpdateByState();
+
+        if (!CreatureCamera || IngameUI == null)
+            return;
+
+        CreatureCamera.UpdateCameraAngle();
     }
 
     public override void Render()
@@ -186,6 +178,11 @@ public abstract class Creature : NetworkBehaviour
             return;
 
         ApplyAnimation();
+
+        if (!CreatureCamera || IngameUI == null)
+            return;
+
+        CreatureCamera.ApplyCameraAngle();
     }
 
     protected virtual void HandleInput()
