@@ -193,12 +193,12 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Player player;
         while ((player = GetPlayerObject(playerRef)) == null)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return null;
         }
 
         while (player.CreatureType == Define.CreatureType.None)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return null;
         }
 
         if (player.CreatureType == Define.CreatureType.Alien)

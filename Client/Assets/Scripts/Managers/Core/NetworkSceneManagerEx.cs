@@ -36,6 +36,7 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 
     protected override IEnumerator OnSceneLoaded(SceneRef newScene, Scene loadedScene, NetworkLoadSceneParameters sceneFlags)
     {
+        Managers.StartMng.SessionVisible(false);
         yield return base.OnSceneLoaded(newScene, loadedScene, sceneFlags);
 
         _loadedScene = newScene;
@@ -72,14 +73,17 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
             _baseScene = Managers.SceneMng.CurrentScene;
             StartCoroutine(_baseScene.OnPlayerSpawn());
 
-            yield return new WaitUntil(() => Managers.GameMng.GameEndSystem.AreAllPlayersLoaded);
+            yield return new WaitUntil(() => Managers.GameMng.GameEndSystem && Managers.GameMng.GameEndSystem.AreAllPlayersLoaded);
 
             Managers.UIMng.BlockLoadingUI(false);
         }
         else if (loadedScene.name == Managers.SceneMng.GetSceneName(Define.SceneType.ReadyScene))
         {
             if (Runner.IsSharedModeMasterClient)
+            {
                 Managers.NetworkMng.CurrentPlayState = PlayerSystem.PlayState.Ready;
+                Managers.StartMng.SessionVisible(true);
+            }
         }
     }
 
