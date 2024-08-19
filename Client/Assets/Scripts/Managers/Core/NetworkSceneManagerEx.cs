@@ -1,5 +1,6 @@
 using Fusion;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -41,30 +42,47 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
         if (loadedScene.name == Managers.SceneMng.GetSceneName(Define.SceneType.GameScene))
         {
             SpawnPoint.SpawnPointData spawnPointTemp = GameObject.FindWithTag("Respawn").GetComponent<SpawnPoint>().Data;
+            var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
 
             if (Runner.IsSharedModeMasterClient)
             {
                 Managers.NetworkMng.CurrentPlayState = PlayerSystem.PlayState.Game;
-                var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
 
                 foreach (var player in players)
                 {
-              
+
                     if (!Managers.NetworkMng.PlayerSystem.SpawnPoints.TryGet(player, out SpawnPoint.SpawnPointData spawnPoint))
                     {
                         spawnPoint = spawnPointTemp;
                     }
-    
+
                     // Mater client: alien & Other clients: crew
                     RPC_SpawnPlayer(Managers.NetworkMng.Runner, player, spawnPoint, player == Runner.LocalPlayer);
                 }
             }
+
+            // yield return new WaitUntil(() => OtherClientsLoaded(players));
+
+            // Managers.SceneMng.CurrentScene.OnPlayerSpawn();
         }
         else if (loadedScene.name == Managers.SceneMng.GetSceneName(Define.SceneType.ReadyScene))
         {
             if (Runner.IsSharedModeMasterClient)
                 Managers.NetworkMng.CurrentPlayState = PlayerSystem.PlayState.Ready;
         }
+    }
+
+    public bool OtherClientsLoaded(List<PlayerRef> players)
+    {
+        foreach (var player in players)
+        {
+            if (Runner.GetPlayerObject(player) == null)
+            {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     [Rpc]

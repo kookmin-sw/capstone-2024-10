@@ -25,6 +25,7 @@ public class Player : NetworkBehaviour
             return;
 
         PlayerRef = Runner.LocalPlayer;
+        // Runner.SetPlayerObject(PlayerRef, Object);
         Managers.NetworkMng.Player = this;
         PlayerName = Managers.NetworkMng.PlayerName;
     }
