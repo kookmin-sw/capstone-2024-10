@@ -15,6 +15,7 @@ public class SceneManagerEx
     /// 씬마다 베이스 씬을 상속한 스크립트를 부착한 @Scene 객체를 가지고 있다.
     /// </summary>
     public BaseScene CurrentScene => GameObject.FindObjectOfType<BaseScene>();
+    public bool IsTestScene { get; set; } = false;
 
     /// <summary>
     /// 씬을 불러온다. 다만 기존의 스트링이 아닌 enum 타입으로 가져올 수 있다.
@@ -54,5 +55,10 @@ public class SceneManagerEx
     public void Clear()
     {
         CurrentScene.Clear();
+    }
+
+    public string GetCurrentSceneName()
+    {
+        return SceneManager.GetActiveScene().name;
     }
 }

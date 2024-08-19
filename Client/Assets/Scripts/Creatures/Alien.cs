@@ -94,7 +94,7 @@ public class Alien : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
             return;
 
-        if (TestInputs())
+        if (Managers.SceneMng.IsTestScene && TestInputs())
             return;
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -187,14 +187,15 @@ public class Alien : Creature
         }
 
         Managers.UIMng.ClosePanelUI<UI_CameraPanel>();
-        AlienIngameUI.HideUI();
-        AlienIngameUI.EndGame();
+        AlienIngameUI.Hide();
+        //AlienIngameUI.EndGame();
 
-        Rpc_OnGameEnd();
+        Rpc_DisableSelf();
+        Managers.SceneMng.LoadScene(Define.SceneType.EndingScene);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_OnGameEnd()
+    public void Rpc_DisableSelf()
     {
         gameObject.SetActive(false);
     }

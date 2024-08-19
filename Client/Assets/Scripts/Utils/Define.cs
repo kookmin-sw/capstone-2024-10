@@ -82,6 +82,7 @@ public static class Define
         LobbyScene,
         GameScene,
         TutorialScene,
+        EndingScene,
     }
 
     public enum SoundType
@@ -100,6 +101,15 @@ public static class Define
         Environment,
         Effect,
         MaxCount,
+    }
+
+    public enum GameResultType
+    {
+        NotDecided,
+        CrewWin,
+        CrewDefeat,
+        AlienWin,
+        AlienDefeat,
     }
 
     #endregion
@@ -201,7 +211,7 @@ public static class Define
     public const float GAME_WAIT_TIME = 20.0f;
     public const float EXIT_TIME = 10.0f;
 
-    public const int PLAYER_COUNT = 4;
+    public const int PLAYER_COUNT = 2;
     public const int MAX_ITEM_NUM = 4;
     public const int MAX_SKILL_NUM = 4;
 
