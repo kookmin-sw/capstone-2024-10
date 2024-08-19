@@ -128,7 +128,7 @@ public class Alien : Creature
 
     protected override void UpdateIdle()
     {
-        KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
+        KCC.SetLookRotation(0, CurrentAngle);
     }
 
     protected override void UpdateMove()
@@ -140,7 +140,7 @@ public class Alien : Creature
                 break;
         }
 
-        KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
+        KCC.SetLookRotation(0, CurrentAngle);
 
         KCC.Move(Velocity * (AlienStat.Speed * Runner.DeltaTime));
     }
