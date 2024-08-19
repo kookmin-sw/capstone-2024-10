@@ -8,8 +8,6 @@ public class UI_CrewIngame : UI_Ingame
     public UI_CrewHP CrewHpUI { get; private set; }
     public UI_CrewStamina CrewStaminaUI { get; private set; }
 
-    public UI_CrewWin UICrewWin { get; private set; }
-
     private Crew Crew {
         get => Creature as Crew;
         set => Creature = value;

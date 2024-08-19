@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 
 public class EndingScene : BaseScene
@@ -16,20 +15,21 @@ public class EndingScene : BaseScene
         switch (_gameResult)
         {
             case Define.GameResultType.CrewWin:
+                Managers.UIMng.ShowPanelUI<UI_CrewWin>(Managers.UIMng.Root.transform);
+                PlayEndSound();
                 break;
             case Define.GameResultType.CrewDefeat:
-                Managers.UIMng.ShowPanelUI<UI_CrewDefeat>(parent: Managers.UIMng.Root.transform);
+                Managers.UIMng.ShowPanelUI<UI_CrewDefeat>(Managers.UIMng.Root.transform);
                 break;
             case Define.GameResultType.AlienWin:
+                Managers.UIMng.ShowPanelUI<UI_AlienWin>(Managers.UIMng.Root.transform);
+                PlayEndSound();
                 break;
             case Define.GameResultType.AlienDefeat:
+                Managers.UIMng.ShowPanelUI<UI_AlienDefeat>(Managers.UIMng.Root.transform);
+                PlayEndSound();
                 break;
         }
-    }
-    
-    public override void Clear()
-    {
-        StopAllCoroutines();
     }
 
     private void OnApplicationQuit()
@@ -37,4 +37,13 @@ public class EndingScene : BaseScene
         Clear();
     }
 
+    public override void Clear()
+    {
+        StopAllCoroutines();
+    }
+
+    public void PlayEndSound()
+    {
+        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.6f);
+    }
 }
