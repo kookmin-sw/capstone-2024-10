@@ -48,14 +48,13 @@ public class UI_CrewIngame : UI_Ingame
         PlanUI.EnableBatteryChargePlan();
     }
 
-    public void Hide()
+    public override void HideUi()
     {
+        base.HideUi();
+
         PlanUI.gameObject.SetActive(false);
         InventoryUI.gameObject.SetActive(false);
         CrewHpUI.gameObject.SetActive(false);
         CrewStaminaUI.gameObject.SetActive(false);
-        CurrentSectorUI.gameObject.SetActive(false);
-        RemainPersonUI?.Hide();
-        CrewMessageUI?.Hide();
     }
 }

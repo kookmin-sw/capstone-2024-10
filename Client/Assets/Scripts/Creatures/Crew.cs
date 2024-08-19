@@ -303,13 +303,12 @@ public class Crew : Creature
 
         CreatureState = Define.CreatureState.Dead;
         Managers.GameMng.GameResult = Define.GameResultType.CrewDefeat;
-    
 
         CrewAnimController.PlayAnim(Define.CrewActionType.Dead);
         CrewSoundController.StopAllSound();
         CrewSoundController.PlaySound(Define.CrewActionType.Dead);
 
-        CrewIngameUI.Hide();
+        CrewIngameUI.HideUi();
         Managers.UIMng.ClosePanelUI<UI_CameraPanel>();
         Managers.GameMng.GameEndSystem.EndCrewGame(false);
 
@@ -340,7 +339,7 @@ public class Crew : Creature
             await Task.Delay(500);
         }
 
-        CrewIngameUI.Hide();
+        CrewIngameUI.HideUi();
         //CrewIngameUI.EndGame();
 
         Rpc_DisableSelf();

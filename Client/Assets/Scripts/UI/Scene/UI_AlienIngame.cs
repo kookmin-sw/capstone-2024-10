@@ -35,12 +35,10 @@ public class UI_AlienIngame : UI_Ingame
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)AlienSubItemUIs.UI_AlienSkill) as UI_AlienSkill).Alien = Alien;
     }
 
-    public void Hide()
+    public override void HideUi()
     {
+        base.HideUi();
+
         UI_AlienSkill.gameObject.SetActive(false);
-        CurrentSectorUI.gameObject.SetActive(false);
-        RemainPersonUI.gameObject.SetActive(false);
-        CrewMessageUI.Hide();
-        RemainPersonUI.Hide();
     }
 }
