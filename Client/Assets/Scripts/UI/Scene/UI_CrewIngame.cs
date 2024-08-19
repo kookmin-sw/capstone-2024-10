@@ -8,8 +8,6 @@ public class UI_CrewIngame : UI_Ingame
     public UI_CrewHP CrewHpUI { get; private set; }
     public UI_CrewStamina CrewStaminaUI { get; private set; }
 
-    public UI_CrewWin UICrewWin { get; private set; }
-
     private Crew Crew {
         get => Creature as Crew;
         set => Creature = value;
@@ -50,14 +48,13 @@ public class UI_CrewIngame : UI_Ingame
         PlanUI.EnableBatteryChargePlan();
     }
 
-    public void Hide()
+    public override void HideUi()
     {
+        base.HideUi();
+
         PlanUI.gameObject.SetActive(false);
         InventoryUI.gameObject.SetActive(false);
         CrewHpUI.gameObject.SetActive(false);
         CrewStaminaUI.gameObject.SetActive(false);
-        CurrentSectorUI.gameObject.SetActive(false);
-        RemainPersonUI?.Hide();
-        CrewMessageUI?.Hide();
     }
 }

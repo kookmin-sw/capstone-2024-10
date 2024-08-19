@@ -208,8 +208,8 @@ public static class Define
 
     #region Value
 
-    public const float GAME_WAIT_TIME = 20.0f;
-    public const float EXIT_TIME = 10.0f;
+    public const float GAME_WAIT_TIME = 20f;
+    public const float EXIT_TIME = 80f;
 
     public const int PLAYER_COUNT = 4;
     public const int MAX_ITEM_NUM = 4;

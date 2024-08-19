@@ -18,10 +18,10 @@ public class UI_AlienWin : UI_Panel
         Text3
     }
 
-    private CanvasGroup CanvasGroup;
-    private Coroutine FadeCor;
-    private float accumTime = 0f;
-    private bool isAnimating = false;
+    private CanvasGroup _canvasGroup;
+    private Coroutine _fadeCor;
+    private float _accumTime = 0f;
+    private bool _isAnimating = false;
 
     public override bool Init()
     {
@@ -34,32 +34,32 @@ public class UI_AlienWin : UI_Panel
         GetButton((int)Buttons.Quit).onClick.AddListener(ExitGame);
         GetText(Texts.Text3).alpha = 0f;
 
-        CanvasGroup = GetComponent<CanvasGroup>();
+        _canvasGroup = GetComponent<CanvasGroup>();
         StartFadeIn();
         return true;
     }
 
     public void StartFadeIn()
     {
-        if (FadeCor != null)
+        if (_fadeCor != null)
         {
             StopAllCoroutines();
-            FadeCor = null;
+            _fadeCor = null;
         }
-        FadeCor = StartCoroutine(FadeIn());
+        _fadeCor = StartCoroutine(FadeIn());
     }
 
     private IEnumerator FadeIn()
     {
         yield return new WaitForSeconds(0.2f);
-        accumTime = 0f;
-        while (accumTime < 2f)
+        _accumTime = 0f;
+        while (_accumTime < 2f)
         {
-            CanvasGroup.alpha = Mathf.Lerp(0f, 1f, accumTime / 2f);
+            _canvasGroup.alpha = Mathf.Lerp(0f, 1f, _accumTime / 2f);
             yield return 0;
-            accumTime += Time.deltaTime;
+            _accumTime += Time.deltaTime;
         }
-        CanvasGroup.alpha = 1f;
+        _canvasGroup.alpha = 1f;
     }
 
     public void ExitGame()
@@ -70,7 +70,7 @@ public class UI_AlienWin : UI_Panel
         }
         else
         {
-            if (isAnimating)
+            if (_isAnimating)
                 return;
 
             Sequence sequence = DOTween.Sequence();
@@ -78,10 +78,10 @@ public class UI_AlienWin : UI_Panel
             sequence.Append(GetText(Texts.Text3).DOFade(1f, 1.5f).SetEase(Ease.OutQuad));
             sequence.AppendInterval(0.5f);
             sequence.Append(GetText(Texts.Text3).DOFade(0f, 1.5f).SetEase(Ease.OutQuad));
-            sequence.OnComplete(() => isAnimating = false);
+            sequence.OnComplete(() => _isAnimating = false);
             sequence.Play();
 
-            isAnimating = true;
+            _isAnimating = true;
         }
     }
 }

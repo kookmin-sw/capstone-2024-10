@@ -17,7 +17,6 @@ public class Managers : MonoBehaviour
 
     #region Core
     private DataManager _dataMng = new DataManager();
-    private InputManager _inputMng = new InputManager();
     private ResourceManager _resourceMng = new ResourceManager();
     private SceneManagerEx _sceneMng = new SceneManagerEx();
     private SoundManager _soundMng = new SoundManager();
@@ -27,7 +26,6 @@ public class Managers : MonoBehaviour
     private TutorialManager _tutorialMng = new TutorialManager();
 
     public static DataManager DataMng => Instance._dataMng;
-    public static InputManager InputMng => Instance._inputMng;
     public static ResourceManager ResourceMng => Instance._resourceMng;
     public static SceneManagerEx SceneMng => Instance._sceneMng;
     public static SoundManager SoundMng => Instance._soundMng;
@@ -56,7 +54,6 @@ public class Managers : MonoBehaviour
             s_instance._networkMng = go.GetOrAddComponent<NetworkManager>();
 
             NetworkMng.Init();
-            InputMng.Init();
             DataMng.Init();
             SoundMng.Init();
         }
@@ -66,7 +63,6 @@ public class Managers : MonoBehaviour
     {
         StartMng.Clear();
         SoundMng.Clear();
-        InputMng.Clear();
         SceneMng.Clear();
         UIMng.Clear();
     }

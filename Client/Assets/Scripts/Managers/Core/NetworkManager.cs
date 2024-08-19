@@ -9,7 +9,6 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using WebSocketSharp;
 
-
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
     #region Fields

@@ -36,7 +36,8 @@ public class PlanSystem : NetworkBehaviour
             GameObject.FindGameObjectsWithTag("ElevatorControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
         }
 
-        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.UpdateBatteryCount(BatteryChargeCount);
+        if (Managers.ObjectMng.MyCreature is Crew crew && crew.CrewIngameUI && crew.CrewIngameUI.PlanUI)
+            crew.CrewIngameUI.PlanUI.UpdateBatteryCount(BatteryChargeCount);
     }
 
     private void OnUSBKeyInsert()
@@ -51,12 +52,14 @@ public class PlanSystem : NetworkBehaviour
             else GameObject.FindGameObjectsWithTag("ElevatorDoor").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
         }
 
-        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.UpdateUSBKeyCount(USBKeyInsertCount);
+        if (Managers.ObjectMng.MyCreature is Crew crew && crew.CrewIngameUI && crew.CrewIngameUI.PlanUI)
+            crew.CrewIngameUI.PlanUI.UpdateUSBKeyCount(USBKeyInsertCount);
     }
 
     private void OnCardkeyUsed()
     {
-        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.OnCardkeyUsed();
+        if (Managers.ObjectMng.MyCreature is Crew crew && crew.CrewIngameUI && crew.CrewIngameUI.PlanUI)
+            crew.CrewIngameUI.PlanUI.OnCardkeyUsed();
     }
 
     private void OnCentralComputerWorkFinished()
@@ -64,7 +67,8 @@ public class PlanSystem : NetworkBehaviour
         GameObject.FindGameObjectsWithTag("CentralControlComputer").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
         GameObject.FindGameObjectsWithTag("CargoPassageControlComputer").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
 
-        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.OnCentralControlComputerWorkFinished();
+        if (Managers.ObjectMng.MyCreature is Crew crew && crew.CrewIngameUI && crew.CrewIngameUI.PlanUI)
+            crew.CrewIngameUI.PlanUI.OnCentralControlComputerWorkFinished();
     }
 
     private void OnCargoGateComputerUsed()
@@ -74,7 +78,8 @@ public class PlanSystem : NetworkBehaviour
         GameObject.FindGameObjectsWithTag("CargoPassageControlComputer").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
         GameObject.FindGameObjectsWithTag("CargoPassageGate").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
 
-        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.OnCargoPassageOpen();
+        if (Managers.ObjectMng.MyCreature is Crew crew && crew.CrewIngameUI && crew.CrewIngameUI.PlanUI)
+            crew.CrewIngameUI.PlanUI.OnCargoPassageOpen();
     }
 
     public void EnablePlanC()
@@ -83,14 +88,15 @@ public class PlanSystem : NetworkBehaviour
 
         GameObject.FindGameObjectsWithTag("EmergencyControlDevice").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));
 
-        if (Managers.ObjectMng.MyCreature is Crew crew) crew.CrewIngameUI.PlanUI.EnablePlanC();
+        if (Managers.ObjectMng.MyCreature is Crew crew && crew.CrewIngameUI && crew.CrewIngameUI.PlanUI)
+            crew.CrewIngameUI.PlanUI.EnablePlanC();
     }
 
     private void OnPanicRoomActivated()
     {
         GameObject.FindGameObjectsWithTag("EmergencyControlDevice").SetLayerRecursive(LayerMask.NameToLayer("MapObject"));
 
-        if (Managers.ObjectMng.MyCreature is Crew crew)
+        if (Managers.ObjectMng.MyCreature is Crew crew && crew.CrewIngameUI && crew.CrewIngameUI.PlanUI)
         {
             crew.CrewIngameUI.PlanUI.OnPanicRoomActivated();
             GameObject.FindGameObjectsWithTag("PanicRoom").SetLayerRecursive(LayerMask.NameToLayer("PlanTargetObject"));

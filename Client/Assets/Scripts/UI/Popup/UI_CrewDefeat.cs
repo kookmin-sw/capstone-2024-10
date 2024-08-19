@@ -1,8 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UI_CrewDefeat : UI_Panel
@@ -19,9 +17,9 @@ public class UI_CrewDefeat : UI_Panel
         Text3,
     }
 
-    private CanvasGroup CanvasGroup;
-    private Coroutine FadeCor;
-    private float accumTime = 0f;
+    private CanvasGroup _canvasGroup;
+    private Coroutine _fadeCor;
+    private float _accumTime = 0f;
     private float _exitTime = Define.EXIT_TIME + 1;
 
     public override bool Init()
@@ -34,7 +32,7 @@ public class UI_CrewDefeat : UI_Panel
 
         GetButton((int)Buttons.Quit).onClick.AddListener(ExitGame);
 
-        CanvasGroup = GetComponent<CanvasGroup>();
+        _canvasGroup = GetComponent<CanvasGroup>();
         StartFadeIn();
 
         GetText(Texts.Text3).text = $"Automatically leave after {Mathf.Floor(_exitTime)} seconds";
@@ -61,25 +59,25 @@ public class UI_CrewDefeat : UI_Panel
 
     public void StartFadeIn()
     {
-        if (FadeCor != null)
+        if (_fadeCor != null)
         {
             StopAllCoroutines();
-            FadeCor = null;
+            _fadeCor = null;
         }
-        FadeCor = StartCoroutine(FadeIn());
+        _fadeCor = StartCoroutine(FadeIn());
     }
 
     private IEnumerator FadeIn()
     {
         yield return new WaitForSeconds(0.2f);
-        accumTime = 0f;
-        while (accumTime < 2f)
+        _accumTime = 0f;
+        while (_accumTime < 2f)
         {
-            CanvasGroup.alpha = Mathf.Lerp(0f, 1f, accumTime / 2f);
+            _canvasGroup.alpha = Mathf.Lerp(0f, 1f, _accumTime / 2f);
             yield return 0;
-            accumTime += Time.deltaTime;
+            _accumTime += Time.deltaTime;
         }
-        CanvasGroup.alpha = 1f;
+        _canvasGroup.alpha = 1f;
     }
 
     public void ExitGame()

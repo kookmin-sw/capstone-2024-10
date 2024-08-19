@@ -12,11 +12,6 @@ public abstract class BaseScene : MonoBehaviour
         Init();
     }
 
-    private void Update()
-    {
-        Managers.InputMng.OnUpdate();
-    }
-
     protected virtual void Init()
     {
         Object obj = FindObjectOfType(typeof(EventSystem));

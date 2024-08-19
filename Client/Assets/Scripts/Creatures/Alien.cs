@@ -187,7 +187,7 @@ public class Alien : Creature
         }
 
         Managers.UIMng.ClosePanelUI<UI_CameraPanel>();
-        AlienIngameUI.Hide();
+        AlienIngameUI.HideUi();
         //AlienIngameUI.EndGame();
 
         Rpc_DisableSelf();
