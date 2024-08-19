@@ -133,7 +133,7 @@ public class Inventory: NetworkBehaviour
         return true;
     }
 
-    public IEnumerator OnDefeat()
+    public IEnumerator DropAllItems()
     {
         for (int i = 0; i < Define.MAX_ITEM_NUM; i++)
         {

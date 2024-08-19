@@ -108,7 +108,7 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead)
             return;
 
-        if (TestInputs())
+        if (Managers.SceneMng.IsTestScene && TestInputs())
             return;
 
         if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
@@ -296,23 +296,29 @@ public class Crew : Creature
         CrewStat.ChangeSanity(-value);
     }
 
-    public void OnDefeat()
+    public async void OnDefeat()
     {
         if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
             return;
 
         CreatureState = Define.CreatureState.Dead;
+        Managers.GameMng.GameResult = Define.GameResultType.CrewDefeat;
+    
 
         CrewAnimController.PlayAnim(Define.CrewActionType.Dead);
         CrewSoundController.StopAllSound();
         CrewSoundController.PlaySound(Define.CrewActionType.Dead);
 
-        CrewIngameUI.HideUI();
+        CrewIngameUI.Hide();
         Managers.UIMng.ClosePanelUI<UI_CameraPanel>();
         Managers.GameMng.GameEndSystem.EndCrewGame(false);
 
-        Rpc_OnDisable(12f);
-        StartCoroutine(Inventory.OnDefeat());
+        Rpc_DisableSelf(12f);
+        StartCoroutine(Inventory.DropAllItems());
+
+        await Task.Delay(8000);
+
+        Managers.SceneMng.LoadScene(Define.SceneType.EndingScene);
     }
 
     public virtual async void OnWin()
@@ -321,6 +327,7 @@ public class Crew : Creature
             return;
 
         CreatureState = Define.CreatureState.Idle;
+        Managers.GameMng.GameResult = Define.GameResultType.CrewWin;
 
         CrewSoundController.StopAllSound();
         CrewSoundController.PlaySound(Define.CrewActionType.GameEnd);
@@ -333,14 +340,15 @@ public class Crew : Creature
             await Task.Delay(500);
         }
 
-        CrewIngameUI.HideUI();
-        CrewIngameUI.EndGame();
+        CrewIngameUI.Hide();
+        //CrewIngameUI.EndGame();
 
-        Rpc_OnDisable();
+        Rpc_DisableSelf();
+        Managers.SceneMng.LoadScene(Define.SceneType.EndingScene);
     }
 
     [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
-    public void Rpc_OnDisable(float time = 0f)
+    public void Rpc_DisableSelf(float time = 0f)
     {
         Collider.enabled = false;
         KCCCollider.enabled = false;

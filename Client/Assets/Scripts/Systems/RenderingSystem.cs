@@ -25,7 +25,6 @@ public class RenderingSystem : NetworkBehaviour
     private float _defaultVignetteIntensity = 0.1f;
 
     private float _blindValue = 15f;
-    private float _damageEffectSpeed = 1.5f;
 
     private Tweener _erosionEffectTweener;
     private Tweener _erosionEffectTweener2;
@@ -122,7 +121,7 @@ public class RenderingSystem : NetworkBehaviour
 
     public void ApplyDamageEffect(int hp)
     {
-        float ratio;
+        float ratio, speed = 1.5f;
         if (hp >= 3)
             ratio = 0f;
         else if (hp == 2)
@@ -130,9 +129,12 @@ public class RenderingSystem : NetworkBehaviour
         else if (hp == 1)
             ratio = 0.6f;
         else
+        {
             ratio = 1f;
+            speed = 0.15f;
+        }
 
-        StartCoroutine(ProgressDamageEffect(ratio));
+        StartCoroutine(ProgressDamageEffect(ratio, speed));
 
         if (hp >= 3)
             return;
@@ -150,11 +152,11 @@ public class RenderingSystem : NetworkBehaviour
         });
     }
 
-    private IEnumerator ProgressDamageEffect(float intensity)
+    private IEnumerator ProgressDamageEffect(float intensity, float effectSpeed)
     {
         float targetRadius = Mathf.Lerp(1.2f, -1f, Mathf.InverseLerp(0, 1, intensity));
         float curRadius = 1; // No damage
-        for (float t = 0; curRadius != targetRadius; t += Time.deltaTime * _damageEffectSpeed)
+        for (float t = 0; curRadius != targetRadius; t += Time.deltaTime * effectSpeed)
         {
             curRadius = Mathf.Lerp(1, targetRadius, t);
             DamageMaterial.SetFloat("_Vignette_radius", curRadius);
@@ -163,7 +165,7 @@ public class RenderingSystem : NetworkBehaviour
 
         if (intensity < 1)
         {
-            for (float t = 0; curRadius < 1; t += Time.deltaTime * _damageEffectSpeed)
+            for (float t = 0; curRadius < 1; t += Time.deltaTime * effectSpeed)
             {
                 curRadius = Mathf.Lerp(targetRadius, 1, t);
                 DamageMaterial.SetFloat("_Vignette_radius", curRadius);

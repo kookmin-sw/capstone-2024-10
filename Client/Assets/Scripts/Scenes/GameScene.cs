@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameScene : BaseScene
 {
@@ -14,10 +16,19 @@ public class GameScene : BaseScene
 
         SettingSystem settingSystem = FindObjectOfType<SettingSystem>();
         settingSystem.Init();
+
+        string currentSceneName = Managers.SceneMng.GetCurrentSceneName();
+
+        if (currentSceneName.ToLower().Contains("test"))
+        {
+            Managers.SceneMng.IsTestScene = true;
+        }
     }
 
     public override IEnumerator OnPlayerSpawn()
     {
+        Managers.GameMng.GameResult = Define.GameResultType.NotDecided;
+
         MapSystem mapSystem = null;
         PlanSystem planSystem = null;
         GameEndSystem gameEndSystem = null;

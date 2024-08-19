@@ -104,19 +104,19 @@ public class GameEndSystem : NetworkBehaviour
     {
         ShowCursor();
 
-        if (!Managers.NetworkMng.IsEndGameTriggered)
-        {
-            if (isWin)
-            {
-                Managers.UIMng.ShowPanelUI<UI_CrewWin>(parent : Managers.UIMng.Root.transform);
-            }
-            else
-            {
-                Managers.UIMng.ShowPanelUI<UI_CrewDefeat>(parent : Managers.UIMng.Root.transform);
-            }
+        //if (!Managers.NetworkMng.IsEndGameTriggered)
+        //{
+        //    if (isWin)
+        //    {
+        //        Managers.UIMng.ShowPanelUI<UI_CrewWin>(parent: Managers.UIMng.Root.transform);
+        //    }
+        //    else
+        //    {
+        //        Managers.UIMng.ShowPanelUI<UI_CrewDefeat>(parent: Managers.UIMng.Root.transform);
+        //    }
 
-            Managers.NetworkMng.IsEndGameTriggered = true;
-        }
+        //    Managers.NetworkMng.IsEndGameTriggered = true;
+        //}
 
         Rpc_EndCrewGame(isWin, Runner.LocalPlayer);
     }
@@ -132,11 +132,13 @@ public class GameEndSystem : NetworkBehaviour
         {
             if (KilledCrewNum + DroppedCrewNum >= Define.PLAYER_COUNT - 1)
             {
-                Managers.UIMng.ShowPanelUI<UI_AlienWin>(parent : Managers.UIMng.Root.transform);
+                Managers.GameMng.GameResult = Define.GameResultType.AlienWin;
+                //Managers.UIMng.ShowPanelUI<UI_AlienWin>(parent: Managers.UIMng.Root.transform);
             }
             else
             {
-                Managers.UIMng.ShowPanelUI<UI_AlienDefeat>(parent : Managers.UIMng.Root.transform);
+                Managers.GameMng.GameResult = Define.GameResultType.AlienDefeat;
+                //Managers.UIMng.ShowPanelUI<UI_AlienDefeat>(parent: Managers.UIMng.Root.transform);
             }
 
             Managers.NetworkMng.IsEndGameTriggered = true;

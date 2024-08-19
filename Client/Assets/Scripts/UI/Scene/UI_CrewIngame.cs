@@ -50,7 +50,7 @@ public class UI_CrewIngame : UI_Ingame
         PlanUI.EnableBatteryChargePlan();
     }
 
-    public void HideUI()
+    public void Hide()
     {
         PlanUI.gameObject.SetActive(false);
         InventoryUI.gameObject.SetActive(false);

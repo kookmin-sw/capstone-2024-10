@@ -82,6 +82,7 @@ public static class Define
         LobbyScene,
         GameScene,
         TutorialScene,
+        EndingScene,
     }
 
     public enum SoundType
@@ -100,6 +101,15 @@ public static class Define
         Environment,
         Effect,
         MaxCount,
+    }
+
+    public enum GameResultType
+    {
+        NotDecided,
+        CrewWin,
+        CrewDefeat,
+        AlienWin,
+        AlienDefeat,
     }
 
     #endregion

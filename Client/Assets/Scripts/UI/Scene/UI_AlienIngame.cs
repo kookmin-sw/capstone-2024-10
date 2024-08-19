@@ -35,7 +35,7 @@ public class UI_AlienIngame : UI_Ingame
         (Get<UI_Base>(Enum.GetNames(typeof(SubItemUIs)).Length + (int)AlienSubItemUIs.UI_AlienSkill) as UI_AlienSkill).Alien = Alien;
     }
 
-    public void HideUI()
+    public void Hide()
     {
         UI_AlienSkill.gameObject.SetActive(false);
         CurrentSectorUI.gameObject.SetActive(false);
