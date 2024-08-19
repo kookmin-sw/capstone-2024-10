@@ -217,7 +217,7 @@ public class Crew : Creature
                 break;
         }
 
-        KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
+        KCC.SetLookRotation(0, CurrentAngle);
     }
 
     protected override void UpdateMove()
@@ -238,7 +238,7 @@ public class Crew : Creature
         if (CrewStat.DamagedBoost)
             CrewStat.Speed *= 1.5f;
 
-        KCC.SetLookRotation(0, CreatureCamera.transform.rotation.eulerAngles.y);
+        KCC.SetLookRotation(0, CurrentAngle);
 
         KCC.Move(Velocity * (CrewStat.Speed * Runner.DeltaTime));
     }

@@ -79,6 +79,10 @@ public abstract class Creature : NetworkBehaviour
     public GameObject Head { get; protected set; }
     public CreatureCamera CreatureCamera { get; protected set; }
 
+    public float MouseSensitivity { get; protected set; } = 1.5f;
+    [Networked] public float XRotation { get; set; }
+    [Networked] public float CurrentAngle { get; set; }
+
     #endregion
 
     public override void Spawned()
@@ -193,7 +197,11 @@ public abstract class Creature : NetworkBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
-        CameraRotationY = Quaternion.Euler(0f, CreatureCamera.transform.rotation.eulerAngles.y, 0);
+        float mouseX = Input.GetAxis("Mouse X") * Managers.GameMng.SettingSystem.Sensitivity;
+        float mouseY = Input.GetAxis("Mouse Y") * Managers.GameMng.SettingSystem.Sensitivity;
+        CurrentAngle += mouseX * MouseSensitivity; //좌우 회전 값 계산
+        XRotation -= mouseY * MouseSensitivity; // 상하 회전 값 계산
+        CameraRotationY = Quaternion.Euler(0f, CurrentAngle, 0);
         Direction = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
         Velocity = (CameraRotationY * Direction).normalized;
 
