@@ -87,7 +87,7 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 
             yield return new WaitUntil(() => MyPlayerLoaded());
 
-            yield return new WaitUntil(() => Managers.NetworkMng.PlayerSystem.IsFirstLoadCompleted);
+            yield return new WaitUntil(() => Managers.NetworkMng.PlayerSystem && Managers.NetworkMng.PlayerSystem.IsFirstLoadCompleted);
 
             // Wait for loading MonoBehaviour
             while (Managers.SceneMng.CurrentScene is not ReadyScene)
