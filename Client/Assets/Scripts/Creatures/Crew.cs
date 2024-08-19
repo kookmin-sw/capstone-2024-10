@@ -73,12 +73,6 @@ public class Crew : Creature
         Inventory.SetInfo();
 
         IsSpawned = true;
-
-        if (HasStateAuthority &&
-            Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.ReadyScene | (int)Define.SceneType.TutorialScene))
-        {
-            StartCoroutine(Managers.SceneMng.CurrentScene.OnPlayerSpawn());
-        }
     }
 
     #region Update

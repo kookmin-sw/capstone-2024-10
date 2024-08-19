@@ -29,7 +29,7 @@ public class UI_Loading : UI_Panel
     public bool IsMapLoaded { get; set; } = false;
     public bool IsDone { get; private set; } = false;
     public float LoadingProgress { get; private set; } = 0.0f;
-    public bool IsWaitingForPlayers { get; set; } = false;
+    public bool shouldWait { get; set; } = false;
     // private bool _testLoading { get; set; } = false;
 
     public override bool Init()
@@ -57,6 +57,7 @@ public class UI_Loading : UI_Panel
         _tip.text = Define.TEXT_FOR_TIP[Random.Range(0, Define.TEXT_FOR_TIP.Length)];
 
         waitForInput = false;
+        shouldWait = true;
         LoadingProgress = 0.0f;
         userPromptKey = KeyCode.F;
         _loadPromptText.text = "";
@@ -71,7 +72,6 @@ public class UI_Loading : UI_Panel
         {
             _loadingSpeed = 0.1f;
             Managers.NetworkMng.IsGameLoading = true;
-            IsWaitingForPlayers = true;
             StartCoroutine(TransitionCheck());
             StartCoroutine(OnAlienDropped());
         }
@@ -88,6 +88,7 @@ public class UI_Loading : UI_Panel
         if (Input.GetKeyDown(KeyCode.V))
         {
             _testLoading = !_testLoading;
+            shouldWait = true;
         }
         */
     }
@@ -108,7 +109,7 @@ public class UI_Loading : UI_Panel
 
         Managers.NetworkMng.OnAlienDropped();
         IsDone = true;
-        IsWaitingForPlayers = false;
+        shouldWait = false;
     }
 
     public IEnumerator TransitionCheck()
@@ -157,7 +158,7 @@ public class UI_Loading : UI_Panel
 
         Managers.NetworkMng.IsGameLoading = false;
 
-        yield return new WaitUntil(() => IsWaitingForPlayers == false);
+        yield return new WaitUntil(() => shouldWait == false);
         // yield return new WaitUntil(() => _testLoading == false);
 
         StopAllCoroutines();

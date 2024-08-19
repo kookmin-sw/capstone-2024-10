@@ -5,6 +5,7 @@ using System.IO;
 using UnityEngine;
 using Fusion;
 using System.Linq;
+using UnityEngine.Rendering;
 
 [Serializable]
 public class SaveData
@@ -19,6 +20,25 @@ public class StartManager
     public string SAVEDATA_PATH;
 
     public Dictionary<string, SessionProperty> SessionProperty { get; protected set; }
+
+    public bool SessionVisible
+    {
+        get
+        {
+            SessionInfo info = Managers.NetworkMng.Runner.SessionInfo;
+            return info.IsVisible;
+        }
+        set
+        {
+            if (Managers.NetworkMng.IsMaster)
+            {
+                SessionInfo info = Managers.NetworkMng.Runner.SessionInfo;
+                info.IsVisible = value;
+                SessionProperty = new (info.Properties);
+                info.UpdateCustomProperties(SessionProperty);
+            }
+        }
+    }
 
     public void Init()
     {
@@ -73,18 +93,10 @@ public class StartManager
                 Managers.NetworkMng.PlayerSystem.SpawnPoints.Set(player, spawnPoint);
             }
 
-            SessionVisible(false);
+            SessionVisible = false;
             yield return new WaitForSeconds(0.5f);
             StartGame();
         }
-    }
-
-    public void SessionVisible(bool visible)
-    {
-        SessionInfo info = Managers.NetworkMng.Runner.SessionInfo;
-        info.IsVisible = visible;
-        SessionProperty = new (info.Properties);
-        info.UpdateCustomProperties(SessionProperty);
     }
 
     public void StartGame()

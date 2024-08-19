@@ -279,13 +279,13 @@ public class UIManager
         }
     }
 
-    public void BlockLoadingUI(bool toggle)
+    public void OnLoadingUIDown()
     {
         var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
         // 테스트 씬은 로딩 UI를 띄우지 않음
         if (loadingUI != null)
         {
-            loadingUI.IsWaitingForPlayers = toggle;
+            loadingUI.shouldWait = false;
         }
     }
 

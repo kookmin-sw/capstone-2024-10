@@ -18,12 +18,15 @@ public class PlayerSystem : NetworkBehaviour
         Transition,
     }
 
+    [Networked] public bool IsFirstLoadCompleted { get; set; }
+
     [Networked, OnChangedRender(nameof(OnPlayStateChanged))]
     public PlayState CurrentPlayState { get; set; }
 
     public override void Spawned()
     {
         DontDestroyOnLoad(gameObject);
+        IsFirstLoadCompleted = true;
     }
 
     public void OnReadyCountChanged()

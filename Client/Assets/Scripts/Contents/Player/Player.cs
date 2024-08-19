@@ -17,7 +17,7 @@ public class Player : NetworkBehaviour
     public Define.CreatureType CreatureType { get; private set; } = Define.CreatureType.None;
     [Networked]
     public Define.PlayerState State { get; set; } = Define.PlayerState.None;
-    public bool IsSpawned { get; set; } = false;
+    [Networked] public bool IsSpawned { get; set; }
 
     public override void Spawned()
     {
@@ -37,7 +37,7 @@ public class Player : NetworkBehaviour
 
         yield return new WaitUntil(() => Runner && Runner.IsRunning);
 
-        if (!Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene | (int)Define.SceneType.ReadyScene))
+        if (!Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene | (int)Define.SceneType.ReadyScene | (int)Define.SceneType.TutorialScene))
             yield break;
 
         Creature = GetComponent<Creature>();
@@ -59,7 +59,11 @@ public class Player : NetworkBehaviour
             CreatureType = Define.CreatureType.Alien;
         }
 
-        IsSpawned = true;
+        if (HasStateAuthority)
+        {
+            yield return new WaitUntil(() => Creature.IsSpawned);
+            IsSpawned = true;
+        }
     }
 
     private void Update()
