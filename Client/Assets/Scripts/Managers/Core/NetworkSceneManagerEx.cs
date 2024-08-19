@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 
 public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 {
@@ -50,20 +51,30 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 
                 foreach (var player in players)
                 {
-
                     if (!Managers.NetworkMng.PlayerSystem.SpawnPoints.TryGet(player, out SpawnPoint.SpawnPointData spawnPoint))
                     {
                         spawnPoint = spawnPointTemp;
                     }
 
                     // Mater client: alien & Other clients: crew
-                    RPC_SpawnPlayer(Managers.NetworkMng.Runner, player, spawnPoint, player == Runner.LocalPlayer);
+                    Player.RPC_SpawnPlayer(Managers.NetworkMng.Runner, player, spawnPoint, player == Runner.LocalPlayer);
                 }
             }
 
-            // yield return new WaitUntil(() => OtherClientsLoaded(players));
+            yield return new WaitUntil(() => OtherPlayerLoaded(players));
 
-            // Managers.SceneMng.CurrentScene.OnPlayerSpawn();
+            // Wait for loading MonoBehaviour
+            while (Managers.SceneMng.CurrentScene is not GameScene)
+            {
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            _baseScene = Managers.SceneMng.CurrentScene;
+            StartCoroutine(_baseScene.OnPlayerSpawn());
+
+            yield return new WaitUntil(() => Managers.GameMng.GameEndSystem.AreAllPlayersLoaded);
+
+            Managers.UIMng.BlockLoadingUI(false);
         }
         else if (loadedScene.name == Managers.SceneMng.GetSceneName(Define.SceneType.ReadyScene))
         {
@@ -72,7 +83,7 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
         }
     }
 
-    public bool OtherClientsLoaded(List<PlayerRef> players)
+    public bool OtherPlayerLoaded(List<PlayerRef> players)
     {
         foreach (var player in players)
         {
@@ -83,14 +94,5 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
         }
 
         return true;
-    }
-
-    [Rpc]
-    public static async void RPC_SpawnPlayer(NetworkRunner runner, [RpcTarget] PlayerRef player, SpawnPoint.SpawnPointData spawnPoint, bool isAlien)
-    {
-        NetworkObject no = isAlien
-            ? await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPoint)
-            : await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, isGameScene : true);
-        runner.SetPlayerObject(player, no);
     }
 }

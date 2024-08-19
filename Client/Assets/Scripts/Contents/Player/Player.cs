@@ -25,7 +25,6 @@ public class Player : NetworkBehaviour
             return;
 
         PlayerRef = Runner.LocalPlayer;
-        // Runner.SetPlayerObject(PlayerRef, Object);
         Managers.NetworkMng.Player = this;
         PlayerName = Managers.NetworkMng.PlayerName;
     }
@@ -83,5 +82,14 @@ public class Player : NetworkBehaviour
         {
             State = Define.PlayerState.Ready;
         }
+    }
+
+    [Rpc]
+    public static async void RPC_SpawnPlayer(NetworkRunner runner, [RpcTarget] PlayerRef player, SpawnPoint.SpawnPointData spawnPoint, bool isAlien)
+    {
+        NetworkObject no = isAlien
+            ? await Managers.ObjectMng.SpawnAlien(Define.ALIEN_STALKER_ID, spawnPoint)
+            : await Managers.ObjectMng.SpawnCrew(Define.CREW_CREWA_ID, spawnPoint, isGameScene : true);
+        runner.SetPlayerObject(player, no);
     }
 }
