@@ -60,6 +60,12 @@ public class Alien : Creature
         CurrentSkillRange = SkillController.Skills[0].SkillData.Range;
 
         Managers.GameMng.RenderingSystem.SetAlienOutlinePassVolume();
+
+        if (HasStateAuthority && Managers.NetworkMng.IsTestScene)
+        {
+            StartCoroutine(Managers.SceneMng.CurrentScene.OnPlayerSpawn());
+        }
+
         IsSpawned = true;
     }
 

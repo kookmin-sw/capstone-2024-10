@@ -72,6 +72,11 @@ public class Crew : Creature
         CrewStat.SetStat(CrewData);
         Inventory.SetInfo();
 
+        if (HasStateAuthority && Managers.NetworkMng.IsTestScene)
+        {
+            StartCoroutine(Managers.SceneMng.CurrentScene.OnPlayerSpawn());
+        }
+
         IsSpawned = true;
     }
 
