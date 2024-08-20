@@ -41,7 +41,6 @@ public class TutorialScene : BaseScene
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
 
         Managers.UIMng.OnMapLoadComplete();
-        Managers.UIMng.BlockLoadingUI(false);
     }
 
     private void Update()

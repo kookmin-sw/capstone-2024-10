@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Fusion;
 using System;
+using System.Linq;
 
 public class Player : NetworkBehaviour
 {
@@ -17,13 +18,16 @@ public class Player : NetworkBehaviour
     public Define.CreatureType CreatureType { get; private set; } = Define.CreatureType.None;
     [Networked]
     public Define.PlayerState State { get; set; } = Define.PlayerState.None;
-    public bool IsSpawned { get; set; } = false;
+    [Networked] public bool IsSpawned { get; set; }
+    [Networked] public bool AreAllPlayersSpawned { get; set; }
 
     public override void Spawned()
     {
         if (!HasStateAuthority)
             return;
 
+        IsSpawned = false;
+        AreAllPlayersSpawned = false;
         PlayerRef = Runner.LocalPlayer;
         Managers.NetworkMng.Player = this;
         PlayerName = Managers.NetworkMng.PlayerName;
@@ -37,7 +41,7 @@ public class Player : NetworkBehaviour
 
         yield return new WaitUntil(() => Runner && Runner.IsRunning);
 
-        if (!Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene | (int)Define.SceneType.ReadyScene))
+        if (!Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.GameScene | (int)Define.SceneType.ReadyScene | (int)Define.SceneType.TutorialScene))
             yield break;
 
         Creature = GetComponent<Creature>();
@@ -59,7 +63,13 @@ public class Player : NetworkBehaviour
             CreatureType = Define.CreatureType.Alien;
         }
 
-        IsSpawned = true;
+        if (HasStateAuthority)
+        {
+            yield return new WaitUntil(() => Creature.IsSpawned);
+            IsSpawned = true;
+            yield return new WaitUntil(() => Managers.NetworkMng.AllPlayers.All((player) =>  player.IsSpawned));
+            AreAllPlayersSpawned = true;
+        }
     }
 
     private void Update()

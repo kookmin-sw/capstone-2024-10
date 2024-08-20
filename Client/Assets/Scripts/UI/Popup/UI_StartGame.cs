@@ -99,9 +99,4 @@ public class UI_StartGame : UI_Popup
             GetText(Texts.UserName).text = Managers.NetworkMng.Player.PlayerName.Value;
         }
     }
-
-    private void OnDestroy()
-    {
-        // Managers.NetworkMng.PlayerSystem.OnReadyCountUpdated -= () => SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
-    }
 }

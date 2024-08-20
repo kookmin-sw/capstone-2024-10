@@ -193,12 +193,12 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         Player player;
         while ((player = GetPlayerObject(playerRef)) == null)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return null;
         }
 
         while (player.CreatureType == Define.CreatureType.None)
         {
-            yield return new WaitForSeconds(0.5f);
+            yield return null;
         }
 
         if (player.CreatureType == Define.CreatureType.Alien)
@@ -332,7 +332,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     {
         NetworkSceneInfo scene = new NetworkSceneInfo();
         scene.AddSceneRef(Managers.SceneMng.GetSceneRef(Define.SceneType.ReadyScene));
-        // Managers.Clear();
         Scene = Managers.Instance.gameObject.GetOrAddComponent<NetworkSceneManagerEx>();
 
         StartGameArgs startGameArgs = new StartGameArgs()

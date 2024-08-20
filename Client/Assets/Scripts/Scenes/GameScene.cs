@@ -50,10 +50,6 @@ public class GameScene : BaseScene
         ingameUI.InitAfterNetworkSpawn(Managers.ObjectMng.MyCreature);
         Managers.ObjectMng.MyCreature.IngameUI = ingameUI;
         Managers.UIMng.OnMapLoadComplete();
-
-        yield return new WaitUntil(() => Managers.NetworkMng.Runner.IsRunning && Managers.GameMng.GameEndSystem.AreAllPlayersLoaded);
-
-        Managers.UIMng.BlockLoadingUI(false);
     }
 
     private void Update()
