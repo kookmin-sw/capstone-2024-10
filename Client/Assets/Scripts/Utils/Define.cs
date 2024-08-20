@@ -211,7 +211,7 @@ public static class Define
     public const float GAME_WAIT_TIME = 20f;
     public const float EXIT_TIME = 80f;
 
-    public const int PLAYER_COUNT = 2;
+    public const int PLAYER_COUNT = 4;
     public const int MAX_ITEM_NUM = 4;
     public const int MAX_SKILL_NUM = 4;
 
