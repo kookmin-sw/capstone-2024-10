@@ -1,10 +1,9 @@
-using DG.Tweening;
 using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_AlienDefeat : UI_Panel
+public class UI_CrewWin : UI_Panel
 {
     enum Buttons
     {
@@ -15,13 +14,11 @@ public class UI_AlienDefeat : UI_Panel
     {
         Text1,
         Text2,
-        Text3
     }
 
     private CanvasGroup _canvasGroup;
     private Coroutine _fadeCor;
     private float _accumTime = 0f;
-    private bool _isAnimating = false;
 
     public override bool Init()
     {
@@ -32,10 +29,10 @@ public class UI_AlienDefeat : UI_Panel
         Bind<TMP_Text>(typeof(Texts));
 
         GetButton((int)Buttons.Quit).onClick.AddListener(ExitGame);
-        GetText(Texts.Text3).alpha = 0f;
 
         _canvasGroup = GetComponent<CanvasGroup>();
         StartFadeIn();
+
         return true;
     }
 
@@ -64,24 +61,6 @@ public class UI_AlienDefeat : UI_Panel
 
     public void ExitGame()
     {
-        if (Managers.NetworkMng.NumPlayers <= 1)
-        {
-            Managers.NetworkMng.ExitGame();
-        }
-        else
-        {
-            if (_isAnimating)
-                return;
-
-            Sequence sequence = DOTween.Sequence();
-
-            sequence.Append(GetText(Texts.Text3).DOFade(1f, 1.5f).SetEase(Ease.OutQuad));
-            sequence.AppendInterval(0.5f);
-            sequence.Append(GetText(Texts.Text3).DOFade(0f, 1.5f).SetEase(Ease.OutQuad));
-            sequence.OnComplete(() => _isAnimating = false);
-            sequence.Play();
-
-            _isAnimating = true;
-        }
+        Managers.NetworkMng.ExitGame();
     }
 }

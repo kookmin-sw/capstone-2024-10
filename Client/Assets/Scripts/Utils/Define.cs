@@ -105,7 +105,7 @@ public static class Define
 
     public enum GameResultType
     {
-        NotDecided,
+        Disconnected,
         CrewWin,
         CrewDefeat,
         AlienWin,
@@ -209,7 +209,7 @@ public static class Define
     #region Value
 
     public const float GAME_WAIT_TIME = 20f;
-    public const float EXIT_TIME = 80f;
+    public const float DAMAGE_BOOST_TIME = 6.5f;
 
     public const int PLAYER_COUNT = 4;
     public const int MAX_ITEM_NUM = 4;
@@ -234,7 +234,7 @@ public static class Define
         "Crew: While Crouching, Your footsteps disappear.",
         "Crew: After being attacked by Stalker, your speed increases for a moment.",
         "Stalker: Use the \"Roar\" skill to slow down the crew.",
-        "Stalker: Destroy the closed door so the crew can never use it again.",
+        "Stalker: Destroy the closed door so the crew can't use it again.",
     };
 
     #endregion
