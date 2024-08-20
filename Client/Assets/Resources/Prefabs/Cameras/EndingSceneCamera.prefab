@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6395524005605466697}
   - component: {fileID: 7070480461306001362}
-  - component: {fileID: 7840907585948963473}
   - component: {fileID: 577920308500008128}
   m_Layer: 0
   m_Name: EndingSceneCamera
@@ -85,14 +84,6 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &7840907585948963473
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1633063733591584419}
-  m_Enabled: 1
 --- !u!114 &577920308500008128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,7 +103,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   volumeAnchorOverride: {fileID: 0}
-  antialiasing: 2
+  antialiasing: 3
   SMAAQuality: 2
   dithering: 1
   stopNaNs: 1

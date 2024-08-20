@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_CrewWin : UI_Panel
+public class UI_CrewDefeat : UI_Panel
 {
     enum Buttons
     {
@@ -14,13 +14,11 @@ public class UI_CrewWin : UI_Panel
     {
         Text1,
         Text2,
-        Text3,
     }
 
     private CanvasGroup _canvasGroup;
     private Coroutine _fadeCor;
     private float _accumTime = 0f;
-    private float _exitTime = Define.EXIT_TIME + 1;
 
     public override bool Init()
     {
@@ -35,32 +33,7 @@ public class UI_CrewWin : UI_Panel
         _canvasGroup = GetComponent<CanvasGroup>();
         StartFadeIn();
 
-        GetText(Texts.Text3).text = $"Automatically leave after {Mathf.Floor(_exitTime)} seconds";
-        StartCoroutine(CountDownToExit());
-
         return true;
-    }
-
-    public IEnumerator CountDownToExit()
-    {
-        float t = -1;
-        while ((t = _exitTime - Time.deltaTime) > 0)
-        {
-            if (Managers.UIMng.SceneUI != null)
-            {
-                Destroy(Managers.UIMng.SceneUI.gameObject);
-                Managers.UIMng.SceneUI = null;
-            }
-
-            if (Mathf.Floor(t) != Mathf.Floor(_exitTime))
-            {
-                GetText(Texts.Text3).text = $"Automatically leave after {Mathf.Floor(t)} seconds";
-            }
-            _exitTime = t;
-            yield return null;
-        }
-
-        ExitGame();
     }
 
     public void StartFadeIn()
@@ -90,4 +63,5 @@ public class UI_CrewWin : UI_Panel
     {
         Managers.NetworkMng.ExitGame();
     }
+
 }

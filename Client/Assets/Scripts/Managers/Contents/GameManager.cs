@@ -5,5 +5,5 @@ public class GameManager
     public RenderingSystem RenderingSystem { get; set; }
     public GameEndSystem GameEndSystem { get; set; }
     public SettingSystem SettingSystem { get; set; }
-    public Define.GameResultType GameResult { get; set; } = Define.GameResultType.NotDecided;
+    public Define.GameResultType GameResult { get; set; } = Define.GameResultType.AlienWin;
 }

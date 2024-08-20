@@ -27,7 +27,7 @@ public class GameScene : BaseScene
 
     public override IEnumerator OnPlayerSpawn()
     {
-        Managers.GameMng.GameResult = Define.GameResultType.NotDecided;
+        Managers.GameMng.GameResult = Define.GameResultType.Disconnected;
 
         MapSystem mapSystem = null;
         PlanSystem planSystem = null;

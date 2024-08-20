@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CrewStat : BaseStat
 {
+    public Crew Crew => Creature as Crew;
     CrewData CrewData => CreatureData as CrewData;
 
     public float SitSpeed { get; set; }
@@ -22,7 +23,6 @@ public class CrewStat : BaseStat
     public float SitRecoverSanity { get; set; }
 
     public bool IsRunnable { get; set; } = true;
-    public bool Exhausted { get; set; } = false;
     public bool Doped { get; set; } = false;
     public bool DamagedBoost { get; set; } = false;
 
@@ -60,18 +60,19 @@ public class CrewStat : BaseStat
         {
             Managers.GameMng.RenderingSystem.ApplyDamageEffect(Hp);
 
-            if (Stamina < 60f)
-                ChangeStamina(60f - Stamina);
+            if (Stamina < 70f)
+                ChangeStamina(70f - Stamina);
 
-            if (Sanity < 60f)
-                ChangeSanity(60f - Sanity);
+            if (Sanity < 70f)
+                ChangeSanity(70f - Sanity);
 
             DamagedBoost = true;
 
             _damagedBoostTween.Kill();
-            _damagedBoostTween = DOVirtual.DelayedCall(5.5f, () =>
+            _damagedBoostTween = DOVirtual.DelayedCall(Define.DAMAGE_BOOST_TIME, () =>
             {
                 DamagedBoost = false;
+                Crew.CrewSoundController.DamagedBoostEnd();
             });
         }
     }

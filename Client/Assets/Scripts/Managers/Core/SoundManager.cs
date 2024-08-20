@@ -129,7 +129,7 @@ public class SoundManager
 
     public void PlayObjectAudio(AudioSource audioSource, string path,
         float pitch = 1.0f, float volume = 1.0f, bool isLoop = false,
-        Define.SoundType soundType = Define.SoundType.Facility, float maxDistance = 20f)
+        Define.SoundType soundType = Define.SoundType.Effect, float maxDistance = 20f)
     {
         if (audioSource == null)
             return;
@@ -139,6 +139,7 @@ public class SoundManager
 
         audioSource.pitch = pitch;
         audioSource.volume = volume;
+        audioSource.maxDistance = maxDistance;
         audioSource.clip = Managers.SoundMng.GetOrAddAudioClip(path);
 
         if (audioSource.clip == null)

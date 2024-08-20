@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EndingScene : BaseScene
 {
-    private Define.GameResultType _gameResult = Define.GameResultType.NotDecided;
+    private Define.GameResultType _gameResult = Define.GameResultType.Disconnected;
     protected override async void Init()
     {
         base.Init();
@@ -28,6 +28,9 @@ public class EndingScene : BaseScene
             case Define.GameResultType.AlienDefeat:
                 Managers.UIMng.ShowPanelUI<UI_AlienDefeat>(Managers.UIMng.Root.transform);
                 PlayEndSound();
+                break;
+            case Define.GameResultType.Disconnected:
+                Managers.UIMng.ShowPanelUI<UI_Disconnected>(Managers.UIMng.Root.transform);
                 break;
         }
     }

@@ -55,6 +55,11 @@ public class RenderingSystem : NetworkBehaviour
 
         DamageMaterial = Managers.ResourceMng.Load<Material>("Materials/DamageMaterial");
 
+        SetValue();
+    }
+
+    public void SetValue()
+    {
         Exposure.fixedExposure.value =_defaultFixedExposure;
         Fog.meanFreePath.value =_defaultFogMeanFreePath;
         ChromaticAberration.intensity.value = 0f;
@@ -62,7 +67,7 @@ public class RenderingSystem : NetworkBehaviour
         ColorAdjustments.colorFilter.value = _defaultColor;
         Vignette.intensity.value = _defaultVignetteIntensity;
 
-        ApplyDamageEffect(3);
+        DamageMaterial.SetFloat("_Vignette_radius", 1);
     }
 
     #region Volume
@@ -70,7 +75,6 @@ public class RenderingSystem : NetworkBehaviour
     public void ApplySanityEffect(float sanity)
     {
         Vignette.intensity.value = _defaultVignetteIntensity + (100f - sanity) * 0.01f * 0.5f;
-        //ChromaticAberration.intensity.value = (100f - sanity) * 0.01f;
     }
 
     public void ApplyErosionEffect(bool isApplying)
@@ -142,7 +146,7 @@ public class RenderingSystem : NetworkBehaviour
         _damageEffectTweener.Kill();
         ChromaticAberration.intensity.value = 100f;
 
-        DOVirtual.DelayedCall(5.5f, () =>
+        DOVirtual.DelayedCall(Define.DAMAGE_BOOST_TIME, () =>
         {
             _damageEffectTweener.Kill();
             _damageEffectTweener = DOVirtual.Float(ChromaticAberration.intensity.value, 0f, 2f, value =>
