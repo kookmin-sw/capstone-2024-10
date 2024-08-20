@@ -197,6 +197,11 @@ public abstract class Creature : NetworkBehaviour
         if (EventSystem.current.IsPointerOverGameObject())
             return;
 
+        if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
+        {
+            return;
+        }
+
         float mouseX = Input.GetAxis("Mouse X") * Managers.GameMng.SettingSystem.Sensitivity;
         float mouseY = Input.GetAxis("Mouse Y") * Managers.GameMng.SettingSystem.Sensitivity;
         CurrentAngle += mouseX * MouseSensitivity; //좌우 회전 값 계산

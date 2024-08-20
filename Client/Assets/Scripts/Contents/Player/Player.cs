@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using Fusion;
 using System;
+using System.Linq;
 
 public class Player : NetworkBehaviour
 {
@@ -18,12 +19,15 @@ public class Player : NetworkBehaviour
     [Networked]
     public Define.PlayerState State { get; set; } = Define.PlayerState.None;
     [Networked] public bool IsSpawned { get; set; }
+    [Networked] public bool AreAllPlayersSpawned { get; set; }
 
     public override void Spawned()
     {
         if (!HasStateAuthority)
             return;
 
+        IsSpawned = false;
+        AreAllPlayersSpawned = false;
         PlayerRef = Runner.LocalPlayer;
         Managers.NetworkMng.Player = this;
         PlayerName = Managers.NetworkMng.PlayerName;
@@ -63,6 +67,8 @@ public class Player : NetworkBehaviour
         {
             yield return new WaitUntil(() => Creature.IsSpawned);
             IsSpawned = true;
+            yield return new WaitUntil(() => Managers.NetworkMng.AllPlayers.All((player) =>  player.IsSpawned));
+            AreAllPlayersSpawned = true;
         }
     }
 

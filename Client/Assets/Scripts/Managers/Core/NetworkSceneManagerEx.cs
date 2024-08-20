@@ -141,7 +141,7 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
             if (po == null)
                 return false;
 
-            if (po.IsSpawned == false)
+            if (po.AreAllPlayersSpawned == false)
                 return false;
         }
 
