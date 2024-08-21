@@ -46,7 +46,7 @@ public class UI_ExitGame : UI_CameraPanel
 
         GetButton(Buttons.Btn_Manual).onClick.AddListener(() =>
         {
-            Managers.UIMng.ShowPanelUI<UI_ManualPanel>();
+            Managers.UIMng.ShowPanelUI<UI_GuidePanel>();
             Destroy(gameObject);
         });
 

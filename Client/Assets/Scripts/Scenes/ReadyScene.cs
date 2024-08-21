@@ -39,7 +39,7 @@ public class ReadyScene : BaseScene
         {
             if (FindAnyObjectByType<UI_ExitGame>() == null &&
                 FindAnyObjectByType<UI_SettingPanel>() == null &&
-                FindAnyObjectByType<UI_ManualPanel>() == null)
+                FindAnyObjectByType<UI_GuidePanel>() == null)
                 Managers.UIMng.ShowPanelUI<UI_ExitGame>();
         }
     }

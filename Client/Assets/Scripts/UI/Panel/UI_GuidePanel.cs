@@ -4,27 +4,27 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_ManualPanel : UI_CameraPanel
+public class UI_GuidePanel : UI_CameraPanel
 {
-    private UI_Manual _currentManual;
-    private UI_Manual _crewManual;
-    private UI_Manual _alienManual;
-    private UI_Manual _mapManual;
+    private UI_Guide _currentGuide;
+    private UI_Guide _crewGuide;
+    private UI_Guide _alienGuide;
+    private UI_Guide _mapGuide;
     private int _currentPage = 0;
 
     enum GameObjects
     {
-        CrewManual,
-        AlienManual,
-        MapManual,
+        CrewGuide,
+        AlienGuide,
+        Map,
     }
 
     enum Buttons
     {
         Btn_Return,
-        Btn_CrewManual,
-        Btn_AlienManual,
-        Btn_MapManual,
+        Btn_CrewGuide,
+        Btn_AlienGuide,
+        Btn_MapGuide,
         Btn_NextPage,
         Btn_PrevPage,
     }
@@ -35,7 +35,7 @@ public class UI_ManualPanel : UI_CameraPanel
     }
 
 
-    private class UI_Manual : UI_Base
+    private class UI_Guide : UI_Base
     {
         public List<GameObject> Pages { get; set; } = new();
 
@@ -94,23 +94,23 @@ public class UI_ManualPanel : UI_CameraPanel
         Bind<Button>(typeof(Buttons));
         Bind<TMP_Text>(typeof(Texts));
 
-        _crewManual = GetObject(GameObjects.CrewManual).GetOrAddComponent<UI_Manual>();
-        _alienManual = GetObject(GameObjects.AlienManual).GetOrAddComponent<UI_Manual>();
-        _mapManual = GetObject(GameObjects.MapManual).GetOrAddComponent<UI_Manual>();
+        _crewGuide = GetObject(GameObjects.CrewGuide).GetOrAddComponent<UI_Guide>();
+        _alienGuide = GetObject(GameObjects.AlienGuide).GetOrAddComponent<UI_Guide>();
+        _mapGuide = GetObject(GameObjects.Map).GetOrAddComponent<UI_Guide>();
 
         GetButton(Buttons.Btn_Return).onClick.AddListener(() =>
         {
             ClosePanelUI();
         });
-        GetButton(Buttons.Btn_CrewManual).onClick.AddListener(ShowCrewManual);
-        GetButton(Buttons.Btn_AlienManual).onClick.AddListener(ShowAlienManual);
-        GetButton(Buttons.Btn_MapManual).onClick.AddListener(ShowMapManual);
+        GetButton(Buttons.Btn_CrewGuide).onClick.AddListener(ShowCrewManual);
+        GetButton(Buttons.Btn_AlienGuide).onClick.AddListener(ShowAlienManual);
+        GetButton(Buttons.Btn_MapGuide).onClick.AddListener(ShowMapManual);
         GetButton(Buttons.Btn_NextPage).onClick.AddListener(NextPage);
         GetButton(Buttons.Btn_PrevPage).onClick.AddListener(PrevPage);
 
-        _crewManual.Init();
-        _alienManual.Init();
-        _mapManual.Init();
+        _crewGuide.Init();
+        _alienGuide.Init();
+        _mapGuide.Init();
 
         ShowCrewManual();
 
@@ -119,41 +119,41 @@ public class UI_ManualPanel : UI_CameraPanel
 
     private void ShowCrewManual()
     {
-        _alienManual.Hide();
-        _crewManual.Show();
-        _mapManual.Hide();
-        _currentManual = _crewManual;
+        _alienGuide.Hide();
+        _crewGuide.Show();
+        _mapGuide.Hide();
+        _currentGuide = _crewGuide;
         _currentPage = 0;
         UpdateCurrentPageText();
     }
 
     private void ShowAlienManual()
     {
-        _crewManual.Hide();
-        _mapManual.Hide();
-        _alienManual.Show();
-        _currentManual = _alienManual;
+        _crewGuide.Hide();
+        _mapGuide.Hide();
+        _alienGuide.Show();
+        _currentGuide = _alienGuide;
         _currentPage = 0;
         UpdateCurrentPageText();
     }
 
     private void ShowMapManual()
     {
-        _crewManual.Hide();
-        _alienManual.Hide();
-        _mapManual.Show();
-        _currentManual = _mapManual;
+        _crewGuide.Hide();
+        _alienGuide.Hide();
+        _mapGuide.Show();
+        _currentGuide = _mapGuide;
         _currentPage = 0;
         UpdateCurrentPageText();
     }
 
     private void NextPage()
     {
-        if (_currentPage + 1 >= _currentManual.Pages.Count)
+        if (_currentPage + 1 >= _currentGuide.Pages.Count)
             return;
 
         _currentPage++;
-        _currentManual.SetPage(_currentPage);
+        _currentGuide.SetPage(_currentPage);
         UpdateCurrentPageText();
     }
 
@@ -163,13 +163,13 @@ public class UI_ManualPanel : UI_CameraPanel
             return;
 
         _currentPage--;
-        _currentManual.SetPage(_currentPage);
+        _currentGuide.SetPage(_currentPage);
         UpdateCurrentPageText();
     }
 
     private void UpdateCurrentPageText()
     {
-        GetText(Texts.CurrentPage).text = $"Page {_currentPage + 1}/{_currentManual.Pages.Count}";
+        GetText(Texts.CurrentPage).text = $"Page {_currentPage + 1}/{_currentGuide.Pages.Count}";
     }
 
 }
