@@ -95,7 +95,7 @@ public class Alien : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
             return;
 
-        if (Managers.SceneMng.IsTestScene && TestInputs())
+        if (TestInputs())
             return;
 
         if (Input.GetKeyDown(KeyCode.F))
@@ -205,6 +205,8 @@ public class Alien : Creature
 
     protected override bool TestInputs()
     {
+        if (!Managers.NetworkMng.IsTestScene) return false;
+
         if (Input.GetKeyDown(KeyCode.K))
         {
             Rpc_ApplyBlind(3.5f, 1f);

@@ -106,7 +106,7 @@ public class Crew : Creature
         if (CreatureState == Define.CreatureState.Damaged || CreatureState == Define.CreatureState.Dead)
             return;
 
-        if (Managers.SceneMng.IsTestScene && TestInputs())
+        if (TestInputs())
             return;
 
         if (CreatureState == Define.CreatureState.Interact || CreatureState == Define.CreatureState.Use)
@@ -376,6 +376,7 @@ public class Crew : Creature
 
     protected override bool TestInputs()
     {
+        if (!Managers.NetworkMng.IsTestScene) return false;
         if (Input.GetKeyDown(KeyCode.U))
         {
             Rpc_OnDamaged(1);

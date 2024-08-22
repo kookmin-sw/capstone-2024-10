@@ -16,13 +16,6 @@ public class GameScene : BaseScene
 
         SettingSystem settingSystem = FindObjectOfType<SettingSystem>();
         settingSystem.Init();
-
-        string currentSceneName = Managers.SceneMng.GetCurrentSceneName();
-
-        if (currentSceneName.ToLower().Contains("test"))
-        {
-            Managers.SceneMng.IsTestScene = true;
-        }
     }
 
     public override IEnumerator OnPlayerSpawn()
