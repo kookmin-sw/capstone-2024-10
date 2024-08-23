@@ -342,7 +342,7 @@ public class Crew : Creature
 
         Rpc_DisableSelf();
 
-        await Task.Delay(3000);
+        await Task.Delay(2000);
         Managers.SceneMng.LoadScene(Define.SceneType.EndingScene);
     }
 
