@@ -7,6 +7,9 @@ public class EndingScene : BaseScene
     {
         base.Init();
 
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         SceneType = Define.SceneType.EndingScene;
         _gameResult = Managers.GameMng.GameResult;
 

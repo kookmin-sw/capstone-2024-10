@@ -217,8 +217,8 @@ public static class Define
     public const int MAX_ITEM_NUM = 4;
     public const int MAX_SKILL_NUM = 4;
 
-    public const int BATTERY_CHARGE_GOAL = 9;
-    public const int USBKEY_INSERT_GOAL = 6;
+    public const int BATTERY_CHARGE_GOAL = 8;
+    public const int USBKEY_INSERT_GOAL = 5;
     public const int OPEN_PANIC_ROOM = 2;
     public const int TUTORIAL_BATTERY_CHARGE_GOAL = 2;
 
