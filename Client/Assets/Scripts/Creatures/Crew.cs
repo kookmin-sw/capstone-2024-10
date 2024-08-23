@@ -296,7 +296,7 @@ public class Crew : Creature
 
     public async void OnDefeat()
     {
-        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned)
+        if (!HasStateAuthority || CreatureState == Define.CreatureState.Dead || !IsSpawned || Managers.NetworkMng.IsEndGameTriggered)
             return;
 
         CreatureState = Define.CreatureState.Dead;
@@ -320,7 +320,7 @@ public class Crew : Creature
 
     public virtual async void OnWin()
     {
-        if (!HasStateAuthority || CreatureType != Define.CreatureType.Crew)
+        if (!HasStateAuthority || CreatureType != Define.CreatureType.Crew || Managers.NetworkMng.IsEndGameTriggered)
             return;
 
         CreatureState = Define.CreatureState.Idle;
@@ -341,6 +341,8 @@ public class Crew : Creature
         //CrewIngameUI.EndGame();
 
         Rpc_DisableSelf();
+
+        await Task.Delay(3000);
         Managers.SceneMng.LoadScene(Define.SceneType.EndingScene);
     }
 

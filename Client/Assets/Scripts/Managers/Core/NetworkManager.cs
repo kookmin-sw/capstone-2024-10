@@ -25,6 +25,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public int SpawnCount { get; private set; } = 0;
     public bool IsEndGameTriggered { get; set; } = false;
     public bool IsTestScene { get; set; } = false;
+    public bool IsTutorialScene { get; set; } = false;
     public int RoomPlayersCount { get; private set; }
     public bool IsGameLoading {  get; set; } = false;
 
@@ -138,7 +139,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         public Define.CrewState State;
     }
 
-    public void CalculatePlayerCreatures()
+    public void InitializeCreatureCount()
     {
         AlienPlayerCount = 0;
         CrewPlayerCount = 0;
@@ -179,6 +180,9 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 
     public Player GetPlayerObject(PlayerRef playerRef)
     {
+        if (!Runner.IsRunning)
+            return null;
+
         if (Runner.TryGetPlayerObject(playerRef, out NetworkObject player))
             return player.GetComponent<Player>();
 
@@ -246,37 +250,18 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     #endregion
 
     #region Ending
-    private void ShowCrewEnding()
+    public void OnAlienDropped()
     {
-        Util.ClearUIAndSound();
-        Managers.SoundMng.Play($"{Define.BGM_PATH}/Panic Man", Define.SoundType.Bgm, volume: 0.7f);
-        Managers.UIMng.ShowPanelUI<UI_CrewWin>(Managers.UIMng.Root.transform);
-        IsEndGameTriggered = true;
-    }
-
-    public async void OnAlienDropped()
-    {
-        if (IsEndGameTriggered || IsTestScene)
+        if (IsEndGameTriggered || IsTestScene || IsTutorialScene)
             return;
 
-        int cnt = 0;
-        Player player = null;
-        // 로딩 중간에 에일리언 탈주 시, 스폰이 되지 않는 경우가 있음
-        while (cnt++ < 6 && (player = GetPlayerObject(Runner.LocalPlayer)) == null)
-        {
-            await Task.Delay(500);
-        }
+        IsEndGameTriggered = true;
 
-        // 로딩 중간에 에일리언 탈주 시, 에일리언이 바뀔 수 있음
-        if (player != null && player.CreatureType == Define.CreatureType.Crew && Managers.GameMng.GameEndSystem != null)
-        {
-            Managers.ObjectMng.MyCrew.OnWin();
-        }
-        else
-        {
-            // Crew에 대한 종속성 없이 UI_CrewWin 호출
-            ShowCrewEnding();
-        }
+        Managers.UIMng.ClosePanelUI<UI_CameraPanel>();
+        Util.ShowCursor();
+
+        Managers.GameMng.GameResult = Define.GameResultType.Disconnected;
+        Managers.SceneMng.LoadScene(Define.SceneType.EndingScene);
     }
     #endregion
 
@@ -372,17 +357,20 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
         }
     }
 
-    public void StartSharedClient()
+    public void StartTestSharedClient()
     {
         if (TryGetSceneRef(out var sceneRef))
         {
+            IsTestScene = true;
             StartCoroutine(StartClient(GameMode.Shared, LoadSceneMode.Additive, sceneRef));
         }
     }
 
-    public void StartSharedClient(Define.SceneType sceneType)
+    public void StartTutorialSharedClient()
     {
+        Define.SceneType sceneType = Define.SceneType.TutorialScene;
         var sceneRef = Managers.SceneMng.GetSceneRef(sceneType);
+        IsTutorialScene = true;
         DefaultRoomName = "Tutorial-" + UnityEngine.Random.Range(0, 9999);
         RoomPlayersCount = 1;
         StartCoroutine(StartClient(GameMode.Shared, LoadSceneMode.Single, sceneRef));
@@ -391,7 +379,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     protected IEnumerator StartClient(GameMode serverMode, LoadSceneMode sceneMode, SceneRef sceneRef = default)
     {
         var clientTask = InitializeNetworkRunner(Runner, serverMode, NetAddress.Any(), sceneRef, null, sceneMode);
-        IsTestScene = true;
 
         while (clientTask.IsCompleted == false)
         {

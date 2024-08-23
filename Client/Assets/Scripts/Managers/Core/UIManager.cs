@@ -282,20 +282,27 @@ public class UIManager
     public void OnLoadingUIDown()
     {
         var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
-        // 테스트 씬은 로딩 UI를 띄우지 않음
         if (loadingUI != null)
         {
-            loadingUI.shouldWait = false;
+            loadingUI.ShouldWaitForOtherPlayers = false;
         }
     }
 
     public void OnMapLoadComplete()
     {
         var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
-        // 테스트 씬은 로딩 UI를 띄우지 않음
         if (loadingUI != null)
         {
             loadingUI.IsMapLoaded = true;
+        }
+    }
+
+    public void CheckDroppedPlayer()
+    {
+        var loadingUI = Managers.UIMng.PanelUI as UI_Loading;
+        if (loadingUI != null)
+        {
+            loadingUI.OnPlayerDropped();
         }
     }
 

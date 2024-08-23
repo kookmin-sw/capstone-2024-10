@@ -29,8 +29,7 @@ public class UI_Loading : UI_Panel
     public bool IsMapLoaded { get; set; } = false;
     public bool IsDone { get; private set; } = false;
     public float LoadingProgress { get; private set; } = 0.0f;
-    public bool shouldWait { get; set; } = false;
-    // private bool _testLoading { get; set; } = false;
+    public bool ShouldWaitForOtherPlayers { get; set; } = false;
 
     public override bool Init()
     {
@@ -57,7 +56,7 @@ public class UI_Loading : UI_Panel
         _tip.text = Define.TEXT_FOR_TIP[Random.Range(0, Define.TEXT_FOR_TIP.Length)];
 
         waitForInput = false;
-        shouldWait = true;
+        ShouldWaitForOtherPlayers = true;
         LoadingProgress = 0.0f;
         userPromptKey = KeyCode.F;
         _loadPromptText.text = "";
@@ -73,7 +72,6 @@ public class UI_Loading : UI_Panel
             _loadingSpeed = 0.1f;
             Managers.NetworkMng.IsGameLoading = true;
             StartCoroutine(TransitionCheck());
-            StartCoroutine(OnAlienDropped());
         }
 
         return true;
@@ -84,13 +82,10 @@ public class UI_Loading : UI_Panel
         LoadingProgress += _loadingSpeed * Time.deltaTime;
         _loadingBar.value = Mathf.Clamp01(LoadingProgress / .95f);
 
-        /* 테스트 용
-        if (Input.GetKeyDown(KeyCode.V))
+        if (Managers.NetworkMng.IsGameLoading && !IsDone)
         {
-            _testLoading = !_testLoading;
-            shouldWait = true;
+            OnPlayerDropped();
         }
-        */
     }
 
     public IEnumerator SpawnCheck()
@@ -100,16 +95,18 @@ public class UI_Loading : UI_Panel
         IsDone = true;
     }
 
-    public IEnumerator OnAlienDropped()
+    public void OnPlayerDropped()
     {
-        while (Managers.NetworkMng.SpawnCount == Define.PLAYER_COUNT)
-        {
-            yield return new WaitForSeconds(0.1f);
-        }
+        if (Managers.NetworkMng.IsTutorialScene)
+            return;
 
+        if (Managers.NetworkMng.SpawnCount == Define.PLAYER_COUNT)
+            return;
+
+        // 게임을 진행할 수 없다고 판단
         Managers.NetworkMng.OnAlienDropped();
         IsDone = true;
-        shouldWait = false;
+        ShouldWaitForOtherPlayers = false;
     }
 
     public IEnumerator TransitionCheck()
@@ -158,8 +155,7 @@ public class UI_Loading : UI_Panel
 
         Managers.NetworkMng.IsGameLoading = false;
 
-        yield return new WaitUntil(() => shouldWait == false);
-        // yield return new WaitUntil(() => _testLoading == false);
+        yield return new WaitUntil(() => ShouldWaitForOtherPlayers == false);
 
         StopAllCoroutines();
         Managers.UIMng.PanelUI = null;
