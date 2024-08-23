@@ -5523,7 +5523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DefaultRoomName: Test
-  Creature: 2
+  Creature: 1
   PrefabNum: 0
   ReadySceneSpawnPosition: {x: 0, y: 0.5, z: 0}
   ReadySceneSpawnSector: 1
@@ -9676,7 +9676,7 @@ MonoBehaviour:
     Stat
     System On => L
 
-    Clear => Z'
+    EndGame => N,M'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fb95a38d28008ae49b65cd3da2dfc97b, type: 2}
   m_sharedMaterial: {fileID: -8701900407955875807, guid: fb95a38d28008ae49b65cd3da2dfc97b, type: 2}

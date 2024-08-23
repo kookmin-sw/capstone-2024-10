@@ -215,12 +215,12 @@ public class Alien : Creature
         if (Input.GetKeyDown(KeyCode.N))
         {
             Managers.GameMng.GameEndSystem.KilledCrewNum = Define.PLAYER_COUNT - 1;
-            Managers.GameMng.GameEndSystem.EndGame();
+            Managers.GameMng.GameEndSystem.EndAlienGame();
             return true;
         }
         if (Input.GetKeyDown(KeyCode.M))
         {
-            Managers.GameMng.GameEndSystem.EndGame();
+            Managers.GameMng.GameEndSystem.EndAlienGame();
             return true;
         }
         if (Input.GetKeyDown(KeyCode.L))
