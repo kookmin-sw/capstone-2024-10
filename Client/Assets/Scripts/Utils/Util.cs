@@ -84,4 +84,10 @@ public class Util : MonoBehaviour
         Managers.SoundMng.Stop(Define.SoundType.Effect);
         Managers.SoundMng.Stop(Define.SoundType.Facility);
     }
+
+    public static void ShowCursor()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
 }

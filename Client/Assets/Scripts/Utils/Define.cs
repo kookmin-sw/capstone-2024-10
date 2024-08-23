@@ -126,7 +126,8 @@ public static class Define
     {
         None,
         Alive,
-        GameEnd,
+        GameWin,
+        GameDefeat,
         Disconnected,
     }
 
@@ -208,6 +209,7 @@ public static class Define
 
     #region Value
 
+    public const float LOADING_WAIT_TIME = 25f;
     public const float GAME_WAIT_TIME = 20f;
     public const float DAMAGE_BOOST_TIME = 6.5f;
 

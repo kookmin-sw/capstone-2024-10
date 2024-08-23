@@ -1,7 +1,9 @@
+using DG.Tweening;
 using Fusion;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
@@ -11,12 +13,14 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
     private SceneRef _loadedScene = SceneRef.None;
     private BaseScene _baseScene;
     private Player _player;
+    private bool _timeOut;
 
     public override void Shutdown()
     {
         _loadedScene = SceneRef.None;
         Managers.Clear();
         base.Shutdown();
+        StopAllCoroutines();
     }
 
     public async void UnloadScene()
@@ -63,16 +67,18 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 
             yield return new WaitUntil(() => OtherPlayerLoaded(players));
 
-            // Wait for loading MonoBehaviour
-            while (Managers.SceneMng.CurrentScene is not GameScene)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
+            yield return StartCoroutine(CheckTime(WaitLoadingScene<GameScene>(), this));
+            if (_timeOut)
+                yield break;
 
             _baseScene = Managers.SceneMng.CurrentScene;
-            StartCoroutine(_baseScene.OnPlayerSpawn());
+            yield return StartCoroutine(CheckTime(_baseScene.OnPlayerSpawn(), this));
+            if (_timeOut)
+                yield break;
 
-            yield return new WaitUntil(() => Managers.GameMng.GameEndSystem && Managers.GameMng.GameEndSystem.AreAllPlayersLoaded);
+            yield return StartCoroutine(CheckTime(WaitLoadingComplete(), this));
+            if (_timeOut)
+                yield break;
 
             Managers.UIMng.OnLoadingUIDown();
             #endregion
@@ -89,14 +95,14 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 
             yield return new WaitUntil(() => Managers.NetworkMng.PlayerSystem && Managers.NetworkMng.PlayerSystem.IsFirstLoadCompleted);
 
-            // Wait for loading MonoBehaviour
-            while (Managers.SceneMng.CurrentScene is not ReadyScene)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
+            yield return StartCoroutine(CheckTime(WaitLoadingScene<ReadyScene>(), this));
+            if (_timeOut)
+                yield break;
 
             _baseScene = Managers.SceneMng.CurrentScene;
-            StartCoroutine(_baseScene.OnPlayerSpawn());
+            yield return StartCoroutine(CheckTime(_baseScene.OnPlayerSpawn(), this));
+            if (_timeOut)
+                yield break;
 
             Managers.UIMng.OnLoadingUIDown();
             #endregion
@@ -107,17 +113,51 @@ public class NetworkSceneManagerEx : NetworkSceneManagerDefault
 
             yield return new WaitUntil(() => MyPlayerLoaded());
 
-            // Wait for loading MonoBehaviour
-            while (Managers.SceneMng.CurrentScene is not TutorialScene)
-            {
-                yield return new WaitForSeconds(0.5f);
-            }
+            yield return StartCoroutine(CheckTime(WaitLoadingScene<TutorialScene>(), this));
+            if (_timeOut)
+                yield break;
 
             _baseScene = Managers.SceneMng.CurrentScene;
-            StartCoroutine(_baseScene.OnPlayerSpawn());
+            yield return StartCoroutine(CheckTime(_baseScene.OnPlayerSpawn(), this));
+            if (_timeOut)
+                yield break;
 
             Managers.UIMng.OnLoadingUIDown();
             #endregion
+        }
+    }
+
+    public IEnumerator CheckTime(IEnumerator coroutine, MonoBehaviour owner)
+    {
+        var wrapper = new CoroutineWrapper(coroutine, owner);
+        _timeOut = false;
+        wrapper.Start();
+        yield return new WaitUntil(() => {
+            if (wrapper.ElapsedTime > Define.LOADING_WAIT_TIME)
+            {
+                Managers.UIMng.OnLoadingUIDown();
+                Managers.NetworkMng.OnAlienDropped();
+                _timeOut = true;
+                wrapper.Stop();
+            }
+
+            return wrapper.IsCompleted;
+        });
+    }
+
+    public IEnumerator WaitLoadingComplete()
+    {
+        while (!Managers.GameMng.GameEndSystem || !Managers.GameMng.GameEndSystem.AreAllPlayersLoaded)
+        {
+            yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    public IEnumerator WaitLoadingScene<T>() where T : BaseScene
+    {
+        while (Managers.SceneMng.CurrentScene is not T)
+        {
+            yield return new WaitForSeconds(0.5f);
         }
     }
 

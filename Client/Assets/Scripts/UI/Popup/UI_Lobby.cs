@@ -119,7 +119,7 @@ public class UI_Lobby : UI_Popup
     private void StartTutorial()
     {
         Managers.Clear();
-        Managers.NetworkMng.StartSharedClient(Define.SceneType.TutorialScene);
+        Managers.NetworkMng.StartTutorialSharedClient();
         Managers.UIMng.ShowPanelUI<UI_Loading>();
     }
 }
