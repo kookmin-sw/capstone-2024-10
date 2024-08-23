@@ -20,7 +20,7 @@ public class CrewSoundController : BaseSoundController
         switch (CreaturePose)
         {
             case Define.CreaturePose.Stand:
-                Rpc_PlayFootStepSound(1.205f, 0.045f, 12f);
+                Rpc_PlayFootStepSound(1.205f, 0.05f, 12f);
                 break;
             case Define.CreaturePose.Sit:
                 Rpc_StopEffectSound();
@@ -104,7 +104,7 @@ public class CrewSoundController : BaseSoundController
     protected void PlayExhaust()
     {
         Managers.SoundMng.Stop(Define.SoundType.Effect);
-        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Exhaust", Define.SoundType.Effect, volume: 0.6f, isOneShot: true);
+        Managers.SoundMng.Play($"{Define.EFFECT_PATH}/Crew/Exhaust", Define.SoundType.Effect, volume: 0.65f, isOneShot: true);
     }
 
     public override void CheckChasing()

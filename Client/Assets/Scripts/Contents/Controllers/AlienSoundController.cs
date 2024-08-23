@@ -14,7 +14,7 @@ public class AlienSoundController : BaseSoundController
 
     public override void PlayMove()
     {
-        Rpc_PlayFootStepSound(1.33f, 0.7f);
+        Rpc_PlayFootStepSound(1.33f, 0.8f);
     }
 
     public void PlaySound(Define.AlienActionType alienActionType)
@@ -49,7 +49,7 @@ public class AlienSoundController : BaseSoundController
     protected void Rpc_PlayFootStepSound(float pitch, float volume)
     {
         if (HasStateAuthority)
-            volume *= 0.3f;
+            volume = 0.22f;
 
         Managers.SoundMng.PlayObjectAudio(CreatureAudioSource, $"{Define.EFFECT_PATH}/Alien/FootStep_Alien", pitch, volume, isLoop: true);
     }
