@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Playables;
 
 public class UI_Ingame : UI_Scene
 {
@@ -9,7 +10,7 @@ public class UI_Ingame : UI_Scene
     public UI_CurrentSector CurrentSectorUI { get; private set; }
     public UI_ObjectName ObjectNameUI { get; private set; }
     public UI_RemainPerson RemainPersonUI { get; private set; }
-    public UI_CrewMessaage CrewMessageUI { get; private set; }
+    public UI_Notification NotificationUI { get; private set; }
     public UI_Map MapUI { get; private set; }
     public Canvas Canvas { get; protected set; }
     public Camera Camera { get; protected set; }
@@ -22,7 +23,7 @@ public class UI_Ingame : UI_Scene
         UI_CurrentSector,
         UI_ObjectName,
         UI_RemainPerson,
-        UI_CrewMessage,
+        UI_Notification,
         UI_Map,
     }
 
@@ -38,7 +39,7 @@ public class UI_Ingame : UI_Scene
         CurrentSectorUI = Get<UI_Base>(SubItemUIs.UI_CurrentSector) as UI_CurrentSector;
         ObjectNameUI = Get<UI_Base>(SubItemUIs.UI_ObjectName) as UI_ObjectName;
         RemainPersonUI = Get<UI_Base>(SubItemUIs.UI_RemainPerson) as UI_RemainPerson;
-        CrewMessageUI = Get<UI_Base>(SubItemUIs.UI_CrewMessage) as UI_CrewMessaage;
+        NotificationUI = Get<UI_Base>(SubItemUIs.UI_Notification) as UI_Notification;
         MapUI = Get<UI_Base>(SubItemUIs.UI_Map) as UI_Map;
 
         return true;
@@ -59,6 +60,6 @@ public class UI_Ingame : UI_Scene
         CurrentSectorUI.Hide();
         ObjectNameUI.Hide();
         RemainPersonUI?.Hide();
-        CrewMessageUI?.Hide();
+        NotificationUI?.Hide();
     }
 }

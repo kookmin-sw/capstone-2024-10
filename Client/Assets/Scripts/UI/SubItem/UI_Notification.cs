@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Fusion;
 
-public class UI_CrewMessaage : UI_Base
+public class UI_Notification : UI_Base
 {
     enum Texts
     {
@@ -23,7 +23,6 @@ public class UI_CrewMessaage : UI_Base
     private Coroutine FadeCor;
     private float accumTime = 0f;
 
-
     public override bool Init()
     {
         if (base.Init() == false)
@@ -36,30 +35,6 @@ public class UI_CrewMessaage : UI_Base
 
         return true;
     }
-    private void Update()
-    {
-        if (Managers.SceneMng.CurrentScene.IsSceneType((int)Define.SceneType.ReadyScene))
-        {
-            return;
-        }
-
-        if (Managers.GameMng.GameEndSystem.IsCrewDropped)
-        {
-            DropMessage();
-            Managers.GameMng.GameEndSystem.RPC_ResetDropCrew();
-        }
-        else if (Managers.GameMng.GameEndSystem.IsCrewWinning)
-        {
-            EscapeMessage();
-            Managers.GameMng.GameEndSystem.RPC_ResetWinedCrew();
-        }
-        else if (Managers.GameMng.GameEndSystem.IsCrewKilled)
-        {
-            DeadMessage();
-            Managers.GameMng.GameEndSystem.RPC_ResetKilledCrew();
-        }
-    }
-
     public void StartFadeIn()
     {
         if (FadeCor != null)
@@ -100,17 +75,17 @@ public class UI_CrewMessaage : UI_Base
 
     public void EscapeMessage()
     {
-        GetText(Texts.Message).text = "One of the Crews has Escaped";
+        GetText(Texts.Message).text = "One of the Crew has Escaped";
         StartFadeIn();
     }
     public void DeadMessage()
     {
-        GetText(Texts.Message).text = "One of the Crews has Died";
+        GetText(Texts.Message).text = "One of the Crew has Died";
         StartFadeIn();
     }
     public void DropMessage()
     {
-        GetText(Texts.Message).text = "One of the Crews has Left the Game";
+        GetText(Texts.Message).text = "One of the Crew has Left the Game";
         StartFadeIn();
     }
 
