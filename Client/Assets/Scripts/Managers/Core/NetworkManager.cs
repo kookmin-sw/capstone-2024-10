@@ -32,7 +32,6 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public Queue<Action<GameEndSystem>> EndSystemQueue = new Queue<Action<GameEndSystem>>();
 
     public Player Player { get; set; }
-
     public List<Player> AllPlayers
     {
         get
