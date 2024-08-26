@@ -140,10 +140,8 @@ public class GameEndSystem : NetworkBehaviour
 
     public void OnCrewDropped(PlayerRef playerRef)
     {
-        if (Managers.NetworkMng.IsTutorialScene || Managers.NetworkMng.IsTestScene)
+        if (Managers.NetworkMng.IsTutorialScene)
             return;
-
-        Rpc_DropMessage();
 
         var pd = Managers.NetworkMng.GetPlayerData(playerRef);
         if (pd.State == Define.CrewState.Alive)
@@ -151,6 +149,7 @@ public class GameEndSystem : NetworkBehaviour
             CrewNum--;
             DroppedCrewNum++;
             pd.State = Define.CrewState.Disconnected;
+            Rpc_DropMessage();
         }
     }
 
@@ -162,7 +161,7 @@ public class GameEndSystem : NetworkBehaviour
         if (isWin)
         {
             pd.State = Define.CrewState.GameWin;
-            if(Runner.LocalPlayer != playerRef) Managers.ObjectMng.MyCreature.IngameUI.NotificationUI.EscapeMessage();
+            if (Runner.LocalPlayer != playerRef) Managers.ObjectMng.MyCreature.IngameUI.NotificationUI.EscapeMessage();
         }
         else
         {

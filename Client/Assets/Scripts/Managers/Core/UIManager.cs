@@ -249,7 +249,9 @@ public class UIManager
 
     public void ActivatePopupUI(bool active)
     {
-        _popupStack.ToList().ForEach(x => x.gameObject.SetActive(active));
+        _popupStack.ToList().ForEach((x) => {
+            if (x.gameObject != null) x.gameObject.SetActive(active);
+        });
     }
 
     public void ClosePanelUI()

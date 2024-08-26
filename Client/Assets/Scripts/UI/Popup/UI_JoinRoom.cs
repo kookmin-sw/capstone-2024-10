@@ -42,15 +42,12 @@ public class UI_JoinRoom : UI_Popup
         Bind<TMP_InputField>(typeof(InputFields));
         Bind<TMP_Text>(typeof(Texts));
 
-        transform.localPosition = new Vector3(47, 317, 0);
-
         InputPassword = Get<TMP_InputField>((int)InputFields.Password);
         _warning = Get<TMP_Text>((int)Texts.Warning);
 
         Get<Button>((int)Buttons.Btn_Yes).onClick.AddListener(() =>
         {
             JoinGame();
-            ClosePopupUI();
         });
 
         Get<Button>((int)Buttons.Btn_No).onClick.AddListener(() =>
@@ -74,7 +71,7 @@ public class UI_JoinRoom : UI_Popup
     {
         if (!string.IsNullOrEmpty(_password) && _password != InputPassword.text)
         {
-            _warning.text = "Password is incorrect";
+            _warning.text = "<color=yellow>Password is incorrect</color>";
             return;
         }
 
