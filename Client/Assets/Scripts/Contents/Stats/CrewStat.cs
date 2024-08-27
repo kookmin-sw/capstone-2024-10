@@ -113,7 +113,7 @@ public class CrewStat : BaseStat
     {
         Sanity = Mathf.Clamp(Sanity + value, 0, MaxSanity);
 
-        float ratio = 0.7f + Sanity * 0.003f;
+        float ratio = 0.75f + Sanity * 0.0025f;
 
         WalkSpeed = CrewData.WalkSpeed * ratio;
         RunSpeed = CrewData.RunSpeed * ratio;

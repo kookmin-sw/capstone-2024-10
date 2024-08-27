@@ -74,7 +74,7 @@ public class RenderingSystem : NetworkBehaviour
 
     public void ApplySanityEffect(float sanity)
     {
-        Vignette.intensity.value = _defaultVignetteIntensity + (100f - sanity) * 0.01f * 0.45f;
+        Vignette.intensity.value = _defaultVignetteIntensity + (100f - sanity) * 0.01f * 0.4f;
     }
 
     public void ApplyErosionEffect(bool isApplying)
