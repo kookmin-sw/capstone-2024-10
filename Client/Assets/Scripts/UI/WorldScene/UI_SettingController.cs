@@ -102,15 +102,17 @@ public class UI_SettingController : UI_Base
         var dropdown = Get<TMP_Dropdown>(Dropdowns.Dropdown);
         dropdown.onValueChanged.AddListener((int value) =>
         {
-            SelectResolution(dropdown.options[value].text);
+            Managers.GameMng.SettingSystem.SelectResolution(value);
         });
+        dropdown.value = Managers.GameMng.SettingSystem.ScreenRatioIndex;
+        Managers.GameMng.SettingSystem.SelectResolution(dropdown.value);
 
         // check full screen
-        if (Screen.fullScreen == true)
+        if (Managers.GameMng.SettingSystem.Fullscreen == 1)
         {
             GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "On";
         }
-        else if (Screen.fullScreen == false)
+        else if (Managers.GameMng.SettingSystem.Fullscreen == 0)
         {
             GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "Off";
         }
@@ -146,18 +148,6 @@ public class UI_SettingController : UI_Base
         GetObject(GameObjects.LineVideo).SetActive(false);
 
         return true;
-    }
-
-    public void SelectResolution(string optionText)
-    {
-        if (optionText == "Select")
-            return;
-
-        string[] words = optionText.Split(' ');
-        int width = int.Parse(words[0]);
-        int height = int.Parse(words[2]);
-        Debug.Log($"{width} x {height}");
-        Managers.GameMng.SettingSystem.SetResolution(width, height);
     }
 
     public void GamePanel()
@@ -204,12 +194,12 @@ public class UI_SettingController : UI_Base
 
     public void FullScreen()
     {
-        if (Screen.fullScreen == true)
+        if (Managers.GameMng.SettingSystem.Fullscreen == 1)
         {
             GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "Off";
             Managers.GameMng.SettingSystem.SetFullScreen(false);
         }
-        else if (Screen.fullScreen == false)
+        else if (Managers.GameMng.SettingSystem.Fullscreen == 0)
         {
             GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "On";
             Managers.GameMng.SettingSystem.SetFullScreen(true);
