@@ -1,6 +1,4 @@
-using DG.Tweening;
 using Fusion;
-using System;
 using UnityEngine;
 
 public class CrewAnimController : BaseAnimController

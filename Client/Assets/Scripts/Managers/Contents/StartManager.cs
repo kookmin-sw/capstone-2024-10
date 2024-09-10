@@ -5,7 +5,6 @@ using System.IO;
 using UnityEngine;
 using Fusion;
 using System.Linq;
-using UnityEngine.Rendering;
 
 [Serializable]
 public class SaveData
@@ -72,7 +71,7 @@ public class StartManager
         {
             var players = Managers.NetworkMng.Runner.ActivePlayers.ToList();
             var spawnPoints = GameObject.FindObjectsOfType<SpawnPoint>().ToList();
-    
+
             var respawn = GameObject.FindWithTag("Respawn");
 
             foreach (var player in players)
@@ -89,7 +88,7 @@ public class StartManager
                     spawnPoint = spawnPoints[rand].Data;
                     spawnPoints.RemoveAt(rand);
                 }
-  
+
                 Managers.NetworkMng.PlayerSystem.SpawnPoints.Set(player, spawnPoint);
             }
 

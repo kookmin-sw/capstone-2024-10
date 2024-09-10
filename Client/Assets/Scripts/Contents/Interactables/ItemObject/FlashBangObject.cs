@@ -1,5 +1,4 @@
 using Fusion;
-using UnityEditor;
 using UnityEngine;
 
 public class FlashBangObject : BaseItemObject

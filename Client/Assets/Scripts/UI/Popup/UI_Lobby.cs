@@ -1,11 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.EventSystems;
-using Fusion;
-using SlimUI.ModernMenu;
 using System;
 
 public class UI_Lobby : UI_Popup
@@ -53,7 +49,7 @@ public class UI_Lobby : UI_Popup
         return true;
     }
 
-    
+
     public void SetInfo(UI_LobbyController controller)
     {
         foreach (int i in Enum.GetValues(typeof(Buttons)))

@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 /// <summary>
 /// 사용자 정의 PopupUI 생성하려면 해당 클래스를 상속하면 된다.
 /// </summary>

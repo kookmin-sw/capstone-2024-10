@@ -1,9 +1,7 @@
 using System;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
-using System.IO;
 
 public class UI_LobbyController : UI_Base
 {

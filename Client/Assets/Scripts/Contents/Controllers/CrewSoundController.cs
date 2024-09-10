@@ -1,6 +1,5 @@
 using Fusion;
 using UnityEngine;
-using UnityEngine.ProBuilder;
 
 public class CrewSoundController : BaseSoundController
 {

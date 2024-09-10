@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Fusion;
 using UnityEngine;
 
@@ -20,7 +17,7 @@ public class SpawnPoint : MonoBehaviour
         Position = gameObject.transform.position,
         SectorName = _sectorName
     };
-    
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;

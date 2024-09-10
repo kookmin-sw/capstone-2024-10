@@ -1,10 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using Fusion;
-using UnityEditor;
 
 public class UI_NameTag : UI_Base
 {

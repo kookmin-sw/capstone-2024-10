@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using UnityEngine;
-using UnityEngine.UI;
 
 public class UI_InteractInfo : UI_Base
 {
@@ -25,7 +21,7 @@ public class UI_InteractInfo : UI_Base
         GetText(Texts.Description_text).text = $"<sprite=1>  {description}";
         gameObject.SetActive(true);
     }
- 
+
 
     public void Hide() => gameObject.SetActive(false);
 }

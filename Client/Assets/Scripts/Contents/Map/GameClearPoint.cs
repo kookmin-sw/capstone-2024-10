@@ -1,6 +1,3 @@
-using Fusion;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameClearPoint : MonoBehaviour
@@ -14,7 +11,7 @@ public class GameClearPoint : MonoBehaviour
             {
                 creature.OnWin();
             }
-            
+
         }
     }
 }

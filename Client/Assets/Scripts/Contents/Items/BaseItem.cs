@@ -1,6 +1,5 @@
 ﻿using Data;
 using DG.Tweening;
-using Fusion;
 using UnityEngine;
 
 public abstract class BaseItem

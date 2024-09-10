@@ -1,9 +1,7 @@
 using UnityEngine;
-using System.Collections;
 using UnityEngine.UI;
 using TMPro;
 using System;
-using System.IO;
 
 public class UI_SettingPanel : UI_CameraPanel
 {

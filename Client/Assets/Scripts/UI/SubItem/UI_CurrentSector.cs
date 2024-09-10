@@ -1,4 +1,3 @@
-using System.Text.RegularExpressions;
 using TMPro;
 
 public class UI_CurrentSector : UI_Base

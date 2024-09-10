@@ -1,6 +1,5 @@
 using Fusion;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -69,7 +68,7 @@ public class UI_StartGame : UI_Popup
 
         Managers.NetworkMng.PlayerSystem.OnReadyCountUpdated += () => SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
         SetInfo(Managers.NetworkMng.PlayerSystem.ReadyCount);
-        
+
     }
 
     public void ReadyGame()

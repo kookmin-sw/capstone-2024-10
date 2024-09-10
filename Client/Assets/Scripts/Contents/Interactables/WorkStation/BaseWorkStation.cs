@@ -91,7 +91,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
         WorkComplete();
     }
 
-    protected void InterruptWork(bool isForce = false)
+    protected virtual void InterruptWork(bool isForce = false)
     {
         StopAllCoroutines();
         Worker.IngameUI.WorkProgressBarUI.Hide();
@@ -145,7 +145,7 @@ public abstract class BaseWorkStation : NetworkBehaviour, IInteractable
     protected abstract void Rpc_PlaySound();
 
     [Rpc(RpcSources.All, RpcTargets.All)]
-    private void Rpc_StopSound()
+    protected void Rpc_StopSound()
     {
         AudioSource.Stop();
     }

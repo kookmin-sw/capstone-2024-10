@@ -36,7 +36,12 @@ public class Door : BaseWorkStation
 
     public override bool IsInteractable(Creature creature)
     {
-        if (!base.IsInteractable(creature)) return false;
+        creature.IngameUI.ErrorTextUI.Hide();
+        creature.IngameUI.InteractInfoUI.Hide();
+
+        if (Worker != null) return false;
+
+        if (creature.CreatureState == Define.CreatureState.Interact) return false;
 
         if (creature is Alien && IsOpened)
         {
@@ -49,6 +54,7 @@ public class Door : BaseWorkStation
         }
 
         creature.IngameUI.InteractInfoUI.Show(Description);
+
         return true;
     }
 
@@ -66,7 +72,6 @@ public class Door : BaseWorkStation
         {
             WorkComplete();
             InterruptWork();
-            Rpc_PlaySound();
         }
         else
         {
@@ -76,6 +81,19 @@ public class Door : BaseWorkStation
         }
 
         return true;
+    }
+
+    protected override void InterruptWork(bool isForce = false)
+    {
+        StopAllCoroutines();
+        Worker.IngameUI.WorkProgressBarUI.Hide();
+
+        if (!isForce)
+            Worker.ReturnToIdle(0f);
+
+        Rpc_RemoveWorker();
+
+        DOVirtual.DelayedCall(0.3f, () => { Worker = null; });
     }
 
     protected override void WorkComplete()
@@ -111,6 +129,7 @@ public class Door : BaseWorkStation
     {
         IsOpened = !IsOpened;
         _mecanimAnimator.Animator.SetBool("OpenParameter", IsOpened);
+        Rpc_PlaySound();
     }
 
     [Rpc(RpcSources.All, RpcTargets.All)]
@@ -120,7 +139,7 @@ public class Door : BaseWorkStation
         _occlusionPortal.open = true;
     }
 
-    [Rpc(RpcSources.All, RpcTargets.All)]
+    [Rpc(RpcSources.StateAuthority, RpcTargets.All)]
     protected override void Rpc_PlaySound()
     {
         string soundPath = IsOpened ? "Door_Open" : "Door_Close";

@@ -1,4 +1,3 @@
-using System.Collections;
 public class UI_Panel : UI_Base
 {
     public override bool Init()

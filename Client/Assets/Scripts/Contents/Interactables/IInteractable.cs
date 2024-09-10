@@ -1,5 +1,3 @@
-using Fusion;
-
 public interface IInteractable
 {
     /// <summary>
