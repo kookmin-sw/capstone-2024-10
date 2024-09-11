@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.Design.Serialization;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Audio;
@@ -6,7 +7,7 @@ using UnityEngine.Audio;
 public class SoundManager
 {
     public static AudioSource[] _audioSources = new AudioSource[(int)Define.SoundType.MaxCount];
-    private static AudioMixerGroup[] _audioMixerGroups;
+    private static AudioMixerGroup[] _audioMixerGroups = null;
     public static Dictionary<Define.SoundType, AudioMixerGroup> AudioMixerGroups;
     public static Dictionary<string, AudioClip> _audioClips = new Dictionary<string, AudioClip>();
     public static AudioMixer Mixer;
@@ -61,9 +62,8 @@ public class SoundManager
 
             _audioSources[(int)Define.SoundType.Bgm].loop = true;
             _audioSources[(int)Define.SoundType.Environment].loop = true;
+            UpdateVolume();
         }
-
-        UpdateVolume();
     }
 
     public void Clear()

@@ -107,11 +107,11 @@ public class UI_SettingPanel : UI_CameraPanel
         Managers.GameMng.SettingSystem.SelectResolution(dropdown.value);
 
         // check full screen
-        if (Managers.GameMng.SettingSystem.Fullscreen == 1)
+        if (Managers.GameMng.SettingSystem.FullScreen == 1)
         {
             GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "On";
         }
-        else if (Managers.GameMng.SettingSystem.Fullscreen == 0)
+        else if (Managers.GameMng.SettingSystem.FullScreen == 0)
         {
             GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "Off";
         }
@@ -210,12 +210,12 @@ public class UI_SettingPanel : UI_CameraPanel
 
     public void FullScreen()
     {
-        if (Managers.GameMng.SettingSystem.Fullscreen == 1)
+        if (Managers.GameMng.SettingSystem.FullScreen == 1)
         {
             GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "Off";
             Managers.GameMng.SettingSystem.SetFullScreen(false);
         }
-        else if (Managers.GameMng.SettingSystem.Fullscreen == 0)
+        else if (Managers.GameMng.SettingSystem.FullScreen == 0)
         {
             GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "On";
             Managers.GameMng.SettingSystem.SetFullScreen(true);
@@ -225,7 +225,6 @@ public class UI_SettingPanel : UI_CameraPanel
     private void MusicSlider(Define.VolumeType volumeType, Sliders sliderType)
     {
         Managers.GameMng.SettingSystem.SetMusicVolume(volumeType, Get<Slider>(sliderType).value);
-        Managers.SoundMng.UpdateVolume();
     }
 
     public void SensitivitySlider()

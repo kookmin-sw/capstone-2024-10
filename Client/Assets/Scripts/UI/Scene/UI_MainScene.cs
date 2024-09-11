@@ -1,3 +1,6 @@
+// Application 빌드할 때 필요
+using UnityEngine;
+
 public class UI_MainScene : UI_Scene
 {
     #region UI 목록들
