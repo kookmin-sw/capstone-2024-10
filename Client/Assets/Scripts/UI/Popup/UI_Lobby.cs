@@ -74,7 +74,7 @@ public class UI_Lobby : UI_Popup
 
         GetButton((int)Buttons.Btn_RefreshSession).interactable = false;
         popup.RefreshSessionLIst(Get<TMP_InputField>(Inputs.Search).text.Trim());
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.2f);
         GetButton((int)Buttons.Btn_RefreshSession).interactable = true;
     }
 
