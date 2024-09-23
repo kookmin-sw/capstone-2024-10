@@ -121,10 +121,11 @@ public class SettingSystem : MonoBehaviour
         Sensitivity = PlayerPrefs.GetFloat("Sensitivity", 1.0f);
         Width = PlayerPrefs.GetInt("ScreenWidth", 1280);
         Height = PlayerPrefs.GetInt("ScreenHeight", 720);
-        Quality = PlayerPrefs.GetInt("Textures", 3);
+        Quality = PlayerPrefs.GetInt("Textures", 2);
         VSycn = PlayerPrefs.GetInt("VSync", 0);
         ScreenRatioIndex = PlayerPrefs.GetInt("ScreenRatio", 0);
         FullScreen = PlayerPrefs.GetInt("FullScreen", 0);
+        QualitySettings.vSyncCount = 0;
 
         _initialized = true;
 
@@ -195,6 +196,13 @@ public class SettingSystem : MonoBehaviour
     {
         VSycn = vsync;
         PlayerPrefs.SetInt("VSync", vsync);
-        QualitySettings.vSyncCount = vsync;
+        QualitySettings.vSyncCount = 0;
+
+        if (vsync == 0)
+        {
+            Application.targetFrameRate = 60;
+            return;
+        }
+        Application.targetFrameRate = 30;
     }
 }
