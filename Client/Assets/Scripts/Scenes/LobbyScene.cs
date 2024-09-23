@@ -38,6 +38,10 @@ public class LobbyScene : BaseScene
         Cursor.visible = true;
 
         Managers.SoundMng.Play($"{Define.BGM_PATH}/Black Magic", Define.SoundType.Bgm, 0.4f, 0.7f);
+        UI_LobbyScene sceneUI = Managers.UIMng.ShowSceneUI<UI_LobbyScene>();
+        sceneUI.Init();
+        sceneUI.ShowServerInitializeMessage();
+        Managers.NetworkMng.OnSessionUpdated += () => sceneUI.HideServerInitializeMessage();
     }
 
     public override void Clear()

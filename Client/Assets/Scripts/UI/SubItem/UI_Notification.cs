@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -20,6 +21,7 @@ public class UI_Notification : UI_Base
     private CanvasGroup CanvasGroup;
     private Coroutine FadeCor;
     private float accumTime = 0f;
+    private float duration = 1.0f;
 
     public override bool Init()
     {
@@ -71,6 +73,41 @@ public class UI_Notification : UI_Base
         CanvasGroup.alpha = 0f;
     }
 
+    private bool _scrolldown = false;
+
+    private void ScrollDown()
+    {
+        if (_scrolldown)
+            return;
+
+        var ui = GetComponent<RectTransform>();
+        Vector2 startPosition = new Vector2(0, ui.rect.height / 2 + 20);
+        ui.anchoredPosition = startPosition;
+
+        Vector2 targetPosition = new Vector2(0, - ui.rect.height / 2 - 20);
+        ui.DOAnchorPos(targetPosition, duration).SetEase(Ease.InQuad);
+        DOVirtual.DelayedCall(duration + 1, () =>
+        {
+            if (Managers.NetworkMng.ServerFound)
+                HideServerConnectMessage();
+        });
+        _scrolldown = true;
+    }
+
+    private void ScrollUp()
+    {
+        if (!_scrolldown)
+            return;
+
+        var ui = GetComponent<RectTransform>();
+        Vector2 startPosition = new Vector2(0, - ui.rect.height / 2 -20);
+        ui.anchoredPosition = startPosition;
+
+        Vector2 targetPosition = new Vector2(0, ui.rect.height / 2 + 20);
+        ui.DOAnchorPos(targetPosition, duration).SetEase(Ease.InQuad);
+        _scrolldown = false;
+    }
+
     public void EscapeMessage()
     {
         GetText(Texts.Message).text = "One of the Crew has Escaped";
@@ -85,6 +122,20 @@ public class UI_Notification : UI_Base
     {
         GetText(Texts.Message).text = "One of the Crew has Left the Game";
         StartFadeIn();
+    }
+
+    public void ShowServerConnectMessage()
+    {
+        CanvasGroup.alpha = 1f;
+        GetText(Texts.Message).text = "Searching for the nearest game server";
+        ScrollDown();
+    }
+
+    public void HideServerConnectMessage()
+    {
+        CanvasGroup.alpha = 1f;
+        GetText(Texts.Message).text = "Server found";
+        ScrollUp();
     }
 
     public void Hide() => gameObject.SetActive(false);

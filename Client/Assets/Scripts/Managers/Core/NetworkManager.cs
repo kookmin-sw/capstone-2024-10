@@ -9,13 +9,14 @@ using System.Collections;
 using UnityEngine.SceneManagement;
 using WebSocketSharp;
 
+
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
 {
     #region Fields
     public NetworkRunner Runner { get; private set; }
     public string PlayerName { get; set; }
     public List<SessionInfo> Sessions = new List<SessionInfo>();
-    public Action OnSessionUpdated;
+    public Action OnSessionUpdated { get; set; }
     public bool IsMaster { get => Runner.IsSharedModeMasterClient; }
     public NetworkSceneManagerEx Scene { get; set; }
 
@@ -26,6 +27,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public bool IsEndGameTriggered { get; set; } = false;
     public bool IsTestScene { get; set; } = false;
     public bool IsTutorialScene { get; set; } = false;
+    public bool ServerFound { get; set; } = false;
     public int RoomPlayersCount { get; private set; }
     public bool IsGameLoading {  get; set; } = false;
 
@@ -446,6 +448,7 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     #region CallBack
     public void OnSessionListUpdated(NetworkRunner runner, List<SessionInfo> sessionList)
     {
+        ServerFound = true;
         Debug.Log("OnSessionListUpdated");
         Sessions.Clear();
         Sessions = sessionList;
