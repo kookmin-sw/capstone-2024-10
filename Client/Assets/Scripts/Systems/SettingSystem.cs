@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SettingSystem : MonoBehaviour
 {
@@ -10,7 +11,7 @@ public class SettingSystem : MonoBehaviour
     private int _width = 1280;
     private int _height = 720;
     private int _fullScreen = 0;
-    private int _vsync = 0;
+    private int _frameIdx = 0;
     private int _screenRatioIndex = 0;
     private float _sensitivity = 1.0f;
     public int Width
@@ -49,16 +50,16 @@ public class SettingSystem : MonoBehaviour
             _fullScreen = value;
         }
     }
-    public int VSycn
+    public int FrameIdx
     {
         get
         {
             Init();
-            return _vsync;
+            return _frameIdx;
         }
-        private set
+        set
         {
-            _vsync = value;
+            _frameIdx = value;
         }
     }
     public int ScreenRatioIndex
@@ -88,11 +89,20 @@ public class SettingSystem : MonoBehaviour
         }
     }
 
-    private int[,] _screenResolution = new int[,]
+    public int[,] _screenResolutions = new int[,]
     {
         {1280, 720},
         {1920, 1080},
         {2560, 1440},
+    };
+
+    public int[] _frames = new int[]
+    {
+        30,
+        60,
+        120,
+        144,
+        165,
     };
     #endregion
 
@@ -122,7 +132,7 @@ public class SettingSystem : MonoBehaviour
         Width = PlayerPrefs.GetInt("ScreenWidth", 1280);
         Height = PlayerPrefs.GetInt("ScreenHeight", 720);
         Quality = PlayerPrefs.GetInt("Textures", 2);
-        VSycn = PlayerPrefs.GetInt("VSync", 0);
+        FrameIdx = PlayerPrefs.GetInt("FrameIdx", 1);
         ScreenRatioIndex = PlayerPrefs.GetInt("ScreenRatio", 0);
         FullScreen = PlayerPrefs.GetInt("FullScreen", 0);
         QualitySettings.vSyncCount = 0;
@@ -137,7 +147,7 @@ public class SettingSystem : MonoBehaviour
             SetQuality(Quality);
             SelectResolution(ScreenRatioIndex);
             SetMouseSensitivity(Sensitivity);
-            SetVSync(VSycn);
+            SetFrame(FrameIdx);
         });
     }
 
@@ -162,8 +172,8 @@ public class SettingSystem : MonoBehaviour
 
     public void SelectResolution(int idx)
     {
-        int width = _screenResolution[idx, 0];
-        int height = _screenResolution[idx, 1];
+        int width = _screenResolutions[idx, 0];
+        int height = _screenResolutions[idx, 1];
         Debug.Log($"{width} x {height}");
         SetResolution(width, height);
         ScreenRatioIndex = idx;
@@ -192,17 +202,37 @@ public class SettingSystem : MonoBehaviour
         PlayerPrefs.SetFloat("Sensitivity", sliderValueSensitivity);
     }
 
-    public void SetVSync(int vsync)
+    public int SetFrame()
     {
-        VSycn = vsync;
-        PlayerPrefs.SetInt("VSync", vsync);
-        QualitySettings.vSyncCount = 0;
+        FrameIdx++;
 
-        if (vsync == 0)
-        {
-            Application.targetFrameRate = 60;
-            return;
-        }
-        Application.targetFrameRate = 30;
+        if (FrameIdx >= _frames.Length)
+            FrameIdx = 0;
+
+        PlayerPrefs.SetInt("FrameIdx", FrameIdx);
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = _frames[FrameIdx];
+
+        return _frames[FrameIdx];
+    }
+
+    public int SetFrame(int frameIdx)
+    {
+        FrameIdx = frameIdx;
+
+        if (FrameIdx >= _frames.Length)
+            FrameIdx = 0;
+
+        PlayerPrefs.SetInt("FrameIdx", FrameIdx);
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = _frames[FrameIdx];
+
+        return _frames[FrameIdx];
+    }
+
+    public int GetFrame()
+    {
+        return _frames[FrameIdx];
     }
 }
+

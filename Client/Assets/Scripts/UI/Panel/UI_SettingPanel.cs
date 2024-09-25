@@ -85,7 +85,7 @@ public class UI_SettingPanel : UI_CameraPanel
 
         Get<Slider>(Sliders.SensitivitySlider).gameObject.BindEvent((e) => { SensitivitySlider(); }, Define.UIEvent.Drag);
         GetButton(Buttons.FullScreen_Btn).gameObject.BindEvent((e) => { FullScreen(); }, Define.UIEvent.Click);
-        GetButton(Buttons.VSync_Btn).gameObject.BindEvent((e) => { vsync(); }, Define.UIEvent.Click);
+        GetButton(Buttons.VSync_Btn).gameObject.BindEvent((e) => { Frame(); }, Define.UIEvent.Click);
         GetButton(Buttons.TextureLow_Btn).gameObject.BindEvent((e) => { TexturesLow(); }, Define.UIEvent.Click);
         GetButton(Buttons.TextureMed_Btn).gameObject.BindEvent((e) => { TexturesMed(); }, Define.UIEvent.Click);
         GetButton(Buttons.TextureHigh_Btn).gameObject.BindEvent((e) => { TexturesHigh(); }, Define.UIEvent.Click);
@@ -116,15 +116,8 @@ public class UI_SettingPanel : UI_CameraPanel
             GetObject(GameObjects.fullscreentext).GetComponent<TMP_Text>().text = "Off";
         }
 
-        // check vsync
-        if (Managers.GameMng.SettingSystem.VSycn == 0)
-        {
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "Off";
-        }
-        else if (Managers.GameMng.SettingSystem.VSycn == 1)
-        {
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "On";
-        }
+        // check frame
+        GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = Managers.GameMng.SettingSystem.GetFrame().ToString();
 
         // check texture quality
         if (Managers.GameMng.SettingSystem.Quality == 1)
@@ -232,18 +225,10 @@ public class UI_SettingPanel : UI_CameraPanel
         Managers.GameMng.SettingSystem.SetMouseSensitivity(Get<Slider>(Sliders.SensitivitySlider).value);
     }
 
-    public void vsync()
+    public void Frame()
     {
-        if (Managers.GameMng.SettingSystem.VSycn == 0)
-        {
-            Managers.GameMng.SettingSystem.SetVSync(1);
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "On";
-        }
-        else if (Managers.GameMng.SettingSystem.VSycn == 1)
-        {
-            Managers.GameMng.SettingSystem.SetVSync(0);
-            GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = "Off";
-        }
+        int frame = Managers.GameMng.SettingSystem.SetFrame();
+        GetObject(GameObjects.vsynctext).GetComponent<TMP_Text>().text = frame.ToString();
     }
 
     public void TexturesLow()
