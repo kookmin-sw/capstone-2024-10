@@ -1,4 +1,6 @@
 using UnityEngine.UI;
+using UnityEngine;
+using DG.Tweening;
 
 public class UI_Warning : UI_Popup
 {
@@ -16,6 +18,10 @@ public class UI_Warning : UI_Popup
         GetButton(Buttons.Btn_Yes).onClick.AddListener(() =>
         {
             Managers.UIMng.ClosePopupUIUntil<UI_Lobby>();
+
+            var nickname = Managers.NetworkMng.PlayerName;
+            Managers.NetworkMng.ConnectToLobby(nickname);
+
             var ui = Managers.UIMng.PeekPopupUI<UI_Lobby>();
             ui.Refresh();
         });

@@ -81,10 +81,10 @@ public class UI_Notification : UI_Base
             return;
 
         var ui = GetComponent<RectTransform>();
-        Vector2 startPosition = new Vector2(0, ui.rect.height / 2 + 20);
+        Vector2 startPosition = new Vector2(0, ui.rect.height / 2 + 30);
         ui.anchoredPosition = startPosition;
 
-        Vector2 targetPosition = new Vector2(0, - ui.rect.height / 2 - 20);
+        Vector2 targetPosition = new Vector2(0, - ui.rect.height / 2 - 30);
         ui.DOAnchorPos(targetPosition, duration).SetEase(Ease.InQuad);
         DOVirtual.DelayedCall(duration + 1, () =>
         {
@@ -100,10 +100,10 @@ public class UI_Notification : UI_Base
             return;
 
         var ui = GetComponent<RectTransform>();
-        Vector2 startPosition = new Vector2(0, - ui.rect.height / 2 -20);
+        Vector2 startPosition = new Vector2(0, - ui.rect.height / 2 - 30);
         ui.anchoredPosition = startPosition;
 
-        Vector2 targetPosition = new Vector2(0, ui.rect.height / 2 + 20);
+        Vector2 targetPosition = new Vector2(0, ui.rect.height / 2 + 30);
         ui.DOAnchorPos(targetPosition, duration).SetEase(Ease.InQuad);
         _scrolldown = false;
     }

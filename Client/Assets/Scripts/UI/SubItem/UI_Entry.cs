@@ -44,7 +44,8 @@ public class UI_Entry : UI_Base
     public void SubmitName()
     {
         var input = GetObject((int)GameObjects.NickName).GetComponent<TMP_InputField>();
-        Managers.NetworkMng.PlayerName = input.text;
+        Managers.GameMng.SettingSystem.SetName(input.text);
+        Managers.NetworkMng.PlayerName = Managers.GameMng.SettingSystem.GetName();
         input.text = "";
         GetText((int)Texts.Name).text = Managers.NetworkMng.PlayerName;
     }

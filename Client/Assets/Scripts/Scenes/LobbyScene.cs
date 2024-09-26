@@ -12,8 +12,8 @@ public class LobbyScene : BaseScene
 
         SettingSystem settingSystem = FindAnyObjectByType<SettingSystem>();
         settingSystem.Init();
-        int randomInt = Random.Range(1000, 9999);
-        string nickname = "User-" + randomInt.ToString();
+
+        string nickname = Managers.GameMng.SettingSystem.GetName();
         Managers.NetworkMng.ConnectToLobby(nickname);
 
         UI_Introduction intro;

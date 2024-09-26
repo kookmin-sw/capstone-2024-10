@@ -8,6 +8,7 @@ using System.Linq;
 using System.Collections;
 using UnityEngine.SceneManagement;
 using WebSocketSharp;
+using Fusion.Photon.Realtime;
 
 
 public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
@@ -79,6 +80,8 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public Define.SectorName TutorialSceneSpawnSector;
     public Vector3 TestSceneSpawnPosition;
     public Define.SectorName TestSceneSpawnSector;
+
+    private FusionInit _fusionInit;
     #endregion
 
     #region Init
@@ -276,6 +279,15 @@ public class NetworkManager : MonoBehaviour, INetworkRunnerCallbacks
     public void ConnectToLobby(string playerName)
     {
         PlayerName = playerName;
+
+        /*
+        // TODO
+        string region = "us";
+        _fusionInit = new();
+        var appSettings = _fusionInit.BuildCustomAppSetting(region, appVersion : Application.version);
+
+        Runner.JoinSessionLobby(SessionLobby.Shared, customAppSettings: appSettings);
+        */
 
         Runner.JoinSessionLobby(SessionLobby.Shared);
     }

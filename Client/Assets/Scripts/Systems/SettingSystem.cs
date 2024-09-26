@@ -151,6 +151,18 @@ public class SettingSystem : MonoBehaviour
         });
     }
 
+    public void SetName(string name)
+    {
+        PlayerPrefs.SetString("Nickname", name);
+    }
+
+    public string GetName()
+    {
+        int randomInt = UnityEngine.Random.Range(1000, 9999);
+        string nickname = "User-" + randomInt.ToString();
+        return PlayerPrefs.GetString("Nickname", nickname);
+    }
+
     private void SetQuality(int index)
     {
         QualitySettings.globalTextureMipmapLimit = 3 - index;
