@@ -24,6 +24,10 @@ public class UI_Warning : UI_Popup
 
             var ui = Managers.UIMng.PeekPopupUI<UI_Lobby>();
             ui.Refresh();
+
+            var scene = Managers.SceneMng.CurrentScene as LobbyScene;
+            scene.SceneUI.ShowServerInitializeMessage();
+            Managers.NetworkMng.OnSessionUpdated += () => scene.SceneUI.HideServerInitializeMessage();
         });
 
         return true;

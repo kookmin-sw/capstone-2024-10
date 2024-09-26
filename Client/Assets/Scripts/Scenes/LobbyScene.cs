@@ -3,6 +3,7 @@ using UnityEngine;
 public class LobbyScene : BaseScene
 {
     static bool IsFirstLobby = true;
+    public UI_LobbyScene SceneUI { get; private set; }
 
     protected override void Init()
     {
@@ -38,10 +39,10 @@ public class LobbyScene : BaseScene
         Cursor.visible = true;
 
         Managers.SoundMng.Play($"{Define.BGM_PATH}/Black Magic", Define.SoundType.Bgm, 0.4f, 0.7f);
-        UI_LobbyScene sceneUI = Managers.UIMng.ShowSceneUI<UI_LobbyScene>();
-        sceneUI.Init();
-        sceneUI.ShowServerInitializeMessage();
-        Managers.NetworkMng.OnSessionUpdated += () => sceneUI.HideServerInitializeMessage();
+        SceneUI = Managers.UIMng.ShowSceneUI<UI_LobbyScene>();
+        SceneUI.Init();
+        SceneUI.ShowServerInitializeMessage();
+        Managers.NetworkMng.OnSessionUpdated += () => SceneUI.HideServerInitializeMessage();
     }
 
     public override void Clear()
