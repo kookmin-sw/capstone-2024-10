@@ -18,7 +18,6 @@ public class CrewStat : BaseStat
     public float MaxSanity { get; set; }
     public float RunUseStamina { get; set; }
     public float PassiveRecoverStamina { get; set; }
-    public float DamagedRecoverStamina { get; set; }
     public float ErosionReduceSanity { get; set; }
     public float SitRecoverSanity { get; set; }
 
@@ -42,7 +41,6 @@ public class CrewStat : BaseStat
         MaxSanity = CrewData.MaxSanity;
         RunUseStamina = CrewData.RunUseStamina;
         PassiveRecoverStamina = CrewData.PassiveRecoverStamina;
-        DamagedRecoverStamina = CrewData.DamagedRecoverStamina;
         ErosionReduceSanity = CrewData.ErosionReduceSanity;
         SitRecoverSanity = CrewData.SitRecoverSanity;
     }

@@ -811,7 +811,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: '<u><b>W, A, S, D</b></u>: Move
 
-    <u><b>F</b></u>: Destroy closed door
+    <u><b>F</b></u>: Destroy Closed Door
 
     <u><b>Left
     click</b></u>: Basic Attack
@@ -919,7 +919,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1540505304401771680}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000011920929}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -927,7 +927,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 30, y: -184}
+  m_AnchoredPosition: {x: 30, y: -80}
   m_SizeDelta: {x: -60, y: 250}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &1802326206801663070
@@ -959,9 +959,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "Use the doors properly to run away from the <color=red>Stalker</color>.
-    \n<color=red>Stalker</color> can destroy closed doors, but it takes some time.\nYour
-    <color=yellow>sanity</color> and the doors will eventually run out. Cooperate
-    with other crews and complete the <color=green>escape plan</color> quickly!"
+    \n<color=red>Stalker</color> can destroy closed doors, but it takes some time.\nThe
+    Stalker will eventually hunt you. Cooperate with other crews and complete the
+    <color=green>Escape Plan</color> quickly!"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -1098,17 +1098,17 @@ MonoBehaviour:
   m_text: 'Crew member starts with 3 <color=red>HP</color>.
 
     <color=green>Stamina</color>
-    is used for running. Stamina recovers faster when crouching.
+    is used for running. Stamina is recovered faster when you are Crouching.
 
-    <color=yellow>Sanity</color>
-    is decreased by Stalker''s skill.
+    your
+    <color=yellow>Sanity</color> is decreased when you''re in the roaring or eroded
+    area of a Stalker.
 
-    As <color=yellow>Sanity</color> decreases,
-    you get a number of penalties - decreased move speed, decreased field of view,
-    etc.
+    As <color=yellow>Sanity</color> decreases, your Speed
+    and  Field of View are decreased.
 
-    <color=yellow>Sanity</color> can be recovered by crouching or using
-    specific item.'
+    <color=yellow>Sanity</color> can be recovered
+    by Crouching or using Antipsychotic.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -1203,7 +1203,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1923866143549823294}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.000035762787}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1211,7 +1211,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -0.00012207031, y: -155}
+  m_AnchoredPosition: {x: 0, y: -50}
   m_SizeDelta: {x: 286.8, y: 50}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &876487436745669116
@@ -1452,15 +1452,15 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '<u><b>G</b></u>: Drop item
+  m_text: '<u><b>G</b></u>: Drop Item
 
     <u><b>Mouse Wheel or 1/2/3/4</b></u>:
-    Change item
+    Change Item
 
     <u><b>Left Click</b></u>: Use Item
 
     <u><b>Tab</b></u>: View
-    map'
+    Map'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -3653,11 +3653,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Erode the sectors as many as possible. It''s crucial to make crew members''
-    sanity run out.
+  m_text: 'Erode the sectors as many as possible. It''s crucial to make your area.
 
-    You can destroy the closed doors. Crew cannot use the destroyed
-    doors again.
+    You
+    can destroy the closed doors. Crew cannot use the destroyed doors again.
 
 '
   m_isRightToLeft: 0
@@ -3793,20 +3792,20 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'a. <b><u>Basic Attack</b></u>: Stalker swipes forward with claws. Crew
-    member takes 1 damage on hit.
+  m_text: '1. <b>Attack</b>: Stalker swipes forward with claws. Crew member takes
+    1 damage on hit.
 
-    b. <b><u>Roar</b></u>: Stalker shouts loudly,
-    decreasing large amount of <color=yellow>sanity</color> of every crew members
-    nearby.
+    2. <b>Roar</b>: Stalker roar  loudly, decreases  large
+    amount of <color=yellow>Sanity</color> of  crew members in the range
 
-    c. <b><u>Cursed Howl</b></u>: Stalker erodes current sector. Crew
-    members in eroded sectors lose their sanity rapidly. Erosion does not dissapear
-    until the game ends.
+    3.
+    <b>Cursed Howl</b>: Stalker erodes current sector. Crew members in eroded sectors
+    lose their sanity rapidly. Erosion does not dissapear until the game ends.
 
-    d. <b><u>Leap Attack</b></u>: <color=orange>Only usable
-    in eroded sectors.</color> Stalker leaps forward and attacks a crew member inside
-    the range. Crew member takes 1 damage on hit.'
+    4.
+    <b>Leap Attack</b>: <color=orange>Only usable in eroded sectors.</color> Stalker
+    leaps forward and attacks a crew member inside the range. Crew member takes 1
+    damage on hit.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -4980,7 +4979,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4761033426110359572}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.000035762787}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6068,10 +6067,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Stalker must kill every <color=green>crew</color> members before they
+  m_text: 'Stalker must kill every <color=green>Crew</color> members before they
     escape from the facility.
 
-    Use the powerful skills properly to hunt them.'
+    Use the skills properly to hunt them.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -7050,7 +7049,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '*You can also view this map during the game by pressing Tab key.'
+  m_text: '*You can view this map during the game by pressing Tab key.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: debe894442e153d479c7f9d07cce1276, type: 2}
   m_sharedMaterial: {fileID: 21975412471922176, guid: debe894442e153d479c7f9d07cce1276, type: 2}
@@ -7188,9 +7187,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "There are various interactable \"task objects\" in the map. \nThey are
-    used for completing the <color=green>escape plans</color>.\nInteract them and
-    complete the plans.\n<i><color=yellow>*Note: For some tasks, crew members can
-    work together and complete the task faster!</i></color>"
+    used for completing the <color=green>Escape Plans</color>.\n<i><color=yellow>*Note:
+    For some tasks, crew members can work together and complete the task faster!</i></color>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -7569,7 +7567,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7802348050613696394}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000011920929}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7577,8 +7575,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: 56.5, y: 150}
-  m_SizeDelta: {x: -86.500015, y: 300}
+  m_AnchoredPosition: {x: 56.5, y: 200}
+  m_SizeDelta: {x: -86.5, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &7194065951909820681
 CanvasRenderer:
@@ -7608,11 +7606,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "- Bandage: Recover <color=red>Hp</color> when used.\n- Antipsychotic:
-    Recover <color=yellow>sanity</color> when used.\n- Morphine: When used, <color=green>stamina</color>
-    does not decrease for a while.\n- Flashbang: When used, throws a flashbang. The
-    flashbang explodes after a moment. \n   Flashbang makes <color=red>Stalker</color>
-    stun and blind for a while."
+  m_text: '- Bandage: Recover <color=red>Hp</color> when used.
+
+    - Antipsychotic:
+    Recover <color=yellow>Sanity</color> when used.
+
+    - Adrenaline: When used,
+    <color=green>Stamina</color> does not decrease for a while.
+
+    - Flashbang:
+    makes <color=red>Stalker</color> stun and blind for a while.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -7746,13 +7749,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Follow the instructions displayed at top-left UI.
+  m_text: 'Follow the instructions displayed at Top-Left.
 
     First of all, collect
     the batteries and insert them into battery charger.
 
     Once you insert enough
-    number of batteries, <color=green>three plans</color> will be enabled.
+    number of batteries, <color=green>3 Escape Plans</color> will be enabled.
 
     Complete
     any of these plans in order to escape!
@@ -8696,7 +8699,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8629261038128656534}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.000011920929}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8737,14 +8740,11 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Crew members can acquire items by opening item kits in the facility.
 
-    There
-    are two types of item - <color=#66d1ff>Plan item </color>and <color=#ffc847>Consumable
-    item</color>.
+    <color=#66d1ff>Plan
+    Items </color>are used for <color=green>Escape Plans</color>.
 
-    <color=#66d1ff>Plan items </color>are used for <color=green>escape
-    plans</color>.
-
-    <color=#ffc847>Consumable items</color> are as follows:'
+    <color=#ffc847>Consumable
+    Items</color> are as follows:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}

@@ -198,7 +198,7 @@ public class Crew : Creature
             CrewStat.ChangeSanity(CrewStat.SitRecoverSanity * Time.deltaTime);
 
         if (CreaturePose == Define.CreaturePose.Sit)
-            CrewStat.ChangeStamina(CrewStat.PassiveRecoverStamina * Time.deltaTime);
+            CrewStat.ChangeStamina(CrewStat.PassiveRecoverStamina * 0.5f * Time.deltaTime);
     }
 
     protected override void UpdateIdle()

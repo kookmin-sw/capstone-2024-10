@@ -27,7 +27,6 @@ namespace Data
         public float MaxSanity;
         public float RunUseStamina;
         public float PassiveRecoverStamina;
-        public float DamagedRecoverStamina;
         public float ErosionReduceSanity;
         public float SitRecoverSanity;
     }
