@@ -2414,8 +2414,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Stalker must kill every <color=green>Crew</color> members before they
-    escape from the facility.
+  m_text: 'Stalker must slay all of the <color=green>Crew</color> before they manage
+    to escape from the facility.
 
     Use the skills properly to hunt them.'
   m_isRightToLeft: 0
@@ -5470,10 +5470,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Erode the sectors as many as possible. It''s crucial to make your area.
+  m_text: 'If you find <color=green>Crew</color>, decrease his <color=yellow>Sanity</color>
+    with Roar.
 
-    You
-    can destroy the closed doors. Crew cannot use the destroyed doors again.
+    The <color=green>Crew</color> with low <color=yellow>Sanity</color>
+    will slow down.
+
+    Erode the sectors with Cursed Howl. It''s advantageous to
+    make your area.
+
+    You can destroy the closed doors. <color=green>Crew</color>
+    cannot use the destroyed doors again.
 
 '
   m_isRightToLeft: 0
@@ -8256,20 +8263,20 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '1. <b>Attack</b>: Stalker swipes forward with claws. Crew member takes
-    1 damage on hit.
+  m_text: '1. <b>Attack</b>: Stalker swipes forward with claws. <color=green>Crew</color>
+    takes 1 damage on hit.
 
-    2. <b>Roar</b>: Stalker roar  loudly, decreases  large
-    amount of <color=yellow>Sanity</color> of  crew members in the range
+    2. <b>Roar</b>: Stalker roar  loudly, decreases 
+    large amount of <color=yellow>Sanity</color> of  <color=green>Crew</color> in
+    the range.
 
-    3.
-    <b>Cursed Howl</b>: Stalker erodes current sector. Crew members in eroded sectors
-    lose their sanity rapidly. Erosion does not dissapear until the game ends.
+    3. <b>Cursed Howl</b>: Stalker erodes current sector. <color=green>Crew</color>
+    in eroded sectors lose their <color=yellow>Sanity</color> Continuously. Erosion
+    does not dissapear until the game ends.
 
-    4.
-    <b>Leap Attack</b>: <color=orange>Only usable in eroded sectors.</color> Stalker
-    leaps forward and attacks a crew member inside the range. Crew member takes 1
-    damage on hit.'
+    4. <b>Leap Attack</b>: <color=orange>Only
+    usable in Eroded Sectors.</color> Stalker leaps forward and attack. <color=green>Crew</color>
+    takes 1 damage on hit.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -8332,7 +8339,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 79.58655, w: -101.98143}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -14800,10 +14807,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Use the doors properly to run away from the <color=red>Stalker</color>.
-    \n<color=red>Stalker</color> can destroy closed doors, but it takes some time.\nThe
-    Stalker will eventually hunt you. Cooperate with other crews and complete the
-    <color=green>Escape Plan</color> quickly!"
+  m_text: "Be quiet, if there is <color=red>Stalker</color> around. \n<color=red>Stalker</color>
+    can hear your sound while you are running or interacting.\nUse doors to run away
+    from the <color=red>Stalker</color>. \n<color=red>Stalker</color> can destroy
+    closed doors, but it takes some time."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -21852,16 +21859,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '- Bandage: Recover <color=red>Hp</color> when used.
+  m_text: '- Bandage: Recover 1 <color=red>Hp</color>.
 
-    - Antipsychotic:
-    Recover <color=yellow>Sanity</color> when used.
+    - Antipsychotic: Recover
+    large amount of <color=yellow>Sanity</color>.
 
-    - Adrenaline: When used,
-    <color=green>Stamina</color> does not decrease for a while.
+    - Adrenaline: <color=green>Stamina</color>
+    does not decrease for a while.
 
-    - Flashbang:
-    makes <color=red>Stalker</color> stun and blind for a while.'
+    - Flashbang: Stuns and blinds <color=red>Stalker</color>
+    for a while.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
   m_sharedMaterial: {fileID: 21809785584020342, guid: 0b65c99348f068b49bef5db0bb76a6e4, type: 2}
@@ -21924,7 +21931,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 100.034775}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -23741,7 +23748,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: 0, w: 108.938065}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

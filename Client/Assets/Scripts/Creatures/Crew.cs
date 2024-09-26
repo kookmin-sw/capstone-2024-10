@@ -233,7 +233,7 @@ public class Crew : Creature
         }
 
         if (CrewStat.DamagedBoost)
-            CrewStat.Speed *= 1.55f;
+            CrewStat.Speed *= 1.5f;
 
         KCC.SetLookRotation(0, CurrentAngle);
 
