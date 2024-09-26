@@ -209,8 +209,8 @@ public static class Define
 
     #region Value
 
-    public const float LOADING_WAIT_TIME = 480f;
-    public const float GAME_WAIT_TIME = 420f;
+    public const float LOADING_WAIT_TIME = 300f;
+    public const float GAME_WAIT_TIME = 240f;
     public const float DAMAGE_BOOST_TIME = 6.5f;
 
     public const int PLAYER_COUNT = 4;
