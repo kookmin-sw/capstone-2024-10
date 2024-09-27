@@ -61,8 +61,7 @@ public class CrewStat : BaseStat
             if (Stamina < 70f)
                 ChangeStamina(70f - Stamina);
 
-            if (Sanity < 70f)
-                ChangeSanity(70f - Sanity);
+            ChangeSanity(70f - Sanity);
 
             DamagedBoost = true;
 

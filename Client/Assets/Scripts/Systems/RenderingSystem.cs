@@ -20,7 +20,7 @@ public class RenderingSystem : NetworkBehaviour
     private Color _erosionColor = new Color(255.0f / 255.0f, 90.0f / 255.0f, 90.0f / 255.0f);
     private Color _defaultColor = new Color(255.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
 
-    private float _defaultFixedExposure = -2.9f;
+    private float _defaultFixedExposure = -2.85f;
     private float _defaultFogMeanFreePath = 5.5f;
     private float _defaultVignetteIntensity = 0.15f;
 
@@ -74,7 +74,7 @@ public class RenderingSystem : NetworkBehaviour
 
     public void ApplySanityEffect(float sanity)
     {
-        Vignette.intensity.value = _defaultVignetteIntensity + (100f - sanity) * 0.01f * 0.4f;
+        Vignette.intensity.value = _defaultVignetteIntensity + (100f - sanity) * 0.01f * 0.45f;
     }
 
     public void ApplyErosionEffect(bool isApplying)
